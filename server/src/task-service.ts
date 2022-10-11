@@ -4,6 +4,7 @@ import type { RowDataPacket, ResultSetHeader } from 'mysql2';
 export type Task = {
   id: number;
   title: string;
+  description: '';
   done: boolean;
 };
 
@@ -39,16 +40,34 @@ class TaskService {
    *
    * Resolves the newly created task id.
    */
-  create(title: string) {
+  create(title: string, description: string) {
     return new Promise<number>((resolve, reject) => {
-      pool.query('INSERT INTO Tasks SET title=?', [title], (error, results: ResultSetHeader) => {
-        if (error) return reject(error);
+      pool.query(
+        'INSERT INTO Tasks SET title=?, description=?',
+        [title, description],
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
 
-        resolve(results.insertId);
-      });
+          resolve(results.insertId);
+        }
+      );
     });
   }
 
+  update(id: number, title: string, description: string, done: boolean) {
+    console.log(id, title, description, done);
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'UPDATE tasks SET title=?, description=?, done=? WHERE id=?',
+        [title, description, done, id],
+        (error: any, _results: any) => {
+          if (error) return reject(error);
+
+          resolve();
+        }
+      );
+    });
+  }
   /**
    * Delete task with given id.
    */

@@ -4,9 +4,9 @@ import app from '../src/app';
 import taskService, { Task } from '../src/task-service';
 
 const testTasks: Task[] = [
-  { id: 1, title: 'Les leksjon', done: false },
-  { id: 2, title: 'Møt opp på forelesning', done: false },
-  { id: 3, title: 'Gjør øving', done: false },
+  { id: 1, title: 'Les leksjon', description: '', done: false },
+  { id: 2, title: 'Møt opp på forelesning', description: '', done: false },
+  { id: 3, title: 'Gjør øving', description: '', done: false },
 ];
 
 // Since API is not compatible with v1, API version is increased to v2
@@ -25,9 +25,9 @@ beforeEach((done) => {
 
     // Create testTasks sequentially in order to set correct id, and call done() when finished
     taskService
-      .create(testTasks[0].title)
-      .then(() => taskService.create(testTasks[1].title)) // Create testTask[1] after testTask[0] has been created
-      .then(() => taskService.create(testTasks[2].title)) // Create testTask[2] after testTask[1] has been created
+      .create(testTasks[0].title, testTasks[0].description)
+      .then(() => taskService.create(testTasks[1].title, testTasks[1].description)) // Create testTask[1] after testTask[0] has been created
+      .then(() => taskService.create(testTasks[2].title, testTasks[2].description)) // Create testTask[2] after testTask[1] has been created
       .then(() => done()); // Call done() after testTask[2] has been created
   });
 });
@@ -55,6 +55,11 @@ describe('Fetch tasks (GET)', () => {
     });
   });
 
+  test.skip('Fetch all tasks (500 Internal Server Error)', (done) => {
+    axios.get('/tasks').rejects.toThrow('Request failed with status code 500');
+    done();
+  });
+
   test('Fetch task (404 Not Found)', (done) => {
     axios
       .get('/tasks/4')
@@ -79,6 +84,15 @@ describe('Create new task (POST)', () => {
 describe('Delete task (DELETE)', () => {
   test('Delete task (200 OK)', (done) => {
     axios.delete('/tasks/2').then((response) => {
+      expect(response.status).toEqual(200);
+      done();
+    });
+  });
+});
+
+describe('Update task', () => {
+  test('Update task (200 OK)', (done) => {
+    axios.put('/tasks/2', { title: 'Ny oppgave' }).then((response) => {
       expect(response.status).toEqual(200);
       done();
     });

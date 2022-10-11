@@ -5,6 +5,7 @@ axios.defaults.baseURL = 'http://localhost:3000/api/v2';
 export type Task = {
   id: number;
   title: string;
+  description: string;
   done: boolean;
 };
 
@@ -28,10 +29,20 @@ class TaskService {
    *
    * Resolves the newly created task id.
    */
-  create(title: string) {
+  update(id: number, title: string, description: string, done: boolean) {
+    console.log(id, title, description);
     return axios
-      .post<{ id: number }>('/tasks', { title: title })
+      .put('/tasks/' + id, { title: title, description: description, done: done })
+      .then((response) => response.data);
+  }
+  create(title: string, description: string) {
+    console.log(description);
+    return axios
+      .post<{ id: number }>('/tasks', { title: title, description: description })
       .then((response) => response.data.id);
+  }
+  delete(id: number) {
+    return axios.delete<Task>('/tasks/' + id).then((response) => response.data);
   }
 }
 
