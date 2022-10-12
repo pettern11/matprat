@@ -65,6 +65,6 @@ gjelder:
 
 ### Uke 44
 
-### Uke 45
+### Uke 45 (ferdig)
 
-### Uke 46
+### Uke 46 (se over)
