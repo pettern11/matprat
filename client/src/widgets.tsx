@@ -8,7 +8,8 @@ import { NavLink } from 'react-router-dom';
  *
  * Properties: title
  */
-export class Card extends Component<{ title: ReactNode }> {
+
+export class Card extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
     return (
       <div className="card">
@@ -24,7 +25,7 @@ export class Card extends Component<{ title: ReactNode }> {
 /**
  * Renders a row using Bootstrap classes.
  */
-export class Row extends Component {
+export class Row extends Component<{ children: ReactNode }> {
   render() {
     return <div className="row">{this.props.children}</div>;
   }
@@ -35,7 +36,7 @@ export class Row extends Component {
  *
  * Properties: width, right
  */
-export class Column extends Component<{ width?: number; right?: boolean }> {
+export class Column extends Component<{ width?: number; right?: boolean; children: ReactNode }> {
   render() {
     return (
       <div className={'col' + (this.props.width ? '-' + this.props.width : '')}>
@@ -52,6 +53,7 @@ export class Column extends Component<{ width?: number; right?: boolean }> {
  */
 class ButtonSuccess extends Component<{
   small?: boolean;
+  children: ReactNode;
   onClick: () => void;
 }> {
   render() {
@@ -83,6 +85,7 @@ class ButtonSuccess extends Component<{
  */
 class ButtonDanger extends Component<{
   small?: boolean;
+  children: ReactNode;
   onClick: () => void;
 }> {
   render() {
@@ -114,6 +117,7 @@ class ButtonDanger extends Component<{
  */
 class ButtonLight extends Component<{
   small?: boolean;
+  children: ReactNode;
   onClick: () => void;
 }> {
   render() {
@@ -154,7 +158,7 @@ export class Button {
  *
  * Properties: to
  */
-class NavBarLink extends Component<{ to: string }> {
+class NavBarLink extends Component<{ to: string; children: ReactNode }> {
   render() {
     return (
       <NavLink className="nav-link" activeClassName="active" to={this.props.to}>
@@ -169,7 +173,7 @@ class NavBarLink extends Component<{ to: string }> {
  *
  * Properties: brand
  */
-export class NavBar extends Component<{ brand: ReactNode }> {
+export class NavBar extends Component<{ brand: ReactNode; children: ReactNode }> {
   static Link = NavBarLink;
 
   render() {
@@ -189,7 +193,7 @@ export class NavBar extends Component<{ brand: ReactNode }> {
 /**
  * Renders a form label using Bootstrap styles.
  */
-class FormLabel extends Component {
+class FormLabel extends Component<{ children: ReactNode }> {
   render() {
     return <label className="col-form-label">{this.props.children}</label>;
   }
