@@ -3,6 +3,7 @@
 Class oppskrift {
     oppskrift_id <color:royalBlue> INT PK 
     oppskrift_navn <color:royalBlue> VARCHAR
+    oppskrift_beskrivelse <color:royalBlue> VARCHAR
     ant_porsoner <color:royalBlue> INT
     bilde_adr <color:royalBlue> VARCHAR
     kategori_id <color:royalBlue> INT FK
