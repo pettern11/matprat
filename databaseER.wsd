@@ -1,0 +1,40 @@
+@startuml err
+
+Class oppskrift {
+    oppskrift_id <color:royalBlue> INT PK 
+    oppskrift_navn <color:royalBlue> VARCHAR
+    ant_porsoner <color:royalBlue> INT
+    bilde_adr <color:royalBlue> VARCHAR
+    kategori_id <color:royalBlue> INT FK
+    land_id <color:royalBlue>INT FK
+    ant_like <color:royalBlue>INT
+
+}
+
+Class ingrediens{
+    ingred_id <color:royalBlue> INT PK
+    ingred_navn <color:royalBlue> VARCHAR
+}
+Class land{
+    land_id <color:royalBlue> INT PK
+    land_navn <color:royalBlue> VARCHAR
+}
+
+Class kategori{
+    kategori_id <color:royalBlue> INT PLK
+    kategori_navn <color:royalBlue> VARCHAR
+}
+
+Class oppskrift_innhold{
+    oppskrift_id <color:royalBlue> INT PK
+    ingred_id <color:royalBlue> INT PK
+    mengde <color:royalBlue> INT
+    maleenhet <color:royalBlue> VARCHAR
+}
+
+oppskrift  "0..*" -- "1..1" land
+oppskrift  "0..*" -- "1..1" kategori
+oppskrift "1..1" -- "1..*" oppskrift_innhold
+ingrediens "1..1" -- "1..*" oppskrift_innhold
+
+@enduml
