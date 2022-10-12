@@ -57,6 +57,14 @@ gjelder:
 
 ## Scrum ish
 
+Daily stand-up:
+
+-   Hvordan går det? :)
+
+1. Hva har jeg jobbet med?
+2. Hva skal jeg jobbe med i dag?
+3. Er det noen blockers?
+
 ### Uke 41
 
 ### Uke 42
