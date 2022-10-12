@@ -30,14 +30,11 @@ gjelder:
 -   [ ] Deling av oppskrifter og handlelister, f.eks. via sosiale medier, e-post eller som weblenker.
 -   [ ] Anbefalinger som viser lignende oppskrifter.
 -   [ ] Brukerhåndtering gjennom pålogging med autentisering:
-        ○ Teori:
-        ■ Les om hashing teori her: https://crackstation.net/hashing-security.htm
-        ■ Siden hashing skal være ressurskrevende: etter autentisering med
-        hashing, brukes access/bearer tokens til etterfølgende forespørsler
-        ○ I stedet for å implementere dette selv: bør bruke et autentiseringsbibliotek som
-        for eksempel http://www.passportjs.org/
-        ■ Autentisering ved hjelp av en 3. part også mulig, for eksempel Facebook
-        eller Google, med OAuth2 protokollen (også støttet av passportjs).
+    -   Teori:
+        -   Les om hashing teori her: https://crackstation.net/hashing-security.htm
+        -   Siden hashing skal være ressurskrevende: etter autentisering med hashing, brukes access/bearer tokens til etterfølgende forespørsler
+    -   I stedet for å implementere dette selv: bør bruke et autentiseringsbibliotek som for eksempel http://www.passportjs.org/
+        -   Autentisering ved hjelp av en 3. part også mulig, for eksempel Facebook eller Google, med OAuth2 protokollen (også støttet av passportjs).
 -   [ ] Responsiv layout som også fungerer godt på mobil.
 -   [ ] Ekstra fokus på utforming (fargevalg, typografi, animasjoner og bruk av multimedia)
 
@@ -49,11 +46,11 @@ gjelder:
 -   [ ] Statisk typesjekking på både klient- og serversiden.
 -   [ ] Bruk av Continuous Integration.
 -   [ ] Klient:
-        ○ Oppdeling i komponenter.
-        ○ Bruk av gjenbrukbare komponenter.
-        ○ Bruk av enten service- eller store-objekter.
+    -   Oppdeling i komponenter.
+    -   Bruk av gjenbrukbare komponenter.
+    -   Bruk av enten service- eller store-objekter.
 -   [ ] Server:
-        ○ Data lagret i og hentet fra en database.
-        ○ Bruk av service- og route-objekter.
-        ○ Datamodellen er fornuftig.
+    -   Data lagret i og hentet fra en database.
+    -   Bruk av service- og route-objekter.
+    -   Datamodellen er fornuftig.
 -   [ ] En installasjonsveiledning (README.md) som beskriver hvordan man installerer og setter opp løsningen.
