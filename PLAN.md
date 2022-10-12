@@ -54,3 +54,17 @@ gjelder:
     -   Bruk av service- og route-objekter.
     -   Datamodellen er fornuftig.
 -   [ ] En installasjonsveiledning (README.md) som beskriver hvordan man installerer og setter opp løsningen.
+
+## Scrum ish
+
+### Uke 41
+
+### Uke 42
+
+### Uke 43
+
+### Uke 44
+
+### Uke 45
+
+### Uke 46
