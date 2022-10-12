@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { shallow } from 'enzyme';
 import { Column, Alert, Form, Button } from '../src/widgets';
-import { TaskDetails, TaskList, TaskNew, TaskEdit } from '../src/task-components';
+import { TaskDetails, TaskList, TaskNew, TaskEdit } from '../src/components';
 import { NavLink } from 'react-router-dom';
 
 jest.mock('../src/task-service', () => {

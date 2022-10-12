@@ -38,7 +38,7 @@ describe('NameEdit widget tests', () => {
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { shallow } from 'enzyme';
-import taskService, { Task } from '../src/task-service';
+import taskService, { Task } from '../src/service';
 
 jest.mock('../src/task-service', () => {
   class TaskService {

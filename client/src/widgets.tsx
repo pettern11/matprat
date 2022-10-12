@@ -8,6 +8,26 @@ import { NavLink } from 'react-router-dom';
  *
  * Properties: title
  */
+export class RecipeView extends Component<{ img: string; name: string; numbOfPors: number }> {
+  render() {
+    return (
+      <div className="recipe" style={{ border: '2px solid red' }}>
+        <div className="recipe-body">
+          <img
+            style={{
+              height: 200,
+              width: 200,
+            }}
+            src={this.props.img}
+            alt="bilde av oppskrift"
+          />
+          <h5 className="recipe-title">{this.props.name}</h5>
+          <div className="recipe-portions">{this.props.numbOfPors} porsjoner</div>
+        </div>
+      </div>
+    );
+  }
+}
 
 export class Card extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
