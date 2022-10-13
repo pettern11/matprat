@@ -100,7 +100,12 @@ INSERT INTO oppskrift(oppskrift_navn, oppskrift_beskrivelse, ant_pors, bilde_adr
   VALUES
     ("skinkepizza", "Beskrivelse: skinkepizza er en klassiker til både store og små. Enkelt å lage og kjempe digg. Oppskriftssteg: lag pizza",
     4, "https://usercontent.one/wp/www.framittkjokken.no/wp-content/uploads/2019/11/Photo_1586412317644-1140x855.jpg",
-    2, 9 );
+    2, 9 ),
+
+    ("kremet pasta og kylling", "Beskrivelse: kylling er digg",
+    2, "https://mills.no/content/uploads/2019/09/Kremet-pasta-med-sopp-og-kylling.jpg",
+    1, 1 );
+    
 
 INSERT INTO oppskrift_innhold(oppskrift_id, ingred_id, mengde, maleenhet)
   VALUES 

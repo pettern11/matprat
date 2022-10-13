@@ -12,12 +12,27 @@ export type Recipe = {
   land_id: number;
   ant_like: number;
 };
+
+export type Country = {
+  land_id: number;
+  land_navn: string;
+};
+export type Category = {
+  land_id: number;
+  land_navn: string;
+};
 class Service {
   /**
    * Get all tasks.
    */
-  getAll() {
+  getAllRepice() {
     return axios.get<Recipe[]>('/').then((response) => response.data);
+  }
+  getAllCountry() {
+    return axios.get<Country[]>('/newrecipe').then((response) => response.data);
+  }
+  getAllCategory() {
+    return axios.get<Category[]>('/newrecipe').then((response) => response.data);
   }
 }
 
