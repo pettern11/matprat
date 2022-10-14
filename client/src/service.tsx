@@ -18,8 +18,12 @@ export type Country = {
   land_navn: string;
 };
 export type Category = {
-  land_id: number;
-  land_navn: string;
+  kategori_id: number;
+  kategori_navn: string;
+};
+export type Ingredient = {
+  ingred_id: number;
+  ingred_navn: string;
 };
 class Service {
   /**
@@ -29,10 +33,13 @@ class Service {
     return axios.get<Recipe[]>('/').then((response) => response.data);
   }
   getAllCountry() {
-    return axios.get<Country[]>('/newrecipe').then((response) => response.data);
+    return axios.get<Country[]>('/country').then((response) => response.data);
   }
   getAllCategory() {
-    return axios.get<Category[]>('/newrecipe').then((response) => response.data);
+    return axios.get<Category[]>('/category').then((response) => response.data);
+  }
+  getAllIngredient() {
+    return axios.get<Ingredient[]>('/ingredient').then((response) => response.data);
   }
 }
 

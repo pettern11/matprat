@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Alert, Card, Row, Column, Form, Button } from './widgets';
 import { NavLink, Redirect } from 'react-router-dom';
-import service, { Country, Category } from './service';
+import service, { Country, Category, Ingredient } from './service';
 import { createHashHistory } from 'history';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -13,20 +13,27 @@ const history = createHashHistory(); // Use history.push(...) to programmaticall
 export class NewRecipe extends Component {
   countries: Country[] = [];
   categories: Category[] = [];
+  ingredients: Ingredient[] = [];
+  add_ingredient: [] = [];
+
+  ingredient: string = '';
 
   name: string = '';
   description: string = '';
   portions: number = 0;
   picture_adr: string = '';
-  from_category: number | string = '';
-  from_country: number | string = '';
+  category_id: number = 0;
+  category_name: string = '';
+  country_id: number = 0;
+  country_name: string = '';
 
   render() {
+    console.log(this.categories, this.countries);
     return (
       <>
         <Card title="Registrer en ny oppskrift">
           {/* input navn */}
-          <Row>
+          <Column>
             <Column width={2}>
               <Form.Label>Name:</Form.Label>
             </Column>
@@ -37,9 +44,9 @@ export class NewRecipe extends Component {
                 onChange={(event) => (this.name = event.currentTarget.value)}
               />
             </Column>
-          </Row>
+          </Column>
           {/* input beksrivelse */}
-          <Row>
+          <Column>
             <Column width={2}>
               <Form.Label>Description:</Form.Label>
             </Column>
@@ -52,9 +59,9 @@ export class NewRecipe extends Component {
                 rows={10}
               />
             </Column>
-          </Row>
+          </Column>
           {/* input antall porsjoner */}
-          <Row>
+          <Column>
             <Column width={2}>
               <Form.Label>Porjsoner:</Form.Label>
             </Column>
@@ -65,9 +72,9 @@ export class NewRecipe extends Component {
                 onChange={(event) => (this.portions = event.currentTarget.value)}
               />
             </Column>
-          </Row>
+          </Column>
           {/* input bilde url */}
-          <Row>
+          <Column>
             <Column width={2}>
               <Form.Label>Bilde url:</Form.Label>
             </Column>
@@ -78,52 +85,184 @@ export class NewRecipe extends Component {
                 onChange={(event) => (this.picture_adr = event.currentTarget.value)}
               />
             </Column>
-          </Row>
+          </Column>
           {/* velg land retten kommer fra */}
-          <Row>
+          <Column>
             <Column width={2}>
               <Form.Label>Land:</Form.Label>
             </Column>
             <Column>
-              <select id="choseCountry" onChange={() => {}}>
-                <option>ikke på liste</option>
-                {this.countries.map((country) => (
-                  <option key={country.land_id} value={country.land_id}>
+              <select
+                id="choseCountry"
+                onChange={() => {
+                  this.checkCountry(event?.target.value);
+                }}
+              >
+                {/* feilmeldingen kommer fra selected under */}
+                {this.countries.map((country: Country, i: number) => (
+                  <option key={country.land_id} value={country.land_id} selected>
                     {country.land_navn}
                   </option>
                 ))}
+                <option value="0">ikke på liste</option>
               </select>
               <Form.Input
+                id="addCountry"
+                style={{ opacity: '0', width: '300px' }}
                 type="text"
-                value={this.from_country}
-                onChange={(event) => (this.from_country = event.currentTarget.value)}
+                value={this.country_name}
+                onChange={(event) => (this.country_name = event.currentTarget.value)}
+                placeholder="Skriv inn landet retten kommer fra"
               ></Form.Input>
               {/* må lage select og options som cars */}
             </Column>
-          </Row>
+          </Column>
+          {/* velg retten sin kategori */}
+          <Column>
+            <Column width={2}>
+              <Form.Label>Kategori:</Form.Label>
+            </Column>
+            <Column>
+              <select
+                id="choseCategory"
+                onChange={() => {
+                  this.checkCategory(event?.target.value);
+                }}
+              >
+                {this.categories.map((category: Category) => (
+                  <option key={category.kategori_id} value={category.kategori_id} selected>
+                    {category.kategori_navn}
+                  </option>
+                ))}
+                <option value="0">ikke på liste</option>
+              </select>
+              <Form.Input
+                id="addCategory"
+                style={{ opacity: '0', width: '300px' }}
+                type="text"
+                value={this.category_name}
+                onChange={(event) => (this.category_name = event.currentTarget.value)}
+                placeholder="Skriv inn kattegorien retten tilhører"
+              ></Form.Input>
+              {/* må lage select og options som cars */}
+            </Column>
+          </Column>
+          {/* print ut alle ingrediense som allerede er i databasen */}
+          {/* vidre ideer her er at vi setter en viss lengde og bredde på diven og så hvis den overflower så må man bare skulle 
+          nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
+          <Column>
+            Ingrediensene som allered er lagret,
+            <br /> hvis ingrediensen din ikke er her kan du legge den til!
+            <br />
+            <Column>
+              {this.ingredients.map((ingredient) => (
+                <Button.Light
+                  key={ingredient.ingred_id}
+                  onClick={() => {
+                    this.chooseIngredientFunc(ingredient.ingred_id, ingredient.ingred_navn);
+                  }}
+                >
+                  {ingredient.ingred_navn}
+                </Button.Light>
+              ))}
+              {this.add_ingredient.map((ingredient, i) => (
+                <Button.Light
+                  key={i}
+                  onClick={() => {
+                    this.chooseIngredientFunc(0, ingredient);
+                  }}
+                >
+                  {ingredient}
+                </Button.Light>
+              ))}
+            </Column>
+          </Column>
+          {/* legg til ingredienser */}
+          <Column>
+            <Form.Input
+              id="addIngredient"
+              type="text"
+              style={{ width: '400px' }}
+              value={this.ingredient}
+              onChange={(event) => (this.ingredient = event.currentTarget.value)}
+              placeholder="Legg til ingredienser"
+            ></Form.Input>
+            <Button.Success
+              onClick={() => {
+                this.addIngredientFunc();
+              }}
+            >
+              Legg til
+            </Button.Success>
+          </Column>
+          <Column>
+            <h5>
+              Klikk på ingrediensene over for at de skal komme hit og du kan velge hvor mye du skal
+              ha av hver ingrediens
+            </h5>
+            <div id="ingreditentList"></div>
+          </Column>
         </Card>
-        {/* <Button.Success
-          onClick={() => {
-            taskService
-              .create(this.title, this.description)
-              .then((id) => history.push('/tasks/' + id))
-              .catch((error) => Alert.danger('Error creating task: ' + error.message));
-          }}
-        >
-          Create
-        </Button.Success> */}
       </>
     );
   }
+  chooseIngredientFunc(id: number, name: string) {
+    let emFood = document.createElement('em');
+    let inputNumberOf = document.createElement('input');
+    let inputMeasurment = document.createElement('input');
+    inputNumberOf.type = 'number';
+    inputMeasurment.type = 'text';
+    emFood.innerHTML = ' <br />' + name;
+    document.getElementById('ingreditentList').appendChild(emFood);
+    document.getElementById('ingreditentList').appendChild(inputNumberOf);
+    document.getElementById('ingreditentList').appendChild(inputMeasurment);
+  }
+  addIngredientFunc() {
+    // sjekker om ingrediensen allerede finnes i arrayen med ingredienser
+    // hentet fra databasen
+    let isFound = this.ingredients.some((ingredient) => {
+      if (ingredient.ingred_navn == this.ingredient) {
+        return true;
+      }
+      return false;
+    });
+    // sjekker om ingrediensen finnes i arrayen med lagt til ingredienser
+    // disse arrayene må være separate hvis ikke må man refreshe siden hver gang og
+    // all data vil gå tapt når man legger til nye ingredienser
+    isFound = this.add_ingredient.some((ingredient) => {
+      if (ingredient == this.ingredient) {
+        return true;
+      }
+      return false;
+    });
+    console.log(isFound);
+    if (!isFound && this.ingredient != '') {
+      this.add_ingredient.push(this.ingredient);
+    }
+  }
+  checkCountry(value: number) {
+    this.country_id = value;
+    const addCountry: any = document.getElementById('addCountry');
+    value == 0 ? (addCountry.style.opacity = ' 100') : (addCountry.style.opacity = ' 0');
+  }
 
+  checkCategory(value: number) {
+    this.category_id = value;
+    const addCategory: any = document.getElementById('addCategory');
+    value == 0 ? (addCategory.style.opacity = ' 100') : (addCategory.style.opacity = ' 0');
+  }
   mounted() {
     service
       .getAllCountry()
       .then((countries) => (this.countries = countries))
-      .catch((error) => Alert.danger('Error getting tasks: ' + error.message));
+      .catch((error) => Alert.danger('Error getting countries: ' + error.message));
     service
       .getAllCategory()
       .then((categories) => (this.categories = categories))
-      .catch((error) => Alert.danger('Error getting tasks: ' + error.message));
+      .catch((error) => Alert.danger('Error getting categories: ' + error.message));
+    service
+      .getAllIngredient()
+      .then((ingredients) => (this.ingredients = ingredients))
+      .catch((error) => Alert.danger('Error getting categories: ' + error.message));
   }
 }

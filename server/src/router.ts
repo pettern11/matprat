@@ -13,17 +13,22 @@ router.get('/', (_request, response) => {
     .catch((error) => response.status(500).send(error));
 });
 
-router.get('/newrecipe', (_request, response) => {
+router.get('/country', (_request, response) => {
   service
     .getAllCountry()
     .then((rows) => response.send(rows))
     .catch((error) => response.status(500).send(error));
 });
-router.get('/newrecipe', (_request, response) => {
+router.get('/category', (_request, response) => {
   service
     .getAllCategory()
     .then((rows) => response.send(rows))
     .catch((error) => response.status(500).send(error));
 });
-
+router.get('/ingredient', (_request, response) => {
+  service
+    .getAllIngredient()
+    .then((rows) => response.send(rows))
+    .catch((error) => response.status(500).send(error));
+});
 export default router;

@@ -19,6 +19,10 @@ export type Category = {
   land_id: number;
   land_navn: string;
 };
+export type Ingredient = {
+  ingred_id: number;
+  ingred_navn: string;
+};
 class Service {
   /**
    * Get all tasks.
@@ -49,6 +53,16 @@ class Service {
         if (error) return reject(error);
 
         resolve(results as Category[]);
+      });
+    });
+  }
+
+  getAllIngredient() {
+    return new Promise<Ingredient[]>((resolve, reject) => {
+      pool.query('SELECT * FROM ingrediens', (error, results: RowDataPacket[]) => {
+        if (error) return reject(error);
+
+        resolve(results as Ingredient[]);
       });
     });
   }

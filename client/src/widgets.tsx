@@ -87,6 +87,7 @@ class ButtonSuccess extends Component<{
                 padding: '5px 5px',
                 fontSize: '16px',
                 lineHeight: '0.7',
+                width: '200px',
               }
             : {}
         }
