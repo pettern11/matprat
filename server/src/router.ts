@@ -31,4 +31,11 @@ router.get('/ingredient', (_request, response) => {
     .then((rows) => response.send(rows))
     .catch((error) => response.status(500).send(error));
 });
+router.post('/newingredient', (request, response) => {
+  const data = request.body;
+  service
+    .createIngredient(data.name)
+    .then(() => response.send())
+    .catch((error: any) => response.status(500).send(error));
+});
 export default router;

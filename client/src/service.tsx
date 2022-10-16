@@ -41,6 +41,9 @@ class Service {
   getAllIngredient() {
     return axios.get<Ingredient[]>('/ingredient').then((response) => response.data);
   }
+  createIngredient(name: string) {
+    return axios.post<{}>('/newingredient', { name: name }).then((response) => response.data);
+  }
 }
 
 const service = new Service();

@@ -66,6 +66,19 @@ class Service {
       });
     });
   }
+  createIngredient(name: string) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'INSERT INTO ingrediens SET ingred_navn=?',
+        [name],
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
+
+          resolve();
+        }
+      );
+    });
+  }
 }
 
 export const service = new Service();

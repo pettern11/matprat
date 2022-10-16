@@ -14,7 +14,6 @@ export class NewRecipe extends Component {
   countries: Country[] = [];
   categories: Category[] = [];
   ingredients: Ingredient[] = [];
-  add_ingredient: [] = [];
 
   ingredient: string = '';
 
@@ -165,16 +164,6 @@ export class NewRecipe extends Component {
                   {ingredient.ingred_navn}
                 </Button.Light>
               ))}
-              {this.add_ingredient.map((ingredient, i) => (
-                <Button.Light
-                  key={i}
-                  onClick={() => {
-                    this.chooseIngredientFunc(0, ingredient);
-                  }}
-                >
-                  {ingredient}
-                </Button.Light>
-              ))}
             </Column>
           </Column>
           {/* legg til ingredienser */}
@@ -206,12 +195,18 @@ export class NewRecipe extends Component {
       </>
     );
   }
-  chooseIngredientFunc(id: number, name: string) {
+
+  chooseIngredientFunc(id: any, name: string) {
+    /* id må være any for å kunne bruke variablen i setattribute. Den forventer to strings så 
+    hvis vi hadde deklarert den som number hadde setAttribute blitt sint*/
+
     let emFood = document.createElement('em');
     let inputNumberOf = document.createElement('input');
     let inputMeasurment = document.createElement('input');
     inputNumberOf.type = 'number';
+    inputNumberOf.setAttribute('id', id);
     inputMeasurment.type = 'text';
+    inputMeasurment.setAttribute('id', id);
     emFood.innerHTML = ' <br />' + name;
     document.getElementById('ingreditentList').appendChild(emFood);
     document.getElementById('ingreditentList').appendChild(inputNumberOf);
@@ -221,23 +216,21 @@ export class NewRecipe extends Component {
     // sjekker om ingrediensen allerede finnes i arrayen med ingredienser
     // hentet fra databasen
     let isFound = this.ingredients.some((ingredient) => {
+      console.log(ingredient.ingred_navn == this.ingredient);
       if (ingredient.ingred_navn == this.ingredient) {
         return true;
       }
       return false;
     });
-    // sjekker om ingrediensen finnes i arrayen med lagt til ingredienser
-    // disse arrayene må være separate hvis ikke må man refreshe siden hver gang og
-    // all data vil gå tapt når man legger til nye ingredienser
-    isFound = this.add_ingredient.some((ingredient) => {
-      if (ingredient == this.ingredient) {
-        return true;
-      }
-      return false;
-    });
+
     console.log(isFound);
     if (!isFound && this.ingredient != '') {
-      this.add_ingredient.push(this.ingredient);
+      service.createIngredient(this.ingredient).then(() =>
+        service
+          .getAllIngredient()
+          .then((ingredients) => (this.ingredients = ingredients))
+          .catch((error) => Alert.danger('Error : ' + error.message))
+      );
     }
   }
   checkCountry(value: number) {
