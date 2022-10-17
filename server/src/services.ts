@@ -66,6 +66,15 @@ class Service {
       });
     });
   }
+  createCountry(name: string) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query('INSERT INTO land SET land_navn=?', [name], (error, results: ResultSetHeader) => {
+        if (error) return reject(error);
+
+        resolve();
+      });
+    });
+  }
   createIngredient(name: string) {
     return new Promise<void>((resolve, reject) => {
       pool.query(

@@ -44,6 +44,9 @@ class Service {
   createIngredient(name: string) {
     return axios.post<{}>('/newingredient', { name: name }).then((response) => response.data);
   }
+  createCountry(name: string) {
+    return axios.post<{}>('/newcountry', { name: name }).then((response) => response.data);
+  }
 }
 
 const service = new Service();

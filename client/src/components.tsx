@@ -113,6 +113,14 @@ export class NewRecipe extends Component {
                 onChange={(event) => (this.country_name = event.currentTarget.value)}
                 placeholder="Skriv inn landet retten kommer fra"
               ></Form.Input>
+              <Button.Success
+                id="addCountryBtn"
+                onClick={() => {
+                  this.addCountryFunc();
+                }}
+              >
+                Legg til
+              </Button.Success>
               {/* må lage select og options som cars */}
             </Column>
           </Column>
@@ -143,6 +151,14 @@ export class NewRecipe extends Component {
                 onChange={(event) => (this.category_name = event.currentTarget.value)}
                 placeholder="Skriv inn kattegorien retten tilhører"
               ></Form.Input>
+              <Button.Success
+                id="addCategoryBtn"
+                onClick={() => {
+                  this.addIngredientFunc();
+                }}
+              >
+                Legg til
+              </Button.Success>
               {/* må lage select og options som cars */}
             </Column>
           </Column>
@@ -184,6 +200,7 @@ export class NewRecipe extends Component {
               Legg til
             </Button.Success>
           </Column>
+          {/* velg hvor mye av hver inngrediense */}
           <Column>
             <h5>
               Klikk på ingrediensene over for at de skal komme hit og du kan velge hvor mye du skal
@@ -211,6 +228,29 @@ export class NewRecipe extends Component {
     document.getElementById('ingreditentList').appendChild(emFood);
     document.getElementById('ingreditentList').appendChild(inputNumberOf);
     document.getElementById('ingreditentList').appendChild(inputMeasurment);
+  }
+  addCountryFunc() {
+    // sjekker om landet allerede finnes i arrayen med land, hvis ikke legger den til landet i databasen
+    // hentet fra databasen
+    let isFound = this.countries.some((country) => {
+      if (country.land_navn == this.country_name) {
+        return true;
+      }
+      return false;
+    });
+
+    console.log(isFound);
+
+    if (!isFound && this.country_name != '') {
+      service.createCountry(this.country_name).then(() =>
+        service
+          .getAllCountry()
+          .then((countries) => (this.countries = countries))
+          .catch((error) => Alert.danger('Error : ' + error.message))
+      );
+      //sender her bare 1 for at TS skal bli fornøyd, funksjonen nedenfor forventer også et tall
+      this.checkCountry(1);
+    }
   }
   addIngredientFunc() {
     // sjekker om ingrediensen allerede finnes i arrayen med ingredienser

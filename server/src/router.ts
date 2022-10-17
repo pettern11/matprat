@@ -38,4 +38,11 @@ router.post('/newingredient', (request, response) => {
     .then(() => response.send())
     .catch((error: any) => response.status(500).send(error));
 });
+router.post('/newcountry', (request, response) => {
+  const data = request.body;
+  service
+    .createCountry(data.name)
+    .then(() => response.send())
+    .catch((error: any) => response.status(500).send(error));
+});
 export default router;
