@@ -13,11 +13,12 @@ export type Recipe = {
   land_id: number;
   ant_like: number;
 };
-export type Recipe_Content = {
-  oppskrift_id: number;
-  ingred_id: number;
-  mengde: number;
-  maleenhet: string;
+
+export type Recipe_Content = {   
+  oppskrift_id: number;   
+  ingred_id: number;   
+  mengde: number;   
+  maleenhet: string; 
 };
 
 export type Country = {
@@ -38,6 +39,12 @@ class Service {
    */
   getAllRepice() {
     return axios.get<Recipe[]>('/').then((response) => response.data);
+  }
+  getRecipe(id: number) {
+    return axios.get<Recipe[]>('/recipe/' + id).then((response) => response.data);
+  }
+  getRecipeContent(id: number) {
+    return axios.get<Recipe_Content[]>('/recipecontent/' + id).then((response) => response.data);
   }
   getAllCountry() {
     return axios.get<Country[]>('/country').then((response) => response.data);
