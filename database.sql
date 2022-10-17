@@ -15,24 +15,24 @@ CREATE TABLE oppskrift(
   land_id INT NOT NULL,
   ant_like INT NOT NULL DEFAULT 0,
     PRIMARY KEY (oppskrift_id)
-);
+)ENGINE=InnoDB CHARSET=latin1;;
 
 CREATE TABLE ingrediens(
   ingred_id INT NOT NULL AUTO_INCREMENT,
   ingred_navn VARCHAR(255) NOT NULL,
     PRIMARY KEY(ingred_id)
-);
+)ENGINE=InnoDB CHARSET=latin1;;
 
 CREATE TABLE land(
     land_id INT NOT NULL AUTO_INCREMENT, 
     land_navn VARCHAR(255) NOT NULL,
-      PRIMARY KEY(land_id));
+      PRIMARY KEY(land_id))ENGINE=InnoDB CHARSET=latin1;;
 
 
 CREATE TABLE kategori(
     kategori_id INT NOT NULL AUTO_INCREMENT,
     kategori_navn VARCHAR(255) NOT NULL,
-      PRIMARY KEY(kategori_id));
+      PRIMARY KEY(kategori_id))ENGINE=InnoDB CHARSET=latin1;;
 
 
 CREATE TABLE oppskrift_innhold(
@@ -41,7 +41,7 @@ CREATE TABLE oppskrift_innhold(
     ingred_id INT NOT NULL ,
     mengde INT NOT NULL,
     maleenhet VARCHAR(255) NOT NULL,
-      PRIMARY KEY(id));
+      PRIMARY KEY(id))ENGINE=InnoDB CHARSET=latin1;;
 
 ALTER TABLE oppskrift
   ADD CONSTRAINT oppskrift_fk1 FOREIGN KEY(kategori_id) 
@@ -53,7 +53,7 @@ ALTER TABLE oppskrift
 
 ALTER TABLE oppskrift_innhold
   ADD CONSTRAINT oppskriftInnhold_fk1 FOREIGN KEY(oppskrift_id) 
-  REFERENCES oppskrift(oppskrift_id) ON UPDATE CASCADE,
+  REFERENCES oppskrift(oppskrift_id) ON DELETE CASCADE,
 
   ADD CONSTRAINT oppskriftInnhold_fk2 FOREIGN KEY(ingred_id) 
   REFERENCES ingrediens(ingred_id) ON UPDATE CASCADE;
@@ -100,7 +100,12 @@ INSERT INTO oppskrift(oppskrift_navn, oppskrift_beskrivelse, ant_pors, bilde_adr
   VALUES
     ("skinkepizza", "Beskrivelse: skinkepizza er en klassiker til både store og små. Enkelt å lage og kjempe digg. Oppskriftssteg: lag pizza",
     4, "https://usercontent.one/wp/www.framittkjokken.no/wp-content/uploads/2019/11/Photo_1586412317644-1140x855.jpg",
-    2, 9 );
+    2, 9 ),
+
+    ("kremet pasta og kylling", "Beskrivelse: kylling er digg",
+    2, "https://mills.no/content/uploads/2019/09/Kremet-pasta-med-sopp-og-kylling.jpg",
+    1, 1 );
+    
 
 INSERT INTO oppskrift_innhold(oppskrift_id, ingred_id, mengde, maleenhet)
   VALUES 

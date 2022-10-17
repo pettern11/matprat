@@ -12,12 +12,40 @@ export type Recipe = {
   land_id: number;
   ant_like: number;
 };
+
+export type Country = {
+  land_id: number;
+  land_navn: string;
+};
+export type Category = {
+  kategori_id: number;
+  kategori_navn: string;
+};
+export type Ingredient = {
+  ingred_id: number;
+  ingred_navn: string;
+};
 class Service {
   /**
    * Get all tasks.
    */
-  getAll() {
+  getAllRepice() {
     return axios.get<Recipe[]>('/').then((response) => response.data);
+  }
+  getAllCountry() {
+    return axios.get<Country[]>('/country').then((response) => response.data);
+  }
+  getAllCategory() {
+    return axios.get<Category[]>('/category').then((response) => response.data);
+  }
+  getAllIngredient() {
+    return axios.get<Ingredient[]>('/ingredient').then((response) => response.data);
+  }
+  createIngredient(name: string) {
+    return axios.post<{}>('/newingredient', { name: name }).then((response) => response.data);
+  }
+  createCountry(name: string) {
+    return axios.post<{}>('/newcountry', { name: name }).then((response) => response.data);
   }
 }
 
