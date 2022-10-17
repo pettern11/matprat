@@ -6,6 +6,7 @@ export type Recipe = {
   oppskrift_id: number;
   oppskrift_navn: string;
   oppskrift_beskrivelse: string;
+  oppskrift_steg: string;
   ant_pors: number;
   bilde_adr: string;
   kategori_id: number;
