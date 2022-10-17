@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { NavBar, Card, Alert, Column, Row, Form, Button, RecipeView } from './widgets';
-import { NewRecipe } from './components';
+import { NewRecipe, ShowRecipe } from './components';
 
 import service, { Recipe } from './service';
 import { createHashHistory } from 'history';
@@ -19,11 +19,24 @@ class Menu extends Component {
 }
 
 class Home extends Component {
+  originalrecipes: Recipe[] = [];
   recipes: Recipe[] = [];
+  searchterm: string = '';
 
   render() {
     return (
       <>
+      <Card title="Søkefelt">
+      <Form.Input
+            type="string"
+            value={this.searchterm}
+            onChange={(event) => {
+              this.search(event.currentTarget.value);
+              this.searchterm = event.currentTarget.value;
+            }}
+          />
+
+      </Card>
         <Card title="Oppskrifter">
           {this.recipes.map((recipe) => (
             <Row key={recipe.oppskrift_id}>
@@ -49,8 +62,13 @@ class Home extends Component {
   mounted() {
     service
       .getAllRepice()
-      .then((recipes) => (this.recipes = recipes))
+      .then((recipes) => {this.originalrecipes = recipes; this.recipes = recipes})
       .catch((error) => Alert.danger('Error getting tasks: ' + error.message));
+  }
+  search(searchterm: string) {
+    this.recipes = this.originalrecipes.filter((recipe) =>
+      recipe.oppskrift_navn.toLowerCase().includes(searchterm.toLowerCase())
+    );
   }
 }
 
@@ -61,6 +79,7 @@ ReactDOM.render(
       <Menu />
       <Route exact path="/" component={Home} />
       <Route exact path="/newrecipe" component={NewRecipe} />
+      <Route exact path="/recipe/:id" component={ShowRecipe} />
     </div>
   </HashRouter>,
   document.getElementById('root')
