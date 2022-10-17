@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Alert, Card, Row, Column, Form, Button, RecipeView } from './widgets';
 import { NavLink, Redirect } from 'react-router-dom';
-import service, { Country, Category, Ingredient , Recipe, Recipe_Content } from './service';
+import service, { Country, Category, Ingredient, Recipe, Recipe_Content } from './service';
 import { createHashHistory } from 'history';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -115,7 +115,7 @@ export class NewRecipe extends Component {
               >
                 {/* feilmeldingen kommer fra selected under */}
                 {this.countries.map((country: Country, i: number) => (
-                  <option key={country.land_id} value={country.land_id} selected>
+                  <option key={country.land_id} value={country.land_id}>
                     {country.land_navn}
                   </option>
                 ))}
@@ -153,7 +153,7 @@ export class NewRecipe extends Component {
                 }}
               >
                 {this.categories.map((category: Category) => (
-                  <option key={category.kategori_id} value={category.kategori_id} selected>
+                  <option key={category.kategori_id} value={category.kategori_id}>
                     {category.kategori_navn}
                   </option>
                 ))}
@@ -228,8 +228,7 @@ export class NewRecipe extends Component {
         </Card>
         <Button.Success
           onClick={() => {
-            // this.addRecipe;
-            console.log(this.recipe_content);
+            this.addRecipe();
           }}
         >
           Send oppskriften opp til the database
@@ -237,7 +236,35 @@ export class NewRecipe extends Component {
       </>
     );
   }
-  // addRecipe() {}
+  addRecipe() {
+    let recipe: Recipe = {
+      oppskrift_id: 0,
+      oppskrift_navn: this.name,
+      oppskrift_beskrivelse: this.description,
+      oppskrift_steg: this.steps,
+      ant_pors: this.portions,
+      bilde_adr: this.picture_adr,
+      kategori_id: this.category_id,
+      land_id: this.country_id,
+      ant_like: 0,
+    };
+    service
+      .createRecipe(recipe)
+      .then((id) => this.addRecipeIngredient(id))
+      .catch((error) => Alert.danger('Creating new recipe: ' + error.message));
+  }
+  addRecipeIngredient(id: number) {
+    this.recipe_content.forEach((element) => {
+      element.oppskrift_id = id;
+    });
+    console.log('første console log', this.recipe_content);
+    service
+      .createRecipeIngredient(this.recipe_content)
+      .then(() => history.push('/recipe/' + id))
+      .catch((error) => Alert.danger('Creating new recipe: ' + error.message));
+
+    console.log(this.recipe_content);
+  }
   chooseIngredientFunc(id: any, name: string) {
     const btn = document.getElementById(id) as HTMLButtonElement | null;
     if (btn != null) {
@@ -281,7 +308,7 @@ export class NewRecipe extends Component {
 
     deleteBtn.innerHTML = 'x';
     deleteBtn.onclick = () => {
-      this.recipe_content.slice(index, 1);
+      this.recipe_content.splice(index, 1);
       btn != null ? (btn.disabled = false) : '';
       emFood.remove();
       inputNumberOf.remove();
@@ -377,43 +404,36 @@ export class ShowRecipe extends Component {
     bilde_adr: '',
     kategori_id: 0,
     land_id: 0,
-    ant_like: 0
+    ant_like: 0,
   };
   portions: number = 0;
   recipeContent: Recipe_Content[] = [];
   ingredients: Ingredient[] = [];
 
-  
-
   render() {
     {
       console.log(this.recipe);
-    console.log(this.recipeContent);
-    console.log(this.ingredients);
+      console.log(this.recipeContent);
+      console.log(this.ingredients);
     }
-   
+
     return (
       <Card>
-        <img src = {this.recipe.bilde_adr} width="50px"></img>
+        <img src={this.recipe.bilde_adr}></img>
         <h1>{this.recipe.oppskrift_navn}</h1>
         <p>{this.recipe.oppskrift_beskrivelse}</p>
         <p>{this.recipe.oppskrift_steg}</p>
-          
-
         <h3>Ingredienser</h3>
-        Porsjoner <Button.Danger onClick={this.decrementPortions}>-</Button.Danger> <b>{this.portions}</b> <Button.Success onClick={this.incrementPortions}>+</Button.Success>
-        {this.recipeContent.map((rc,i) => (<p key={i}>{i + 1}. {
-        
-
-        this.ingredients.filter((ing) => 
-        rc.ingred_id == ing.ingred_id)[0].ingred_navn
-        } 
-       
-        {' '}{rc.mengde*this.portions/this.recipe.ant_pors} {rc.maleenhet}</p>))}
+        Porsjoner <Button.Danger onClick={this.decrementPortions}>-</Button.Danger>{' '}
+        <b>{this.portions}</b> <Button.Success onClick={this.incrementPortions}>+</Button.Success>
+        {this.recipeContent.map((rc, i) => (
+          <p key={i}>
+            {i + 1}.{' '}
+            {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}{' '}
+            {(rc.mengde * this.portions) / this.recipe.ant_pors} {rc.maleenhet}
+          </p>
+        ))}
       </Card>
-  
-
-
     );
   }
 
@@ -430,7 +450,10 @@ export class ShowRecipe extends Component {
 
     service
       .getRecipe(this.props.match.params.id)
-      .then((recipe) => {(this.recipe = recipe[0]); this.portions = recipe[0].ant_pors})
+      .then((recipe) => {
+        this.recipe = recipe[0];
+        this.portions = recipe[0].ant_pors;
+      })
       .catch((error) => Alert.danger('Error getting recipe: ' + error.message));
   }
   incrementPortions() {

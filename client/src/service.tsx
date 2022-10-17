@@ -14,11 +14,11 @@ export type Recipe = {
   ant_like: number;
 };
 
-export type Recipe_Content = {   
-  oppskrift_id: number;   
-  ingred_id: number;   
-  mengde: number;   
-  maleenhet: string; 
+export type Recipe_Content = {
+  oppskrift_id: number;
+  ingred_id: number;
+  mengde: number;
+  maleenhet: string;
 };
 
 export type Country = {
@@ -60,6 +60,19 @@ class Service {
   }
   createCountry(name: string) {
     return axios.post<{}>('/newcountry', { name: name }).then((response) => response.data);
+  }
+
+  createRecipe(recipe: Recipe) {
+    console.log(recipe);
+    return axios
+      .post<{ id: number }>('/createrecipe', { recipe: recipe })
+      .then((response) => response.data.id);
+  }
+  createRecipeIngredient(recipe_content: Recipe_Content[]) {
+    console.log('egentlig andre console lgo', recipe_content);
+    return axios
+      .post<Recipe_Content>('/createrecipeingredient', { recipe_content: recipe_content })
+      .then((response) => response.data);
   }
 }
 

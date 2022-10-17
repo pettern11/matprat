@@ -10,7 +10,7 @@ router.get('/', (_request, response) => {
   service
     .getAllRecipe()
     .then((rows) => response.send(rows))
-    .catch((error) => response.status(500).send(error)); 
+    .catch((error) => response.status(500).send(error));
 });
 router.get('/recipe/:id', (_request, response) => {
   let id: number = parseInt(_request.params.id);
@@ -18,7 +18,7 @@ router.get('/recipe/:id', (_request, response) => {
   service
     .getRecipe(id)
     .then((rows) => response.send(rows))
-    .catch((error) => response.status(500).send(error)); 
+    .catch((error) => response.status(500).send(error));
 });
 
 router.get('/recipecontent/:id', (_request, response) => {
@@ -30,7 +30,31 @@ router.get('/recipecontent/:id', (_request, response) => {
     .catch((error) => response.status(500).send(error));
 });
 
- 
+router.post('/createrecipeingredient', (request, response) => {
+  const data = request.body;
+  console.log('tredje console log', data.recipe_content);
+  service
+    .createRecipeIngredient(data.recipe_content)
+    .then((_result) => response.send())
+    .catch((error) => response.status(500).send(error));
+});
+router.post('/createrecipe', (request, response) => {
+  const data = request.body;
+  console.log(data.recipe);
+  if (
+    data.recipe.oppskrift_navn &&
+    data.recipe.oppskrift_beskrivelse &&
+    data.recipe.oppskrift_steg &&
+    data.recipe.ant_pors &&
+    data.recipe.kategori_id &&
+    data.recipe.land_id != ''
+  )
+    service
+      .createRecipe(data.recipe)
+      .then((id) => response.send({ id: id }))
+      .catch((error) => response.status(500).send(error));
+  else response.status(400).send('Missing crutial information, fill in all the fields');
+});
 
 router.get('/country', (_request, response) => {
   service
