@@ -6,11 +6,18 @@ export type Recipe = {
   oppskrift_id: number;
   oppskrift_navn: string;
   oppskrift_beskrivelse: string;
+  oppskrift_steg: string;
   ant_pors: number;
   bilde_adr: string;
   kategori_id: number;
   land_id: number;
   ant_like: number;
+};
+export type Recipe_Content = {
+  oppskrift_id: number;
+  ingred_id: number;
+  mengde: number;
+  maleenhet: string;
 };
 
 export type Country = {
