@@ -19,6 +19,7 @@ export class NewRecipe extends Component {
 
   name: string = '';
   description: string = '';
+  steps: string = '';
   portions: number = 0;
   picture_adr: string = '';
   category_id: number = 0;
@@ -51,10 +52,25 @@ export class NewRecipe extends Component {
             </Column>
             <Column>
               <Form.Textarea
-                style={{ width: '600px' }}
+                style={{ width: '300px' }}
                 type="text"
                 value={this.description}
                 onChange={(event) => (this.description = event.currentTarget.value)}
+                rows={5}
+              />
+            </Column>
+          </Column>
+          {/* input steg */}
+          <Column>
+            <Column width={2}>
+              <Form.Label>Steg:</Form.Label>
+            </Column>
+            <Column>
+              <Form.Textarea
+                style={{ width: '600px' }}
+                type="text"
+                value={this.steps}
+                onChange={(event) => (this.steps = event.currentTarget.value)}
                 rows={10}
               />
             </Column>
@@ -210,10 +226,18 @@ export class NewRecipe extends Component {
             <div id="ingreditentList"></div>
           </Column>
         </Card>
+        <Button.Success
+          onClick={() => {
+            // this.addRecipe;
+            console.log(this.recipe_content);
+          }}
+        >
+          Send oppskriften opp til the database
+        </Button.Success>
       </>
     );
   }
-
+  // addRecipe() {}
   chooseIngredientFunc(id: any, name: string) {
     const btn = document.getElementById(id) as HTMLButtonElement | null;
     if (btn != null) {
@@ -256,8 +280,8 @@ export class NewRecipe extends Component {
       (this.recipe_content[index].maleenhet = event.currentTarget.value);
 
     deleteBtn.innerHTML = 'x';
-    deleteBtn.onclick = (id) => {
-      this.recipe_content.slice(index);
+    deleteBtn.onclick = () => {
+      this.recipe_content.slice(index, 1);
       btn != null ? (btn.disabled = false) : '';
       emFood.remove();
       inputNumberOf.remove();
