@@ -139,6 +139,7 @@ class ButtonDanger extends Component<{
 class ButtonLight extends Component<{
   small?: boolean;
   children: ReactNode;
+  id: number;
   onClick: () => void;
 }> {
   render() {
@@ -146,6 +147,7 @@ class ButtonLight extends Component<{
       <button
         type="button"
         className="btn btn-light"
+        id={this.props.id.toString()}
         style={
           this.props.small
             ? {

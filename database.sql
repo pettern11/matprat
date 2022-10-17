@@ -9,6 +9,7 @@ CREATE TABLE oppskrift(
   oppskrift_id INT NOT NULL AUTO_INCREMENT,
   oppskrift_navn VARCHAR(255) NOT NULL, 
   oppskrift_beskrivelse LONGTEXT NOT NULL,
+  oppskrift_steg LONGTEXT NOT NULL,
   ant_pors INT NOT NULL,
   bilde_adr VARCHAR(255),
   kategori_id INT NOT NULL,
