@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Alert, Card, Row, Column, Form, Button } from './widgets';
+import { Alert, Card, Row, Column, Form, Button, RecipeView } from './widgets';
 import { NavLink, Redirect } from 'react-router-dom';
-import service, { Country, Category, Ingredient } from './service';
+import service, { Country, Category, Ingredient, Recipe, Recipe_Content } from './service';
 import { createHashHistory } from 'history';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -297,5 +297,69 @@ export class NewRecipe extends Component {
       .getAllIngredient()
       .then((ingredients) => (this.ingredients = ingredients))
       .catch((error) => Alert.danger('Error getting categories: ' + error.message));
+  }
+}
+
+export class ShowRecipe extends Component {
+  recipe: Recipe = {
+    oppskrift_id: 0,
+    oppskrift_navn: '',
+    oppskrift_beskrivelse: '',
+    oppskrift_steg: '',
+    ant_pors: 0,
+    bilde_adr: '',
+    kategori_id: 0,
+    land_id: 0,
+    ant_like: 0
+  };
+  recipeContent: Recipe_Content[] = [];
+  ingredients: Ingredient[] = [];
+
+  
+
+  render() {
+    {
+      console.log(this.recipe);
+    console.log(this.recipeContent);
+    console.log(this.ingredients);
+    }
+   
+    return (
+      <Card>
+        <h1>{this.recipe.oppskrift_navn}</h1>
+        <p>{this.recipe.oppskrift_beskrivelse}</p>
+          <img src = {this.recipe.bilde_adr} width="50px"></img>
+
+        <h3>Ingredienser</h3>
+        {this.recipeContent.map((rc,i) => (<p key={i}>{i + 1}.{
+        
+
+        this.ingredients.find((ing) => {
+        rc.ingred_id == ing.ingred_id;
+        console.log(ing.ingred_navn)})
+
+        }</p>))}
+      </Card>
+  
+
+
+    );
+  }
+
+  mounted() {
+    service
+      .getAllIngredient()
+      .then((ingredients) => (this.ingredients = ingredients))
+      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+    console.log(this.props.match.params.id);
+    service
+      .getRecipeContent(this.props.match.params.id)
+      .then((recipeContent) => (this.recipeContent = recipeContent))
+      .catch((error) => Alert.danger('Error getting recipe content: ' + error.message));
+
+    service
+      .getRecipe(this.props.match.params.id)
+      .then((recipe) => (this.recipe = recipe[0]))
+      .catch((error) => Alert.danger('Error getting recipe: ' + error.message));
   }
 }

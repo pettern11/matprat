@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { NavBar, Card, Alert, Column, Row, Form, Button, RecipeView } from './widgets';
-import { NewRecipe } from './components';
+import { NewRecipe, ShowRecipe } from './components';
 
 import service, { Recipe } from './service';
 import { createHashHistory } from 'history';
@@ -61,6 +61,7 @@ ReactDOM.render(
       <Menu />
       <Route exact path="/" component={Home} />
       <Route exact path="/newrecipe" component={NewRecipe} />
+      <Route exact path="/recipe/:id" component={ShowRecipe} />
     </div>
   </HashRouter>,
   document.getElementById('root')

@@ -11,6 +11,14 @@ export type Recipe = {
   land_id: number;
   ant_like: number;
 };
+
+export type Recipe_Content = {   
+  oppskrift_id: number;   
+  ingred_id: number;   
+  mengde: number;   
+  maleenhet: string; 
+};
+
 export type Country = {
   land_id: number;
   land_navn: string;
@@ -36,6 +44,28 @@ class Service {
       });
     });
   }
+
+  getRecipe(id: number) {
+    return new Promise<Recipe[]>((resolve, reject) => {
+      pool.query('SELECT * FROM oppskrift WHERE oppskrift_id=?',[id], (error, results: RowDataPacket[]) => {
+        if (error) return reject(error);
+
+        resolve(results as Recipe[]);
+      });
+    });
+  }
+
+  getRecipeContent(id: number) {
+    return new Promise<Recipe_Content[]>((resolve, reject) => {
+      pool.query('SELECT oppskrift_id, ingred_id, mengde, maleenhet FROM oppskrift_innhold WHERE oppskrift_id=?',[id], (error, results: RowDataPacket[]) => {
+        if (error) return reject(error);
+        console.log(results);
+
+        resolve(results as Recipe_Content[]);
+      });
+    });
+  }
+
 
   getAllCountry() {
     return new Promise<Country[]>((resolve, reject) => {

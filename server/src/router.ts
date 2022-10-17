@@ -10,8 +10,27 @@ router.get('/', (_request, response) => {
   service
     .getAllRecipe()
     .then((rows) => response.send(rows))
+    .catch((error) => response.status(500).send(error)); 
+});
+router.get('/recipe/:id', (_request, response) => {
+  let id: number = parseInt(_request.params.id);
+
+  service
+    .getRecipe(id)
+    .then((rows) => response.send(rows))
+    .catch((error) => response.status(500).send(error)); 
+});
+
+router.get('/recipecontent/:id', (_request, response) => {
+  let id: number = parseInt(_request.params.id);
+
+  service
+    .getRecipeContent(id)
+    .then((rows) => response.send(rows))
     .catch((error) => response.status(500).send(error));
 });
+
+ 
 
 router.get('/country', (_request, response) => {
   service
