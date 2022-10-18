@@ -71,7 +71,13 @@ class Service {
   createRecipeIngredient(recipe_content: Recipe_Content[]) {
     console.log('egentlig andre console lgo', recipe_content);
     return axios
-      .post<Recipe_Content>('/createrecipeingredient', { recipe_content: recipe_content })
+      .post<Recipe_Content>('/create_recipe_ingredient', { recipe_content: recipe_content })
+      .then((response) => response.data);
+  }
+  updateRecipeIngredient(recipeContent: Recipe_Content[]) {
+    console.log('her motas dets', recipeContent);
+    return axios
+      .put('/update_recipe_ingredient', { recipeContent: recipeContent })
       .then((response) => response.data);
   }
 }
