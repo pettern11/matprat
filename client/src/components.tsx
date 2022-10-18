@@ -369,9 +369,8 @@ export class ShowRecipe extends Component {
     }
    
     return (
-      <Card>
+      <Card title={this.recipe.oppskrift_navn}>
         <img src = {this.recipe.bilde_adr} width="50px"></img>
-        <h1>{this.recipe.oppskrift_navn}</h1>
         <p>{this.recipe.oppskrift_beskrivelse}</p>
         <p>{this.recipe.oppskrift_steg}</p>
           
