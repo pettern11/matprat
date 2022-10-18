@@ -586,6 +586,11 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                       (rc.maleenhet = event.currentTarget.value), console.log(this.recipeContent)
                     )}
                   />
+                  <Button.Danger
+                    onClick={() => this.deleteIngredient(rc.oppskrift_id, rc.ingred_id)}
+                  >
+                    x
+                  </Button.Danger>
                 </p>
               ))}{' '}
             </div>
@@ -655,7 +660,12 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
       .then(() => history.push('/recipe/' + this.props.match.params.id))
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
   }
-
+  deleteIngredient(recipe_id: number, ingred_id: number) {
+    service
+      .deleteIngredient(recipe_id, ingred_id)
+      .then(() => this.getIngredRecipe())
+      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+  }
   mounted() {
     service
       .getAllIngredient()
