@@ -30,7 +30,7 @@ router.get('/recipecontent/:id', (_request, response) => {
     .catch((error) => response.status(500).send(error));
 });
 
-router.post('/createrecipeingredient', (request, response) => {
+router.post('/create_recipe_ingredient', (request, response) => {
   const data = request.body;
   console.log('tredje console log', data.recipe_content);
   service
@@ -38,6 +38,7 @@ router.post('/createrecipeingredient', (request, response) => {
     .then((_result) => response.send())
     .catch((error) => response.status(500).send(error));
 });
+
 router.post('/createrecipe', (request, response) => {
   const data = request.body;
   console.log(data.recipe);
@@ -87,5 +88,13 @@ router.post('/newcountry', (request, response) => {
     .createCountry(data.name)
     .then(() => response.send())
     .catch((error: any) => response.status(500).send(error));
+});
+
+router.put('/update_recipe_ingredient', (request, response) => {
+  console.log(1);
+  service
+    .updateRecipeIngredient(request.body.recipeContent)
+    .then(() => response.send())
+    .catch((error) => response.status(500).send(error));
 });
 export default router;
