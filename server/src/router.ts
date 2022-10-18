@@ -106,7 +106,13 @@ router.put('/update_recipe', (request, response) => {
 router.delete('/deleteingredient/:recipeid/:ingredid', (request, response) => {
   console.log(request.params.recipeid, request.params.ingredid);
   service
-    .deleteIngredient(request.params.recipeid, request.params.ingredid)
+    .deleteIngredient(Number(request.params.recipeid), Number(request.params.ingredid))
+    .then((_result) => response.send())
+    .catch((error) => response.status(500).send(error));
+});
+router.delete('/deleterecipe/:id', (request, response) => {
+  service
+    .deleteRecipe(Number(request.params.id))
     .then((_result) => response.send())
     .catch((error) => response.status(500).send(error));
 });

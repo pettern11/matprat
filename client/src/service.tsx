@@ -84,12 +84,12 @@ class Service {
     return axios.put('/update_recipe', { recipe: recipe }).then((response) => response.data);
   }
   deleteIngredient(recipe_id: number, ingred_id: number) {
-    console.log('se her', recipe_id, ingred_id);
-    let id1 = recipe_id;
-    let id2 = ingred_id;
     return axios
       .delete<Recipe_Content>('/deleteingredient/' + recipe_id + '/' + ingred_id)
       .then((response) => response.data);
+  }
+  deleteRecipe(id: number) {
+    return axios.delete<Recipe_Content>('/deleterecipe/' + id).then((response) => response.data);
   }
 }
 

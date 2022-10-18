@@ -202,11 +202,25 @@ class Service {
       );
     });
   }
-  deleteIngredient(recipe_id: string, ingred_id: string) {
+  deleteIngredient(recipe_id: number, ingred_id: number) {
     return new Promise<void>((resolve, reject) => {
       pool.query(
         'DELETE FROM oppskrift_innhold WHERE oppskrift_id = ? AND ingred_id = ?',
         [recipe_id, ingred_id],
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
+          if (results.affectedRows == 0) return reject(new Error('No row deleted'));
+
+          resolve();
+        }
+      );
+    });
+  }
+  deleteRecipe(id: number) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'DELETE FROM oppskrift WHERE oppskrift_id = ?',
+        [id],
         (error, results: ResultSetHeader) => {
           if (error) return reject(error);
           if (results.affectedRows == 0) return reject(new Error('No row deleted'));
