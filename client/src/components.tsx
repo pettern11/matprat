@@ -438,6 +438,9 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
         <Button.Success onClick={() => history.push('/recipe/edit/' + this.recipe.oppskrift_id)}>
           Endre oppskrift
         </Button.Success>
+        <Button.Danger onClick={() => this.deleteRecipe(this.recipe.oppskrift_id)}>
+          Slett oppskrift
+        </Button.Danger>
       </div>
     );
   }
@@ -468,6 +471,12 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
     if (this.portions > 1) {
       this.portions--;
     }
+  }
+  deleteRecipe(id: number) {
+    service
+      .deleteRecipe(id)
+      .then(() => history.push('/'))
+      .catch((error) => Alert.danger('Error deleting recipe: ' + error.message));
   }
 }
 export class EditRecipe extends Component<{ match: { params: { id: number } } }> {
