@@ -97,4 +97,10 @@ router.put('/update_recipe_ingredient', (request, response) => {
     .then(() => response.send())
     .catch((error) => response.status(500).send(error));
 });
+router.put('/update_recipe', (request, response) => {
+  service
+    .updateRecipe(request.body.recipe)
+    .then(() => response.send())
+    .catch((error) => response.status(500).send(error));
+});
 export default router;

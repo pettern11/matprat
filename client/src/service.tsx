@@ -80,6 +80,9 @@ class Service {
       .put('/update_recipe_ingredient', { recipeContent: recipeContent })
       .then((response) => response.data);
   }
+  updateRecipe(recipe: Recipe) {
+    return axios.put('/update_recipe', { recipe: recipe }).then((response) => response.data);
+  }
 }
 
 const service = new Service();

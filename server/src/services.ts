@@ -182,6 +182,26 @@ class Service {
       });
     });
   }
+  updateRecipe(recipe: Recipe) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'UPDATE oppskrift SET oppskrift_navn=?, oppskrift_beskrivelse=?, oppskrift_steg=?, ant_pors=?, bilde_adr=? WHERE oppskrift_id=?',
+        [
+          recipe.oppskrift_navn,
+          recipe.oppskrift_beskrivelse,
+          recipe.oppskrift_steg,
+          recipe.ant_pors,
+          recipe.bilde_adr,
+          recipe.oppskrift_id,
+        ],
+        (error: any, _results: any) => {
+          if (error) return reject(error);
+
+          resolve();
+        }
+      );
+    });
+  }
 }
 
 export const service = new Service();
