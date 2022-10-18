@@ -489,6 +489,79 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
     return (
       <>
         <Card title="Endre oppskriften">
+          {/* input navn */}
+          <Column>
+            <Column width={2}>
+              <Form.Label>Name:</Form.Label>
+            </Column>
+            <Column>
+              <Form.Input
+                type="text"
+                value={this.recipe.oppskrift_navn}
+                onChange={(event) => (this.recipe.oppskrift_navn = event.currentTarget.value)}
+              />
+            </Column>
+          </Column>
+          {/* input beksrivelse */}
+          <Column>
+            <Column width={2}>
+              <Form.Label>Description:</Form.Label>
+            </Column>
+            <Column>
+              <Form.Textarea
+                style={{ width: '300px' }}
+                type="text"
+                value={this.recipe.oppskrift_beskrivelse}
+                onChange={(event) =>
+                  (this.recipe.oppskrift_beskrivelse = event.currentTarget.value)
+                }
+                rows={5}
+              />
+            </Column>
+          </Column>
+          {/* input steg */}
+          <Column>
+            <Column width={2}>
+              <Form.Label>Steg:</Form.Label>
+            </Column>
+            <Column>
+              <Form.Textarea
+                style={{ width: '600px' }}
+                type="text"
+                value={this.recipe.oppskrift_steg}
+                onChange={(event) => (this.recipe.oppskrift_steg = event.currentTarget.value)}
+                rows={10}
+              />
+            </Column>
+          </Column>
+          {/* input antall porsjoner */}
+          <Column>
+            <Column width={2}>
+              <Form.Label>Porjsoner:</Form.Label>
+            </Column>
+            <Column>
+              <Form.Input
+                type="number"
+                value={this.recipe.ant_pors}
+                //@ts-ignore
+                onChange={(event) => (this.recipe.ant_pors = event.currentTarget.value)}
+              />
+            </Column>
+          </Column>
+          {/* input bilde url */}
+          <Column>
+            <Column width={2}>
+              <Form.Label>Bilde url:</Form.Label>
+            </Column>
+            <Column>
+              <Form.Input
+                type="text"
+                value={this.recipe.bilde_adr}
+                onChange={(event) => (this.recipe.bilde_adr = event.currentTarget.value)}
+              />
+            </Column>
+          </Column>
+
           {/* renderer alle ingrediensene som er linket til oppskriften, her kan man også endre på hvor mye det er av hver ingrediens og måleenheten */}
           <Column>
             <div id="outprintIngredient">
@@ -574,6 +647,9 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
   }
   pushNewChanges() {
     console.log('nå sendes objektet', this.recipeContent);
+    service
+      .updateRecipe(this.recipe)
+      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
     service
       .updateRecipeIngredient(this.recipeContent)
       .then(() => history.push('/recipe/' + this.props.match.params.id))
