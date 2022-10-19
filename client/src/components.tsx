@@ -113,9 +113,15 @@ export class NewRecipe extends Component {
               <Form.Label>Land:</Form.Label>
             </Column>
             <Column>
-              <select key={'choseCountry'} id="choseCountry">
-                <option disabled selected>
-                  Velg land{' '}
+              <select
+                key={'choseCountry'}
+                id="choseCountry"
+                onChange={() => {
+                  this.checkCountry(event?.target.value);
+                }}
+              >
+                <option selected disabled>
+                  Velg land
                 </option>
                 {this.countries.map((country: Country, i: number) => (
                   <option key={country.land_id} value={country.land_id}>
@@ -134,7 +140,6 @@ export class NewRecipe extends Component {
                 id="addCountryBtn"
                 onClick={() => {
                   this.addCountryFunc();
-                  this.country_name = '';
                 }}
               >
                 Legg til
@@ -148,9 +153,15 @@ export class NewRecipe extends Component {
               <Form.Label>Kategori:</Form.Label>
             </Column>
             <Column>
-              <select key={'choseCategory'} id="choseCategory">
-                <option disabled selected>
-                  Velg kategori{' '}
+              <select
+                key={'choseCategory'}
+                id="choseCategory"
+                onChange={() => {
+                  this.checkCategory(event?.target.value);
+                }}
+              >
+                <option selected disabled>
+                  Velg kategori
                 </option>
                 {this.categories.map((category: Category) => (
                   <option key={category.kategori_id.toString()} value={category.kategori_id}>
@@ -169,7 +180,6 @@ export class NewRecipe extends Component {
                 id="addCategoryBtn"
                 onClick={() => {
                   this.addCategoryFunc();
-                  this.category_name = '';
                 }}
               >
                 Legg til
@@ -201,7 +211,7 @@ export class NewRecipe extends Component {
           {/* legg til ingredienser */}
           <Column>
             <Form.Input
-              id="addIngredient"
+              id="createIngredient"
               type="text"
               style={{ width: '400px' }}
               value={this.ingredient}
@@ -209,6 +219,7 @@ export class NewRecipe extends Component {
               placeholder="Legg til ingredienser"
             ></Form.Input>
             <Button.Success
+              id="createIngredientFunc"
               onClick={() => {
                 this.addIngredientFunc();
               }}
@@ -226,6 +237,7 @@ export class NewRecipe extends Component {
           </Column>
         </Card>
         <Button.Success
+          id="addRecipeBtn"
           onClick={() => {
             this.addRecipe();
           }}
@@ -247,10 +259,13 @@ export class NewRecipe extends Component {
       land_id: this.country_id,
       ant_like: 0,
     };
-    service
-      .createRecipe(recipe)
-      .then((id) => this.addRecipeIngredient(id))
-      .catch((error) => Alert.danger('Creating new recipe: ' + error.message));
+    if (this.recipe_content.length == 0) {
+      Alert.info('Du må legge til ingredienser i oppskriften din');
+    } else
+      service
+        .createRecipe(recipe)
+        .then((id) => this.addRecipeIngredient(id))
+        .catch((error) => Alert.danger('Creating new recipe: ' + error.message));
   }
   addRecipeIngredient(id: number) {
     this.recipe_content.forEach((element) => {
@@ -321,7 +336,7 @@ export class NewRecipe extends Component {
     ingredList.appendChild(deleteBtn);
   }
   addCategoryFunc() {
-    // sjekker om kategorien allerede finnes i arrayen med kategorien, hvis ikke legger den til landet i databasen
+    // sjekker om kategorien allerede finnes i arrayen med kategorier, hvis ikke legger den til landet i databasen
     // hentet fra databasen
     let isFound = this.categories.some((category) => {
       if (category.kategori_navn.toLowerCase() == this.category_name.toLowerCase()) {
@@ -341,7 +356,6 @@ export class NewRecipe extends Component {
           .then((categories) => (this.categories = categories))
           .catch((error) => Alert.danger('Error : ' + error.message))
       );
-      //sender her bare 1 for at TS skal bli fornøyd, funksjonen nedenfor forventer også et tall
     }
   }
   addCountryFunc() {
@@ -365,7 +379,6 @@ export class NewRecipe extends Component {
           .then((countries) => (this.countries = countries))
           .catch((error) => Alert.danger('Error : ' + error.message))
       );
-      //sender her bare 1 for at TS skal bli fornøyd, funksjonen nedenfor forventer også et tall
     }
   }
   addIngredientFunc() {
@@ -389,7 +402,13 @@ export class NewRecipe extends Component {
       );
     }
   }
+  checkCountry(value: number) {
+    this.country_id = value;
+  }
 
+  checkCategory(value: number) {
+    this.category_id = value;
+  }
   mounted() {
     service
       .getAllCountry()

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { NewRecipe } from '../src/components';
-import { shallow, mount } from 'enzyme';
-import { Country, Category, Ingredient, Recipe, Recipe_Content } from '../src/service';
+import { shallow } from 'enzyme';
 import { Alert, Card, Row, Column, Form, Button, RecipeView } from '../src/widgets';
 import { NavLink } from 'react-router-dom';
 
@@ -38,52 +37,43 @@ jest.mock('../src/service', () => {
           ingred_id: 1,
           ingred_navn: 'pizzadeig',
         },
-        // {
-        //   ingred_id: 2,
-        //   ingred_navn: 'pizza fyll',
-        // },
-        // {
-        //   ingred_id: 3,
-        //   ingred_navn: 'kjøttboller',
-        // },
+        {
+          ingred_id: 2,
+          ingred_navn: 'pizza fyll',
+        },
+        {
+          ingred_id: 3,
+          ingred_navn: 'kjøttboller',
+        },
       ]);
     }
+    createIngredient() {
+      return Promise.resolve();
+    }
   }
+
   return new Service();
 });
 
 describe('NewRecipe tests', () => {
-  test('Create recipe', (done) => {
-    const wrapper = mount(<NewRecipe />);
-
+  test('Create recipe but no recipe and fail', (done) => {
+    const wrapper = shallow(<NewRecipe />);
+    const wrapperAlert = shallow(<Alert />);
     // Wait for events to complete
     setTimeout(() => {
-      wrapper
-        .find('#recipe_name_input')
-        .at(0)
-        .simulate('change', { currentTarget: { value: 'pizza' } });
+      wrapper.find('#recipe_name_input').simulate('change', { currentTarget: { value: 'pizza' } });
       wrapper
         .find('#recipe_description_input')
-        .at(0)
         .simulate('change', { currentTarget: { value: 'Digg og enkel mat' } });
-      wrapper
-        .find('#recipe_steps_input')
-        .at(0)
-        .simulate('change', {
-          currentTarget: { value: 'Lag pizza deig og ta på fyll, stek i ovnen' },
-        });
-      wrapper
-        .find('#recipe_portions_input')
-        .at(0)
-        .simulate('change', {
-          currentTarget: { value: 'Lag pizza deig og ta på fyll, stek i ovnen' },
-        });
-      wrapper
-        .find('#recipe_picture_url_input')
-        .at(0)
-        .simulate('change', {
-          currentTarget: { value: 'Lag pizza deig og ta på fyll, stek i ovnen' },
-        });
+      wrapper.find('#recipe_steps_input').simulate('change', {
+        currentTarget: { value: 'Lag pizza deig og ta på fyll, stek i ovnen' },
+      });
+      wrapper.find('#recipe_portions_input').simulate('change', {
+        currentTarget: { value: 'Lag pizza deig og ta på fyll, stek i ovnen' },
+      });
+      wrapper.find('#recipe_picture_url_input').simulate('change', {
+        currentTarget: { value: 'Lag pizza deig og ta på fyll, stek i ovnen' },
+      });
       wrapper
         .find('#choseCountry')
         .at(0)
@@ -96,8 +86,34 @@ describe('NewRecipe tests', () => {
         .simulate('change', {
           target: { value: 2, name: 'enkelt' },
         });
-
-      wrapper.find('#ingred1').at(0).simulate('click');
+      wrapper.find('#ingred1').simulate('click');
+      setTimeout(() => {
+        // console.log(
+        //   'se herrr11111111111111111111111111111111111111111111111111111111',
+        //   wrapperAlert.debug()
+        // );
+        // expect(
+        //   wrapperAlert.containsMatchingElement(
+        //     <div>
+        //       Du må legge til ingredienser i oppskriften din<button></button>
+        //     </div>
+        //   )
+        // ).toEqual(true);
+        done();
+      });
+    });
+  });
+  test('Add ingredient', (done) => {
+    const wrapper = shallow(<NewRecipe />);
+    setTimeout(() => {
+      wrapper.find('#createIngredient').simulate('change', {
+        currentTarget: { value: 'Kylling' },
+      });
+      wrapper.find('#createIngredientFunc').simulate('click');
+      setTimeout(() => {
+        expect(wrapper.containsMatchingElement(<button>Kylling</button>)).toEqual(true);
+      });
+      done();
     });
   });
 });
