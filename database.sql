@@ -1,8 +1,9 @@
+DROP TABLE IF EXISTS oppskrift_innhold;
+
 DROP TABLE IF EXISTS oppskrift;
 DROP TABLE IF EXISTS ingrediens;
 DROP TABLE IF EXISTS land;
 DROP TABLE IF EXISTS kategori;
-DROP TABLE IF EXISTS oppskrift_innhold;
 
 
 CREATE TABLE oppskrift(
@@ -97,13 +98,13 @@ INSERT INTO kategori(kategori_navn)
     ("italiensk"),
     ("vegansk");
 
-INSERT INTO oppskrift(oppskrift_navn, oppskrift_beskrivelse, ant_pors, bilde_adr, kategori_id, land_id)
+INSERT INTO oppskrift(oppskrift_navn, oppskrift_beskrivelse,oppskrift_steg, ant_pors, bilde_adr, kategori_id, land_id)
   VALUES
-    ("skinkepizza", "Beskrivelse: skinkepizza er en klassiker til både store og små. Enkelt å lage og kjempe digg. Oppskriftssteg: lag pizza",
+    ("skinkepizza", "Skinkepizza er en klassiker til både store og små. Enkelt å lage og kjempe digg.","Lag pizza",
     4, "https://usercontent.one/wp/www.framittkjokken.no/wp-content/uploads/2019/11/Photo_1586412317644-1140x855.jpg",
     2, 9 ),
 
-    ("kremet pasta og kylling", "Beskrivelse: kylling er digg",
+    ("kremet pasta og kylling", "Kylling er digg","Stek kylling",
     2, "https://mills.no/content/uploads/2019/09/Kremet-pasta-med-sopp-og-kylling.jpg",
     1, 1 );
     
