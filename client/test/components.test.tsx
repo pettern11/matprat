@@ -47,13 +47,6 @@ jest.mock('../src/service', () => {
         },
       ]);
     }
-<<<<<<< HEAD
-    createIngredient() {
-      return Promise.resolve();
-    }
-  }
-
-=======
     getRecipe(id: number) {
       return Promise.resolve({
         oppskrift_id: 1,
@@ -64,9 +57,9 @@ jest.mock('../src/service', () => {
         bilde_adr: 'pizza.jpg',
         kategori_id: 2,
         land_id: 2,
-        ant_like: 1
+        ant_like: 1,
       });
-    } 
+    }
 
     getRecipeContent(id: number) {
       return Promise.resolve([
@@ -80,21 +73,20 @@ jest.mock('../src/service', () => {
           oppskrift_id: 1,
           ingred_id: 2,
           mengde: 1,
-          maleenhet: 'håndfull'
+          maleenhet: 'håndfull',
         },
         {
           oppskrift_id: 1,
           ingred_id: 3,
           mengde: 400,
-          maleenhet: 'g'
-        }
+          maleenhet: 'g',
+        },
       ]);
-  }
+    }
     deleteRecipe(id: number) {
       return Promise.resolve();
     }
-}
->>>>>>> 02509eca554bc5ad5a54ff59b4b8e7bdfcd4ed06
+  }
   return new Service();
 });
 

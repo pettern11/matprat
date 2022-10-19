@@ -280,7 +280,7 @@ export class NewRecipe extends Component {
     console.log(this.recipe_content);
   }
   chooseIngredientFunc(id: any, name: string) {
-    const btn = document.getElementById(id) as HTMLButtonElement | null;
+    const btn = document.getElementById('ingred' + id) as HTMLButtonElement | null;
     if (btn != null) {
       btn.disabled = true;
     }
@@ -386,7 +386,7 @@ export class NewRecipe extends Component {
     // hentet fra databasen
     let isFound = this.ingredients.some((ingredient) => {
       console.log(ingredient.ingred_navn == this.ingredient);
-      if (ingredient.ingred_navn == this.ingredient) {
+      if (ingredient.ingred_navn.toLowerCase() == this.ingredient.toLowerCase()) {
         return true;
       }
       return false;
@@ -449,9 +449,14 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
           <img src={this.recipe.bilde_adr}></img>
           <h1>{this.recipe.oppskrift_navn}</h1>
           <p>Beskrivelse: {this.recipe.oppskrift_beskrivelse}</p>
-          <p>Kategori: {this.categories.find((kategori)=>kategori.kategori_id == this.recipe.kategori_id)?.kategori_navn}</p>
+          <p>
+            Kategori:{' '}
+            {
+              this.categories.find((kategori) => kategori.kategori_id == this.recipe.kategori_id)
+                ?.kategori_navn
+            }
+          </p>
           <p>Antall likes: {this.recipe.ant_like}</p>
-
           <h5>Oppskrift:</h5>
           <pre>{this.recipe.oppskrift_steg}</pre>
           <h3>Ingredienser</h3>
@@ -471,8 +476,9 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
         <Button.Danger onClick={() => this.deleteRecipe(this.recipe.oppskrift_id)}>
           Slett oppskrift
         </Button.Danger>
-        <Button.Success onClick={ this.ingredientsToShoppingList}>Send ingredienser til handleliste</Button.Success>
-
+        <Button.Success onClick={this.ingredientsToShoppingList}>
+          Send ingredienser til handleliste
+        </Button.Success>
       </div>
     );
   }
@@ -517,11 +523,12 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
   }
   ingredientsToShoppingList() {
     this.recipeContent.forEach((rc) => {
-      const ingredient = {ingred_id: rc.ingred_id,
-                          mengde: ((rc.mengde* this.portions) / this.recipe.ant_pors),
-                          maleenhet: rc.maleenhet
-                        };
-     service.addIngredient(ingredient);
+      const ingredient = {
+        ingred_id: rc.ingred_id,
+        mengde: (rc.mengde * this.portions) / this.recipe.ant_pors,
+        maleenhet: rc.maleenhet,
+      };
+      service.addIngredient(ingredient);
     });
     history.push('/shoppinglist');
   }
@@ -743,7 +750,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
 export class ShoppingList extends Component {
   shoppingList: List[] = [];
   ingredients: Ingredient[] = [];
-  
+
   render() {
     return (
       <>
@@ -751,7 +758,12 @@ export class ShoppingList extends Component {
           <Column>
             {this.shoppingList.map((sl, i) => (
               <p key={i}>
-                {i + 1}. {this.ingredients.find((ingredient) => ingredient.ingred_id == sl.ingred_id)?.ingred_navn} {sl.mengde} {sl.maleenhet}
+                {i + 1}.{' '}
+                {
+                  this.ingredients.find((ingredient) => ingredient.ingred_id == sl.ingred_id)
+                    ?.ingred_navn
+                }{' '}
+                {sl.mengde} {sl.maleenhet}
               </p>
             ))}
           </Column>
@@ -764,18 +776,20 @@ export class ShoppingList extends Component {
     service
       .getShoppingList()
       .then((shoppingList: List[]) => (this.shoppingList = shoppingList))
-      .catch((error: { message: string; }) => Alert.danger('Error getting shoppingList: ' + error.message));
-  
+      .catch((error: { message: string }) =>
+        Alert.danger('Error getting shoppingList: ' + error.message)
+      );
+
     service
       .getAllIngredient()
       .then((ingredients) => (this.ingredients = ingredients))
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
-    }
+  }
 
-    /* updateList(id: number) {
+  /* updateList(id: number) {
       service
       .updateShoppingList(id)
       .then(() => Alert.info('Handlelisten er oppdatert'))
       .catch((error: { message: string; }) => Alert.danger('Error updating shoppingList: ' + error.message));
     } */
-};
+}

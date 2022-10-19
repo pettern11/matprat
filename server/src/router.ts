@@ -12,6 +12,12 @@ router.get('/', (_request, response) => {
     .then((rows) => response.send(rows))
     .catch((error) => response.status(500).send(error));
 });
+router.get('/api', (_request, response) => {
+  service
+    .getAPI()
+    .then((rows) => response.send(rows))
+    .catch((error) => response.status(500).send(error));
+});
 router.get('/recipe/:id', (_request, response) => {
   let id: number = parseInt(_request.params.id);
 

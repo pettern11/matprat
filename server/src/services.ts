@@ -58,6 +58,13 @@ class Service {
       });
     });
   }
+  getAPI() {
+    return new Promise((resolve, _reject) => {
+      fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=')
+        .then((res) => res.json())
+        .then((data) => resolve(data.meals));
+    });
+  }
 
   getRecipe(id: number) {
     return new Promise<Recipe[]>((resolve, reject) => {
@@ -156,6 +163,19 @@ class Service {
     return new Promise<void>((resolve, reject) => {
       pool.query(
         'INSERT INTO kategori SET kategori_navn=?',
+        [name],
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
+
+          resolve();
+        }
+      );
+    });
+  }
+  createIngredient(name: string) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'INSERT INTO ingrediens SET ingred_navn=?',
         [name],
         (error, results: ResultSetHeader) => {
           if (error) return reject(error);
