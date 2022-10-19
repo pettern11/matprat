@@ -89,6 +89,13 @@ router.post('/newcountry', (request, response) => {
     .then(() => response.send())
     .catch((error: any) => response.status(500).send(error));
 });
+router.post('/newcategory', (request, response) => {
+  const data = request.body;
+  service
+    .createCategory(data.name)
+    .then(() => response.send())
+    .catch((error: any) => response.status(500).send(error));
+});
 
 router.put('/update_recipe_ingredient', (request, response) => {
   console.log(1);

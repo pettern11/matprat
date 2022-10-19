@@ -61,6 +61,9 @@ class Service {
   createCountry(name: string) {
     return axios.post<{}>('/newcountry', { name: name }).then((response) => response.data);
   }
+  createCategory(name: string) {
+    return axios.post<{}>('/newcategory', { name: name }).then((response) => response.data);
+  }
 
   createRecipe(recipe: Recipe) {
     console.log(recipe);

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NewRecipe } from '../src/components';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { Country, Category, Ingredient, Recipe, Recipe_Content } from '../src/service';
 import { Alert, Card, Row, Column, Form, Button, RecipeView } from '../src/widgets';
 import { NavLink } from 'react-router-dom';
@@ -27,8 +27,8 @@ jest.mock('../src/service', () => {
           kategori_navn: 'Ikea mat',
         },
         {
-          land_id: 2,
-          land_navn: 'enkelt',
+          kategori_id: 2,
+          kategori_navn: 'enkelt',
         },
       ]);
     }
@@ -38,14 +38,14 @@ jest.mock('../src/service', () => {
           ingred_id: 1,
           ingred_navn: 'pizzadeig',
         },
-        {
-          ingred_id: 2,
-          ingred_navn: 'pizza fyll',
-        },
-        {
-          ingred_id: 3,
-          ingred_navn: 'kjøttboller',
-        },
+        // {
+        //   ingred_id: 2,
+        //   ingred_navn: 'pizza fyll',
+        // },
+        // {
+        //   ingred_id: 3,
+        //   ingred_navn: 'kjøttboller',
+        // },
       ]);
     }
   }
@@ -54,40 +54,50 @@ jest.mock('../src/service', () => {
 
 describe('NewRecipe tests', () => {
   test('Create recipe', (done) => {
-    const wrapper = shallow(<NewRecipe />);
+    const wrapper = mount(<NewRecipe />);
 
     // Wait for events to complete
     setTimeout(() => {
-      wrapper.find('#recipe_name_input').simulate('change', { currentTarget: { value: 'pizza' } });
+      wrapper
+        .find('#recipe_name_input')
+        .at(0)
+        .simulate('change', { currentTarget: { value: 'pizza' } });
       wrapper
         .find('#recipe_description_input')
+        .at(0)
         .simulate('change', { currentTarget: { value: 'Digg og enkel mat' } });
-      wrapper.find('#recipe_steps_input').simulate('change', {
-        currentTarget: { value: 'Lag pizza deig og ta på fyll, stek i ovnen' },
-      });
-      wrapper.find('#recipe_portions_input').simulate('change', {
-        currentTarget: { value: 'Lag pizza deig og ta på fyll, stek i ovnen' },
-      });
-      wrapper.find('#recipe_picture_url_input').simulate('change', {
-        currentTarget: { value: 'Lag pizza deig og ta på fyll, stek i ovnen' },
-      });
+      wrapper
+        .find('#recipe_steps_input')
+        .at(0)
+        .simulate('change', {
+          currentTarget: { value: 'Lag pizza deig og ta på fyll, stek i ovnen' },
+        });
+      wrapper
+        .find('#recipe_portions_input')
+        .at(0)
+        .simulate('change', {
+          currentTarget: { value: 'Lag pizza deig og ta på fyll, stek i ovnen' },
+        });
+      wrapper
+        .find('#recipe_picture_url_input')
+        .at(0)
+        .simulate('change', {
+          currentTarget: { value: 'Lag pizza deig og ta på fyll, stek i ovnen' },
+        });
+      wrapper
+        .find('#choseCountry')
+        .at(0)
+        .simulate('change', {
+          target: { value: 1, name: 'Sverige' },
+        });
+      wrapper
+        .find('#choseCategory')
+        .at(0)
+        .simulate('change', {
+          target: { value: 2, name: 'enkelt' },
+        });
 
-      setTimeout(() => {
-        wrapper
-          .find('#choseCountry')
-          .at(0)
-          .simulate('change', {
-            target: { value: 1, name: 'Sverige' },
-          });
-
-        wrapper
-          .find('#choseCategory')
-          .at(0)
-          .simulate('change', {
-            target: { value: 2, name: 'enkelt' },
-          });
-        done();
-      });
+      wrapper.find('#ingred1').at(0).simulate('click');
     });
   });
 });

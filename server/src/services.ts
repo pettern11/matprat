@@ -113,6 +113,19 @@ class Service {
       });
     });
   }
+  createCategory(name: string) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'INSERT INTO kategori SET kategori_navn=?',
+        [name],
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
+
+          resolve();
+        }
+      );
+    });
+  }
   createIngredient(name: string) {
     return new Promise<void>((resolve, reject) => {
       pool.query(
