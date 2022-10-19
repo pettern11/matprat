@@ -120,17 +120,17 @@ export class NewRecipe extends Component {
                   this.checkCountry(event?.target.value);
                 }}
               >
-                {/* feilmeldingen kommer fra selected under */}
+                <option selected disabled>
+                  Velg land
+                </option>
                 {this.countries.map((country: Country, i: number) => (
                   <option key={country.land_id} value={country.land_id}>
                     {country.land_navn}
                   </option>
                 ))}
-                <option value="0">ikke på liste</option>
               </select>
               <Form.Input
                 id="addCountry"
-                style={{ opacity: '0', width: '300px' }}
                 type="text"
                 value={this.country_name}
                 onChange={(event) => (this.country_name = event.currentTarget.value)}
@@ -160,16 +160,17 @@ export class NewRecipe extends Component {
                   this.checkCategory(event?.target.value);
                 }}
               >
+                <option selected disabled>
+                  Velg kategori
+                </option>
                 {this.categories.map((category: Category) => (
                   <option key={category.kategori_id.toString()} value={category.kategori_id}>
                     {category.kategori_navn}
                   </option>
                 ))}
-                <option value="0">ikke på liste</option>
               </select>
               <Form.Input
                 id="addCategory"
-                style={{ opacity: '0', width: '300px' }}
                 type="text"
                 value={this.category_name}
                 onChange={(event) => (this.category_name = event.currentTarget.value)}
@@ -178,7 +179,7 @@ export class NewRecipe extends Component {
               <Button.Success
                 id="addCategoryBtn"
                 onClick={() => {
-                  this.addIngredientFunc();
+                  this.addCategoryFunc();
                 }}
               >
                 Legg til
@@ -196,7 +197,7 @@ export class NewRecipe extends Component {
             <Column>
               {this.ingredients.map((ingredient) => (
                 <Button.Light
-                  id={ingredient.ingred_id}
+                  id={'ingred' + ingredient.ingred_id}
                   key={ingredient.ingred_id}
                   onClick={() => {
                     this.chooseIngredientFunc(ingredient.ingred_id, ingredient.ingred_navn);
@@ -210,7 +211,7 @@ export class NewRecipe extends Component {
           {/* legg til ingredienser */}
           <Column>
             <Form.Input
-              id="addIngredient"
+              id="createIngredient"
               type="text"
               style={{ width: '400px' }}
               value={this.ingredient}
@@ -218,6 +219,7 @@ export class NewRecipe extends Component {
               placeholder="Legg til ingredienser"
             ></Form.Input>
             <Button.Success
+              id="createIngredientFunc"
               onClick={() => {
                 this.addIngredientFunc();
               }}
@@ -235,6 +237,7 @@ export class NewRecipe extends Component {
           </Column>
         </Card>
         <Button.Success
+          id="addRecipeBtn"
           onClick={() => {
             this.addRecipe();
           }}
@@ -256,10 +259,13 @@ export class NewRecipe extends Component {
       land_id: this.country_id,
       ant_like: 0,
     };
-    service
-      .createRecipe(recipe)
-      .then((id) => this.addRecipeIngredient(id))
-      .catch((error) => Alert.danger('Creating new recipe: ' + error.message));
+    if (this.recipe_content.length == 0) {
+      Alert.info('Du må legge til ingredienser i oppskriften din');
+    } else
+      service
+        .createRecipe(recipe)
+        .then((id) => this.addRecipeIngredient(id))
+        .catch((error) => Alert.danger('Creating new recipe: ' + error.message));
   }
   addRecipeIngredient(id: number) {
     this.recipe_content.forEach((element) => {
@@ -297,7 +303,7 @@ export class NewRecipe extends Component {
     const inputNumberOf = document.createElement('input');
     const inputMeasurment = document.createElement('input');
     const deleteBtn = document.createElement('button');
-
+    const ingredList = document.getElementById('ingreditentList') || document.createElement('div');
     emFood.innerHTML = ' <br />' + name;
     emFood.setAttribute('id', 'emFood' + id);
 
@@ -324,10 +330,33 @@ export class NewRecipe extends Component {
       deleteBtn.remove();
     };
 
-    document.getElementById('ingreditentList').appendChild(emFood);
-    document.getElementById('ingreditentList').appendChild(inputNumberOf);
-    document.getElementById('ingreditentList').appendChild(inputMeasurment);
-    document.getElementById('ingreditentList').appendChild(deleteBtn);
+    ingredList.appendChild(emFood);
+    ingredList.appendChild(inputNumberOf);
+    ingredList.appendChild(inputMeasurment);
+    ingredList.appendChild(deleteBtn);
+  }
+  addCategoryFunc() {
+    // sjekker om kategorien allerede finnes i arrayen med kategorier, hvis ikke legger den til landet i databasen
+    // hentet fra databasen
+    let isFound = this.categories.some((category) => {
+      if (category.kategori_navn.toLowerCase() == this.category_name.toLowerCase()) {
+        return true;
+      }
+      return false;
+    });
+
+    console.log(isFound);
+    const result =
+      this.category_name.charAt(0).toUpperCase() + this.category_name.slice(1).toLowerCase();
+    this.category_name = result;
+    if (!isFound && this.category_name != '') {
+      service.createCategory(this.category_name).then(() =>
+        service
+          .getAllCategory()
+          .then((categories) => (this.categories = categories))
+          .catch((error) => Alert.danger('Error : ' + error.message))
+      );
+    }
   }
   addCountryFunc() {
     // sjekker om landet allerede finnes i arrayen med land, hvis ikke legger den til landet i databasen
@@ -350,8 +379,6 @@ export class NewRecipe extends Component {
           .then((countries) => (this.countries = countries))
           .catch((error) => Alert.danger('Error : ' + error.message))
       );
-      //sender her bare 1 for at TS skal bli fornøyd, funksjonen nedenfor forventer også et tall
-      this.checkCountry(1);
     }
   }
   addIngredientFunc() {
@@ -377,14 +404,10 @@ export class NewRecipe extends Component {
   }
   checkCountry(value: number) {
     this.country_id = value;
-    const addCountry: any = document.getElementById('addCountry');
-    value == 0 ? (addCountry.style.opacity = ' 100') : (addCountry.style.opacity = ' 0');
   }
 
   checkCategory(value: number) {
     this.category_id = value;
-    const addCategory: any = document.getElementById('addCategory');
-    value == 0 ? (addCategory.style.opacity = ' 100') : (addCategory.style.opacity = ' 0');
   }
   mounted() {
     service
