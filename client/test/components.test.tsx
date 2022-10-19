@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { NewRecipe } from '../src/components';
+import { NewRecipe, ShowRecipe } from '../src/components';
 import { shallow } from 'enzyme';
 import { Alert, Card, Row, Column, Form, Button, RecipeView } from '../src/widgets';
 import { NavLink } from 'react-router-dom';
@@ -117,3 +117,11 @@ describe('NewRecipe tests', () => {
     });
   });
 });
+
+/* describe('ShowRecipe tests', () => {
+  test('Show recipe draws correctly with params id set', (done) => {
+    const wrapper = shallow(<ShowRecipe match={{ params: { id: 1 } }} />);
+
+    done()
+}
+}); */

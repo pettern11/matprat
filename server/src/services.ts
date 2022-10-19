@@ -28,10 +28,23 @@ export type Category = {
   land_id: number;
   land_navn: string;
 };
+//ingridient for shoppinglist, slightly different from the other ingridient
+export type IngredientToShoppinglist = {
+  ingred_id: number;
+  mengde: number;
+  maleenhet: string;
+};
 export type Ingredient = {
   ingred_id: number;
   ingred_navn: string;
 };
+export type List = {
+  id: number;
+  ingred_id: number;
+  mengde: number;
+  maleenhet: string;
+};
+
 class Service {
   /**
    * Get all tasks.
@@ -104,6 +117,17 @@ class Service {
       });
     });
   }
+
+  getShoppingList() {
+    return new Promise<List[]>((resolve, reject) => {
+      pool.query('SELECT * FROM handleliste', (error, results: RowDataPacket[]) => {
+        if (error) return reject(error);
+
+        resolve(results as List[]);
+      });
+    });
+  }
+
   createCountry(name: string) {
     return new Promise<void>((resolve, reject) => {
       pool.query('INSERT INTO land SET land_navn=?', [name], (error, results: ResultSetHeader) => {
@@ -113,10 +137,25 @@ class Service {
       });
     });
   }
-  createCategory(name: string) {
+
+  addIngredientShoppinglist(ingredient: IngredientToShoppinglist) {
     return new Promise<void>((resolve, reject) => {
       pool.query(
-        'INSERT INTO kategori SET kategori_navn=?',
+        'INSERT INTO handleliste SET ingred_id=?, mengde=?, maleenhet=?',
+        [ingredient.ingred_id, ingredient.mengde, ingredient.maleenhet],
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
+
+          resolve();
+        }
+      );
+    });
+  }
+
+  createIngredient(name: string) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'INSERT INTO ingrediens SET ingred_navn=?',
         [name],
         (error, results: ResultSetHeader) => {
           if (error) return reject(error);
@@ -126,10 +165,10 @@ class Service {
       );
     });
   }
-  createIngredient(name: string) {
+  createCategory(name: string) {
     return new Promise<void>((resolve, reject) => {
       pool.query(
-        'INSERT INTO ingrediens SET ingred_navn=?',
+        'INSERT INTO kategori SET kategori_navn=?',
         [name],
         (error, results: ResultSetHeader) => {
           if (error) return reject(error);
