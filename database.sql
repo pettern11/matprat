@@ -1,6 +1,8 @@
 DROP TABLE IF EXISTS oppskrift_innhold;
 
 DROP TABLE IF EXISTS oppskrift;
+DROP TABLE IF EXISTS handleliste;
+
 DROP TABLE IF EXISTS ingrediens;
 DROP TABLE IF EXISTS land;
 DROP TABLE IF EXISTS kategori;
@@ -45,12 +47,23 @@ CREATE TABLE oppskrift_innhold(
     maleenhet VARCHAR(255) NOT NULL,
       PRIMARY KEY(id))ENGINE=InnoDB CHARSET=latin1;;
 
+CREATE TABLE handleliste(
+    id INT NOT NULL AUTO_INCREMENT,
+    ingred_id INT NOT NULL,
+    mengde INT NOT NULL,
+    maleenhet VARCHAR(255) NOT NULL,
+      PRIMARY KEY(id))ENGINE=InnoDB CHARSET=latin1;;
+
 ALTER TABLE oppskrift
   ADD CONSTRAINT oppskrift_fk1 FOREIGN KEY(kategori_id) 
   REFERENCES kategori(kategori_id) ON UPDATE CASCADE,
 
   ADD CONSTRAINT oppskrift_fk2 FOREIGN KEY(land_id) 
   REFERENCES land(land_id) ON UPDATE CASCADE;
+
+ALTER TABLE handleliste
+  ADD CONSTRAINT handleliste_fk1 FOREIGN KEY(ingred_id) 
+  REFERENCES ingrediens(ingred_id);
 
 
 ALTER TABLE oppskrift_innhold
@@ -116,3 +129,10 @@ INSERT INTO oppskrift_innhold(oppskrift_id, ingred_id, mengde, maleenhet)
     (1,11, 2, "boks"),
     (1,12, 2, "håndfull"),
     (1,13, 300, "gram");
+
+INSERT INTO handleliste(ingred_id, mengde, maleenhet)
+  VALUES
+    (1, 1, "kg"),
+    (2, 1, "liter"),
+    (3, 1, "kg");
+    
