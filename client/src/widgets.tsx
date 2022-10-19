@@ -226,6 +226,7 @@ class FormLabel extends Component<{ children: ReactNode }> {
  * Renders a form input using Bootstrap styles.
  */
 class FormInput extends Component<{
+  id: string | '';
   type: string;
   value: string | number;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -241,6 +242,7 @@ class FormInput extends Component<{
         className="form-control"
         type={this.props.type}
         value={this.props.value}
+        id={this.props.id}
         onChange={this.props.onChange}
       />
     );
@@ -251,7 +253,9 @@ class FormInput extends Component<{
  * Renders a form textarea using Bootstrap styles.
  */
 class FormTextarea extends React.Component<{
+  id: string | '';
   value: string | number;
+
   onChange: (event: ChangeEvent<HTMLTextAreaElement>) => void;
   [prop: string]: any;
 }> {
@@ -259,7 +263,16 @@ class FormTextarea extends React.Component<{
     // ...rest will contain extra passed attributes such as disabled, required, rows, cols
     // For further information, see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
     const { value, onChange, ...rest } = this.props;
-    return <textarea {...rest} className="form-control" value={value} onChange={onChange} />;
+
+    return (
+      <textarea
+        {...rest}
+        className="form-control"
+        value={value}
+        onChange={onChange}
+        id={this.props.id}
+      />
+    );
   }
 }
 
