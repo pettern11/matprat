@@ -75,6 +75,19 @@ router.get('/ingredient', (_request, response) => {
     .then((rows) => response.send(rows))
     .catch((error) => response.status(500).send(error));
 });
+router.get('/shoppinglist', (_request, response) => {
+  service
+    .getShoppingList()
+    .then((rows) => response.send(rows))
+    .catch((error) => response.status(500).send(error));
+});
+router.post('/addingredient', (request, response) => {
+  const data = request.body;
+  service
+    .addIngredientShoppinglist(data.ingredient)
+    .then(() => response.send())
+    .catch((error: any) => response.status(500).send(error));
+});
 router.post('/newingredient', (request, response) => {
   const data = request.body;
   service
