@@ -29,10 +29,21 @@ export type Category = {
   kategori_id: number;
   kategori_navn: string;
 };
+export type IngredientToShoppinglist = {
+  ingred_id: number;
+  mengde: number;
+  maleenhet: string;
+};
 export type Ingredient = {
   ingred_id: number;
   ingred_navn: string;
 };
+export type List = {
+  id: number;
+  ingred_id: number;
+  mengde: number;
+  maleenhet: string;
+}
 class Service {
   /**
    * Get all tasks.
@@ -54,6 +65,12 @@ class Service {
   }
   getAllIngredient() {
     return axios.get<Ingredient[]>('/ingredient').then((response) => response.data);
+  }
+  getShoppingList() {
+    return axios.get<List[]>('/shoppinglist').then((response) => response.data);
+  }
+  addIngredient(ingredient: IngredientToShoppinglist) {
+    return axios.post<{}>('/addingredient', {ingredient: ingredient}).then((response) => response.data);
   }
   createIngredient(name: string) {
     return axios.post<{}>('/newingredient', { name: name }).then((response) => response.data);
