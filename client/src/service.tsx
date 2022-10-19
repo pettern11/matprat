@@ -43,13 +43,16 @@ export type List = {
   ingred_id: number;
   mengde: number;
   maleenhet: string;
-}
+};
 class Service {
   /**
    * Get all tasks.
    */
   getAllRepice() {
     return axios.get<Recipe[]>('/').then((response) => response.data);
+  }
+  getAPI() {
+    return axios.get('/api').then((response) => response.data);
   }
   getRecipe(id: number) {
     return axios.get<Recipe[]>('/recipe/' + id).then((response) => response.data);
@@ -70,7 +73,9 @@ class Service {
     return axios.get<List[]>('/shoppinglist').then((response) => response.data);
   }
   addIngredient(ingredient: IngredientToShoppinglist) {
-    return axios.post<{}>('/addingredient', {ingredient: ingredient}).then((response) => response.data);
+    return axios
+      .post<{}>('/addingredient', { ingredient: ingredient })
+      .then((response) => response.data);
   }
   createIngredient(name: string) {
     return axios.post<{}>('/newingredient', { name: name }).then((response) => response.data);

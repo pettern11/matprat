@@ -43,7 +43,7 @@ export type List = {
   ingred_id: number;
   mengde: number;
   maleenhet: string;
-}
+};
 
 class Service {
   /**
@@ -56,6 +56,13 @@ class Service {
 
         resolve(results as Recipe[]);
       });
+    });
+  }
+  getAPI() {
+    return new Promise((resolve, _reject) => {
+      fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=')
+        .then((res) => res.json())
+        .then((data) => resolve(data.meals));
     });
   }
 
@@ -128,7 +135,6 @@ class Service {
     });
   }
 
-
   createCountry(name: string) {
     return new Promise<void>((resolve, reject) => {
       pool.query('INSERT INTO land SET land_navn=?', [name], (error, results: ResultSetHeader) => {
@@ -141,14 +147,31 @@ class Service {
 
   addIngredientShoppinglist(ingredient: IngredientToShoppinglist) {
     return new Promise<void>((resolve, reject) => {
-      pool.query('INSERT INTO handleliste SET ingred_id=?, mengde=?, maleenhet=?', [ingredient.ingred_id, ingredient.mengde, ingredient.maleenhet], (error, results: ResultSetHeader) => {
-        if (error) return reject(error);
-      
-        resolve();
-      });
+      pool.query(
+        'INSERT INTO handleliste SET ingred_id=?, mengde=?, maleenhet=?',
+        [ingredient.ingred_id, ingredient.mengde, ingredient.maleenhet],
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
+
+          resolve();
+        }
+      );
     });
   }
 
+  createCategory(name: string) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'INSERT INTO kategori SET kategori_navn=?',
+        [name],
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
+
+          resolve();
+        }
+      );
+    });
+  }
   createIngredient(name: string) {
     return new Promise<void>((resolve, reject) => {
       pool.query(

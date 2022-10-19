@@ -25,7 +25,7 @@ export class Home extends Component {
   originalrecipes: Recipe[] = [];
   recipes: Recipe[] = [];
   searchterm: string = '';
-
+  api: [] = [];
   render() {
     return (
       <>
@@ -58,6 +58,17 @@ export class Home extends Component {
               </Column>
             </Row>
           ))}
+          {this.api.map((recipe) => (
+            <Row key={recipe.idMeal}>
+              <Column>
+                <RecipeView
+                  img={recipe.strMealThumb}
+                  name={recipe.strMeal}
+                  numbOfPors={4}
+                ></RecipeView>
+              </Column>
+            </Row>
+          ))}
         </Card>
       </>
     );
@@ -71,6 +82,11 @@ export class Home extends Component {
         this.recipes = recipes;
       })
       .catch((error) => Alert.danger('Error getting tasks: ' + error.message));
+
+    service.getAPI().then((api) => {
+      console.log(api);
+      this.api = api;
+    });
   }
   search(searchterm: string) {
     this.recipes = this.originalrecipes.filter((recipe) =>
@@ -89,7 +105,6 @@ ReactDOM.render(
       <Route exact path="/recipe/:id" component={ShowRecipe} />
       <Route exact path="/recipe/edit/:id" component={EditRecipe} />
       <Route exact path="/shoppinglist" component={ShoppingList} />
-
     </div>
   </HashRouter>,
   document.getElementById('root') || document.createElement('div')
