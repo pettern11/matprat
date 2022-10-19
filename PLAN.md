@@ -66,19 +66,19 @@ Daily stand-up:
 
 ### Uke 41
 
--   [ ] Database ferdig
--   [ ] Repository pushet opp (klient-server test)
--   [ ] Endre filkonvensjon, clean classes
+-   [x ] Database ferdig
+-   [x ] Repository pushet opp (klient-server test)
+-   [ x] Endre filkonvensjon, clean classes
 
 ### Uke 42
 
--   [ ] Mulighet til å søke, legge til, endre og slette oppskrifter
--   [ ] Oppdage oppskrifter gjennom søk osv.
+-   [ x] Mulighet til å søke, legge til, endre og slette oppskrifter
+-   [ x] Oppdage oppskrifter gjennom søk osv.
 
 ### Uke 43
 
 -   [ ] "Like" oppskrift
--   [ ] Antall porsjoner justeres, også ingredienser
+-   [ x] Antall porsjoner justeres, også ingredienser
 
 ### Uke 44
 

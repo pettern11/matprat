@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Alert, Card, Row, Column, Form, Button, RecipeView } from './widgets';
 import { NavLink, Redirect } from 'react-router-dom';
-import service, { Country, Category, Ingredient , Recipe, Recipe_Content } from './service';
+import service, { Country, Category, Ingredient, Recipe, Recipe_Content } from './service';
 import { createHashHistory } from 'history';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -19,6 +19,7 @@ export class NewRecipe extends Component {
 
   name: string = '';
   description: string = '';
+  steps: string = '';
   portions: number = 0;
   picture_adr: string = '';
   category_id: number = 0;
@@ -51,10 +52,25 @@ export class NewRecipe extends Component {
             </Column>
             <Column>
               <Form.Textarea
-                style={{ width: '600px' }}
+                style={{ width: '300px' }}
                 type="text"
                 value={this.description}
                 onChange={(event) => (this.description = event.currentTarget.value)}
+                rows={5}
+              />
+            </Column>
+          </Column>
+          {/* input steg */}
+          <Column>
+            <Column width={2}>
+              <Form.Label>Steg:</Form.Label>
+            </Column>
+            <Column>
+              <Form.Textarea
+                style={{ width: '600px' }}
+                type="text"
+                value={this.steps}
+                onChange={(event) => (this.steps = event.currentTarget.value)}
                 rows={10}
               />
             </Column>
@@ -99,7 +115,7 @@ export class NewRecipe extends Component {
               >
                 {/* feilmeldingen kommer fra selected under */}
                 {this.countries.map((country: Country, i: number) => (
-                  <option key={country.land_id} value={country.land_id} selected>
+                  <option key={country.land_id} value={country.land_id}>
                     {country.land_navn}
                   </option>
                 ))}
@@ -137,7 +153,7 @@ export class NewRecipe extends Component {
                 }}
               >
                 {this.categories.map((category: Category) => (
-                  <option key={category.kategori_id} value={category.kategori_id} selected>
+                  <option key={category.kategori_id} value={category.kategori_id}>
                     {category.kategori_navn}
                   </option>
                 ))}
@@ -210,10 +226,45 @@ export class NewRecipe extends Component {
             <div id="ingreditentList"></div>
           </Column>
         </Card>
+        <Button.Success
+          onClick={() => {
+            this.addRecipe();
+          }}
+        >
+          Send oppskriften opp til the database
+        </Button.Success>
       </>
     );
   }
+  addRecipe() {
+    let recipe: Recipe = {
+      oppskrift_id: 0,
+      oppskrift_navn: this.name,
+      oppskrift_beskrivelse: this.description,
+      oppskrift_steg: this.steps,
+      ant_pors: this.portions,
+      bilde_adr: this.picture_adr,
+      kategori_id: this.category_id,
+      land_id: this.country_id,
+      ant_like: 0,
+    };
+    service
+      .createRecipe(recipe)
+      .then((id) => this.addRecipeIngredient(id))
+      .catch((error) => Alert.danger('Creating new recipe: ' + error.message));
+  }
+  addRecipeIngredient(id: number) {
+    this.recipe_content.forEach((element) => {
+      element.oppskrift_id = id;
+    });
+    console.log('første console log', this.recipe_content);
+    service
+      .createRecipeIngredient(this.recipe_content)
+      .then(() => history.push('/recipe/' + id))
+      .catch((error) => Alert.danger('Creating new recipe: ' + error.message));
 
+    console.log(this.recipe_content);
+  }
   chooseIngredientFunc(id: any, name: string) {
     const btn = document.getElementById(id) as HTMLButtonElement | null;
     if (btn != null) {
@@ -256,8 +307,8 @@ export class NewRecipe extends Component {
       (this.recipe_content[index].maleenhet = event.currentTarget.value);
 
     deleteBtn.innerHTML = 'x';
-    deleteBtn.onclick = (id) => {
-      this.recipe_content.slice(index);
+    deleteBtn.onclick = () => {
+      this.recipe_content.splice(index, 1);
       btn != null ? (btn.disabled = false) : '';
       emFood.remove();
       inputNumberOf.remove();
@@ -343,7 +394,7 @@ export class NewRecipe extends Component {
   }
 }
 
-export class ShowRecipe extends Component {
+export class ShowRecipe extends Component<{ match: { params: { id: number } } }> {
   recipe: Recipe = {
     oppskrift_id: 0,
     oppskrift_navn: '',
@@ -353,42 +404,44 @@ export class ShowRecipe extends Component {
     bilde_adr: '',
     kategori_id: 0,
     land_id: 0,
-    ant_like: 0
+    ant_like: 0,
   };
   portions: number = 0;
   recipeContent: Recipe_Content[] = [];
   ingredients: Ingredient[] = [];
 
-  
-
   render() {
     {
       console.log(this.recipe);
-    console.log(this.recipeContent);
-    console.log(this.ingredients);
+      console.log(this.recipeContent);
+      console.log(this.ingredients);
     }
-   
+
     return (
-      <Card title={this.recipe.oppskrift_navn}>
-        <img src = {this.recipe.bilde_adr} width="50px"></img>
-        <p>{this.recipe.oppskrift_beskrivelse}</p>
-        <p>{this.recipe.oppskrift_steg}</p>
-          
-
-        <h3>Ingredienser</h3>
-        Porsjoner <Button.Danger onClick={this.decrementPortions}>-</Button.Danger> <b>{this.portions}</b> <Button.Success onClick={this.incrementPortions}>+</Button.Success>
-        {this.recipeContent.map((rc,i) => (<p key={i}>{i + 1}. {
-        
-
-        this.ingredients.filter((ing) => 
-        rc.ingred_id == ing.ingred_id)[0].ingred_navn
-        } 
-       
-        {' '}{rc.mengde*this.portions/this.recipe.ant_pors} {rc.maleenhet}</p>))}
-      </Card>
-  
-
-
+      <div>
+        <Card>
+          <img src={this.recipe.bilde_adr}></img>
+          <h1>{this.recipe.oppskrift_navn}</h1>
+          <p>{this.recipe.oppskrift_beskrivelse}</p>
+          <pre>{this.recipe.oppskrift_steg}</pre>
+          <h3>Ingredienser</h3>
+          Porsjoner <Button.Danger onClick={this.decrementPortions}>-</Button.Danger>{' '}
+          <b>{this.portions}</b> <Button.Success onClick={this.incrementPortions}>+</Button.Success>
+          {this.recipeContent.map((rc, i) => (
+            <p key={i}>
+              {i + 1}.{' '}
+              {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}{' '}
+              {(rc.mengde * this.portions) / this.recipe.ant_pors} {rc.maleenhet}
+            </p>
+          ))}
+        </Card>
+        <Button.Success onClick={() => history.push('/recipe/edit/' + this.recipe.oppskrift_id)}>
+          Endre oppskrift
+        </Button.Success>
+        <Button.Danger onClick={() => this.deleteRecipe(this.recipe.oppskrift_id)}>
+          Slett oppskrift
+        </Button.Danger>
+      </div>
     );
   }
 
@@ -405,7 +458,10 @@ export class ShowRecipe extends Component {
 
     service
       .getRecipe(this.props.match.params.id)
-      .then((recipe) => {(this.recipe = recipe[0]); this.portions = recipe[0].ant_pors})
+      .then((recipe) => {
+        this.recipe = recipe[0];
+        this.portions = recipe[0].ant_pors;
+      })
       .catch((error) => Alert.danger('Error getting recipe: ' + error.message));
   }
   incrementPortions() {
@@ -415,5 +471,224 @@ export class ShowRecipe extends Component {
     if (this.portions > 1) {
       this.portions--;
     }
+  }
+  deleteRecipe(id: number) {
+    service
+      .deleteRecipe(id)
+      .then(() => history.push('/'))
+      .catch((error) => Alert.danger('Error deleting recipe: ' + error.message));
+  }
+}
+export class EditRecipe extends Component<{ match: { params: { id: number } } }> {
+  recipe: Recipe = {
+    oppskrift_id: 0,
+    oppskrift_navn: '',
+    oppskrift_beskrivelse: '',
+    oppskrift_steg: '',
+    ant_pors: 0,
+    bilde_adr: '',
+    kategori_id: 0,
+    land_id: 0,
+    ant_like: 0,
+  };
+  recipeContent: Recipe_Content[] = [];
+  ingredients: Ingredient[] = [];
+
+  render() {
+    return (
+      <>
+        <Card title="Endre oppskriften">
+          {/* input navn */}
+          <Column>
+            <Column width={2}>
+              <Form.Label>Name:</Form.Label>
+            </Column>
+            <Column>
+              <Form.Input
+                type="text"
+                value={this.recipe.oppskrift_navn}
+                onChange={(event) => (this.recipe.oppskrift_navn = event.currentTarget.value)}
+              />
+            </Column>
+          </Column>
+          {/* input beksrivelse */}
+          <Column>
+            <Column width={2}>
+              <Form.Label>Description:</Form.Label>
+            </Column>
+            <Column>
+              <Form.Textarea
+                style={{ width: '300px' }}
+                type="text"
+                value={this.recipe.oppskrift_beskrivelse}
+                onChange={(event) =>
+                  (this.recipe.oppskrift_beskrivelse = event.currentTarget.value)
+                }
+                rows={5}
+              />
+            </Column>
+          </Column>
+          {/* input steg */}
+          <Column>
+            <Column width={2}>
+              <Form.Label>Steg:</Form.Label>
+            </Column>
+            <Column>
+              <Form.Textarea
+                style={{ width: '600px' }}
+                type="text"
+                value={this.recipe.oppskrift_steg}
+                onChange={(event) => (this.recipe.oppskrift_steg = event.currentTarget.value)}
+                rows={10}
+              />
+            </Column>
+          </Column>
+          {/* input antall porsjoner */}
+          <Column>
+            <Column width={2}>
+              <Form.Label>Porjsoner:</Form.Label>
+            </Column>
+            <Column>
+              <Form.Input
+                type="number"
+                value={this.recipe.ant_pors}
+                //@ts-ignore
+                onChange={(event) => (this.recipe.ant_pors = event.currentTarget.value)}
+              />
+            </Column>
+          </Column>
+          {/* input bilde url */}
+          <Column>
+            <Column width={2}>
+              <Form.Label>Bilde url:</Form.Label>
+            </Column>
+            <Column>
+              <Form.Input
+                type="text"
+                value={this.recipe.bilde_adr}
+                onChange={(event) => (this.recipe.bilde_adr = event.currentTarget.value)}
+              />
+            </Column>
+          </Column>
+
+          {/* renderer alle ingrediensene som er linket til oppskriften, her kan man også endre på hvor mye det er av hver ingrediens og måleenheten */}
+          <Column>
+            <div id="outprintIngredient">
+              {this.recipeContent.map((rc, i) => (
+                <p key={i}>
+                  {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}{' '}
+                  <input
+                    style={{ width: '50px' }}
+                    type="number"
+                    value={rc.mengde}
+                    onChange={(event) => (
+                      //@ts-ignore
+                      (rc.mengde = event.currentTarget.value), console.log(this.recipeContent)
+                    )}
+                  />
+                  <input
+                    style={{ width: '100px' }}
+                    type="text"
+                    value={rc.maleenhet}
+                    onChange={(event) => (
+                      //@ts-ignore
+                      (rc.maleenhet = event.currentTarget.value), console.log(this.recipeContent)
+                    )}
+                  />
+                  <Button.Danger
+                    onClick={() => this.deleteIngredient(rc.oppskrift_id, rc.ingred_id)}
+                  >
+                    x
+                  </Button.Danger>
+                </p>
+              ))}{' '}
+            </div>
+          </Column>
+          {/* print ut alle ingrediense som allerede er i databasen */}
+          {/* vidre ideer her er at vi setter en viss lengde og bredde på diven og så hvis den overflower så må man bare skulle 
+          nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
+          <Column>
+            Ingrediensene som allered er lagret,
+            <br /> hvis ingrediensen din ikke er her kan du legge den til!
+            <br />
+            <Column>
+              {this.ingredients.map((ingredient) => (
+                <>
+                  <Button.Light
+                    id={ingredient.ingred_id}
+                    key={ingredient.ingred_id}
+                    onClick={() => {
+                      this.addIngredientFunc(ingredient.ingred_id, this.props.match.params.id);
+                    }}
+                  >
+                    {ingredient.ingred_navn}
+                  </Button.Light>
+                </>
+              ))}
+            </Column>
+          </Column>
+        </Card>
+        <Button.Success onClick={() => this.pushNewChanges()}>Endre oppskrift</Button.Success>
+      </>
+    );
+  }
+
+  //legger til nye ingredienser, sjekker først om de finnes, så legger den til i databasen og så blir det hentet ned igjen
+  addIngredientFunc(ingred_id: number, recipe_id: number) {
+    //sjekker om ingrediensen allerede finnes i oppskriften
+    const ifExist = this.recipeContent.map((element) =>
+      element.ingred_id == ingred_id ? true : false
+    );
+    //hvis ingrediensen ikke finnes i oppskriften vil den bli lagt til
+    if (!ifExist.includes(true)) {
+      const add = { oppskrift_id: recipe_id, ingred_id: ingred_id, mengde: 0, maleenhet: '' };
+
+      //gjennbruker .createRecipeIngredient, den forventer et array så pakker da add inn i et array
+      service
+        .createRecipeIngredient([add])
+        .then(() => this.getIngredRecipe())
+        .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+    } else {
+      Alert.info('denne ingrediensen finnes allerede i oppskriften');
+    }
+  }
+  //lager en egen funksjon for å hente ingrediensene til en oppskrift fordi jeg bruker den to steder, praktisk
+  getIngredRecipe() {
+    service
+      .getRecipeContent(this.props.match.params.id)
+      .then((recipeContent) => (this.recipeContent = recipeContent))
+      .catch((error) => Alert.danger('Error getting recipe content: ' + error.message));
+  }
+  pushNewChanges() {
+    console.log('nå sendes objektet', this.recipeContent);
+    service
+      .updateRecipe(this.recipe)
+      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+    service
+      .updateRecipeIngredient(this.recipeContent)
+      .then(() => history.push('/recipe/' + this.props.match.params.id))
+      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+  }
+  deleteIngredient(recipe_id: number, ingred_id: number) {
+    service
+      .deleteIngredient(recipe_id, ingred_id)
+      .then(() => this.getIngredRecipe())
+      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+  }
+  mounted() {
+    service
+      .getAllIngredient()
+      .then((ingredients) => (this.ingredients = ingredients))
+      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+    console.log(this.props.match.params.id);
+
+    this.getIngredRecipe();
+
+    service
+      .getRecipe(this.props.match.params.id)
+      .then((recipe) => {
+        this.recipe = recipe[0];
+      })
+      .catch((error) => Alert.danger('Error getting recipe: ' + error.message));
   }
 }

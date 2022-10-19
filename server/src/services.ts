@@ -13,11 +13,11 @@ export type Recipe = {
   ant_like: number;
 };
 
-export type Recipe_Content = {   
-  oppskrift_id: number;   
-  ingred_id: number;   
-  mengde: number;   
-  maleenhet: string; 
+export type Recipe_Content = {
+  oppskrift_id: number;
+  ingred_id: number;
+  mengde: number;
+  maleenhet: string;
 };
 
 export type Country = {
@@ -48,25 +48,32 @@ class Service {
 
   getRecipe(id: number) {
     return new Promise<Recipe[]>((resolve, reject) => {
-      pool.query('SELECT * FROM oppskrift WHERE oppskrift_id=?',[id], (error, results: RowDataPacket[]) => {
-        if (error) return reject(error);
+      pool.query(
+        'SELECT * FROM oppskrift WHERE oppskrift_id=?',
+        [id],
+        (error, results: RowDataPacket[]) => {
+          if (error) return reject(error);
 
-        resolve(results as Recipe[]);
-      });
+          resolve(results as Recipe[]);
+        }
+      );
     });
   }
 
   getRecipeContent(id: number) {
     return new Promise<Recipe_Content[]>((resolve, reject) => {
-      pool.query('SELECT oppskrift_id, ingred_id, mengde, maleenhet FROM oppskrift_innhold WHERE oppskrift_id=?',[id], (error, results: RowDataPacket[]) => {
-        if (error) return reject(error);
-        console.log(results);
+      pool.query(
+        'SELECT oppskrift_id, ingred_id, mengde, maleenhet FROM oppskrift_innhold WHERE oppskrift_id=?',
+        [id],
+        (error, results: RowDataPacket[]) => {
+          if (error) return reject(error);
+          console.log(results);
 
-        resolve(results as Recipe_Content[]);
-      });
+          resolve(results as Recipe_Content[]);
+        }
+      );
     });
   }
-
 
   getAllCountry() {
     return new Promise<Country[]>((resolve, reject) => {
@@ -113,6 +120,110 @@ class Service {
         [name],
         (error, results: ResultSetHeader) => {
           if (error) return reject(error);
+
+          resolve();
+        }
+      );
+    });
+  }
+
+  createRecipe(recipe: Recipe) {
+    return new Promise<number>((resolve, reject) => {
+      console.log(recipe);
+      pool.query(
+        'INSERT INTO oppskrift SET oppskrift_navn=?, oppskrift_beskrivelse=?, oppskrift_steg=?,ant_pors=?,bilde_adr=?,kategori_id=?,land_id=?,ant_like=?',
+        [
+          recipe.oppskrift_navn,
+          recipe.oppskrift_beskrivelse,
+          recipe.oppskrift_steg,
+          recipe.ant_pors,
+          recipe.bilde_adr,
+          recipe.kategori_id,
+          recipe.land_id,
+          recipe.ant_like,
+        ],
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
+
+          resolve(results.insertId);
+        }
+      );
+    });
+  }
+  createRecipeIngredient(recipe_content: Recipe_Content[]) {
+    return new Promise<void>((resolve, reject) => {
+      recipe_content.forEach((element) => {
+        console.log(element);
+
+        pool.query(
+          'INSERT INTO oppskrift_innhold SET oppskrift_id=?, ingred_id=?, mengde=?,maleenhet=?',
+          [element.oppskrift_id, element.ingred_id, element.mengde, element.maleenhet],
+          (error: any, _results: any) => {
+            if (error) return reject(error);
+
+            resolve();
+          }
+        );
+      });
+    });
+  }
+  updateRecipeIngredient(recipeContent: Recipe_Content[]) {
+    return new Promise<void>((resolve, reject) => {
+      recipeContent.forEach((element) => {
+        pool.query(
+          'UPDATE oppskrift_innhold SET mengde=?, maleenhet=? WHERE oppskrift_id=? AND ingred_id=?',
+          [element.mengde, element.maleenhet, element.oppskrift_id, element.ingred_id],
+          (error: any, _results: any) => {
+            if (error) return reject(error);
+
+            resolve();
+          }
+        );
+      });
+    });
+  }
+  updateRecipe(recipe: Recipe) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'UPDATE oppskrift SET oppskrift_navn=?, oppskrift_beskrivelse=?, oppskrift_steg=?, ant_pors=?, bilde_adr=? WHERE oppskrift_id=?',
+        [
+          recipe.oppskrift_navn,
+          recipe.oppskrift_beskrivelse,
+          recipe.oppskrift_steg,
+          recipe.ant_pors,
+          recipe.bilde_adr,
+          recipe.oppskrift_id,
+        ],
+        (error: any, _results: any) => {
+          if (error) return reject(error);
+
+          resolve();
+        }
+      );
+    });
+  }
+  deleteIngredient(recipe_id: number, ingred_id: number) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'DELETE FROM oppskrift_innhold WHERE oppskrift_id = ? AND ingred_id = ?',
+        [recipe_id, ingred_id],
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
+          if (results.affectedRows == 0) return reject(new Error('No row deleted'));
+
+          resolve();
+        }
+      );
+    });
+  }
+  deleteRecipe(id: number) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'DELETE FROM oppskrift WHERE oppskrift_id = ?',
+        [id],
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
+          if (results.affectedRows == 0) return reject(new Error('No row deleted'));
 
           resolve();
         }
