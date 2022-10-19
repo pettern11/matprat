@@ -8,17 +8,19 @@ import { NewRecipe, ShowRecipe, EditRecipe } from './components';
 import service, { Recipe } from './service';
 import { createHashHistory } from 'history';
 
-class Menu extends Component {
+export class Menu extends Component {
   render() {
     return (
-      <NavBar brand="MatForum">
-        <NavBar.Link to="/newrecipe">Ny oppskrift</NavBar.Link>
-      </NavBar>
+      <>
+        <NavBar brand="MatForum">
+          <NavBar.Link to="/newrecipe">Ny oppskrift</NavBar.Link>
+        </NavBar>
+      </>
     );
   }
 }
 
-class Home extends Component {
+export class Home extends Component {
   originalrecipes: Recipe[] = [];
   recipes: Recipe[] = [];
   searchterm: string = '';
@@ -26,6 +28,7 @@ class Home extends Component {
   render() {
     return (
       <>
+        <p>Hei</p>
         <Card title="Søkefelt">
           <Form.Input
             type="string"
@@ -85,5 +88,5 @@ ReactDOM.render(
       <Route exact path="/recipe/edit/:id" component={EditRecipe} />
     </div>
   </HashRouter>,
-  document.getElementById('root')
+  document.getElementById('root') || document.createElement('div')
 );

@@ -39,6 +39,7 @@ export class NewRecipe extends Component {
             </Column>
             <Column>
               <Form.Input
+                id="recipe_name_input"
                 type="text"
                 value={this.name}
                 onChange={(event) => (this.name = event.currentTarget.value)}
@@ -52,6 +53,7 @@ export class NewRecipe extends Component {
             </Column>
             <Column>
               <Form.Textarea
+                id="recipe_description_input"
                 style={{ width: '300px' }}
                 type="text"
                 value={this.description}
@@ -67,6 +69,7 @@ export class NewRecipe extends Component {
             </Column>
             <Column>
               <Form.Textarea
+                id="recipe_steps_input"
                 style={{ width: '600px' }}
                 type="text"
                 value={this.steps}
@@ -82,8 +85,10 @@ export class NewRecipe extends Component {
             </Column>
             <Column>
               <Form.Input
+                id="recipe_portions_input"
                 type="number"
                 value={this.portions}
+                //@ts-ignore
                 onChange={(event) => (this.portions = event.currentTarget.value)}
               />
             </Column>
@@ -95,6 +100,7 @@ export class NewRecipe extends Component {
             </Column>
             <Column>
               <Form.Input
+                id="recipe_picture_url_input"
                 type="text"
                 value={this.picture_adr}
                 onChange={(event) => (this.picture_adr = event.currentTarget.value)}
@@ -108,6 +114,7 @@ export class NewRecipe extends Component {
             </Column>
             <Column>
               <select
+                key={'choseCountry'}
                 id="choseCountry"
                 onChange={() => {
                   this.checkCountry(event?.target.value);
@@ -147,13 +154,14 @@ export class NewRecipe extends Component {
             </Column>
             <Column>
               <select
+                key={'choseCategory'}
                 id="choseCategory"
                 onChange={() => {
                   this.checkCategory(event?.target.value);
                 }}
               >
                 {this.categories.map((category: Category) => (
-                  <option key={category.kategori_id} value={category.kategori_id}>
+                  <option key={category.kategori_id.toString()} value={category.kategori_id}>
                     {category.kategori_navn}
                   </option>
                 ))}
