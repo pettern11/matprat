@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { NavBar, Card, Alert, Column, Row, Form, Button, RecipeView } from './widgets';
-import { NewRecipe, ShowRecipe, EditRecipe } from './components';
+import { NewRecipe, ShowRecipe, EditRecipe, ShoppingList } from './components';
 
 import service, { Recipe } from './service';
 import { createHashHistory } from 'history';
@@ -14,6 +14,7 @@ export class Menu extends Component {
       <>
         <NavBar brand="MatForum">
           <NavBar.Link to="/newrecipe">Ny oppskrift</NavBar.Link>
+          <NavBar.Link to="/shoppinglist">Handleliste</NavBar.Link>
         </NavBar>
       </>
     );
@@ -31,7 +32,8 @@ export class Home extends Component {
         <p>Hei</p>
         <Card title="Søkefelt">
           <Form.Input
-            type="string"
+            id="indexsearch"
+            type="text"
             value={this.searchterm}
             onChange={(event) => {
               this.search(event.currentTarget.value);
@@ -86,6 +88,8 @@ ReactDOM.render(
       <Route exact path="/newrecipe" component={NewRecipe} />
       <Route exact path="/recipe/:id" component={ShowRecipe} />
       <Route exact path="/recipe/edit/:id" component={EditRecipe} />
+      <Route exact path="/shoppinglist" component={ShoppingList} />
+
     </div>
   </HashRouter>,
   document.getElementById('root') || document.createElement('div')

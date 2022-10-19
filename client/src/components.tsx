@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Alert, Card, Row, Column, Form, Button, RecipeView } from './widgets';
 import { NavLink, Redirect } from 'react-router-dom';
-import service, { Country, Category, Ingredient, Recipe, Recipe_Content } from './service';
+import service, { Country, Category, Ingredient, Recipe, Recipe_Content, List } from './service';
 import { createHashHistory } from 'history';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -440,20 +440,19 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
   portions: number = 0;
   recipeContent: Recipe_Content[] = [];
   ingredients: Ingredient[] = [];
+  categories: Category[] = [];
 
   render() {
-    {
-      console.log(this.recipe);
-      console.log(this.recipeContent);
-      console.log(this.ingredients);
-    }
-
     return (
       <div>
-        <Card>
+        <Card title="">
           <img src={this.recipe.bilde_adr}></img>
           <h1>{this.recipe.oppskrift_navn}</h1>
-          <p>{this.recipe.oppskrift_beskrivelse}</p>
+          <p>Beskrivelse: {this.recipe.oppskrift_beskrivelse}</p>
+          <p>Kategori: {this.categories.find((kategori)=>kategori.kategori_id == this.recipe.kategori_id)?.kategori_navn}</p>
+          <p>Antall likes: {this.recipe.ant_like}</p>
+
+          <h5>Oppskrift:</h5>
           <pre>{this.recipe.oppskrift_steg}</pre>
           <h3>Ingredienser</h3>
           Porsjoner <Button.Danger onClick={this.decrementPortions}>-</Button.Danger>{' '}
@@ -472,6 +471,8 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
         <Button.Danger onClick={() => this.deleteRecipe(this.recipe.oppskrift_id)}>
           Slett oppskrift
         </Button.Danger>
+        <Button.Success onClick={ this.ingredientsToShoppingList}>Send ingredienser til handleliste</Button.Success>
+
       </div>
     );
   }
@@ -481,7 +482,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
       .getAllIngredient()
       .then((ingredients) => (this.ingredients = ingredients))
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
-    console.log(this.props.match.params.id);
+
     service
       .getRecipeContent(this.props.match.params.id)
       .then((recipeContent) => (this.recipeContent = recipeContent))
@@ -494,6 +495,11 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
         this.portions = recipe[0].ant_pors;
       })
       .catch((error) => Alert.danger('Error getting recipe: ' + error.message));
+
+    service
+      .getAllCategory()
+      .then((categories) => (this.categories = categories))
+      .catch((error) => Alert.danger('Error getting categories: ' + error.message));
   }
   incrementPortions() {
     this.portions++;
@@ -508,6 +514,16 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
       .deleteRecipe(id)
       .then(() => history.push('/'))
       .catch((error) => Alert.danger('Error deleting recipe: ' + error.message));
+  }
+  ingredientsToShoppingList() {
+    this.recipeContent.forEach((rc) => {
+      const ingredient = {ingred_id: rc.ingred_id,
+                          mengde: ((rc.mengde* this.portions) / this.recipe.ant_pors),
+                          maleenhet: rc.maleenhet
+                        };
+     service.addIngredient(ingredient);
+    });
+    history.push('/shoppinglist');
   }
 }
 export class EditRecipe extends Component<{ match: { params: { id: number } } }> {
@@ -723,3 +739,43 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
       .catch((error) => Alert.danger('Error getting recipe: ' + error.message));
   }
 }
+
+export class ShoppingList extends Component {
+  shoppingList: List[] = [];
+  ingredients: Ingredient[] = [];
+  
+  render() {
+    return (
+      <>
+        <Card title="Handleliste">
+          <Column>
+            {this.shoppingList.map((sl, i) => (
+              <p key={i}>
+                {i + 1}. {this.ingredients.find((ingredient) => ingredient.ingred_id == sl.ingred_id)?.ingred_navn} {sl.mengde} {sl.maleenhet}
+              </p>
+            ))}
+          </Column>
+        </Card>
+      </>
+    );
+  }
+
+  mounted() {
+    service
+      .getShoppingList()
+      .then((shoppingList: List[]) => (this.shoppingList = shoppingList))
+      .catch((error: { message: string; }) => Alert.danger('Error getting shoppingList: ' + error.message));
+  
+    service
+      .getAllIngredient()
+      .then((ingredients) => (this.ingredients = ingredients))
+      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+    }
+
+    /* updateList(id: number) {
+      service
+      .updateShoppingList(id)
+      .then(() => Alert.info('Handlelisten er oppdatert'))
+      .catch((error: { message: string; }) => Alert.danger('Error updating shoppingList: ' + error.message));
+    } */
+};
