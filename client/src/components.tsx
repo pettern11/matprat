@@ -74,7 +74,7 @@ export class NewRecipe extends Component {
                 type="text"
                 value={this.steps}
                 onChange={(event) => (this.steps = event.currentTarget.value)}
-                rows={10}
+                rows={5}
               />
             </Column>
           </Column>

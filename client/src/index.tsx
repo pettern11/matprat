@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { NavBar, Card, Alert, Column, Row, Form, Button, RecipeView } from './widgets';
+import { NavBar, Car, Card, Cards, Alert, Column, Row, Form, Button, RecipeView } from './widgets';
 import { NewRecipe, ShowRecipe, EditRecipe, ShoppingList } from './components';
 
 import service, { Recipe } from './service';
@@ -29,8 +29,7 @@ export class Home extends Component {
   render() {
     return (
       <>
-        <p>Hei</p>
-        <Card title="Søkefelt">
+        <Car title="Søkefelt">
           <Form.Input
             id="indexsearch"
             type="text"
@@ -40,23 +39,18 @@ export class Home extends Component {
               this.searchterm = event.currentTarget.value;
             }}
           />
-        </Card>
+        </Car>
         <Card title="Oppskrifter">
           {this.recipes.map((recipe) => (
-            <Row key={recipe.oppskrift_id}>
-              <Column>
-                <NavLink
-                  style={{ textDecoration: 'none', color: 'black' }}
-                  to={'/recipe/' + recipe.oppskrift_id}
-                >
-                  <RecipeView
-                    img={recipe.bilde_adr}
-                    name={recipe.oppskrift_navn}
-                    numbOfPors={recipe.ant_pors}
-                  ></RecipeView>
-                </NavLink>
-              </Column>
-            </Row>
+            <Cards title="" key={recipe.oppskrift_id}>
+              <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
+                <RecipeView
+                  img={recipe.bilde_adr}
+                  name={recipe.oppskrift_navn}
+                  numbOfPors={recipe.ant_pors}
+                ></RecipeView>
+              </NavLink>
+            </Cards>
           ))}
           {this.api.map((recipe) => (
             <Row key={recipe.idMeal}>
@@ -69,6 +63,11 @@ export class Home extends Component {
               </Column>
             </Row>
           ))}
+        </Card>
+        <Card title="Kanskje du liker">
+          <Cards title="Mat">
+            
+          </Cards>
         </Card>
       </>
     );
