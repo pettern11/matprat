@@ -11,20 +11,26 @@ import { NavLink } from 'react-router-dom';
 export class RecipeView extends Component<{ img: string; name: string; numbOfPors: number }> {
   render() {
     return (
-      <div className="recipe" style={{ border: '2px solid red' }}>
+      <div className="recipe-div text-center">
         <div className="recipe-body">
-          <img
-            style={{
-              height: 200,
-              width: 200,
-            }}
-            src={this.props.img}
-            alt="bilde av oppskrift"
-          />
-          <h5 className="recipe-title">{this.props.name}</h5>
+          <img className="image" src={this.props.img} alt="bilde av oppskrift" />
+          <h6 className="recipe-title">{this.props.name}</h6>
           <div className="recipe-portions">{this.props.numbOfPors} porsjoner</div>
         </div>
       </div>
+    );
+  }
+}
+
+export class Cards extends Component<{ title: ReactNode; children: ReactNode }> {
+  render() {
+    return (
+        <div className="cards">
+          <div className="card-body">
+            <h5 className="card-title">{this.props.title}</h5>
+            <div className="card-text">{this.props.children}</div>
+          </div>
+        </div>
     );
   }
 }
@@ -33,6 +39,19 @@ export class Card extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
     return (
       <div className="card">
+        <div className="card-body">
+          <h5 className="card-title">{this.props.title}</h5>
+          <div className="card-text">{this.props.children}</div>
+        </div>
+      </div>
+    );
+  }
+}
+
+export class Car extends Component<{ title: ReactNode; children: ReactNode }> {
+  render() {
+    return (
+      <div className="card car">
         <div className="card-body">
           <h5 className="card-title">{this.props.title}</h5>
           <div className="card-text">{this.props.children}</div>
