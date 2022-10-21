@@ -25,36 +25,24 @@ class API_Calls {
   alfabeth2 = ['d', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
   alfabeth3 = ['n', 'o', 'p', 'r', 's', 't', 'v', 'w', 'y'];
   getRecipeA_C() {
-    return new Promise<void>((resolve, reject) => {
-      this.alfabeth1.forEach((letter) => {
-        fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
-          .then((res) => res.json())
-          .then((data) => a_to_c(data.meals))
-          .catch(() => reject);
-      });
-      resolve();
+    this.alfabeth1.forEach((letter) => {
+      fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
+        .then((res) => res.json())
+        .then((data) => a_to_c(data.meals));
     });
   }
   getRecipeD_M() {
-    return new Promise<void>((resolve, reject) => {
-      this.alfabeth2.forEach((letter) => {
-        fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
-          .then((res) => res.json())
-          .then((data) => d_to_m(data.meals))
-          .catch(() => reject);
-      });
-      resolve();
+    this.alfabeth2.forEach((letter) => {
+      fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
+        .then((res) => res.json())
+        .then((data) => d_to_m(data.meals));
     });
   }
   getRecipeN_Y() {
-    return new Promise<void>((resolve, reject) => {
-      this.alfabeth3.forEach((letter) => {
-        fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
-          .then((res) => res.json())
-          .then((data) => n_to_y(data.meals))
-          .catch(() => reject);
-      });
-      resolve();
+    this.alfabeth3.forEach((letter) => {
+      fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
+        .then((res) => res.json())
+        .then((data) => n_to_y(data.meals));
     });
   }
   getCategory() {
@@ -68,100 +56,19 @@ class API_Calls {
       .then((data) => addCountry(data.meals));
   }
 }
-function a_to_c(array) {
-  array.forEach((element) => {
-    if (!recipe.includes(element.idMeal)) {
-      const indexCountry = country.map((e) => e.land_navn).indexOf(element.strArea);
-      const indexCategory = category.map((e) => e.kategori_navn).indexOf(element.strCategory);
-      recipe.push({
-        id: element.idMeal,
-        name: element.strMeal,
-        instruction: element.strInstructions,
-        picture: element.strMealThumb,
-        country: country[indexCountry].land_id,
-        category: category[indexCategory].kategori_id,
-      });
-    } //@ts-ignore
-  });
-}
-function d_to_m(array) {
-  array.forEach((element) => {
-    if (!recipe.includes(element.idMeal)) {
-      const indexCountry = country.map((e) => e.land_navn).indexOf(element.strArea);
-      const indexCategory = category.map((e) => e.kategori_navn).indexOf(element.strCategory);
-      recipe.push({
-        id: element.idMeal,
-        name: element.strMeal,
-        instruction: element.strInstructions,
-        picture: element.strMealThumb,
-        country: country[indexCountry].land_id,
-        category: category[indexCategory].kategori_id,
-      });
-    } //@ts-ignore
-  });
-}
-function n_to_y(array) {
-  array.forEach((element) => {
-    if (!recipe.includes(element.idMeal)) {
-      const indexCountry = country.map((e) => e.land_navn).indexOf(element.strArea);
-      const indexCategory = category.map((e) => e.kategori_navn).indexOf(element.strCategory);
-      recipe.push({
-        id: element.idMeal,
-        name: element.strMeal,
-        instruction: element.strInstructions,
-        picture: element.strMealThumb,
-        country: country[indexCountry].land_id,
-        category: category[indexCategory].kategori_id,
-      });
-    } //@ts-ignore
-  });
-}
-function addCategory(array) {
-  array.forEach((element) => {
-    category.push(element.strCategory);
-  });
-  // pushCategory();
-  getCategoryID();
-}
-function addCountry(array) {
-  array.forEach((element) => {
-    country.push(element.strArea);
-  });
-  // pushCountry();
-  getCountryID();
-}
-
 const apiCalls = new API_Calls();
 
 apiCalls.getCategory();
 apiCalls.getCountry();
-async function rekkefølge() {
-  // 1. Execution gets here almost instantly
-  await apiCalls.getRecipeA_C();
-  await apiCalls.getRecipeD_M();
-  await apiCalls.getRecipeN_Y();
-  setTimeout(() => {
-    console.log('se her2', recipe);
-  }, 2000);
-}
-(async () => {
-  await rekkefølge();
-})();
 
-function pushRecipe() {
-  //@ts-ignore
-  recipe.forEach((element) => {
-    pool.query(
-      'INSERT INTO oppskrift SET oppskrift_id=?, oppskrift_navn=?, oppskrift_beskrivelse=?, oppskrift_steg=?,ant_pors=?,bilde_adr=?,kategori_id=?,land_id=?,ant_like=?',
-      [element.id, element.name, '', element.instruction, 4, element.picture, 1, 1, 0],
-      (error, results) => {
-        if (error) return error;
+apiCalls.getRecipeA_C();
+apiCalls.getRecipeD_M();
+apiCalls.getRecipeN_Y();
 
-        results;
-      }
-    );
-  });
-}
+setTimeout(() => {
+  pushRecipe();
+}, 10000);
+
 function pushCountry() {
   //@ts-ignore
   country.forEach((element) => {
@@ -194,5 +101,99 @@ function getCategoryID() {
   pool.query('SELECT * FROM kategori', (error, results: []) => {
     if (error) return error;
     category = results;
+  });
+}
+function addCategory(array) {
+  array.forEach((element) => {
+    category.push(element.strCategory);
+  });
+  pushCategory();
+  getCategoryID();
+}
+function addCountry(array) {
+  array.forEach((element) => {
+    country.push(element.strArea);
+  });
+  pushCountry();
+  getCountryID();
+}
+function a_to_c(array) {
+  setTimeout(() => {
+    array.forEach((element) => {
+      if (!recipe.includes(element.idMeal)) {
+        const indexCountry = country.map((e) => e.land_navn).indexOf(element.strArea);
+        const indexCategory = category.map((e) => e.kategori_navn).indexOf(element.strCategory);
+        recipe.push({
+          id: element.idMeal,
+          name: element.strMeal,
+          instruction: element.strInstructions,
+          picture: element.strMealThumb,
+          country: country[indexCountry].land_id,
+          category: category[indexCategory].kategori_id,
+        });
+      } //@ts-ignore
+    });
+  }, 2000);
+}
+function d_to_m(array) {
+  setTimeout(() => {
+    array.forEach((element) => {
+      if (!recipe.includes(element.idMeal)) {
+        const indexCountry = country.map((e) => e.land_navn).indexOf(element.strArea);
+        const indexCategory = category.map((e) => e.kategori_navn).indexOf(element.strCategory);
+        recipe.push({
+          id: element.idMeal,
+          name: element.strMeal,
+          instruction: element.strInstructions,
+          picture: element.strMealThumb,
+          country: country[indexCountry].land_id,
+          category: category[indexCategory].kategori_id,
+        });
+      } //@ts-ignore
+    });
+  }, 2000);
+}
+function n_to_y(array) {
+  setTimeout(() => {
+    array.forEach((element) => {
+      if (!recipe.includes(element.idMeal)) {
+        const indexCountry = country.map((e) => e.land_navn).indexOf(element.strArea);
+        const indexCategory = category.map((e) => e.kategori_navn).indexOf(element.strCategory);
+
+        recipe.push({
+          id: element.idMeal,
+          name: element.strMeal,
+          instruction: element.strInstructions,
+          picture: element.strMealThumb,
+          country: country[indexCountry].land_id,
+          category: category[indexCategory].kategori_id,
+        });
+      } //@ts-ignore
+    });
+  }, 2000);
+}
+function pushRecipe() {
+  console.log('kommer vi hit?');
+  console.log(recipe.length);
+  //@ts-ignore
+  recipe.forEach((element) => {
+    pool.query(
+      'INSERT INTO oppskrift SET oppskrift_id=?, oppskrift_navn=?, oppskrift_beskrivelse=?, oppskrift_steg=?,ant_pors=?,bilde_adr=?,kategori_id=?,land_id=?,ant_like=?',
+      [
+        element.id,
+        element.name,
+        '',
+        element.instruction,
+        4,
+        element.picture,
+        '' + element.category + '',
+        '' + element.country + '',
+        0,
+      ],
+      (error, results) => {
+        if (error) return error;
+        results;
+      }
+    );
   });
 }

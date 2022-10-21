@@ -54,9 +54,7 @@ export class Home extends Component {
           ))}
         </Card>
         <Card title="Kanskje du liker">
-          <Cards title="Mat">
-            
-          </Cards>
+          <Cards title="Mat"></Cards>
         </Card>
       </>
     );
@@ -70,11 +68,6 @@ export class Home extends Component {
         this.recipes = recipes;
       })
       .catch((error) => Alert.danger('Error getting tasks: ' + error.message));
-
-    service.getAPI().then((api) => {
-      console.log(api);
-      this.api = api;
-    });
   }
   search(searchterm: string) {
     this.recipes = this.originalrecipes.filter((recipe) =>
