@@ -20,6 +20,8 @@ const pool = mysql.createPool({
 let recipe = [];
 let country = [];
 let category = [];
+let ingredient = [];
+let recipe_ingredient = [];
 class API_Calls {
   alfabeth1 = ['a', 'b', 'c'];
   alfabeth2 = ['d', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
@@ -55,20 +57,25 @@ class API_Calls {
       .then((res) => res.json())
       .then((data) => addCountry(data.meals));
   }
+  getIngredients() {
+    fetch('https://www.themealdb.com/api/json/v1/1/list.php?i=list')
+      .then((res) => res.json())
+      .then((data) => addIngredient(data.meals));
+  }
 }
 const apiCalls = new API_Calls();
+// apiCalls.getIngredients();
+// apiCalls.getCategory();
+// apiCalls.getCountry();
 
-apiCalls.getCategory();
-apiCalls.getCountry();
+// apiCalls.getRecipeA_C();
+// apiCalls.getRecipeD_M();
+// apiCalls.getRecipeN_Y();
 
-apiCalls.getRecipeA_C();
-apiCalls.getRecipeD_M();
-apiCalls.getRecipeN_Y();
-
-setTimeout(() => {
-  pushRecipe();
-}, 10000);
-
+// setTimeout(() => {
+//   pushRecipe();
+// }, 10000);
+function matchRecipeIngredient() {}
 function pushCountry() {
   //@ts-ignore
   country.forEach((element) => {
@@ -77,6 +84,20 @@ function pushCountry() {
 
       results;
     });
+  });
+}
+function pushIngredient() {
+  //@ts-ignore
+  ingredient.forEach((element) => {
+    pool.query(
+      'INSERT INTO ingrediens SET ingred_id=?, ingred_navn=?',
+      [element.id, element.name],
+      (error, results) => {
+        if (error) return error;
+
+        results;
+      }
+    );
   });
 }
 function pushCategory() {
@@ -117,12 +138,19 @@ function addCountry(array) {
   pushCountry();
   getCountryID();
 }
+function addIngredient(array) {
+  array.forEach((element) => {
+    ingredient.push({ id: element.idIngredient, name: element.strIngredient });
+  });
+  pushIngredient();
+}
 function a_to_c(array) {
   setTimeout(() => {
     array.forEach((element) => {
       if (!recipe.includes(element.idMeal)) {
         const indexCountry = country.map((e) => e.land_navn).indexOf(element.strArea);
         const indexCategory = category.map((e) => e.kategori_navn).indexOf(element.strCategory);
+
         recipe.push({
           id: element.idMeal,
           name: element.strMeal,
