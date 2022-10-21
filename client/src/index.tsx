@@ -58,17 +58,6 @@ export class Home extends Component {
               </Column>
             </Row>
           ))}
-          {this.api.map((recipe) => (
-            <Row key={recipe.idMeal}>
-              <Column>
-                <RecipeView
-                  img={recipe.strMealThumb}
-                  name={recipe.strMeal}
-                  numbOfPors={4}
-                ></RecipeView>
-              </Column>
-            </Row>
-          ))}
         </Card>
       </>
     );

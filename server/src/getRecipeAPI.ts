@@ -18,77 +18,138 @@ const pool = mysql.createPool({
 });
 
 let recipe = [];
-let alfabeth1 = ['a', 'b', 'c'];
-let alfabeth2 = ['d', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
-let alfabeth3 = ['n', 'o', 'p', 'r', 's', 't', 'v', 'w', 'y'];
-
-function getRecipeAPI() {
-  alfabeth1.forEach((letter) => {
-    fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
+let country = [];
+let category = [];
+class API_Calls {
+  alfabeth1 = ['a', 'b', 'c'];
+  alfabeth2 = ['d', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
+  alfabeth3 = ['n', 'o', 'p', 'r', 's', 't', 'v', 'w', 'y'];
+  getRecipeA_C() {
+    return new Promise<void>((resolve, reject) => {
+      this.alfabeth1.forEach((letter) => {
+        fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
+          .then((res) => res.json())
+          .then((data) => a_to_c(data.meals))
+          .catch(() => reject);
+      });
+      resolve();
+    });
+  }
+  getRecipeD_M() {
+    return new Promise<void>((resolve, reject) => {
+      this.alfabeth2.forEach((letter) => {
+        fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
+          .then((res) => res.json())
+          .then((data) => d_to_m(data.meals))
+          .catch(() => reject);
+      });
+      resolve();
+    });
+  }
+  getRecipeN_Y() {
+    return new Promise<void>((resolve, reject) => {
+      this.alfabeth3.forEach((letter) => {
+        fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
+          .then((res) => res.json())
+          .then((data) => n_to_y(data.meals))
+          .catch(() => reject);
+      });
+      resolve();
+    });
+  }
+  getCategory() {
+    fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list')
       .then((res) => res.json())
-      // .then((data) => console.log(data.meals.length));
-      .then((data) => aaaa1(data.meals));
-  });
-  alfabeth2.forEach((letter) => {
-    fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
+      .then((data) => addCategory(data.meals));
+  }
+  getCountry() {
+    fetch('https://www.themealdb.com/api/json/v1/1/list.php?a=list')
       .then((res) => res.json())
-      // .then((data) => console.log(data.meals.length));
-      .then((data) => aaaa2(data.meals));
-  });
-  alfabeth3.forEach((letter) => {
-    fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
-      .then((res) => res.json())
-      // .then((data) => console.log(data.meals.length));
-      .then((data) => aaaa3(data.meals));
-  });
+      .then((data) => addCountry(data.meals));
+  }
 }
-
-function aaaa1(array) {
+function a_to_c(array) {
   array.forEach((element) => {
     if (!recipe.includes(element.idMeal)) {
+      const indexCountry = country.map((e) => e.land_navn).indexOf(element.strArea);
+      const indexCategory = category.map((e) => e.kategori_navn).indexOf(element.strCategory);
       recipe.push({
         id: element.idMeal,
         name: element.strMeal,
         instruction: element.strInstructions,
         picture: element.strMealThumb,
-        country: element.strArea,
-        category: element.strCategory,
+        country: country[indexCountry].land_id,
+        category: category[indexCategory].kategori_id,
       });
-    }
+    } //@ts-ignore
   });
 }
-function aaaa2(array) {
+function d_to_m(array) {
   array.forEach((element) => {
     if (!recipe.includes(element.idMeal)) {
+      const indexCountry = country.map((e) => e.land_navn).indexOf(element.strArea);
+      const indexCategory = category.map((e) => e.kategori_navn).indexOf(element.strCategory);
       recipe.push({
         id: element.idMeal,
         name: element.strMeal,
         instruction: element.strInstructions,
         picture: element.strMealThumb,
-        country: element.strArea,
-        category: element.strCategory,
+        country: country[indexCountry].land_id,
+        category: category[indexCategory].kategori_id,
       });
-    }
+    } //@ts-ignore
   });
 }
-function aaaa3(array) {
+function n_to_y(array) {
   array.forEach((element) => {
     if (!recipe.includes(element.idMeal)) {
+      const indexCountry = country.map((e) => e.land_navn).indexOf(element.strArea);
+      const indexCategory = category.map((e) => e.kategori_navn).indexOf(element.strCategory);
       recipe.push({
         id: element.idMeal,
         name: element.strMeal,
         instruction: element.strInstructions,
         picture: element.strMealThumb,
-        country: element.strArea,
-        category: element.strCategory,
+        country: country[indexCountry].land_id,
+        category: category[indexCategory].kategori_id,
       });
-    }
+    } //@ts-ignore
   });
 }
+function addCategory(array) {
+  array.forEach((element) => {
+    category.push(element.strCategory);
+  });
+  // pushCategory();
+  getCategoryID();
+}
+function addCountry(array) {
+  array.forEach((element) => {
+    country.push(element.strArea);
+  });
+  // pushCountry();
+  getCountryID();
+}
 
-getRecipeAPI();
+const apiCalls = new API_Calls();
 
-setTimeout(() => {
+apiCalls.getCategory();
+apiCalls.getCountry();
+async function rekkefølge() {
+  // 1. Execution gets here almost instantly
+  await apiCalls.getRecipeA_C();
+  await apiCalls.getRecipeD_M();
+  await apiCalls.getRecipeN_Y();
+  setTimeout(() => {
+    console.log('se her2', recipe);
+  }, 2000);
+}
+(async () => {
+  await rekkefølge();
+})();
+
+function pushRecipe() {
+  //@ts-ignore
   recipe.forEach((element) => {
     pool.query(
       'INSERT INTO oppskrift SET oppskrift_id=?, oppskrift_navn=?, oppskrift_beskrivelse=?, oppskrift_steg=?,ant_pors=?,bilde_adr=?,kategori_id=?,land_id=?,ant_like=?',
@@ -100,4 +161,38 @@ setTimeout(() => {
       }
     );
   });
-}, 2000);
+}
+function pushCountry() {
+  //@ts-ignore
+  country.forEach((element) => {
+    pool.query('INSERT INTO land SET land_navn=?', [element], (error, results) => {
+      if (error) return error;
+
+      results;
+    });
+  });
+}
+function pushCategory() {
+  //@ts-ignore
+  category.forEach((element) => {
+    pool.query('INSERT INTO kategori SET kategori_navn=?', [element], (error, results) => {
+      if (error) return error;
+
+      results;
+    });
+  });
+}
+function getCountryID() {
+  country = [];
+  pool.query('SELECT * FROM land', (error, results: []) => {
+    if (error) return error;
+    country = results;
+  });
+}
+function getCategoryID() {
+  category = [];
+  pool.query('SELECT * FROM kategori', (error, results: []) => {
+    if (error) return error;
+    category = results;
+  });
+}
