@@ -52,17 +52,6 @@ export class Home extends Component {
               </NavLink>
             </Cards>
           ))}
-          {this.api.map((recipe) => (
-            <Row key={recipe.idMeal}>
-              <Column>
-                <RecipeView
-                  img={recipe.strMealThumb}
-                  name={recipe.strMeal}
-                  numbOfPors={4}
-                ></RecipeView>
-              </Column>
-            </Row>
-          ))}
         </Card>
         <Card title="Kanskje du liker">
           <Cards title="Mat">
