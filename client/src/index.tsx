@@ -41,6 +41,15 @@ export class Home extends Component {
           />
         </Car>
         <Card title="Oppskrifter">
+          <select onChange={(event) => this.sort(event.target.value)}>
+            <option selected disabled>
+              Sorter
+            </option>
+            <option value="0">A-Z</option>
+            <option value="1">Z-A</option>
+            <option value="2">Nyeste</option>
+          </select>
+          <br></br>
           {this.recipes.map((recipe) => (
             <Cards title="" key={recipe.oppskrift_id}>
               <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
@@ -59,7 +68,27 @@ export class Home extends Component {
       </>
     );
   }
-
+  sort(value: number) {
+    if (value == 0) {
+      this.recipes.sort(function (a, b) {
+        const x = a.oppskrift_navn.toLowerCase();
+        const y = b.oppskrift_navn.toLowerCase();
+        return x < y ? -1 : x > y ? 1 : 0;
+      });
+    } else if (value == 1) {
+      this.recipes.sort(function (b, a) {
+        const x = a.oppskrift_navn.toLowerCase();
+        const y = b.oppskrift_navn.toLowerCase();
+        return x < y ? -1 : x > y ? 1 : 0;
+      });
+    } else {
+      this.recipes.sort(function (b, a) {
+        const x = a.oppskrift_id;
+        const y = b.oppskrift_id;
+        return x < y ? -1 : x > y ? 1 : 0;
+      });
+    }
+  }
   mounted() {
     service
       .getAllRepice()
