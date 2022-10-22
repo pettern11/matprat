@@ -51,9 +51,7 @@ class Service {
   getAllRepice() {
     return axios.get<Recipe[]>('/').then((response) => response.data);
   }
-  getAPI() {
-    return axios.get('/api').then((response) => response.data);
-  }
+
   getRecipe(id: number) {
     return axios.get<Recipe[]>('/recipe/' + id).then((response) => response.data);
   }

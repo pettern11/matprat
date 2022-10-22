@@ -58,13 +58,6 @@ class Service {
       });
     });
   }
-  getAPI() {
-    return new Promise((resolve, _reject) => {
-      fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=')
-        .then((res) => res.json())
-        .then((data) => resolve(data.meals));
-    });
-  }
 
   getRecipe(id: number) {
     return new Promise<Recipe[]>((resolve, reject) => {
