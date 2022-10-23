@@ -1,3 +1,4 @@
+// @ts-nocheck
 import mysql from 'mysql2';
 /*
 getRecipeAPI.ts bruker ES-Modules, og krever ES5/6, og ikke commonJS.
@@ -22,6 +23,8 @@ let country = [];
 let category = [];
 let ingredient = [];
 let recipe_ingredient = [];
+//@ts-ignore
+
 class API_Calls {
   alfabeth1 = ['a', 'b', 'c'];
   alfabeth2 = ['d', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
@@ -144,20 +147,89 @@ function addIngredient(array) {
   });
   pushIngredient();
 }
+function stringToNumber(string) {
+  let number;
+  let numsStr = string.replace(/[^0-9/]/g, '');
+  let firstNumber = parseInt(numsStr);
+  let restOfString = numsStr.replace(firstNumber, '');
+  if (restOfString.includes('/')) {
+    let newString = restOfString.replace('/', '');
+    let secondNumber = parseInt(newString);
+    number = firstNumber / secondNumber;
+  } else {
+    number = firstNumber;
+  }
+  return number;
+}
+function removeNumber(string) {
+  let numberFree = string.replace(/[0-9/']/g, '');
+  return numberFree;
+}
 function a_to_c(array) {
   setTimeout(() => {
     array.forEach((element) => {
       if (!recipe.includes(element.idMeal)) {
         const indexCountry = country.map((e) => e.land_navn).indexOf(element.strArea);
         const indexCategory = category.map((e) => e.kategori_navn).indexOf(element.strCategory);
-        const ingred = [];
-        for (let i = 1; i < 21; i++) {
-          let a = 'element.strIngredient' + i;
-          console.log(a);
-          // let indexIngred = ingredient.map((e) => e.name).indexOf(a);
-          // ingred.push(ingredient[indexIngred]);
+        const ingredient_list = [
+          element.strIngredient1,
+          element.strIngredient2,
+          element.strIngredient3,
+          element.strIngredient4,
+          element.strIngredient5,
+          element.strIngredient6,
+          element.strIngredient7,
+          element.strIngredient8,
+          element.strIngredient9,
+          element.strIngredient10,
+          element.strIngredient11,
+          element.strIngredient12,
+          element.strIngredient13,
+          element.strIngredient14,
+          element.strIngredient15,
+          element.strIngredient16,
+          element.strIngredient17,
+          element.strIngredient18,
+          element.strIngredient19,
+          element.strIngredient20,
+        ];
+        const ingredient_measure = [
+          element.strMeasure1,
+          element.strMeasure2,
+          element.strMeasure3,
+          element.strMeasure4,
+          element.strMeasure5,
+          element.strMeasure6,
+          element.strMeasure7,
+          element.strMeasure8,
+          element.strMeasure9,
+          element.strMeasure10,
+          element.strMeasure11,
+          element.strMeasure12,
+          element.strMeasure13,
+          element.strMeasure14,
+          element.strMeasure15,
+          element.strMeasure16,
+          element.strMeasure17,
+          element.strMeasure18,
+          element.strMeasure19,
+          element.strMeasure20,
+        ];
+        let ingred = [];
+        let measure = [];
+        for (let i = 0; i < 20; i++) {
+          let indexIngred = ingredient.map((e) => e.name).indexOf(ingredient_list[i]);
+          if (ingredient[indexIngred]) {
+            ingred.push(ingredient[indexIngred].id);
+          }
+          if (ingredient_measure[i]) {
+            measure.push({
+              number: stringToNumber(ingredient_measure[i]),
+              type: removeNumber(ingredient_measure[i]),
+            });
+          }
         }
-        console.log(ingred);
+        console.log(measure);
         recipe.push({
           id: element.idMeal,
           name: element.strMeal,
