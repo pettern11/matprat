@@ -1,3 +1,4 @@
+// @ts-nocheck
 import mysql from 'mysql2';
 /*
 getRecipeAPI.ts bruker ES-Modules, og krever ES5/6, og ikke commonJS.
@@ -22,6 +23,8 @@ let country = [];
 let category = [];
 let ingredient = [];
 let recipe_ingredient = [];
+//@ts-ignore
+
 class API_Calls {
   alfabeth1 = ['a', 'b', 'c'];
   alfabeth2 = ['d', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
@@ -74,8 +77,32 @@ apiCalls.getRecipeN_Y();
 
 setTimeout(() => {
   pushRecipe();
-}, 10000);
-function matchRecipeIngredient() {}
+}, 13000);
+// setTimeout(() => {
+//   matchRecipeIngredient();
+// }, 10000);
+
+function matchRecipeIngredient() {
+  recipe_ingredient.forEach((element) => {
+    // console.log(element);
+    let number;
+    if (isNaN(element.number)) {
+      number = 1;
+    } else {
+      number = element.number;
+    }
+    console.log(element.recipe_id);
+    pool.query(
+      'INSERT INTO oppskrift_innhold SET oppskrift_id=?, ingred_id=?, mengde=?, maleenhet=?',
+      [element.recipe_id, element.ingred_id, number, element.type],
+      (error, results) => {
+        if (error) return error;
+
+        results;
+      }
+    );
+  });
+}
 function pushCountry() {
   //@ts-ignore
   country.forEach((element) => {
@@ -144,20 +171,98 @@ function addIngredient(array) {
   });
   pushIngredient();
 }
+function stringToNumber(string) {
+  let number;
+  let numsStr = string.replace(/[^0-9/]/g, '');
+  let firstNumber = parseInt(numsStr);
+  let restOfString = numsStr.replace(firstNumber, '');
+  if (restOfString.includes('/')) {
+    let newString = restOfString.replace('/', '');
+    let secondNumber = parseInt(newString);
+    number = firstNumber / secondNumber;
+  } else {
+    number = firstNumber;
+  }
+  return number;
+}
+function removeNumber(string) {
+  let numberFree = string.replace(/[0-9/']/g, '');
+  return numberFree;
+}
 function a_to_c(array) {
   setTimeout(() => {
     array.forEach((element) => {
       if (!recipe.includes(element.idMeal)) {
         const indexCountry = country.map((e) => e.land_navn).indexOf(element.strArea);
         const indexCategory = category.map((e) => e.kategori_navn).indexOf(element.strCategory);
-        const ingred = [];
-        for (let i = 1; i < 21; i++) {
-          let a = 'element.strIngredient' + i;
-          console.log(a);
-          // let indexIngred = ingredient.map((e) => e.name).indexOf(a);
-          // ingred.push(ingredient[indexIngred]);
+        const ingredient_list = [
+          element.strIngredient1,
+          element.strIngredient2,
+          element.strIngredient3,
+          element.strIngredient4,
+          element.strIngredient5,
+          element.strIngredient6,
+          element.strIngredient7,
+          element.strIngredient8,
+          element.strIngredient9,
+          element.strIngredient10,
+          element.strIngredient11,
+          element.strIngredient12,
+          element.strIngredient13,
+          element.strIngredient14,
+          element.strIngredient15,
+          element.strIngredient16,
+          element.strIngredient17,
+          element.strIngredient18,
+          element.strIngredient19,
+          element.strIngredient20,
+        ];
+        const ingredient_measure = [
+          element.strMeasure1,
+          element.strMeasure2,
+          element.strMeasure3,
+          element.strMeasure4,
+          element.strMeasure5,
+          element.strMeasure6,
+          element.strMeasure7,
+          element.strMeasure8,
+          element.strMeasure9,
+          element.strMeasure10,
+          element.strMeasure11,
+          element.strMeasure12,
+          element.strMeasure13,
+          element.strMeasure14,
+          element.strMeasure15,
+          element.strMeasure16,
+          element.strMeasure17,
+          element.strMeasure18,
+          element.strMeasure19,
+          element.strMeasure20,
+        ];
+        let ingred = [];
+        let measure = [];
+        for (let i = 0; i < 20; i++) {
+          let indexIngred = ingredient
+            .map((e) => e.name.toLowerCase())
+            .indexOf(ingredient_list[i] ? ingredient_list[i].toLowerCase() : '');
+
+          if (ingredient[indexIngred]) {
+            ingred.push(ingredient[indexIngred].id);
+          }
+
+          if (ingredient_measure[i]) {
+            measure.push({
+              number:
+                stringToNumber(ingredient_measure[i]) == NaN
+                  ? '1'
+                  : stringToNumber(ingredient_measure[i]),
+              type: removeNumber(ingredient_measure[i]),
+            });
+          }
         }
-        console.log(ingred);
+        // console.log(measure, i);
+        // element.idMeal == 52765 ? console.log('her er jeg', element.strIngredient1) : '';
+
         recipe.push({
           id: element.idMeal,
           name: element.strMeal,
@@ -166,21 +271,107 @@ function a_to_c(array) {
           country: country[indexCountry].land_id,
           category: category[indexCategory].kategori_id,
         });
+        // let elementID = element.idMeal;
+        // ingred.forEach((ingredient, i) => {
+        //   console.log(elementID);
+        // });
+        for (let i = 0; i < 20; i++) {
+          // console.log(element.idMeal, ingred[i], measure[i]);
+          if (
+            measure[i] == undefined ||
+            (isNaN(measure[i].number) && measure[i].type == '') ||
+            (measure[i].number && measure[i].type == null)
+          ) {
+            break;
+          }
+
+          recipe_ingredient.push({
+            recipe_id: element.idMeal,
+            ingred_id: ingred[i],
+            number: measure[i].number,
+            type: measure[i].type,
+          });
+        }
+        // console.log(recipe_ingredient);
       } //@ts-ignore
     });
   }, 2000);
 }
+
 function d_to_m(array) {
   setTimeout(() => {
     array.forEach((element) => {
       if (!recipe.includes(element.idMeal)) {
         const indexCountry = country.map((e) => e.land_navn).indexOf(element.strArea);
         const indexCategory = category.map((e) => e.kategori_navn).indexOf(element.strCategory);
-        const ingred = [];
-        for (let i = 1; i < 21; i++) {
-          let indexIngred = ingredient.map((e) => e.name).indexOf(element + '.strIngredient' + i);
-          ingred.push(ingredient[indexIngred]);
+        const ingredient_list = [
+          element.strIngredient1,
+          element.strIngredient2,
+          element.strIngredient3,
+          element.strIngredient4,
+          element.strIngredient5,
+          element.strIngredient6,
+          element.strIngredient7,
+          element.strIngredient8,
+          element.strIngredient9,
+          element.strIngredient10,
+          element.strIngredient11,
+          element.strIngredient12,
+          element.strIngredient13,
+          element.strIngredient14,
+          element.strIngredient15,
+          element.strIngredient16,
+          element.strIngredient17,
+          element.strIngredient18,
+          element.strIngredient19,
+          element.strIngredient20,
+        ];
+        const ingredient_measure = [
+          element.strMeasure1,
+          element.strMeasure2,
+          element.strMeasure3,
+          element.strMeasure4,
+          element.strMeasure5,
+          element.strMeasure6,
+          element.strMeasure7,
+          element.strMeasure8,
+          element.strMeasure9,
+          element.strMeasure10,
+          element.strMeasure11,
+          element.strMeasure12,
+          element.strMeasure13,
+          element.strMeasure14,
+          element.strMeasure15,
+          element.strMeasure16,
+          element.strMeasure17,
+          element.strMeasure18,
+          element.strMeasure19,
+          element.strMeasure20,
+        ];
+        let ingred = [];
+        let measure = [];
+        for (let i = 0; i < 20; i++) {
+          let indexIngred = ingredient
+            .map((e) => e.name.toLowerCase())
+            .indexOf(ingredient_list[i] ? ingredient_list[i].toLowerCase() : '');
+
+          if (ingredient[indexIngred]) {
+            ingred.push(ingredient[indexIngred].id);
+          }
+
+          if (ingredient_measure[i]) {
+            measure.push({
+              number:
+                stringToNumber(ingredient_measure[i]) == NaN
+                  ? '1'
+                  : stringToNumber(ingredient_measure[i]),
+              type: removeNumber(ingredient_measure[i]),
+            });
+          }
         }
+        // console.log(measure, i);
+        // element.idMeal == 52765 ? console.log('her er jeg', element.strIngredient1) : '';
+
         recipe.push({
           id: element.idMeal,
           name: element.strMeal,
@@ -189,6 +380,28 @@ function d_to_m(array) {
           country: country[indexCountry].land_id,
           category: category[indexCategory].kategori_id,
         });
+        // let elementID = element.idMeal;
+        // ingred.forEach((ingredient, i) => {
+        //   console.log(elementID);
+        // });
+        for (let i = 0; i < 20; i++) {
+          // console.log(element.idMeal, ingred[i], measure[i]);
+          if (
+            measure[i] == undefined ||
+            (isNaN(measure[i].number) && measure[i].type == '') ||
+            (measure[i].number && measure[i].type == null)
+          ) {
+            break;
+          }
+
+          recipe_ingredient.push({
+            recipe_id: element.idMeal,
+            ingred_id: ingred[i],
+            number: measure[i].number,
+            type: measure[i].type,
+          });
+        }
+        // console.log(recipe_ingredient);
       } //@ts-ignore
     });
   }, 2000);
@@ -199,11 +412,74 @@ function n_to_y(array) {
       if (!recipe.includes(element.idMeal)) {
         const indexCountry = country.map((e) => e.land_navn).indexOf(element.strArea);
         const indexCategory = category.map((e) => e.kategori_navn).indexOf(element.strCategory);
-        const ingred = [];
-        for (let i = 1; i < 21; i++) {
-          let indexIngred = ingredient.map((e) => e.name).indexOf(element + '.strIngredient' + i);
-          ingred.push(ingredient[indexIngred]);
+        const ingredient_list = [
+          element.strIngredient1,
+          element.strIngredient2,
+          element.strIngredient3,
+          element.strIngredient4,
+          element.strIngredient5,
+          element.strIngredient6,
+          element.strIngredient7,
+          element.strIngredient8,
+          element.strIngredient9,
+          element.strIngredient10,
+          element.strIngredient11,
+          element.strIngredient12,
+          element.strIngredient13,
+          element.strIngredient14,
+          element.strIngredient15,
+          element.strIngredient16,
+          element.strIngredient17,
+          element.strIngredient18,
+          element.strIngredient19,
+          element.strIngredient20,
+        ];
+        const ingredient_measure = [
+          element.strMeasure1,
+          element.strMeasure2,
+          element.strMeasure3,
+          element.strMeasure4,
+          element.strMeasure5,
+          element.strMeasure6,
+          element.strMeasure7,
+          element.strMeasure8,
+          element.strMeasure9,
+          element.strMeasure10,
+          element.strMeasure11,
+          element.strMeasure12,
+          element.strMeasure13,
+          element.strMeasure14,
+          element.strMeasure15,
+          element.strMeasure16,
+          element.strMeasure17,
+          element.strMeasure18,
+          element.strMeasure19,
+          element.strMeasure20,
+        ];
+        let ingred = [];
+        let measure = [];
+        for (let i = 0; i < 20; i++) {
+          let indexIngred = ingredient
+            .map((e) => e.name.toLowerCase())
+            .indexOf(ingredient_list[i] ? ingredient_list[i].toLowerCase() : '');
+
+          if (ingredient[indexIngred]) {
+            ingred.push(ingredient[indexIngred].id);
+          }
+
+          if (ingredient_measure[i]) {
+            measure.push({
+              number:
+                stringToNumber(ingredient_measure[i]) == NaN
+                  ? '1'
+                  : stringToNumber(ingredient_measure[i]),
+              type: removeNumber(ingredient_measure[i]),
+            });
+          }
         }
+        // console.log(measure, i);
+        // element.idMeal == 52765 ? console.log('her er jeg', element.strIngredient1) : '';
+
         recipe.push({
           id: element.idMeal,
           name: element.strMeal,
@@ -212,6 +488,28 @@ function n_to_y(array) {
           country: country[indexCountry].land_id,
           category: category[indexCategory].kategori_id,
         });
+        // let elementID = element.idMeal;
+        // ingred.forEach((ingredient, i) => {
+        //   console.log(elementID);
+        // });
+        for (let i = 0; i < 20; i++) {
+          // console.log(element.idMeal, ingred[i], measure[i]);
+          if (
+            measure[i] == undefined ||
+            (isNaN(measure[i].number) && measure[i].type == '') ||
+            (measure[i].number && measure[i].type == null)
+          ) {
+            break;
+          }
+
+          recipe_ingredient.push({
+            recipe_id: element.idMeal,
+            ingred_id: ingred[i],
+            number: measure[i].number,
+            type: measure[i].type,
+          });
+        }
+        // console.log(recipe_ingredient);
       } //@ts-ignore
     });
   }, 2000);
@@ -240,4 +538,5 @@ function pushRecipe() {
       }
     );
   });
+  matchRecipeIngredient();
 }
