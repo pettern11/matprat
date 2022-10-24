@@ -42,9 +42,7 @@ export class Home extends Component {
         </Car>
         <Card title="Oppskrifter">
           <select onChange={(event) => this.sort(event.target.value)}>
-            <option selected disabled>
-              Sorter
-            </option>
+            <option>Sorter</option>
             <option value="0">A-Z</option>
             <option value="1">Z-A</option>
             <option value="2">Nyeste</option>

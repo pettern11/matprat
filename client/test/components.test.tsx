@@ -86,6 +86,9 @@ jest.mock('../src/service', () => {
     deleteRecipe(id: number) {
       return Promise.resolve();
     }
+    createIngredient() {
+      return Promise.resolve();
+    }
   }
   return new Service();
 });
