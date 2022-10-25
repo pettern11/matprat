@@ -399,8 +399,9 @@ export class NewRecipe extends Component {
           .getAllIngredient()
           .then((ingredients) => (this.ingredients = ingredients))
           .catch((error) => Alert.danger('Error : ' + error.message))
-      );
+      ).catch((error) => Alert.danger('Error : ' + error.message))
     }
+    else(Alert.info('Ingrediensen finnes allerede eller du har ikke skrevet noe'))
   }
   checkCountry(value: number) {
     this.country_id = value;
