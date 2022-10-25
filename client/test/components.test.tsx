@@ -141,7 +141,7 @@ describe('NewRecipe tests', () => {
       });
     });
   });
-  test.skip('Try create recipe and fail because name, description, etc..', (done) => {
+  test('Try create recipe and fail because name, description, etc..', (done) => {
     const wrapper = shallow(<NewRecipe />);
     const wrapperAlert = shallow(<Alert />);
     let divId = 'ingreditentList';
@@ -205,10 +205,22 @@ describe('NewRecipe tests', () => {
   });
 });
 
-/* describe('ShowRecipe tests', () => {
-  test('Show recipe draws correctly with params id set', (done) => {
-    const wrapper = shallow(<ShowRecipe match={{ params: { id: 1 } }} />);
+describe('ShowRecipe tests', () => {
+  test('Delete recipe button works', (done) => {
+    const wrapper = shallow(<ShowRecipe match={{ params: { id: 2 } }} />);
+    setTimeout(() => {
+      wrapper.find('#deleteRecipe').simulate('click');
+      expect(window.location.href).toEqual('http://localhost/#/');
+      done();
+    });
+  });
 
-    done()
-}
-}); */
+  test('Edit recipe button works', (done) => {
+    const wrapper = shallow(<ShowRecipe match={{ params: { id: 1 } }} />);
+    setTimeout(() => {
+      wrapper.find(Button.Success).at(1).simulate('click');
+      expect(window.location.href).toEqual('http://localhost/#/recipe/edit/1');
+      done();
+    });
+  });
+});
