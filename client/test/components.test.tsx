@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { NewRecipe, ShowRecipe } from '../src/components';
+import { NewRecipe, ShowRecipe, EditRecipe } from '../src/components';
 import { shallow, mount } from 'enzyme';
 import { Alert, Card, Row, Column, Form, Button, RecipeView } from '../src/widgets';
 import { NavLink } from 'react-router-dom';
@@ -94,6 +94,12 @@ jest.mock('../src/service', () => {
     }
   }
   return new Service();
+});
+describe('editRecipe test', () => {
+  test('editRecipe should render', (done) => {
+    const wrapper = shallow(<EditRecipe match={{ params: { id: 2 } }} />);
+    done();
+  });
 });
 
 describe('NewRecipe tests', () => {
