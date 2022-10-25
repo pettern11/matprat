@@ -394,13 +394,16 @@ export class NewRecipe extends Component {
 
     console.log(isFound);
     if (!isFound && this.ingredient != '') {
-      service.createIngredient(this.ingredient).then(() =>
-        service
-          .getAllIngredient()
-          .then((ingredients) => (this.ingredients = ingredients))
-          .catch((error) => Alert.danger('Error : ' + error.message))
-      );
-    }
+      service
+        .createIngredient(this.ingredient)
+        .then(() =>
+          service
+            .getAllIngredient()
+            .then((ingredients) => (this.ingredients = ingredients))
+            .catch((error) => Alert.danger('Error : ' + error.message))
+        )
+        .catch((error) => Alert.danger('Error : ' + error.message));
+    } else Alert.info('Ingrediensen finnes allerede eller du har ikke skrevet noe');
   }
   checkCountry(value: number) {
     this.country_id = value;
@@ -470,10 +473,13 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
             </p>
           ))}
         </Card>
-        <Button.Success onClick={() => history.push('/recipe/edit/' + this.recipe.oppskrift_id)}>
+        <Button.Success onClick={() => history.push('/recipe/edit/' + this.props.match.params.id)}>
           Endre oppskrift
         </Button.Success>
-        <Button.Danger onClick={() => this.deleteRecipe(this.recipe.oppskrift_id)}>
+        <Button.Danger
+          id="deleteRecipe"
+          onClick={() => this.deleteRecipe(this.props.match.params.id)}
+        >
           Slett oppskrift
         </Button.Danger>
         <Button.Success onClick={this.ingredientsToShoppingList}>
