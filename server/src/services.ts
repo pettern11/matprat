@@ -159,11 +159,11 @@ class Service {
     });
   }
 
-  updateIngredientShoppinglist(ingredient: IngredientToShoppinglist) {
+  updateIngredientShoppinglist(ingredient: List) {
     return new Promise<void>((resolve, reject) => {
       pool.query(
-        'UPDATE handleliste SET mengde=?, maleenhet=? WHERE ingred_id=?',
-        [ingredient.mengde, ingredient.maleenhet, ingredient.ingred_id],
+        'UPDATE handleliste SET mengde=?, maleenhet=? WHERE id=?',
+        [ingredient.mengde, ingredient.maleenhet, ingredient.id],
         (error, results: ResultSetHeader) => {
           if (error) return reject(error);
 

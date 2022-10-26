@@ -27,17 +27,19 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
       <>
         <Card title="Endre oppskriften">
           {/* input navn */}
+          <Row>
           <Column>
             <Column width={2}>
               <Form.Label>Name:</Form.Label>
             </Column>
             <Column>
-              <Form.Input
+              <Form.Textarea
                 type="text"
                 id="recipe_name"
                 value={this.recipe.oppskrift_navn}
                 onChange={(event) => (this.recipe.oppskrift_navn = event.currentTarget.value)}
-              />
+                rows={5}
+             />
             </Column>
           </Column>
           {/* input beksrivelse */}
@@ -70,10 +72,11 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                 type="text"
                 value={this.recipe.oppskrift_steg}
                 onChange={(event) => (this.recipe.oppskrift_steg = event.currentTarget.value)}
-                rows={10}
+                rows={5}
               />
             </Column>
           </Column>
+          </Row>
           {/* input antall porsjoner */}
           <Column>
             <Column width={2}>
@@ -92,7 +95,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
           {/* input bilde url */}
           <Column>
             <Column width={2}>
-              <Form.Label>Bilde url:</Form.Label>
+              <Form.Label>Bildeurl:</Form.Label>
             </Column>
             <Column>
               <Form.Input
@@ -143,8 +146,9 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
           {/* vidre ideer her er at vi setter en viss lengde og bredde på diven og så hvis den overflower så må man bare skulle 
           nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
           <Column>
-            Ingrediensene som allered er lagret,
-            <br /> hvis ingrediensen din ikke er her kan du legge den til!
+          <br />
+            Ingrediensene som allered er lagret, hvis ingrediensen din ikke er her kan du legge den til!
+            <br />
             <br />
             <Column>
               {this.ingredients.map((ingredient) => (
