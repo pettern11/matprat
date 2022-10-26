@@ -12,6 +12,7 @@ export type Recipe = {
   kategori_id: number;
   land_id: number;
   ant_like: number;
+  liked: boolean;
 };
 
 export type Recipe_Content = {
@@ -31,6 +32,12 @@ export type Category = {
 };
 export type IngredientToShoppinglist = {
   ingred_id: number;
+  mengde: number;
+  maleenhet: string;
+};
+export type ElementShoppingList = {
+  ingred_id: number;
+  ingred_navn: string;
   mengde: number;
   maleenhet: string;
 };
@@ -70,6 +77,9 @@ class Service {
   getShoppingList() {
     return axios.get<List[]>('/shoppinglist').then((response) => response.data);
   }
+  /* addItemToShoppingList(item: ElementShoppingList) {
+    return axios.post<{}>('/additemshoppinglist', {item: item}).then((response) => response.data);
+  } */
   addIngredient(ingredient: IngredientToShoppinglist) {
     return axios
       .post<{}>('/addingredient', { ingredient: ingredient })
@@ -78,6 +88,7 @@ class Service {
   createIngredient(name: string) {
     return axios.post<{}>('/newingredient', { name: name }).then((response) => response.data);
   }
+  
   createCountry(name: string) {
     return axios.post<{}>('/newcountry', { name: name }).then((response) => response.data);
   }
@@ -103,6 +114,15 @@ class Service {
       .put('/update_recipe_ingredient', { recipeContent: recipeContent })
       .then((response) => response.data);
   }
+  updateIngredientShoppingList(ingredient: IngredientToShoppinglist) {
+    return axios.put<{}>('/updateingredient', {ingredient: ingredient}).then((response) => response.data);
+  }
+  deleteIngredientShoppingList(id: number) {
+    return axios.delete<{}>('/deleteingredientshoppinglist/' + id ).then((response) => response.data);
+  }
+  deleteAllShoppingList() {
+    return axios.delete<{}>('/deleteallshoppinglist').then((response) => response.data);
+  }
   updateRecipe(recipe: Recipe) {
     return axios.put('/update_recipe', { recipe: recipe }).then((response) => response.data);
   }
@@ -113,6 +133,11 @@ class Service {
   }
   deleteRecipe(id: number) {
     return axios.delete<Recipe_Content>('/deleterecipe/' + id).then((response) => response.data);
+  }
+  likeRecipe(oppskrift_id: number, liked: boolean) {
+    return axios
+      .put<{}>('/recipe/' + oppskrift_id, { liked: liked })
+      .then((response) => response.data);
   }
 }
 

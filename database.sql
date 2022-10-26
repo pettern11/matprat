@@ -18,6 +18,7 @@ CREATE TABLE oppskrift(
   kategori_id INT NOT NULL,
   land_id INT NOT NULL,
   ant_like INT NOT NULL DEFAULT 0,
+  liked BOOLEAN NOT NULL,
     PRIMARY KEY (oppskrift_id)
 )ENGINE=InnoDB CHARSET=latin1;;
 

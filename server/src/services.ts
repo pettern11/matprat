@@ -11,6 +11,7 @@ export type Recipe = {
   kategori_id: number;
   land_id: number;
   ant_like: number;
+  liked: boolean;
 };
 
 export type Recipe_Content = {
@@ -31,6 +32,12 @@ export type Category = {
 //ingridient for shoppinglist, slightly different from the other ingridient
 export type IngredientToShoppinglist = {
   ingred_id: number;
+  mengde: number;
+  maleenhet: string;
+};
+export type ElementHandleliste = {
+  ingred_id: number;
+  ingred_navn: string;
   mengde: number;
   maleenhet: string;
 };
@@ -152,6 +159,18 @@ class Service {
     });
   }
 
+
+
+  updateIngredientShoppinglist(ingredient: IngredientToShoppinglist) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query('UPDATE handleliste SET mengde=?, maleenhet=? WHERE ingred_id=?', [ingredient.mengde, ingredient.maleenhet, ingredient.ingred_id], (error, results: ResultSetHeader) => {
+        if (error) return reject(error);
+
+        resolve();
+      });
+    });
+  }
+
   createCategory(name: string) {
     return new Promise<void>((resolve, reject) => {
       pool.query(
@@ -268,6 +287,33 @@ class Service {
       );
     });
   }
+  deleteIngredientShoppinglist(id: number) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'DELETE FROM handleliste WHERE id = ?',
+        [id],
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
+          if (results.affectedRows == 0) return reject(new Error('No row deleted'));
+
+          resolve();
+        }
+      );
+    });
+  }
+  deleteAllShoppinglist() {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'DELETE FROM handleliste',
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
+          if (results.affectedRows == 0) return reject(new Error('No row deleted'));
+
+          resolve();
+        }
+      );
+    });
+  }
   deleteRecipe(id: number) {
     return new Promise<void>((resolve, reject) => {
       pool.query(
@@ -280,6 +326,29 @@ class Service {
           resolve();
         }
       );
+    });
+  }
+  updateLiked(oppskrift_id: number, liked: boolean) {
+    return new Promise<void>((resolve, reject) => {
+      let likeIncrementsAntLike =
+        liked == true
+          ? 'UPDATE oppskrift SET ant_like=ant_like+1 WHERE oppskrift_id=?'
+          : 'UPDATE oppskrift SET ant_like=ant_like-1 WHERE oppskrift_id=?';
+      pool.query(
+        'UPDATE oppskrift SET liked=? WHERE oppskrift_id=?',
+        [liked, oppskrift_id],
+        (error, _result) => {
+          if (error) return reject(error);
+
+          resolve();
+        }
+      );
+
+      pool.query(likeIncrementsAntLike, [oppskrift_id], (error, _result) => {
+        if (error) return reject(error);
+
+        resolve();
+      });
     });
   }
 }
