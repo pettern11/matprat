@@ -1,11 +1,15 @@
 import * as React from 'react';
-import { NewRecipe, ShowRecipe, EditRecipe } from '../src/components';
-import { shallow, mount } from 'enzyme';
-import { Alert, Card, Row, Column, Form, Button, RecipeView } from '../src/widgets';
-import { NavLink } from 'react-router-dom';
 
+import { shallow, mount } from 'enzyme';
+import { Alert, Card, Row, Column, Form, Button, RecipeView } from '../../src/widgets';
+import { NavLink } from 'react-router-dom';
+import { NewRecipe } from '../../src/components/newRecipe';
+import { EditRecipe } from '../../src/components/editRecipe';
+import { ShowRecipe } from '../../src/components/showRecipe';
+import { LikedRecipes } from '../../src/components/liked';
+import { ShoppingList } from '../../src/components/shoppingList';
 const mock_addCountry = document.createElement('input');
-jest.mock('../src/service', () => {
+jest.mock('../../src/service', () => {
   class Service {
     getAllCountry() {
       return Promise.resolve([
@@ -94,12 +98,6 @@ jest.mock('../src/service', () => {
     }
   }
   return new Service();
-});
-describe('editRecipe test', () => {
-  test('editRecipe should render', (done) => {
-    const wrapper = shallow(<EditRecipe match={{ params: { id: 2 } }} />);
-    done();
-  });
 });
 
 describe('NewRecipe tests', () => {
@@ -207,26 +205,6 @@ describe('NewRecipe tests', () => {
         ).toEqual(true);
         done();
       });
-    });
-  });
-});
-
-describe('ShowRecipe tests', () => {
-  test('Delete recipe button works', (done) => {
-    const wrapper = shallow(<ShowRecipe match={{ params: { id: 2 } }} />);
-    setTimeout(() => {
-      wrapper.find('#deleteRecipe').simulate('click');
-      expect(window.location.href).toEqual('http://localhost/#/');
-      done();
-    });
-  });
-
-  test('Edit recipe button works', (done) => {
-    const wrapper = shallow(<ShowRecipe match={{ params: { id: 1 } }} />);
-    setTimeout(() => {
-      wrapper.find(Button.Success).at(1).simulate('click');
-      expect(window.location.href).toEqual('http://localhost/#/recipe/edit/1');
-      done();
     });
   });
 });
