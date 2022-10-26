@@ -98,7 +98,6 @@ export class ShoppingList extends Component {
               <input
                 id="mengde"
                 type="number"
-                step=".01"
                 onChange={(event) => {
                   //@ts-ignore
                   this.elementHandleliste.mengde = event.currentTarget.value;
@@ -277,7 +276,7 @@ export class ShoppingList extends Component {
         (ing) => ing.ingred_navn.toLowerCase() == item.ingred_navn.toLowerCase()
       ) == true
     ) {
-      Alert.danger('Ingrediensen finnes eksisterer allerede');
+      Alert.danger('Ingrediensen eksisterer allerede');
     } else if (
       item.mengde == null ||
       item.mengde == undefined ||
