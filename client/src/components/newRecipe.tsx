@@ -203,23 +203,6 @@ export class NewRecipe extends Component {
           {/* vidre ideer her er at vi setter en viss lengde og bredde på diven og så hvis den overflower så må man bare skulle 
           nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
           <Column>
-           {/*  Ingrediensene som allered er lagret,
-            <br /> hvis ingrediensen din ikke er her kan du legge den til!
-            <br />
-            <Column>
-              {this.ingredients.map((ingredient) => (
-                <Button.Light
-                  id={'ingred' + ingredient.ingred_id}
-                  key={ingredient.ingred_id}
-                  onClick={() => {
-                    this.chooseIngredientFunc(ingredient.ingred_id, ingredient.ingred_navn);
-                  }}
-                >
-                  {ingredient.ingred_navn}
-                </Button.Light>
-              ))}
-            </Column> */}
-
             <Card title="Søk etter ingrediens">
             <Column>
             <h6>Søk</h6>
