@@ -16,7 +16,12 @@ import {
   Oppskrifter,
   Mat,
 } from './widgets';
-import { NewRecipe, ShowRecipe, EditRecipe, ShoppingList, LikedRecipes } from './components';
+import { NewRecipe } from './components/newRecipe';
+import { EditRecipe } from './components/editRecipe';
+import { ShowRecipe } from './components/showRecipe';
+import { LikedRecipes } from './components/liked';
+import { ShoppingList } from './components/shoppingList';
+
 import service, { Recipe } from './service';
 import { createHashHistory } from 'history';
 
