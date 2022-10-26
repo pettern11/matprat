@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NewRecipe, ShowRecipe } from '../src/components';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { Alert, Card, Row, Column, Form, Button, RecipeView } from '../src/widgets';
 import { NavLink } from 'react-router-dom';
 
@@ -86,12 +86,18 @@ jest.mock('../src/service', () => {
     deleteRecipe(id: number) {
       return Promise.resolve();
     }
+    createIngredient() {
+      return Promise.resolve();
+    }
+    createRecipe() {
+      return Promise.resolve(1);
+    }
   }
   return new Service();
 });
 
 describe('NewRecipe tests', () => {
-  test('Create recipe but no recipe and fail', (done) => {
+  test('Try create recipe and fail because no ingredient', (done) => {
     const wrapper = shallow(<NewRecipe />);
     const wrapperAlert = shallow(<Alert />);
     // Wait for events to complete
@@ -121,42 +127,100 @@ describe('NewRecipe tests', () => {
         .simulate('change', {
           target: { value: 2, name: 'enkelt' },
         });
-      wrapper.find('#ingred1').simulate('click');
+      // wrapper.find('#ingred1').simulate('click');
+      wrapper.find('#addRecipeBtn').simulate('click');
       setTimeout(() => {
-        // console.log(
-        //   'se herrr11111111111111111111111111111111111111111111111111111111',
-        //   wrapperAlert.debug()
-        // );
-        // expect(
-        //   wrapperAlert.containsMatchingElement(
-        //     <div>
-        //       Du må legge til ingredienser i oppskriften din<button></button>
-        //     </div>
-        //   )
-        // ).toEqual(true);
+        expect(
+          wrapperAlert.containsMatchingElement(
+            <div>
+              Du må legge til ingredienser i oppskriften din<button></button>
+            </div>
+          )
+        ).toEqual(true);
         done();
       });
     });
   });
-  test('Add ingredient', (done) => {
+  test('Try create recipe and fail because name, description, etc..', (done) => {
+    const wrapper = shallow(<NewRecipe />);
+    const wrapperAlert = shallow(<Alert />);
+    let divId = 'ingreditentList';
+    let testIdEM = 'emFood1';
+    let testValueEM = 'pizzadeig';
+    let testIdMengde = 'inputNumberOf1';
+    let testValueMengde = '1';
+    let testIdMaleenhet = 'inputMeasurment1';
+    let testValueMaleenhet = 'stk';
+    let div = document.createElement('div');
+    let em = document.createElement('em');
+    let inputMengde = document.createElement('input');
+    let inputMaleenhet = document.createElement('input');
+    div.setAttribute('id', divId);
+    em.setAttribute('id', testIdEM);
+    inputMengde.setAttribute('id', testIdMengde);
+    inputMaleenhet.setAttribute('id', testIdMaleenhet);
+    em.innerHTML = testValueEM;
+    inputMengde.value = testValueMengde;
+    inputMaleenhet.value = testValueMaleenhet;
+    div.innerHTML = em.outerHTML + inputMengde.outerHTML + inputMaleenhet.outerHTML;
+    document.body.appendChild(div);
+    // Wait for events to complete
+    setTimeout(() => {
+      wrapper.find('#ingred1').simulate('click');
+
+      expect(wrapper).toMatchSnapshot();
+      wrapper.find('#addRecipeBtn').simulate('click');
+      setTimeout(() => {
+        done();
+      });
+    });
+  });
+  test('Create ingredient', (done) => {
     const wrapper = shallow(<NewRecipe />);
     setTimeout(() => {
       wrapper.find('#createIngredient').simulate('change', {
         currentTarget: { value: 'Kylling' },
       });
+
+      wrapper.find('#createIngredientFunc').simulate('click');
+      done();
+    });
+  });
+  test('Try create ingredient and fail', (done) => {
+    const wrapper = shallow(<NewRecipe />);
+    const wrapperAlert = shallow(<Alert />);
+    setTimeout(() => {
       wrapper.find('#createIngredientFunc').simulate('click');
       setTimeout(() => {
-        expect(wrapper.containsMatchingElement(<button>Kylling</button>)).toEqual(true);
+        expect(
+          wrapperAlert.containsMatchingElement(
+            <div>
+              Ingrediensen finnes allerede eller du har ikke skrevet noe<button></button>
+            </div>
+          )
+        ).toEqual(true);
+        done();
       });
-      done();
     });
   });
 });
 
-/* describe('ShowRecipe tests', () => {
-  test('Show recipe draws correctly with params id set', (done) => {
-    const wrapper = shallow(<ShowRecipe match={{ params: { id: 1 } }} />);
+describe('ShowRecipe tests', () => {
+  test('Delete recipe button works', (done) => {
+    const wrapper = shallow(<ShowRecipe match={{ params: { id: 2 } }} />);
+    setTimeout(() => {
+      wrapper.find('#deleteRecipe').simulate('click');
+      expect(window.location.href).toEqual('http://localhost/#/');
+      done();
+    });
+  });
 
-    done()
-}
-}); */
+  test('Edit recipe button works', (done) => {
+    const wrapper = shallow(<ShowRecipe match={{ params: { id: 1 } }} />);
+    setTimeout(() => {
+      wrapper.find(Button.Success).at(1).simulate('click');
+      expect(window.location.href).toEqual('http://localhost/#/recipe/edit/1');
+      done();
+    });
+  });
+});

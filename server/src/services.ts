@@ -35,6 +35,12 @@ export type IngredientToShoppinglist = {
   mengde: number;
   maleenhet: string;
 };
+export type ElementHandleliste = {
+  ingred_id: number;
+  ingred_navn: string;
+  mengde: number;
+  maleenhet: string;
+};
 export type Ingredient = {
   ingred_id: number;
   ingred_navn: string;
@@ -57,13 +63,6 @@ class Service {
 
         resolve(results as Recipe[]);
       });
-    });
-  }
-  getAPI() {
-    return new Promise((resolve, _reject) => {
-      fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=')
-        .then((res) => res.json())
-        .then((data) => resolve(data.meals));
     });
   }
 
@@ -157,6 +156,18 @@ class Service {
           resolve();
         }
       );
+    });
+  }
+
+
+
+  updateIngredientShoppinglist(ingredient: IngredientToShoppinglist) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query('UPDATE handleliste SET mengde=?, maleenhet=? WHERE ingred_id=?', [ingredient.mengde, ingredient.maleenhet, ingredient.ingred_id], (error, results: ResultSetHeader) => {
+        if (error) return reject(error);
+
+        resolve();
+      });
     });
   }
 
@@ -267,6 +278,33 @@ class Service {
       pool.query(
         'DELETE FROM oppskrift_innhold WHERE oppskrift_id = ? AND ingred_id = ?',
         [recipe_id, ingred_id],
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
+          if (results.affectedRows == 0) return reject(new Error('No row deleted'));
+
+          resolve();
+        }
+      );
+    });
+  }
+  deleteIngredientShoppinglist(id: number) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'DELETE FROM handleliste WHERE id = ?',
+        [id],
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
+          if (results.affectedRows == 0) return reject(new Error('No row deleted'));
+
+          resolve();
+        }
+      );
+    });
+  }
+  deleteAllShoppinglist() {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'DELETE FROM handleliste',
         (error, results: ResultSetHeader) => {
           if (error) return reject(error);
           if (results.affectedRows == 0) return reject(new Error('No row deleted'));

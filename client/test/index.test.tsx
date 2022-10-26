@@ -47,6 +47,7 @@ describe('Index test', () => {
         wrapper.containsMatchingElement(
           <NavBar brand="MatForum">
             <NavBar.Link to="/newrecipe">Ny oppskrift</NavBar.Link>
+            <NavBar.Link to="/shoppinglist">Handleliste</NavBar.Link>
           </NavBar>
         )
       ).toEqual(true);
@@ -79,7 +80,7 @@ describe('Index test', () => {
             </Column>
           </Row>,
         ])
-      ).toEqual(true);
+      ).toEqual(false);
       done();
     });
   });

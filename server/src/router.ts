@@ -12,12 +12,7 @@ router.get('/', (_request, response) => {
     .then((rows) => response.send(rows))
     .catch((error) => response.status(500).send(error));
 });
-router.get('/api', (_request, response) => {
-  service
-    .getAPI()
-    .then((rows) => response.send(rows))
-    .catch((error) => response.status(500).send(error));
-});
+
 router.get('/recipe/:id', (_request, response) => {
   let id: number = parseInt(_request.params.id);
 
@@ -92,21 +87,21 @@ router.post('/addingredient', (request, response) => {
   service
     .addIngredientShoppinglist(data.ingredient)
     .then(() => response.send())
-    .catch((error: any) => response.status(500).send(error));
+    .catch((error) => response.status(500).send(error));
 });
 router.post('/newingredient', (request, response) => {
   const data = request.body;
   service
     .createIngredient(data.name)
     .then(() => response.send())
-    .catch((error: any) => response.status(500).send(error));
+    .catch((error) => response.status(500).send(error));
 });
 router.post('/newcountry', (request, response) => {
   const data = request.body;
   service
     .createCountry(data.name)
     .then(() => response.send())
-    .catch((error: any) => response.status(500).send(error));
+    .catch((error) => response.status(500).send(error));
 });
 router.post('/newcategory', (request, response) => {
   const data = request.body;
@@ -116,10 +111,21 @@ router.post('/newcategory', (request, response) => {
     .catch((error: any) => response.status(500).send(error));
 });
 
+
+
+
+
+
 router.put('/update_recipe_ingredient', (request, response) => {
   console.log(1);
   service
     .updateRecipeIngredient(request.body.recipeContent)
+    .then(() => response.send())
+    .catch((error) => response.status(500).send(error));
+});
+router.put('/updateingredient', (request, response) => {
+  service
+    .updateIngredientShoppinglist(request.body.ingredient)
     .then(() => response.send())
     .catch((error) => response.status(500).send(error));
 });
@@ -133,6 +139,18 @@ router.delete('/deleteingredient/:recipeid/:ingredid', (request, response) => {
   console.log(request.params.recipeid, request.params.ingredid);
   service
     .deleteIngredient(Number(request.params.recipeid), Number(request.params.ingredid))
+    .then((_result) => response.send())
+    .catch((error) => response.status(500).send(error));
+});
+router.delete('/deleteingredientshoppinglist/:id', (request, response) => {
+  service
+    .deleteIngredientShoppinglist(Number(request.params.id))
+    .then((_result) => response.send())
+    .catch((error) => response.status(500).send(error));
+});
+router.delete('/deleteallshoppinglist', (request, response) => {
+  service
+    .deleteAllShoppinglist()
     .then((_result) => response.send())
     .catch((error) => response.status(500).send(error));
 });
