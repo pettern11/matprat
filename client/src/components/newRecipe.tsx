@@ -381,6 +381,7 @@ export class NewRecipe extends Component {
 
     deleteBtn.innerHTML = 'x';
     deleteBtn.onclick = () => {
+      this.recipeIngredients.splice(index, 1);
       this.recipe_content.splice(index, 1);
       btn != null ? (btn.disabled = false) : '';
       emFood.remove();
