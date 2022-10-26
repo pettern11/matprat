@@ -2,15 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Alert, Card, Row, Column, Form, Button, RecipeView } from '.././widgets';
 import { NavLink, Redirect } from 'react-router-dom';
-import service, {
-  Country,
-  Category,
-  Ingredient,
-  Recipe,
-  Recipe_Content,
-  List,
-  ElementShoppingList,
-} from '.././service';
+import service, { Ingredient, Recipe, Recipe_Content } from '.././service';
 import { createHashHistory } from 'history';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -117,7 +109,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
             <div id="outprintIngredient">
               {this.recipeContent.map((rc, i) => (
                 <p key={i}>
-                  {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}{' '}
+                  {/* {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}{' '} */}
                   <input
                     style={{ width: '50px' }}
                     type="number"
@@ -152,7 +144,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
             Ingrediensene som allered er lagret,
             <br /> hvis ingrediensen din ikke er her kan du legge den til!
             <br />
-            <Column key={this.props.match.params.id}>
+            <Column>
               {this.ingredients.map((ingredient) => (
                 <>
                   <Button.Light
@@ -225,17 +217,30 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
   mounted() {
     service
       .getAllIngredient()
-      .then((ingredients) => (this.ingredients = ingredients))
-      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
-    console.log(this.props.match.params.id);
+      .then(
+        (ingredients) => (
+          console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', ingredients),
+          (this.ingredients = ingredients)
+        )
+      )
+      .then(() => console.log('fittefaen1'))
+      .catch((error) => {
+        console.log(error);
+        Alert.danger('Error getting ingredients: ' + error.message);
+      });
 
-    this.getIngredRecipe();
+    service
+      .getRecipeContent(this.props.match.params.id)
+      .then((recipeContent) => (this.recipeContent = recipeContent))
+      .then(() => console.log('fittefaen2'))
+      .catch((error) => Alert.danger('Error getting recipe content: ' + error.message));
 
     service
       .getRecipe(this.props.match.params.id)
       .then((recipe) => {
         this.recipe = recipe[0];
       })
+      .then(() => console.log('fittefaen3'))
       .catch((error) => Alert.danger('Error getting recipe: ' + error.message));
   }
 }
