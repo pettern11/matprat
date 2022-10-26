@@ -9,7 +9,6 @@ import service, {
   Recipe,
   Recipe_Content,
   List,
-  ElementHandleliste,
   ElementShoppingList,
 } from './service';
 import { createHashHistory } from 'history';
