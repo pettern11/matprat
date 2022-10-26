@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { NavBar, Car, Card, Cards, Alert, Column, Row, Form, Button, RecipeView } from './widgets';
-import { NewRecipe, ShowRecipe, EditRecipe, ShoppingList } from './components';
+import { NewRecipe, ShowRecipe, EditRecipe, ShoppingList, LikedRecipes } from './components';
 
 import service, { Recipe } from './service';
 import { createHashHistory } from 'history';
@@ -15,6 +15,7 @@ export class Menu extends Component {
         <NavBar brand="MatForum">
           <NavBar.Link to="/newrecipe">Ny oppskrift</NavBar.Link>
           <NavBar.Link to="/shoppinglist">Handleliste</NavBar.Link>
+          <NavBar.Link to="/liked">Liked</NavBar.Link>
         </NavBar>
       </>
     );
@@ -65,9 +66,7 @@ export class Home extends Component {
           ))}
         </Card>
         <Card title="Kanskje du liker">
-          <Cards title="Mat">
-            
-          </Cards>
+          <Cards title="Mat"></Cards>
         </Card>
       </>
     );
@@ -104,6 +103,7 @@ ReactDOM.render(
       <Route exact path="/recipe/:id" component={ShowRecipe} />
       <Route exact path="/recipe/edit/:id" component={EditRecipe} />
       <Route exact path="/shoppinglist" component={ShoppingList} />
+      <Route exact path="/liked" component={LikedRecipes}></Route>
     </div>
   </HashRouter>,
   document.getElementById('root') || document.createElement('div')

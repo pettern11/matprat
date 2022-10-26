@@ -425,6 +425,42 @@ export class NewRecipe extends Component {
   }
 }
 
+export class LikedRecipes extends Component {
+  likedList: List[] = [];
+  originalrecipes: Recipe[] = [];
+  recipes: Recipe[] = [];
+
+  render() {
+    return (
+      <Card title="Likede oppskrifter">
+        {this.recipes
+          .filter((recipe) => recipe.liked == true)
+          .map((likedRecipe) => (
+            <Card title="" key={likedRecipe.oppskrift_id}>
+              <NavLink className="black" to={'/recipe/' + likedRecipe.oppskrift_id}>
+                <RecipeView
+                  img={likedRecipe.bilde_adr}
+                  name={likedRecipe.oppskrift_navn}
+                  numbOfPors={likedRecipe.ant_pors}
+                ></RecipeView>
+              </NavLink>
+            </Card>
+          ))}
+      </Card>
+    );
+  }
+
+  mounted() {
+    service
+      .getAllRepice()
+      .then((recipes) => {
+        this.originalrecipes = recipes;
+        this.recipes = recipes;
+      })
+      .catch((error) => Alert.danger('Error getting tasks: ' + error.message));
+  }
+}
+
 export class ShowRecipe extends Component<{ match: { params: { id: number } } }> {
   recipe: Recipe = {
     oppskrift_id: 0,
@@ -436,17 +472,19 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
     kategori_id: 0,
     land_id: 0,
     ant_like: 0,
+    liked: false,
   };
   portions: number = 0;
   recipeContent: Recipe_Content[] = [];
   ingredients: Ingredient[] = [];
   categories: Category[] = [];
+  //liked: boolean = this.recipe.liked;
 
   render() {
     return (
       <div>
         <Card title="">
-          <img src={this.recipe.bilde_adr}></img>
+          <img src={this.recipe.bilde_adr} width="20px"></img>
           <h1>{this.recipe.oppskrift_navn}</h1>
           <p>Beskrivelse: {this.recipe.oppskrift_beskrivelse}</p>
           <p>
@@ -457,6 +495,18 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
             }
           </p>
           <p>Antall likes: {this.recipe.ant_like}</p>
+          <Form.Checkbox
+            checked={this.recipe.liked}
+            id="checkbox"
+            onChange={() => {
+              service.likeRecipe(this.recipe.oppskrift_id, !this.recipe.liked).then(() => {
+                ShowRecipe.instance()?.mounted();
+              });
+            }}
+          />
+          <label htmlFor="checkbox" id="heart">
+            test
+          </label>
           <h5>Oppskrift:</h5>
           <pre>{this.recipe.oppskrift_steg}</pre>
           <h3>Ingredienser</h3>
@@ -484,6 +534,8 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
   }
 
   mounted() {
+    service.getAllRepice().then((recipe) => (this.recipe = recipe));
+
     service
       .getAllIngredient()
       .then((ingredients) => (this.ingredients = ingredients))
@@ -531,6 +583,13 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
       service.addIngredient(ingredient);
     });
     history.push('/shoppinglist');
+  }
+  updateAntLikes() {
+    if (this.recipe.liked == true) {
+      this.recipe.ant_like++;
+    } else {
+      this.recipe.ant_like--;
+    }
   }
 }
 export class EditRecipe extends Component<{ match: { params: { id: number } } }> {
@@ -785,11 +844,4 @@ export class ShoppingList extends Component {
       .then((ingredients) => (this.ingredients = ingredients))
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
   }
-
-  /* updateList(id: number) {
-      service
-      .updateShoppingList(id)
-      .then(() => Alert.info('Handlelisten er oppdatert'))
-      .catch((error: { message: string; }) => Alert.danger('Error updating shoppingList: ' + error.message));
-    } */
 }

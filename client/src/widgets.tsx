@@ -25,12 +25,12 @@ export class RecipeView extends Component<{ img: string; name: string; numbOfPor
 export class Cards extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
     return (
-        <div className="cards">
-          <div className="card-body">
-            <h5 className="card-title">{this.props.title}</h5>
-            <div className="card-text">{this.props.children}</div>
-          </div>
+      <div className="cards">
+        <div className="card-body">
+          <h5 className="card-title">{this.props.title}</h5>
+          <div className="card-text">{this.props.children}</div>
         </div>
+      </div>
     );
   }
 }
