@@ -160,4 +160,10 @@ router.delete('/deleterecipe/:id', (request, response) => {
     .then((_result) => response.send())
     .catch((error) => response.status(500).send(error));
 });
+router.put('/recipe/:oppskrift_id', (req, res) => {
+  service
+    .updateLiked(Number(req.params.oppskrift_id), req.body.liked)
+    .then((_result) => res.send())
+    .catch((error) => res.status(500).send(error));
+});
 export default router;

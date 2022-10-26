@@ -2,7 +2,16 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Alert, Card, Row, Column, Form, Button, RecipeView } from './widgets';
 import { NavLink, Redirect } from 'react-router-dom';
-import service, { Country, Category, Ingredient, Recipe, Recipe_Content, List, ElementHandleliste, ElementShoppingList } from './service';
+import service, {
+  Country,
+  Category,
+  Ingredient,
+  Recipe,
+  Recipe_Content,
+  List,
+  ElementHandleliste,
+  ElementShoppingList,
+} from './service';
 import { createHashHistory } from 'history';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -428,6 +437,42 @@ export class NewRecipe extends Component {
   }
 }
 
+export class LikedRecipes extends Component {
+  likedList: List[] = [];
+  originalrecipes: Recipe[] = [];
+  recipes: Recipe[] = [];
+
+  render() {
+    return (
+      <Card title="Likede oppskrifter">
+        {this.recipes
+          .filter((recipe) => recipe.liked == true)
+          .map((likedRecipe) => (
+            <Card title="" key={likedRecipe.oppskrift_id}>
+              <NavLink className="black" to={'/recipe/' + likedRecipe.oppskrift_id}>
+                <RecipeView
+                  img={likedRecipe.bilde_adr}
+                  name={likedRecipe.oppskrift_navn}
+                  numbOfPors={likedRecipe.ant_pors}
+                ></RecipeView>
+              </NavLink>
+            </Card>
+          ))}
+      </Card>
+    );
+  }
+
+  mounted() {
+    service
+      .getAllRepice()
+      .then((recipes) => {
+        this.originalrecipes = recipes;
+        this.recipes = recipes;
+      })
+      .catch((error) => Alert.danger('Error getting tasks: ' + error.message));
+  }
+}
+
 export class ShowRecipe extends Component<{ match: { params: { id: number } } }> {
   recipe: Recipe = {
     oppskrift_id: 0,
@@ -439,17 +484,19 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
     kategori_id: 0,
     land_id: 0,
     ant_like: 0,
+    liked: false,
   };
   portions: number = 0;
   recipeContent: Recipe_Content[] = [];
   ingredients: Ingredient[] = [];
   categories: Category[] = [];
+  //liked: boolean = this.recipe.liked;
 
   render() {
     return (
       <div>
         <Card title="">
-          <img src={this.recipe.bilde_adr}></img>
+          <img src={this.recipe.bilde_adr} width="20px"></img>
           <h1>{this.recipe.oppskrift_navn}</h1>
           <p>Beskrivelse: {this.recipe.oppskrift_beskrivelse}</p>
           <p>
@@ -460,6 +507,18 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
             }
           </p>
           <p>Antall likes: {this.recipe.ant_like}</p>
+          <Form.Checkbox
+            checked={this.recipe.liked}
+            id="checkbox"
+            onChange={() => {
+              service.likeRecipe(this.recipe.oppskrift_id, !this.recipe.liked).then(() => {
+                ShowRecipe.instance()?.mounted();
+              });
+            }}
+          />
+          <label htmlFor="checkbox" id="heart">
+            test
+          </label>
           <h5>Oppskrift:</h5>
           <pre>{this.recipe.oppskrift_steg}</pre>
           <h3>Ingredienser</h3>
@@ -490,6 +549,8 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
   }
 
   mounted() {
+    service.getAllRepice().then((recipe) => (this.recipe = recipe));
+
     service
       .getAllIngredient()
       .then((ingredients) => (this.ingredients = ingredients))
@@ -537,6 +598,13 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
       service.addIngredient(ingredient);
     });
     history.push('/shoppinglist');
+  }
+  updateAntLikes() {
+    if (this.recipe.liked == true) {
+      this.recipe.ant_like++;
+    } else {
+      this.recipe.ant_like--;
+    }
   }
 }
 export class EditRecipe extends Component<{ match: { params: { id: number } } }> {
@@ -760,9 +828,9 @@ export class ShoppingList extends Component {
     ingred_id: 0,
     ingred_navn: '',
     mengde: 0,
-    maleenhet: ''
+    maleenhet: '',
   };
-  
+
   render() {
     return (
       <>
@@ -770,20 +838,44 @@ export class ShoppingList extends Component {
           <Column>
             {this.shoppingList.map((sl, i) => (
               <p key={i}>
-                {i + 1}. {this.ingredients.find((ingredient) => ingredient.ingred_id == sl.ingred_id)?.ingred_navn} <input id='mengde' type='string' step=".01" onChange={(event) => {sl.mengde = event.currentTarget.value;console.log(sl.mengde)}} value={sl.mengde} size={2}></input> {sl.maleenhet} 
+                {i + 1}.{' '}
+                {
+                  this.ingredients.find((ingredient) => ingredient.ingred_id == sl.ingred_id)
+                    ?.ingred_navn
+                }{' '}
+                <input
+                  id="mengde"
+                  type="string"
+                  step=".01"
+                  onChange={(event) => {
+                    sl.mengde = event.currentTarget.value;
+                    console.log(sl.mengde);
+                  }}
+                  value={sl.mengde}
+                  size={2}
+                ></input>{' '}
+                {sl.maleenhet}
                 <Button.Danger onClick={() => this.deleteIngredient(sl.id)}>
-
-                  
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
-                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                    <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    className="bi bi-trash"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                    <path
+                      fillRule="evenodd"
+                      d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                    />
                   </svg>
                 </Button.Danger>
-
-                <Button.Success onClick={()=> this.updatePortions(sl)}>Endre antall</Button.Success>
-
-          <Button.Danger onClick={()=> this.decrementPortions(sl)}>-</Button.Danger>
-          <Button.Success onClick={()=> this.incrementPortions(sl)}>+</Button.Success>
+                <Button.Success onClick={() => this.updatePortions(sl)}>
+                  Endre antall
+                </Button.Success>
+                <Button.Danger onClick={() => this.decrementPortions(sl)}>-</Button.Danger>
+                <Button.Success onClick={() => this.incrementPortions(sl)}>+</Button.Success>
               </p>
             ))}
             <Button.Danger onClick={() => this.deleteAll()}>Slett alle</Button.Danger>
@@ -791,14 +883,39 @@ export class ShoppingList extends Component {
         </Card>
         <Card title="Legg til ingredienser">
           <Column>
-           
-              <p key={1}>
-                Navn: <input id='navn' type='text' onChange={(event) => {this.elementHandleliste.ingred_navn = event.currentTarget.value}} value={this.elementHandleliste.ingred_navn}></input>
-                Antall: <input id='mengde' type='number' step=".01" onChange={(event) => {this.elementHandleliste.mengde = event.currentTarget.value}} value={this.elementHandleliste.mengde}></input> 
-                Måleenhet: <input id='maleenhet' type='text' onChange={(event) => {this.elementHandleliste.maleenhet = event.currentTarget.value}} value={this.elementHandleliste.maleenhet}></input>
-                <Button.Success onClick={() => this.addItem(this.elementHandleliste)}>Legg til</Button.Success>
-              </p>
-          
+            <p key={1}>
+              Navn:{' '}
+              <input
+                id="navn"
+                type="text"
+                onChange={(event) => {
+                  this.elementHandleliste.ingred_navn = event.currentTarget.value;
+                }}
+                value={this.elementHandleliste.ingred_navn}
+              ></input>
+              Antall:{' '}
+              <input
+                id="mengde"
+                type="number"
+                step=".01"
+                onChange={(event) => {
+                  this.elementHandleliste.mengde = event.currentTarget.value;
+                }}
+                value={this.elementHandleliste.mengde}
+              ></input>
+              Måleenhet:{' '}
+              <input
+                id="maleenhet"
+                type="text"
+                onChange={(event) => {
+                  this.elementHandleliste.maleenhet = event.currentTarget.value;
+                }}
+                value={this.elementHandleliste.maleenhet}
+              ></input>
+              <Button.Success onClick={() => this.addItem(this.elementHandleliste)}>
+                Legg til
+              </Button.Success>
+            </p>
           </Column>
         </Card>
       </>
@@ -809,8 +926,7 @@ export class ShoppingList extends Component {
     this.elementHandleliste.ingred_id = 0;
     this.elementHandleliste.ingred_navn = '';
     this.elementHandleliste.mengde = 0;
-    this.elementHandleliste.maleenhet = ''; 
-
+    this.elementHandleliste.maleenhet = '';
 
     service
       .getShoppingList()
@@ -823,75 +939,86 @@ export class ShoppingList extends Component {
       .getAllIngredient()
       .then((ingredients) => (this.ingredients = ingredients))
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
-    }
-    incrementPortions(ingredient: List) {
-      ingredient.mengde++;
+  }
+  incrementPortions(ingredient: List) {
+    ingredient.mengde++;
+    service
+      .updateIngredientShoppingList(ingredient)
+      .then(() => this.mounted())
+      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+  }
+  decrementPortions(ingredient: List) {
+    if (ingredient.mengde > 1) {
+      ingredient.mengde--;
       service
         .updateIngredientShoppingList(ingredient)
         .then(() => this.mounted())
-        .catch((error) => Alert.danger('Error getting ingredients: ' + error.message)); 
-      
+        .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
     }
-    decrementPortions(ingredient: List) {
-      if (ingredient.mengde > 1) {
-        ingredient.mengde--;
-        service
-          .updateIngredientShoppingList(ingredient)
-          .then(() => this.mounted())
-          .catch((error) => Alert.danger('Error getting ingredients: ' + error.message)); 
-      }
+  }
+  updatePortions(ingredient: List) {
+    //@ts-ignore
+    if (
+      ingredient.mengde < 0 ||
+      ingredient.mengde == null ||
+      ingredient.mengde == undefined ||
+      ingredient.mengde % 1 != 0 ||
+      ingredient.mengde == ''
+    ) {
+      ingredient.mengde = 1;
     }
-    updatePortions(ingredient: List) { 
-      //@ts-ignore
-      if(ingredient.mengde < 0 || ingredient.mengde == null || ingredient.mengde == undefined || ingredient.mengde % 1 != 0 || ingredient.mengde == '') {
-        ingredient.mengde = 1; 
-      }
-      service
+    service
       .updateIngredientShoppingList(ingredient)
       .then(() => this.mounted())
       .then(() => Alert.info('Antall oppdatert'))
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
-    }
+  }
 
-    deleteIngredient(id: number) {
+  deleteIngredient(id: number) {
+    service
+      .deleteIngredientShoppingList(id)
+      .then(() => this.mounted())
+      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+  }
+
+  deleteAll() {
+    service
+      .deleteAllShoppingList()
+      .then(() => this.mounted())
+      .catch((error) => Alert.danger('Error deleting shopping list: ' + error.message));
+  }
+
+  addItem(item: ElementShoppingList) {
+    item.ingred_id = this.ingredients.length + 1;
+    if (item.ingred_navn == null || item.ingred_navn == undefined || item.ingred_navn == '') {
+      Alert.danger('Du må fylle inn navn på ingrediensen');
+    } else if (
+      this.ingredients.some(
+        (ing) => ing.ingred_navn.toLowerCase() == item.ingred_navn.toLowerCase()
+      ) == true
+    ) {
+      Alert.danger('Ingrediensen finnes eksisterer allerede');
+    } else if (
+      item.mengde == null ||
+      item.mengde == undefined ||
+      item.mengde == '' ||
+      item.mengde < 0 ||
+      item.mengde % 1 != 0
+    ) {
+      item.mengde = 1;
+      Alert.danger('Du må fylle inn antall av ingrediensen, dette må være heltall større enn 0');
+    } else if (item.maleenhet == null || item.maleenhet == undefined || item.maleenhet == '') {
+      Alert.danger('Du må fylle inn måleenhet');
+    } else {
       service
-        .deleteIngredientShoppingList(id)
-        .then(() => this.mounted())
-        .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
-    }
-
-    deleteAll() {
-      service
-        .deleteAllShoppingList()
-        .then(() => this.mounted())
-        .catch((error) => Alert.danger('Error deleting shopping list: ' + error.message));
-    }
-
-    addItem(item: ElementShoppingList){
-      item.ingred_id = (this.ingredients.length + 1);
-      if(item.ingred_navn == null || item.ingred_navn == undefined || item.ingred_navn == '') {
-        Alert.danger('Du må fylle inn navn på ingrediensen');
-
-      } else if(this.ingredients.some(ing => ing.ingred_navn.toLowerCase() == item.ingred_navn.toLowerCase()) == true) {
-        Alert.danger('Ingrediensen finnes eksisterer allerede');
-      }
-       else if(item.mengde == null || item.mengde == undefined || item.mengde == '' || item.mengde < 0 || item.mengde % 1 != 0) {
-        item.mengde = 1;
-        Alert.danger('Du må fylle inn antall av ingrediensen, dette må være heltall større enn 0');
-      } else if(item.maleenhet == null || item.maleenhet == undefined || item.maleenhet == '') {
-        Alert.danger('Du må fylle inn måleenhet');     
-      }else{
-        service
         .createIngredient(item.ingred_navn)
         .then(() => {
-        service
-        .addIngredient(item)
-        .then(() => this.mounted())
-        .catch((error) => Alert.danger('Error adding item to shopping list: ' + error.message));
-      })
+          service
+            .addIngredient(item)
+            .then(() => this.mounted())
+            .catch((error) => Alert.danger('Error adding item to shopping list: ' + error.message));
+        })
         .catch((error) => Alert.danger('Error creating new ingredient: ' + error.message));
-          
-         
-       }
     }
-};
+  }
+}

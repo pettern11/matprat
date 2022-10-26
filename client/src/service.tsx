@@ -12,6 +12,7 @@ export type Recipe = {
   kategori_id: number;
   land_id: number;
   ant_like: number;
+  liked: boolean;
 };
 
 export type Recipe_Content = {
@@ -132,6 +133,11 @@ class Service {
   }
   deleteRecipe(id: number) {
     return axios.delete<Recipe_Content>('/deleterecipe/' + id).then((response) => response.data);
+  }
+  likeRecipe(oppskrift_id: number, liked: boolean) {
+    return axios
+      .put<{}>('/recipe/' + oppskrift_id, { liked: liked })
+      .then((response) => response.data);
   }
 }
 

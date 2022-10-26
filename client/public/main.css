@@ -3,7 +3,7 @@ body {
 }
 
 em {
-	font-style: normal;
+  font-style: normal;
 }
 
 .black {
@@ -21,7 +21,7 @@ em {
   border-radius: 25px;
   display: block;
   margin-left: auto;
-  margin-right: auto
+  margin-right: auto;
 }
 
 .recipe-div {
@@ -40,7 +40,6 @@ em {
 .card {
   width: 66%;
   display: inline-block;
-
 }
 
 .car {
@@ -53,4 +52,44 @@ em {
   justify-content: space-between;
   align-items: center; */
   /* width: 210px; */
+}
+
+.form-check-input {
+  position: absolute;
+  left: -100vw;
+}
+
+.form-check-input:checked + #heart {
+  color: #e2264d;
+  will-change: font-size;
+  animation: heart 1s cubic-bezier(0.2, 5, 0.83, 0.67);
+}
+
+#heart {
+  color: #aab8c2;
+  cursor: pointer;
+  font-size: 2em;
+  align-self: center;
+  transition: color 0.2s ease-in-out;
+}
+
+#heart:hover {
+  color: grey;
+}
+
+#heart::selection {
+  color: none;
+  background: transparent;
+}
+
+#heart::moz-selection {
+  color: none;
+  background: transparent;
+}
+
+@keyframes heart {
+  0%,
+  17.5% {
+    font-size: 0;
+  }
 }
