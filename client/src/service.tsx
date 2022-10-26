@@ -88,7 +88,7 @@ class Service {
   createIngredient(name: string) {
     return axios.post<{}>('/newingredient', { name: name }).then((response) => response.data);
   }
-  
+
   createCountry(name: string) {
     return axios.post<{}>('/newcountry', { name: name }).then((response) => response.data);
   }
@@ -115,10 +115,14 @@ class Service {
       .then((response) => response.data);
   }
   updateIngredientShoppingList(ingredient: IngredientToShoppinglist) {
-    return axios.put<{}>('/updateingredient', {ingredient: ingredient}).then((response) => response.data);
+    return axios
+      .put<{}>('/updateingredient', { ingredient: ingredient })
+      .then((response) => response.data);
   }
   deleteIngredientShoppingList(id: number) {
-    return axios.delete<{}>('/deleteingredientshoppinglist/' + id ).then((response) => response.data);
+    return axios
+      .delete<{}>('/deleteingredientshoppinglist/' + id)
+      .then((response) => response.data);
   }
   deleteAllShoppingList() {
     return axios.delete<{}>('/deleteallshoppinglist').then((response) => response.data);
@@ -136,7 +140,7 @@ class Service {
   }
   likeRecipe(oppskrift_id: number, liked: boolean) {
     return axios
-      .put<{}>('/recipe/' + oppskrift_id, { liked: liked })
+      .put<{}>('/recipelike/' + oppskrift_id, { liked: liked })
       .then((response) => response.data);
   }
 }

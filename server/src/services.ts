@@ -159,15 +159,17 @@ class Service {
     });
   }
 
-
-
   updateIngredientShoppinglist(ingredient: IngredientToShoppinglist) {
     return new Promise<void>((resolve, reject) => {
-      pool.query('UPDATE handleliste SET mengde=?, maleenhet=? WHERE ingred_id=?', [ingredient.mengde, ingredient.maleenhet, ingredient.ingred_id], (error, results: ResultSetHeader) => {
-        if (error) return reject(error);
+      pool.query(
+        'UPDATE handleliste SET mengde=?, maleenhet=? WHERE ingred_id=?',
+        [ingredient.mengde, ingredient.maleenhet, ingredient.ingred_id],
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
 
-        resolve();
-      });
+          resolve();
+        }
+      );
     });
   }
 
@@ -303,15 +305,12 @@ class Service {
   }
   deleteAllShoppinglist() {
     return new Promise<void>((resolve, reject) => {
-      pool.query(
-        'DELETE FROM handleliste',
-        (error, results: ResultSetHeader) => {
-          if (error) return reject(error);
-          if (results.affectedRows == 0) return reject(new Error('No row deleted'));
+      pool.query('DELETE FROM handleliste', (error, results: ResultSetHeader) => {
+        if (error) return reject(error);
+        if (results.affectedRows == 0) return reject(new Error('No row deleted'));
 
-          resolve();
-        }
-      );
+        resolve();
+      });
     });
   }
   deleteRecipe(id: number) {
@@ -330,6 +329,7 @@ class Service {
   }
   updateLiked(oppskrift_id: number, liked: boolean) {
     return new Promise<void>((resolve, reject) => {
+      console.log(liked);
       let likeIncrementsAntLike =
         liked == true
           ? 'UPDATE oppskrift SET ant_like=ant_like+1 WHERE oppskrift_id=?'

@@ -528,7 +528,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
             <p key={i}>
               {i + 1}.{' '}
               {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}{' '}
-              {(rc.mengde * this.portions) / this.recipe.ant_pors} {rc.maleenhet}
+              {((rc.mengde * this.portions) / this.recipe.ant_pors).toFixed(1)} {rc.maleenhet}
             </p>
           ))}
         </Card>
@@ -549,8 +549,6 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
   }
 
   mounted() {
-    service.getAllRepice().then((recipe) => (this.recipe = recipe));
-
     service
       .getAllIngredient()
       .then((ingredients) => (this.ingredients = ingredients))
