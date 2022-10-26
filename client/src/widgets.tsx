@@ -25,12 +25,12 @@ export class RecipeView extends Component<{ img: string; name: string; numbOfPor
 export class Cards extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
     return (
-      <div className="cards">
-        <div className="card-body">
-          <h5 className="card-title">{this.props.title}</h5>
-          <div className="card-text">{this.props.children}</div>
+        <div className="card cards">
+          <div className="card-body">
+            <h5 className="card-title">{this.props.title}</h5>
+            <div className="card-text">{this.props.children}</div>
+          </div>
         </div>
-      </div>
     );
   }
 }
@@ -44,6 +44,32 @@ export class Card extends Component<{ title: ReactNode; children: ReactNode }> {
           <div className="card-text">{this.props.children}</div>
         </div>
       </div>
+    );
+  }
+}
+
+export class Oppskrifter extends Component<{ title: ReactNode; children: ReactNode }> {
+  render() {
+    return (
+      <div className="card oppskrifter">
+        <div className="card-body">
+          <h5 className="card-title">{this.props.title}</h5>
+          <div className="card-text">{this.props.children}</div>
+        </div>
+      </div>
+    );
+  }
+}
+
+export class Mat extends Component<{ title: ReactNode; children: ReactNode }> {
+  render() {
+    return (
+        <div className="card mat">
+          <div className="card-body">
+            <h5 className="card-title">{this.props.title}</h5>
+            <div className="card-text">{this.props.children}</div>
+          </div>
+        </div>
     );
   }
 }
