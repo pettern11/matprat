@@ -498,7 +498,11 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
         <Card title="">
           <img src={this.recipe.bilde_adr} width="20px"></img>
           <h1>{this.recipe.oppskrift_navn}</h1>
-          <p>Beskrivelse: {this.recipe.oppskrift_beskrivelse}</p>
+          {this.recipe.oppskrift_beskrivelse != '' ? (
+            <p>Beskrivelse: {this.recipe.oppskrift_beskrivelse}</p>
+          ) : (
+            ''
+          )}
           <p>
             Kategori:{' '}
             {
@@ -789,11 +793,11 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
     console.log('nå sendes objektet', this.recipeContent);
     service
       .updateRecipe(this.recipe)
-      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+      .catch((error) => Alert.danger('Error updating recipe info: ' + error.message));
     service
       .updateRecipeIngredient(this.recipeContent)
       .then(() => history.push('/recipe/' + this.props.match.params.id))
-      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+      .catch((error) => Alert.danger('Error updating recipe content: ' + error.message));
   }
   deleteIngredient(recipe_id: number, ingred_id: number) {
     service

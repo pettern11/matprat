@@ -242,10 +242,11 @@ class Service {
   }
   updateRecipeIngredient(recipeContent: Recipe_Content[]) {
     return new Promise<void>((resolve, reject) => {
+      console.log('homofaenfitte', recipeContent);
       recipeContent.forEach((element) => {
         pool.query(
           'UPDATE oppskrift_innhold SET mengde=?, maleenhet=? WHERE oppskrift_id=? AND ingred_id=?',
-          [element.mengde, element.maleenhet, element.oppskrift_id, element.ingred_id],
+          [Number(element.mengde), element.maleenhet, element.oppskrift_id, element.ingred_id],
           (error: any, _results: any) => {
             if (error) return reject(error);
 

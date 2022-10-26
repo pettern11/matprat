@@ -113,16 +113,15 @@ router.post('/newcategory', (request, response) => {
 
 router.put('/update_recipe_ingredient', (request, response) => {
   console.log(1);
+  console.log('se her', request.body.recipeContent);
   service
     .updateRecipeIngredient(request.body.recipeContent)
     .then(() => response.send())
     .catch((error) => response.status(500).send(error));
 });
 router.put('/updateingredient', (request, response) => {
-  service
-    .updateIngredientShoppinglist(request.body.ingredient)
-    .then(() => response.send())
-    .catch((error) => response.status(500).send(error));
+  service.updateIngredientShoppinglist(request.body.ingredient).then(() => response.send());
+  // .catch((error) => response.status(500).send(error));
 });
 router.put('/update_recipe', (request, response) => {
   service
