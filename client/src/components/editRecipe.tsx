@@ -109,8 +109,9 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
             <div id="outprintIngredient">
               {this.recipeContent.map((rc, i) => (
                 <p key={i}>
-                  {/* {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}{' '} */}
+                  {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}
                   <input
+                    id={'ingredNumber' + i.toString()}
                     style={{ width: '50px' }}
                     type="number"
                     value={rc.mengde}
@@ -121,6 +122,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                   />
                   <input
                     style={{ width: '100px' }}
+                    id={'ingredType' + i.toString()}
                     type="text"
                     value={rc.maleenhet}
                     onChange={(event) => (
@@ -134,7 +136,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                     x
                   </Button.Danger>
                 </p>
-              ))}{' '}
+              ))}
             </div>
           </Column>
           {/* print ut alle ingrediense som allerede er i databasen */}
@@ -148,7 +150,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
               {this.ingredients.map((ingredient) => (
                 <>
                   <Button.Light
-                    id={ingredient.ingred_id}
+                    id={ingredient.ingred_id.toString() + 'addbutton'}
                     key={ingredient.ingred_id}
                     onClick={() => {
                       this.addIngredientFunc(ingredient.ingred_id, this.props.match.params.id);
@@ -217,13 +219,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
   mounted() {
     service
       .getAllIngredient()
-      .then(
-        (ingredients) => (
-          console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', ingredients),
-          (this.ingredients = ingredients)
-        )
-      )
-      .then(() => console.log('fittefaen1'))
+      .then((ingredients) => (this.ingredients = ingredients))
       .catch((error) => {
         console.log(error);
         Alert.danger('Error getting ingredients: ' + error.message);
@@ -232,7 +228,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
     service
       .getRecipeContent(this.props.match.params.id)
       .then((recipeContent) => (this.recipeContent = recipeContent))
-      .then(() => console.log('fittefaen2'))
+      .then(() => this.recipeContent)
       .catch((error) => Alert.danger('Error getting recipe content: ' + error.message));
 
     service
@@ -240,7 +236,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
       .then((recipe) => {
         this.recipe = recipe[0];
       })
-      .then(() => console.log('fittefaen3'))
+      .then(() => console.log(this.recipe))
       .catch((error) => Alert.danger('Error getting recipe: ' + error.message));
   }
 }

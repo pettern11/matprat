@@ -81,7 +81,7 @@ jest.mock('../../src/service', () => {
           maleenhet: 'håndfull',
         },
         {
-          oppskrift_id: 1,
+          oppskrift_id: 2,
           ingred_id: 3,
           mengde: 400,
           maleenhet: 'g',
@@ -103,15 +103,26 @@ jest.mock('../../src/service', () => {
     updateRecipeIngredient() {
       return Promise.resolve();
     }
+    deleteIngredient() {
+      return Promise.resolve();
+    }
   }
   return new Service();
 });
 describe('editRecipe test', () => {
-  test.skip('delete ingredent', (done) => {
-    expect(service.deleteIngredient(1, 1)).resolves.toBeUndefined();
-    done();
+  test('add ingredent', (done) => {
+    let spy = jest.spyOn(EditRecipe.prototype, 'addIngredientFunc').mockImplementation(() => 8);
+    const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
+    setTimeout(() => {
+      console.log(wrapper.debug());
+      wrapper.find(Button.Light).at(0).simulate('click', { ingred_id: 3, recipe_id: 1 });
+      setTimeout(() => {
+        expect(spy).toHaveBeenCalled();
+        done();
+      });
+    });
   });
-  test.skip('change name on recipe and cancel change', (done) => {
+  test('cancel change', (done) => {
     const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
     wrapper.find('#cancelEdit').simulate('click');
     setTimeout(() => {
@@ -119,13 +130,24 @@ describe('editRecipe test', () => {
       done();
     });
   });
-  test('editRecipe should render', (done) => {
+  test('delete ingredeient from recipe', (done) => {
+    let spy = jest.spyOn(EditRecipe.prototype, 'deleteIngredient').mockImplementation(() => 8);
     const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
-    console.log(wrapper.debug());
-    done();
+
+    setTimeout(() => {
+      wrapper.find(Button.Danger).at(0).simulate('click', { oppskrift_id: 1, ingred_id: 1 });
+      //her slette vi første ingrediens i oppskriften, vi går ikke skjekket om dette faktisk går fordi siden vil kalle på getIngredRecipe()
+      //men siden vi mocker den og den ikke er dynamisk så vil den ikke oppdatere seg
+      //det vi kan gjøre er å sjekke om funksjonen som skal slette har blitt kalt og det kan vi gjøre ved å bruke spy
+      setTimeout(() => {
+        expect(spy).toHaveBeenCalled();
+        done();
+      });
+    });
   });
-  test.skip('change name, description, steps on recipe and confirm change', (done) => {
+  test('change name, description, steps on recipe, and inputfield and confirm change', (done) => {
     const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
+
     wrapper.find('#recipe_name').simulate('change', { currentTarget: { value: 'Pizzaaaa' } });
     wrapper
       .find('#recipe_description')
@@ -133,8 +155,11 @@ describe('editRecipe test', () => {
     wrapper.find('#recipe_step').simulate('change', { currentTarget: { value: 'lag piazz' } });
     wrapper.find('#recipe_portions').simulate('change', { currentTarget: { value: '1' } });
     wrapper.find('#recipe_image').simulate('change', { currentTarget: { value: '' } });
-    wrapper.find(Button.Success).simulate('click');
+
     setTimeout(() => {
+      wrapper.find('#ingredNumber1').simulate('change', { currentTarget: { value: '3' } });
+      wrapper.find('#ingredType1').simulate('change', { currentTarget: { value: 'stk' } });
+      wrapper.find(Button.Success).simulate('click');
       expect(window.location.href).toEqual('http://localhost/#/recipe/1');
       done();
     });
