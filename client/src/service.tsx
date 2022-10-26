@@ -34,6 +34,12 @@ export type IngredientToShoppinglist = {
   mengde: number;
   maleenhet: string;
 };
+export type ElementShoppingList = {
+  ingred_id: number;
+  ingred_navn: string;
+  mengde: number;
+  maleenhet: string;
+};
 export type Ingredient = {
   ingred_id: number;
   ingred_navn: string;
@@ -69,12 +75,16 @@ class Service {
   getShoppingList() {
     return axios.get<List[]>('/shoppinglist').then((response) => response.data);
   }
+  /* addItemToShoppingList(item: ElementShoppingList) {
+    return axios.post<{}>('/additemshoppinglist', {item: item}).then((response) => response.data);
+  } */
   addIngredient(ingredient: IngredientToShoppinglist) {
     return axios.post<{}>('/addingredient', {ingredient: ingredient}).then((response) => response.data);
   }
   createIngredient(name: string) {
     return axios.post<{}>('/newingredient', { name: name }).then((response) => response.data);
   }
+  
   createCountry(name: string) {
     return axios.post<{}>('/newcountry', { name: name }).then((response) => response.data);
   }
@@ -96,6 +106,15 @@ class Service {
     return axios
       .put('/update_recipe_ingredient', { recipeContent: recipeContent })
       .then((response) => response.data);
+  }
+  updateIngredientShoppingList(ingredient: IngredientToShoppinglist) {
+    return axios.put<{}>('/updateingredient', {ingredient: ingredient}).then((response) => response.data);
+  }
+  deleteIngredientShoppingList(id: number) {
+    return axios.delete<{}>('/deleteingredientshoppinglist/' + id ).then((response) => response.data);
+  }
+  deleteAllShoppingList() {
+    return axios.delete<{}>('/deleteallshoppinglist').then((response) => response.data);
   }
   updateRecipe(recipe: Recipe) {
     return axios.put('/update_recipe', { recipe: recipe }).then((response) => response.data);
