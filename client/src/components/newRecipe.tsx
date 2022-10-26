@@ -20,6 +20,14 @@ export class NewRecipe extends Component {
   ingredients: Ingredient[] = [];
   recipe_content: Recipe_Content[] = [];
   ingredient: string = '';
+  selectedIngredients: Ingredient[] = [];
+
+  selectedIngredient: Ingredient = {
+    ingred_id: 1,
+    ingred_navn: '',
+  }
+
+  recipeIngredients: Ingredient[] = [];
 
   name: string = '';
   description: string = '';
@@ -30,9 +38,9 @@ export class NewRecipe extends Component {
   category_name: string = '';
   country_id: number = 0;
   country_name: string = '';
+  searchterm: string = '';
 
   render() {
-    console.log(this.categories, this.countries);
     return (
       <>
         <Card title="Registrer en ny oppskrift">
@@ -195,7 +203,7 @@ export class NewRecipe extends Component {
           {/* vidre ideer her er at vi setter en viss lengde og bredde på diven og så hvis den overflower så må man bare skulle 
           nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
           <Column>
-            Ingrediensene som allered er lagret,
+           {/*  Ingrediensene som allered er lagret,
             <br /> hvis ingrediensen din ikke er her kan du legge den til!
             <br />
             <Column>
@@ -210,7 +218,46 @@ export class NewRecipe extends Component {
                   {ingredient.ingred_navn}
                 </Button.Light>
               ))}
+            </Column> */}
+
+            <Card title="Søk etter ingrediens">
+            <Column>
+            <h6>Søk</h6>
+            <Form.Input
+              id="newRecipeSearch"
+              type="text"
+              value={this.searchterm}
+              onChange={(event) => {
+                this.search(event.currentTarget.value);
+                this.searchterm = event.currentTarget.value;
+              }}
+            />
+            <select
+              id="selectIngredientNewRecipe"
+              onChange={(event) => {
+                this.selectedIngredient.ingred_id = Number(event.currentTarget.value); console.log(event.currentTarget.selectedOptions[0].text)
+                this.selectedIngredient.ingred_navn = event.currentTarget.selectedOptions[0].text;
+              }}
+            >
+              {this.selectedIngredients.map((ingredient) => (
+                <option key={ingredient.ingred_id} value={ingredient.ingred_id}>
+                  {ingredient.ingred_navn}
+                </option>
+              ))}
+            </select>
             </Column>
+            <Button.Success 
+            id='btnIngredAdd'
+            onClick={() => {console.log(this.selectedIngredient);
+              this.chooseIngredientFunc(this.selectedIngredient.ingred_id);
+            }}>
+              Legg til ny ingrediens
+            </Button.Success>
+            </Card>
+
+
+
+
           </Column>
           {/* legg til ingredienser */}
           <Column>
@@ -251,6 +298,16 @@ export class NewRecipe extends Component {
       </>
     );
   }
+  search(searchterm: string) {
+    this.selectedIngredients = this.ingredients.filter((ingredient) =>
+      ingredient.ingred_navn.toLowerCase().includes(searchterm.toLowerCase())
+    );console.log(this.selectedIngredients);
+    if(this.selectedIngredients.length === 0){
+      this.selectedIngredient = {ingred_id: 0, ingred_navn: ''};
+    }else{
+    this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
+    }
+  }
   addRecipe() {
     let recipe: Recipe = {
       oppskrift_id: 0,
@@ -283,7 +340,19 @@ export class NewRecipe extends Component {
 
     console.log(this.recipe_content);
   }
-  chooseIngredientFunc(id: any, name: string) {
+  chooseIngredientFunc(id: number) {
+    if(id === 0 || id === undefined || id === null || id === ''){
+      Alert.info('Du må velge en ingrediens');
+    } else if(this.recipeIngredients.some((e) => e == id)){
+      Alert.info('Denne ingrediensen er allerede lagt til');
+    } else{
+      console.log(this.recipeIngredients.some((e) => e == id))
+      console.log('før', this.recipeIngredients);
+    this.recipeIngredients.push(id);
+    console.log('etter', this.recipeIngredients);
+
+
+    let name = this.ingredients.find((ingredient) => ingredient.ingred_id == id)?.ingred_navn;
     const btn = document.getElementById('ingred' + id) as HTMLButtonElement | null;
     if (btn != null) {
       btn.disabled = true;
@@ -338,7 +407,7 @@ export class NewRecipe extends Component {
     ingredList.appendChild(inputNumberOf);
     ingredList.appendChild(inputMeasurment);
     ingredList.appendChild(deleteBtn);
-  }
+    }}
   addCategoryFunc() {
     // sjekker om kategorien allerede finnes i arrayen med kategorier, hvis ikke legger den til landet i databasen
     // hentet fra databasen
@@ -403,10 +472,11 @@ export class NewRecipe extends Component {
         .then(() =>
           service
             .getAllIngredient()
-            .then((ingredients) => (this.ingredients = ingredients))
+            .then((ingredients) => (this.ingredients = ingredients, this.chooseIngredientFunc(ingredients[ingredients.length - 1].ingred_id)))
             .catch((error) => Alert.danger('Error : ' + error.message))
         )
         .catch((error) => Alert.danger('Error : ' + error.message));
+        this.ingredient = '';
     } else Alert.info('Ingrediensen finnes allerede eller du har ikke skrevet noe');
   }
   checkCountry(value: number) {
@@ -417,6 +487,9 @@ export class NewRecipe extends Component {
     this.category_id = value;
   }
   mounted() {
+    this.selectedIngredient.ingred_id = 1;
+    this.selectedIngredient.ingred_navn = '';
+
     service
       .getAllCountry()
       .then((countries) => (this.countries = countries))
@@ -427,7 +500,7 @@ export class NewRecipe extends Component {
       .catch((error) => Alert.danger('Error getting categories: ' + error.message));
     service
       .getAllIngredient()
-      .then((ingredients) => (this.ingredients = ingredients))
+      .then((ingredients) => (this.ingredients = ingredients, this.selectedIngredients = ingredients, this.selectedIngredient.ingred_navn = ingredients[0].ingred_navn, this.selectedIngredient.ingred_id = ingredients[0].ingred_id))
       .catch((error) => Alert.danger('Error getting categories: ' + error.message));
   }
 }
