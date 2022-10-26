@@ -2,6 +2,11 @@ body {
   font-size: arial;
 }
 
+/* html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+} */
+
 em {
   font-style: normal;
 }
@@ -26,8 +31,9 @@ em {
 
 .oppskrifter {
   /* display: inline-block; */
-  width: 70%;
-  height: 500px;
+  width: 80%;
+  height: 100vh;
+  /* flex: 1 1 auto; */
   overflow: auto;
   display: flex;
   flex-wrap: wrap;
@@ -35,12 +41,14 @@ em {
 }
 
 .mat {
-  width: 30%;
-  height: 500px;
+  width: 20%;
+  height: 100vh;
+  /* flex: 1 1 auto; */
   overflow: auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  /* top: 50%; */
   margin-left: auto;
   margin-right: auto;
 }
@@ -52,7 +60,18 @@ em {
 .container {
   width: 100%;
   margin: 0px 0px;
-  /* padding: 0px 0px 0px; */
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.container .row {
+    flex: 1 1 auto;
+  }
+
+.recipe-container {
+  width: 100%;
+  margin: 0px 0px;
 }
 
 .row {
@@ -61,7 +80,6 @@ em {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  /* width: 210px; */
 }
 
 .cards {

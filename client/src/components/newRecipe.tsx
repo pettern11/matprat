@@ -45,55 +45,152 @@ export class NewRecipe extends Component {
       <>
         <Card title="Registrer en ny oppskrift">
           {/* input navn */}
-          <Column>
-            <Column width={2}>
-              <Form.Label>Name:</Form.Label>
-            </Column>
+          <Row>
             <Column>
-              <Form.Input
-                id="recipe_name_input"
-                type="text"
-                value={this.name}
-                onChange={(event) => (this.name = event.currentTarget.value)}
-              />
+              <Column width={2}>
+                <Form.Label>Name:</Form.Label>
+              </Column>
+              <Column>
+                <Form.Textarea
+                  id="recipe_name_input"
+                  type="text"
+                  value={this.name}
+                  onChange={(event) => (this.name = event.currentTarget.value)}
+                  rows={3}
+                />
+              </Column>
             </Column>
-          </Column>
-          {/* input beksrivelse */}
-          <Column>
-            <Column width={2}>
-              <Form.Label>Description:</Form.Label>
-            </Column>
+            {/* input beksrivelse */}
             <Column>
-              <Form.Textarea
-                id="recipe_description_input"
-                style={{ width: '300px' }}
-                type="text"
-                value={this.description}
-                onChange={(event) => (this.description = event.currentTarget.value)}
-                rows={5}
-              />
+              <Column width={2}>
+                <Form.Label>Description:</Form.Label>
+              </Column>
+              <Column>
+                <Form.Textarea
+                  id="recipe_description_input"
+                  type="text"
+                  value={this.description}
+                  onChange={(event) => (this.description = event.currentTarget.value)}
+                  rows={3}
+                />
+              </Column>
             </Column>
-          </Column>
-          {/* input steg */}
-          <Column>
-            <Column width={2}>
-              <Form.Label>Steg:</Form.Label>
-            </Column>
+            {/* input steg */}
             <Column>
-              <Form.Textarea
-                id="recipe_steps_input"
-                style={{ width: '600px' }}
-                type="text"
-                value={this.steps}
-                onChange={(event) => (this.steps = event.currentTarget.value)}
-                rows={5}
-              />
+              <Column width={2}>
+                <Form.Label>Steg:</Form.Label>
+              </Column>
+              <Column>
+                <Form.Textarea
+                  id="recipe_steps_input"
+                  type="text"
+                  value={this.steps}
+                  onChange={(event) => (this.steps = event.currentTarget.value)}
+                  rows={3}
+                />
+              </Column>
             </Column>
-          </Column>
+          </Row>
+          <Row>
+            {/* input bilde url */}
+            <Column>
+              <Column width={2}>
+                <Form.Label>Bildeurl:</Form.Label>
+              </Column>
+              <Column>
+                <Form.Input
+                  id="recipe_picture_url_input"
+                  type="text"
+                  value={this.picture_adr}
+                  onChange={(event) => (this.picture_adr = event.currentTarget.value)}
+                />
+              </Column>
+            </Column>
+            {/* velg land retten kommer fra */}
+            <Column>
+              <Column width={2}>
+                <Form.Label>Land:</Form.Label>
+              </Column>
+              <Column>
+                <select
+                  key={'choseCountry'}
+                  id="choseCountry"
+                  onChange={() => {
+                    this.checkCountry(event?.target.value);
+                  }}
+                >
+                  <option selected disabled>
+                    Velg land
+                  </option>
+                  {this.countries.map((country: Country, i: number) => (
+                    <option key={country.land_id} value={country.land_id}>
+                      {country.land_navn}
+                    </option>
+                  ))}
+                </select>
+                <Form.Input
+                  id="addCountry"
+                  type="text"
+                  value={this.country_name}
+                  onChange={(event) => (this.country_name = event.currentTarget.value)}
+                  placeholder="Skriv inn landet retten kommer fra"
+                ></Form.Input>
+                <Button.Success
+                  id="addCountryBtn"
+                  onClick={() => {
+                    this.addCountryFunc();
+                  }}
+                >
+                  Legg til
+                </Button.Success>
+                {/* må lage select og options som cars */}
+              </Column>
+            </Column>
+            {/* velg retten sin kategori */}
+            <Column>
+              <Column width={2}>
+                <Form.Label>Kategori:</Form.Label>
+              </Column>
+              <Column>
+                <select
+                  key={'choseCategory'}
+                  id="choseCategory"
+                  onChange={() => {
+                    this.checkCategory(event?.target.value);
+                  }}
+                >
+                  <option selected disabled>
+                    Velg kategori
+                  </option>
+                  {this.categories.map((category: Category) => (
+                    <option key={category.kategori_id.toString()} value={category.kategori_id}>
+                      {category.kategori_navn}
+                    </option>
+                  ))}
+                </select>
+                <Form.Input
+                  id="addCategory"
+                  type="text"
+                  value={this.category_name}
+                  onChange={(event) => (this.category_name = event.currentTarget.value)}
+                  placeholder="Skriv inn kattegorien retten tilhører"
+                ></Form.Input>
+                <Button.Success
+                  id="addCategoryBtn"
+                  onClick={() => {
+                    this.addCategoryFunc();
+                  }}
+                >
+                  Legg til
+                </Button.Success>
+                {/* må lage select og options som cars */}
+              </Column>
+            </Column>
+          </Row>
           {/* input antall porsjoner */}
           <Column>
             <Column width={2}>
-              <Form.Label>Porjsoner:</Form.Label>
+              <Form.Label>Porsjoner:</Form.Label>
             </Column>
             <Column>
               <Form.Input
@@ -103,100 +200,6 @@ export class NewRecipe extends Component {
                 //@ts-ignore
                 onChange={(event) => (this.portions = event.currentTarget.value)}
               />
-            </Column>
-          </Column>
-          {/* input bilde url */}
-          <Column>
-            <Column width={2}>
-              <Form.Label>Bilde url:</Form.Label>
-            </Column>
-            <Column>
-              <Form.Input
-                id="recipe_picture_url_input"
-                type="text"
-                value={this.picture_adr}
-                onChange={(event) => (this.picture_adr = event.currentTarget.value)}
-              />
-            </Column>
-          </Column>
-          {/* velg land retten kommer fra */}
-          <Column>
-            <Column width={2}>
-              <Form.Label>Land:</Form.Label>
-            </Column>
-            <Column>
-              <select
-                key={'choseCountry'}
-                id="choseCountry"
-                onChange={() => {
-                  this.checkCountry(event?.target.value);
-                }}
-              >
-                <option selected disabled>
-                  Velg land
-                </option>
-                {this.countries.map((country: Country, i: number) => (
-                  <option key={country.land_id} value={country.land_id}>
-                    {country.land_navn}
-                  </option>
-                ))}
-              </select>
-              <Form.Input
-                id="addCountry"
-                type="text"
-                value={this.country_name}
-                onChange={(event) => (this.country_name = event.currentTarget.value)}
-                placeholder="Skriv inn landet retten kommer fra"
-              ></Form.Input>
-              <Button.Success
-                id="addCountryBtn"
-                onClick={() => {
-                  this.addCountryFunc();
-                }}
-              >
-                Legg til
-              </Button.Success>
-              {/* må lage select og options som cars */}
-            </Column>
-          </Column>
-          {/* velg retten sin kategori */}
-          <Column>
-            <Column width={2}>
-              <Form.Label>Kategori:</Form.Label>
-            </Column>
-            <Column>
-              <select
-                key={'choseCategory'}
-                id="choseCategory"
-                onChange={() => {
-                  this.checkCategory(event?.target.value);
-                }}
-              >
-                <option selected disabled>
-                  Velg kategori
-                </option>
-                {this.categories.map((category: Category) => (
-                  <option key={category.kategori_id.toString()} value={category.kategori_id}>
-                    {category.kategori_navn}
-                  </option>
-                ))}
-              </select>
-              <Form.Input
-                id="addCategory"
-                type="text"
-                value={this.category_name}
-                onChange={(event) => (this.category_name = event.currentTarget.value)}
-                placeholder="Skriv inn kattegorien retten tilhører"
-              ></Form.Input>
-              <Button.Success
-                id="addCategoryBtn"
-                onClick={() => {
-                  this.addCategoryFunc();
-                }}
-              >
-                Legg til
-              </Button.Success>
-              {/* må lage select og options som cars */}
             </Column>
           </Column>
           {/* print ut alle ingrediense som allerede er i databasen */}

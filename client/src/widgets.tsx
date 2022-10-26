@@ -25,12 +25,12 @@ export class RecipeView extends Component<{ img: string; name: string; numbOfPor
 export class Cards extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
     return (
-        <div className="card cards">
-          <div className="card-body">
-            <h5 className="card-title">{this.props.title}</h5>
-            <div className="card-text">{this.props.children}</div>
-          </div>
+      <div className="card cards">
+        <div className="card-body">
+          <h5 className="card-title">{this.props.title}</h5>
+          <div className="card-text">{this.props.children}</div>
         </div>
+      </div>
     );
   }
 }
@@ -64,12 +64,12 @@ export class Oppskrifter extends Component<{ title: ReactNode; children: ReactNo
 export class Mat extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
     return (
-        <div className="card mat">
-          <div className="card-body">
-            <h5 className="card-title">{this.props.title}</h5>
-            <div className="card-text">{this.props.children}</div>
-          </div>
+      <div className="card mat">
+        <div className="card-body">
+          <h5 className="card-title">{this.props.title}</h5>
+          <div className="card-text">{this.props.children}</div>
         </div>
+      </div>
     );
   }
 }
@@ -110,6 +110,16 @@ export class Column extends Component<{ width?: number; right?: boolean; childre
     );
   }
 }
+
+// export class Colscroll extends Component<{ width?: number; right?: boolean; children: ReactNode }> {
+//   render() {
+//     return (
+//       <div className={'col' + (this.props.width ? '-' + this.props.width : '')} >
+//         <div className={'float-' + (this.props.right ? 'end' : 'start')}>{this.props.children}</div>
+//       </div>
+//     );
+//   }
+// }
 
 /**
  * Renders a success button using Bootstrap styles.
@@ -384,27 +394,38 @@ export class Form {
 export class Alert extends Component {
   alerts: { id: number; text: ReactNode; type: string }[] = [];
   nextId: number = 0;
+  
+
 
   render() {
     return (
-      <div>
+      <div id="alerts">
         {this.alerts.map((alert, i) => (
           <div
             key={alert.id}
+            id={"test"}
             className={'alert alert-dismissible alert-' + alert.type}
             role="alert"
+            onClick={this.deleteMessage(i)}
           >
             {alert.text}
             <button
               type="button"
               className="btn-close btn-sm"
               onClick={() => this.alerts.splice(i, 1)}
+              
             />
           </div>
         ))}
       </div>
     );
   }
+
+  deleteMessage(i){
+    setTimeout(() => {
+      this.alerts.splice(i, 1);
+    }, 1500);
+  }    
 
   /**
    * Show success alert.

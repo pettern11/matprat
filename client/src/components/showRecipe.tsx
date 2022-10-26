@@ -37,7 +37,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
     return (
       <div>
         <Card title="">
-          <img src={this.recipe.bilde_adr} width="20px"></img>
+          <img src={this.recipe.bilde_adr} width="200px"></img>
           <h1>{this.recipe.oppskrift_navn}</h1>
           {this.recipe.oppskrift_beskrivelse != '' ? (
             <p>Beskrivelse: {this.recipe.oppskrift_beskrivelse}</p>
