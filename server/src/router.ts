@@ -12,6 +12,7 @@ router.get('/', (_request, response) => {
     .then((rows) => response.send(rows))
     .catch((error) => response.status(500).send(error));
 });
+
 router.get('/recipe/:id', (_request, response) => {
   let id: number = parseInt(_request.params.id);
 
@@ -101,6 +102,13 @@ router.post('/newcountry', (request, response) => {
     .createCountry(data.name)
     .then(() => response.send())
     .catch((error) => response.status(500).send(error));
+});
+router.post('/newcategory', (request, response) => {
+  const data = request.body;
+  service
+    .createCategory(data.name)
+    .then(() => response.send())
+    .catch((error: any) => response.status(500).send(error));
 });
 
 

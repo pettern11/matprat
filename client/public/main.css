@@ -1,0 +1,56 @@
+body {
+  font-size: arial;
+}
+
+em {
+	font-style: normal;
+}
+
+.black {
+  text-decoration: none;
+  text-transform: capitalize;
+  color: black;
+  font-size: 1em;
+}
+
+.image {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  object-position: 30% 0;
+  border-radius: 25px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto
+}
+
+.recipe-div {
+  /* border: 2px solid rgb(218, 218, 218); */
+  /* border-radius: 25px;  */
+}
+
+.card-columns {
+}
+
+.cards {
+  display: inline-block;
+  width: 220px;
+}
+
+.card {
+  width: 66%;
+  display: inline-block;
+
+}
+
+.car {
+  width: 100%;
+}
+
+.recipe-body {
+  /* display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center; */
+  /* width: 210px; */
+}
