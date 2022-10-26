@@ -2,9 +2,21 @@ import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { NavBar, Car, Card, Cards, Alert, Column, Row, Form, Button, RecipeView } from './widgets';
+import {
+  NavBar,
+  Car,
+  Card,
+  Cards,
+  Alert,
+  Column,
+  Row,
+  Form,
+  Button,
+  RecipeView,
+  Oppskrifter,
+  Mat,
+} from './widgets';
 import { NewRecipe, ShowRecipe, EditRecipe, ShoppingList, LikedRecipes } from './components';
-
 import service, { Recipe } from './service';
 import { createHashHistory } from 'history';
 
@@ -41,29 +53,39 @@ export class Home extends Component {
             }}
           />
         </Car>
-        <Card title="Oppskrifter">
-          <select onChange={(event) => this.sort(event.target.value)}>
-            <option>Sorter</option>
-            <option value="0">A-Z</option>
-            <option value="1">Z-A</option>
-            <option value="2">Nyeste</option>
-          </select>
-          <br></br>
-          {this.recipes.map((recipe) => (
-            <Cards title="" key={recipe.oppskrift_id}>
-              <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
-                <RecipeView
-                  img={recipe.bilde_adr}
-                  name={recipe.oppskrift_navn}
-                  numbOfPors={recipe.ant_pors}
-                ></RecipeView>
-              </NavLink>
-            </Cards>
-          ))}
-        </Card>
-        <Card title="Kanskje du liker">
-          <Cards title="Mat"></Cards>
-        </Card>
+        <div className="container">
+          <Row>
+            <Oppskrifter title="Oppskrifter">
+              <select onChange={(event) => this.sort(event.target.value)}>
+                <option>Sorter</option>
+                <option value="0">A-Z</option>
+                <option value="1">Z-A</option>
+                <option value="2">Nyeste</option>
+              </select>
+              <br></br>
+
+              <div className="container">
+                <Row>
+                  {this.recipes.map((recipe) => (
+                    <Cards title="" key={recipe.oppskrift_id}>
+                      <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
+                        <RecipeView
+                          img={recipe.bilde_adr}
+                          name={recipe.oppskrift_navn}
+                          numbOfPors={recipe.ant_pors}
+                        ></RecipeView>
+                      </NavLink>
+                    </Cards>
+                  ))}
+                </Row>
+              </div>
+            </Oppskrifter>
+
+            <Mat title="Kanskje du liker">
+              <Cards title="Mat"></Cards>
+            </Mat>
+          </Row>
+        </div>
       </>
     );
   }

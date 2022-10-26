@@ -9,7 +9,6 @@ import service, {
   Recipe,
   Recipe_Content,
   List,
-  ElementHandleliste,
   ElementShoppingList,
 } from './service';
 import { createHashHistory } from 'history';
@@ -620,6 +619,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
     kategori_id: 0,
     land_id: 0,
     ant_like: 0,
+    liked: false,
   };
   recipeContent: Recipe_Content[] = [];
   ingredients: Ingredient[] = [];
@@ -826,9 +826,17 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
 export class ShoppingList extends Component {
   shoppingList: List[] = [];
   ingredients: Ingredient[] = [];
+  selectedIngredients: Ingredient[] = [];
+  searchterm: string = '';
   elementHandleliste: ElementShoppingList = {
     ingred_id: 0,
     ingred_navn: '',
+    mengde: 0,
+    maleenhet: '',
+  };
+  selectedIngredient: List = {
+    id: 0,
+    ingred_id: 1,
     mengde: 0,
     maleenhet: '',
   };
@@ -848,8 +856,8 @@ export class ShoppingList extends Component {
                 <input
                   id="mengde"
                   type="string"
-                  step=".01"
                   onChange={(event) => {
+                    //@ts-ignore
                     sl.mengde = event.currentTarget.value;
                     console.log(sl.mengde);
                   }}
@@ -901,6 +909,7 @@ export class ShoppingList extends Component {
                 type="number"
                 step=".01"
                 onChange={(event) => {
+                  //@ts-ignore
                   this.elementHandleliste.mengde = event.currentTarget.value;
                 }}
                 value={this.elementHandleliste.mengde}
@@ -920,6 +929,31 @@ export class ShoppingList extends Component {
             </p>
           </Column>
         </Card>
+        <Card title="Add existing ingredients">
+          <Column>
+          <h6>Søk</h6>
+        <Form.Input
+            id="shoppinglistsearch"
+            type="text"
+            value={this.searchterm}
+            onChange={(event) => {
+              this.search(event.currentTarget.value);
+              this.searchterm = event.currentTarget.value;
+            }}
+          />
+          <select id="selectExistingIngredient" onChange={(event) => {this.selectedIngredient.ingred_id = Number(event.currentTarget.value);}}>
+            {this.selectedIngredients.map((ingredient) => (
+              <option key={ingredient.ingred_id} value={ingredient.ingred_id}>
+                {ingredient.ingred_navn}
+              </option>
+            ))}
+          </select>
+          <br/>
+          Antall: <Form.Input id="mengde" type="number"  value={this.selectedIngredient.mengde} onChange={(event) => {this.selectedIngredient.mengde = event.currentTarget.value}}/>
+          Måleenhet: <Form.Input id="maleenhet" type="text" value={this.selectedIngredient.maleenhet} onChange={(event) => {this.selectedIngredient.maleenhet = event.currentTarget.value; console.log(this.selectedIngredient)}}/>
+          <Button.Success onClick={() => this.addExistingItem(this.selectedIngredient)}>Legg til</Button.Success>
+        </Column>
+        </Card>
       </>
     );
   }
@@ -930,6 +964,10 @@ export class ShoppingList extends Component {
     this.elementHandleliste.mengde = 0;
     this.elementHandleliste.maleenhet = '';
 
+    this.searchterm = '';
+    this.selectedIngredient.mengde = 0;
+    this.selectedIngredient.maleenhet = '';
+
     service
       .getShoppingList()
       .then((shoppingList: List[]) => (this.shoppingList = shoppingList))
@@ -939,8 +977,15 @@ export class ShoppingList extends Component {
 
     service
       .getAllIngredient()
-      .then((ingredients) => (this.ingredients = ingredients))
+      .then((ingredients) => (this.ingredients = ingredients, this.selectedIngredients = ingredients, this.selectedIngredient.ingred_id = document.getElementById('selectExistingIngredient')?document.getElementById('selectExistingIngredient').value:''))
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+  }
+  search(searchterm: string) {
+    this.selectedIngredients = this.ingredients.filter((ingredient) =>
+      ingredient.ingred_navn.toLowerCase().includes(searchterm.toLowerCase())
+    );
+    this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
+    console.log(this.selectedIngredients);
   }
   incrementPortions(ingredient: List) {
     ingredient.mengde++;
@@ -964,7 +1009,7 @@ export class ShoppingList extends Component {
       ingredient.mengde < 0 ||
       ingredient.mengde == null ||
       ingredient.mengde == undefined ||
-      ingredient.mengde % 1 != 0 ||
+      //@ts-ignore
       ingredient.mengde == ''
     ) {
       ingredient.mengde = 1;
@@ -991,7 +1036,9 @@ export class ShoppingList extends Component {
   }
 
   addItem(item: ElementShoppingList) {
-    item.ingred_id = this.ingredients.length + 1;
+    console.log(this.ingredients.length)
+    console.log(this.ingredients)
+    item.ingred_id = this.ingredients[this.ingredients.length-1].ingred_id+1;
     if (item.ingred_navn == null || item.ingred_navn == undefined || item.ingred_navn == '') {
       Alert.danger('Du må fylle inn navn på ingrediensen');
     } else if (
@@ -1003,15 +1050,16 @@ export class ShoppingList extends Component {
     } else if (
       item.mengde == null ||
       item.mengde == undefined ||
+      //@ts-ignore
       item.mengde == '' ||
       item.mengde < 0 ||
-      item.mengde % 1 != 0
+      item.mengde == 0
     ) {
       item.mengde = 1;
       Alert.danger('Du må fylle inn antall av ingrediensen, dette må være heltall større enn 0');
     } else if (item.maleenhet == null || item.maleenhet == undefined || item.maleenhet == '') {
       Alert.danger('Du må fylle inn måleenhet');
-    } else {
+    }  else {
       service
         .createIngredient(item.ingred_navn)
         .then(() => {
@@ -1021,6 +1069,27 @@ export class ShoppingList extends Component {
             .catch((error) => Alert.danger('Error adding item to shopping list: ' + error.message));
         })
         .catch((error) => Alert.danger('Error creating new ingredient: ' + error.message));
+    } 
+  }
+
+  addExistingItem(item: List) {
+    if (item.mengde == null || item.mengde == undefined || 
+      //@ts-ignore
+      item.mengde == '' || item.mengde < 0) {
+      item.mengde = 1;
+      Alert.danger('Du må fylle inn antall av ingrediensen, dette må være heltall større enn 0');
+    } else if (item.maleenhet == null || item.maleenhet == undefined || item.maleenhet == '') {
+      item.maleenhet = 'stk';
+      Alert.danger('Du må fylle inn måleenhet');
+    } else if (item.ingred_id == 0 || item.ingred_id < 0 || item.ingred_id == null || item.ingred_id == undefined) {
+      Alert.danger('Du må velge en ingrediens');
+    }
+    else {
+      service
+            .addIngredient(item)
+            .then(() => this.mounted())
+            .catch((error) => Alert.danger('Error adding item to shopping list: ' + error.message));
     }
   }
 }
+

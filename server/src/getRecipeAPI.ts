@@ -1,5 +1,6 @@
 // @ts-nocheck
 import mysql from 'mysql2';
+
 /*
 getRecipeAPI.ts bruker ES-Modules, og krever ES5/6, og ikke commonJS.
 Node forventer commonjs, men babel-node kan oversette es-moduler, vi bruker derfor babel-node for å kjøre scriptet.

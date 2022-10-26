@@ -17,41 +17,68 @@ em {
   width: 200px;
   height: 200px;
   object-fit: cover;
-  object-position: 30% 0;
-  border-radius: 25px;
+  object-position: 0% 0;
+  border-radius: 20px;
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
 
-.recipe-div {
-  /* border: 2px solid rgb(218, 218, 218); */
-  /* border-radius: 25px;  */
+.oppskrifter {
+  /* display: inline-block; */
+  width: 70%;
+  height: 500px;
+  overflow: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
-.card-columns {
-}
-
-.cards {
-  display: inline-block;
-  width: 220px;
-}
-
-.card {
-  width: 66%;
-  display: inline-block;
+.mat {
+  width: 30%;
+  height: 500px;
+  overflow: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .car {
   width: 100%;
 }
 
-.recipe-body {
-  /* display: flex;
+.container {
+  width: 100%;
+  margin: 0px 0px;
+  /* padding: 0px 0px 0px; */
+}
+
+.row {
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center; */
+  align-items: center;
+  width: 100%;
   /* width: 210px; */
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  width: 220px;
+  height: 311px;
+  align-self: normal;
+  margin-top: auto;
+  margin: 20px 1px;
+  padding: 0px 0px 0px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
+}
+
+.card-body {
+  padding: 0px 0px 0px;
 }
 
 .form-check-input {
