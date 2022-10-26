@@ -9,6 +9,10 @@ import { ShowRecipe } from '../../src/components/showRecipe';
 import { LikedRecipes } from '../../src/components/liked';
 import { ShoppingList } from '../../src/components/shoppingList';
 const mock_addCountry = document.createElement('input');
+
+import { createHashHistory } from 'history';
+
+const history = createHashHistory();
 jest.mock('../../src/service', () => {
   class Service {
     getAllCountry() {
@@ -96,12 +100,42 @@ jest.mock('../../src/service', () => {
     createRecipe() {
       return Promise.resolve(1);
     }
+    updateRecipe() {
+      return Promise.resolve();
+    }
+    updateRecipeIngredient() {
+      return Promise.resolve();
+    }
   }
   return new Service();
 });
 describe('editRecipe test', () => {
+  test('change name on recipe and cancel change', (done) => {
+    const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
+    wrapper.find('#cancelEdit').simulate('click');
+    setTimeout(() => {
+      expect(window.location.href).toEqual('http://localhost/#/recipe/1');
+      done();
+    });
+  });
   test('editRecipe should render', (done) => {
-    const wrapper = shallow(<EditRecipe match={{ params: { id: 2 } }} />);
+    const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
+    expect(wrapper).toMatchSnapshot;
     done();
+  });
+  test('change name, description, steps on recipe and confirm change', (done) => {
+    const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
+    wrapper.find('#recipe_name').simulate('change', { currentTarget: { value: 'Pizzaaaa' } });
+    wrapper
+      .find('#recipe_description')
+      .simulate('change', { currentTarget: { value: 'digg mat' } });
+    wrapper.find('#recipe_step').simulate('change', { currentTarget: { value: 'lag piazz' } });
+    wrapper.find('#recipe_portions').simulate('change', { currentTarget: { value: '1' } });
+    wrapper.find('#recipe_image').simulate('change', { currentTarget: { value: '' } });
+    wrapper.find(Button.Success).simulate('click');
+    setTimeout(() => {
+      expect(window.location.href).toEqual('http://localhost/#/recipe/1');
+      done();
+    });
   });
 });

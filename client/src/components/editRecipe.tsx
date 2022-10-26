@@ -42,6 +42,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
             <Column>
               <Form.Input
                 type="text"
+                id="recipe_name"
                 value={this.recipe.oppskrift_navn}
                 onChange={(event) => (this.recipe.oppskrift_navn = event.currentTarget.value)}
               />
@@ -54,6 +55,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
             </Column>
             <Column>
               <Form.Textarea
+                id="recipe_description"
                 style={{ width: '300px' }}
                 type="text"
                 value={this.recipe.oppskrift_beskrivelse}
@@ -71,6 +73,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
             </Column>
             <Column>
               <Form.Textarea
+                id="recipe_step"
                 style={{ width: '600px' }}
                 type="text"
                 value={this.recipe.oppskrift_steg}
@@ -86,6 +89,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
             </Column>
             <Column>
               <Form.Input
+                id="recipe_portions"
                 type="number"
                 value={this.recipe.ant_pors}
                 //@ts-ignore
@@ -100,6 +104,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
             </Column>
             <Column>
               <Form.Input
+                id="recipe_image"
                 type="text"
                 value={this.recipe.bilde_adr}
                 onChange={(event) => (this.recipe.bilde_adr = event.currentTarget.value)}
@@ -147,7 +152,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
             Ingrediensene som allered er lagret,
             <br /> hvis ingrediensen din ikke er her kan du legge den til!
             <br />
-            <Column>
+            <Column key={this.props.match.params.id}>
               {this.ingredients.map((ingredient) => (
                 <>
                   <Button.Light
@@ -165,6 +170,12 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
           </Column>
         </Card>
         <Button.Success onClick={() => this.pushNewChanges()}>Endre oppskrift</Button.Success>
+        <Button.Danger
+          id="cancelEdit"
+          onClick={() => history.push('/recipe/' + this.props.match.params.id)}
+        >
+          Cancel
+        </Button.Danger>
       </>
     );
   }

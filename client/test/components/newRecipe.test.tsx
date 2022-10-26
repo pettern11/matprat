@@ -172,7 +172,6 @@ describe('NewRecipe tests', () => {
     setTimeout(() => {
       wrapper.find('#ingred1').simulate('click');
 
-      expect(wrapper).toMatchSnapshot();
       wrapper.find('#addRecipeBtn').simulate('click');
       setTimeout(() => {
         done();
