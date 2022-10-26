@@ -121,6 +121,7 @@ export class ShoppingList extends Component {
           </Column>
         </Card>
         <Card title="Add existing ingredients">
+          
           <Column>
             <h6>Søk</h6>
             <Form.Input
@@ -144,16 +145,19 @@ export class ShoppingList extends Component {
                 </option>
               ))}
             </select>
-            <br />
+            </Column>
+            <Column>
             Antall:{' '}
             <Form.Input
               id="mengde"
               type="number"
               value={this.selectedIngredient.mengde}
-              onChange={(event) => {
+              onChange={(event) => {//@ts-ignore
                 this.selectedIngredient.mengde = event.currentTarget.value;
-              }}
+              }}   
             />
+            </Column>
+            <Column>
             Måleenhet:{' '}
             <Form.Input
               id="maleenhet"
@@ -164,10 +168,13 @@ export class ShoppingList extends Component {
                 console.log(this.selectedIngredient);
               }}
             />
+            </Column>
+            <Column>
             <Button.Success onClick={() => this.addExistingItem(this.selectedIngredient)}>
               Legg til
             </Button.Success>
-          </Column>
+            </Column>
+          
         </Card>
       </>
     );
@@ -197,6 +204,7 @@ export class ShoppingList extends Component {
           (this.ingredients = ingredients),
           (this.selectedIngredients = ingredients),
           (this.selectedIngredient.ingred_id = document.getElementById('selectExistingIngredient')
+            //@ts-ignore
             ? document.getElementById('selectExistingIngredient').value
             : '')
         )
