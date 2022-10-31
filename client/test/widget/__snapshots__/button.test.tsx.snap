@@ -5,7 +5,7 @@ exports[`Button tests Button Danger render 1`] = `
   class="btn btn-danger"
   type="button"
 >
-  Test
+  Test button danger
 </button>
 `;
 
@@ -15,7 +15,7 @@ exports[`Button tests Button Light render 1`] = `
   id="1"
   type="button"
 >
-  Test
+  Test button light
 </button>
 `;
 
@@ -24,6 +24,6 @@ exports[`Button tests Button Success render 1`] = `
   class="btn btn-success"
   type="button"
 >
-  Test
+  Test button success
 </button>
 `;

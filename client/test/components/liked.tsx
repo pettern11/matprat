@@ -11,10 +11,8 @@ import { createHashHistory } from 'history';
 const history = createHashHistory();
 jest.mock('../../src/service', () => {
   class Service {
-  
-    getAllRecipe() {
-      
-  }
+    getAllRecipe() {}
 
-  return new Service();
+    // return new Service();
+  }
 });

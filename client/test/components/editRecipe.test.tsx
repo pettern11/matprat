@@ -122,7 +122,7 @@ describe('editRecipe test', () => {
   //     });
   // });
 
-  test('add ingredent sucess', (done) => {
+  test.skip('add ingredent sucess', (done) => {
     const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
     let spy = jest.spyOn(EditRecipe.prototype, 'addIngredientFunc').mockReturnValue(1);
     setTimeout(() => {
