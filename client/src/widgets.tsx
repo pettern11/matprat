@@ -101,7 +101,11 @@ export class Row extends Component<{ children: ReactNode }> {
  *
  * Properties: width, right
  */
-export class Column extends Component<{ width?: number; right?: boolean; children: ReactNode }> {
+export class Column extends Component<{
+  width?: number | undefined;
+  right?: boolean | undefined;
+  children: ReactNode;
+}> {
   render() {
     return (
       <div className={'col' + (this.props.width ? '-' + this.props.width : '')}>
@@ -127,7 +131,7 @@ export class Column extends Component<{ width?: number; right?: boolean; childre
  * Properties: small, onClick
  */
 class ButtonSuccess extends Component<{
-  small?: boolean;
+  small?: boolean | undefined;
   children: ReactNode;
   onClick: () => void;
 }> {
@@ -394,8 +398,6 @@ export class Form {
 export class Alert extends Component {
   alerts: { id: number; text: ReactNode; type: string }[] = [];
   nextId: number = 0;
-  
-
 
   render() {
     return (
@@ -403,7 +405,7 @@ export class Alert extends Component {
         {this.alerts.map((alert, i) => (
           <div
             key={alert.id}
-            id={"test"}
+            id={'test'}
             className={'alert alert-dismissible alert-' + alert.type}
             role="alert"
             onClick={this.deleteMessage(i)}
@@ -413,7 +415,6 @@ export class Alert extends Component {
               type="button"
               className="btn-close btn-sm"
               onClick={() => this.alerts.splice(i, 1)}
-              
             />
           </div>
         ))}
@@ -421,11 +422,11 @@ export class Alert extends Component {
     );
   }
 
-  deleteMessage(i){
+  deleteMessage(i) {
     setTimeout(() => {
       this.alerts.splice(i, 1);
     }, 1500);
-  }    
+  }
 
   /**
    * Show success alert.

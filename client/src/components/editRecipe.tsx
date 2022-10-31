@@ -28,54 +28,54 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
         <Card title="Endre oppskriften">
           {/* input navn */}
           <Row>
-          <Column>
-            <Column width={2}>
-              <Form.Label>Name:</Form.Label>
-            </Column>
             <Column>
-              <Form.Textarea
-                type="text"
-                id="recipe_name"
-                value={this.recipe.oppskrift_navn}
-                onChange={(event) => (this.recipe.oppskrift_navn = event.currentTarget.value)}
-                rows={5}
-             />
+              <Column width={2}>
+                <Form.Label>Name:</Form.Label>
+              </Column>
+              <Column>
+                <Form.Textarea
+                  type="text"
+                  id="recipe_name"
+                  value={this.recipe.oppskrift_navn}
+                  onChange={(event) => (this.recipe.oppskrift_navn = event.currentTarget.value)}
+                  rows={5}
+                />
+              </Column>
             </Column>
-          </Column>
-          {/* input beksrivelse */}
-          <Column>
-            <Column width={2}>
-              <Form.Label>Description:</Form.Label>
-            </Column>
+            {/* input beksrivelse */}
             <Column>
-              <Form.Textarea
-                id="recipe_description"
-                style={{ width: '300px' }}
-                type="text"
-                value={this.recipe.oppskrift_beskrivelse}
-                onChange={(event) =>
-                  (this.recipe.oppskrift_beskrivelse = event.currentTarget.value)
-                }
-                rows={5}
-              />
+              <Column width={2}>
+                <Form.Label>Description:</Form.Label>
+              </Column>
+              <Column>
+                <Form.Textarea
+                  id="recipe_description"
+                  style={{ width: '300px' }}
+                  type="text"
+                  value={this.recipe.oppskrift_beskrivelse}
+                  onChange={(event) =>
+                    (this.recipe.oppskrift_beskrivelse = event.currentTarget.value)
+                  }
+                  rows={5}
+                />
+              </Column>
             </Column>
-          </Column>
-          {/* input steg */}
-          <Column>
-            <Column width={2}>
-              <Form.Label>Steg:</Form.Label>
-            </Column>
+            {/* input steg */}
             <Column>
-              <Form.Textarea
-                id="recipe_step"
-                style={{ width: '600px' }}
-                type="text"
-                value={this.recipe.oppskrift_steg}
-                onChange={(event) => (this.recipe.oppskrift_steg = event.currentTarget.value)}
-                rows={5}
-              />
+              <Column width={2}>
+                <Form.Label>Steg:</Form.Label>
+              </Column>
+              <Column>
+                <Form.Textarea
+                  id="recipe_step"
+                  style={{ width: '600px' }}
+                  type="text"
+                  value={this.recipe.oppskrift_steg}
+                  onChange={(event) => (this.recipe.oppskrift_steg = event.currentTarget.value)}
+                  rows={5}
+                />
+              </Column>
             </Column>
-          </Column>
           </Row>
           {/* input antall porsjoner */}
           <Column>
@@ -146,8 +146,9 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
           {/* vidre ideer her er at vi setter en viss lengde og bredde på diven og så hvis den overflower så må man bare skulle 
           nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
           <Column>
-          <br />
-            Ingrediensene som allered er lagret, hvis ingrediensen din ikke er her kan du legge den til!
+            <br />
+            Ingrediensene som allered er lagret, hvis ingrediensen din ikke er her kan du legge den
+            til!
             <br />
             <br />
             <Column>
@@ -225,7 +226,6 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
       .getAllIngredient()
       .then((ingredients) => (this.ingredients = ingredients))
       .catch((error) => {
-        console.log(error);
         Alert.danger('Error getting ingredients: ' + error.message);
       });
 

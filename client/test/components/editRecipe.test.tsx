@@ -5,7 +5,6 @@ import { Alert, Card, Row, Column, Form, Button, RecipeView } from '../../src/wi
 import { NavLink } from 'react-router-dom';
 import { EditRecipe } from '../../src/components/editRecipe';
 import service from '../../src/service';
-const mock_addCountry = document.createElement('input');
 
 import { createHashHistory } from 'history';
 
@@ -80,12 +79,6 @@ jest.mock('../../src/service', () => {
           mengde: 1,
           maleenhet: 'håndfull',
         },
-        {
-          oppskrift_id: 2,
-          ingred_id: 3,
-          mengde: 400,
-          maleenhet: 'g',
-        },
       ]);
     }
     deleteRecipe(id: number) {
@@ -106,18 +99,48 @@ jest.mock('../../src/service', () => {
     deleteIngredient() {
       return Promise.resolve();
     }
+    createRecipeIngredient(add: []) {
+      return Promise.resolve();
+    }
   }
+
   return new Service();
 });
+
 describe('editRecipe test', () => {
-  test('add ingredent', (done) => {
-    let spy = jest.spyOn(EditRecipe.prototype, 'addIngredientFunc').mockImplementation(() => 8);
+  // test.skip('getAllIngredient fail', (done) => {
+  //   const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
+  //   let spy = jest.spyOn(EditRecipe.prototype, 'getAllIngredient').mockReturnValue(1);
+
+  //   wrapper
+  //     .getAllIngredient()
+  //     .then(() => {
+  //       throw new Error('error');
+  //     })
+  //     .catch(() => {
+  //       done();
+  //     });
+  // });
+
+  test('add ingredent sucess', (done) => {
     const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
+    let spy = jest.spyOn(EditRecipe.prototype, 'addIngredientFunc').mockReturnValue(1);
     setTimeout(() => {
-      console.log(wrapper.debug());
-      wrapper.find(Button.Light).at(0).simulate('click', { ingred_id: 3, recipe_id: 1 });
+      wrapper.find(Button.Light).at(2).simulate('click', { ingred_id: 1, recipe_id: 1 });
       setTimeout(() => {
-        expect(spy).toHaveBeenCalled();
+        expect(spy).toBe(1);
+        done();
+      });
+    });
+  });
+  test('save recipe fail', (done) => {
+    const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
+    const wrapperAlert = shallow(<Alert />);
+    setTimeout(() => {
+      wrapper.find(Button.Success).simulate('click');
+      setTimeout(() => {
+        console.log(wrapperAlert.debug());
+        // expect(wrapper.find(Alert).length).toBe(1);
         done();
       });
     });
