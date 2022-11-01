@@ -124,6 +124,7 @@ describe('editRecipe test', () => {
 
   test.skip('add ingredent sucess', (done) => {
     const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
+    //@ts-ignore
     let spy = jest.spyOn(EditRecipe.prototype, 'addIngredientFunc').mockReturnValue(1);
     setTimeout(() => {
       wrapper.find(Button.Light).at(2).simulate('click', { ingred_id: 1, recipe_id: 1 });
