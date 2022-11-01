@@ -41,8 +41,42 @@ export class Menu extends Component {
   }
 }
 export class Home extends Component {
+  originalrecipes: Recipe[] = [];
+  recipes: Recipe[] = [];
+  //random number under here from 0 to recipes.length
   render() {
-    return <>halla </>;
+    let random: number = Math.floor(Math.random() * this.recipes.length);
+
+    console.log(random);
+    return (
+      <>
+        <Card title="">
+          <div className="frontpage">
+            <h1>Anbefalt oppskrift:</h1>
+            <br></br>
+            <div className={'recipeToDay'}>
+              {this.recipes
+                .filter((recipes, i) => i == random)
+                .map((recipe) => (
+                  <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
+                    <p id="frontname">{recipe.oppskrift_navn}</p>
+                    <img src={recipe.bilde_adr} className="frontPicture" alt="recipe" />
+                  </NavLink>
+                ))}
+            </div>
+          </div>
+        </Card>
+      </>
+    );
+  }
+  mounted() {
+    service
+      .getAllRepice()
+      .then((recipes) => {
+        this.originalrecipes = recipes;
+        this.recipes = recipes;
+      })
+      .catch((error) => Alert.danger('Error getting tasks: ' + error.message));
   }
 }
 
