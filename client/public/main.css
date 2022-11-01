@@ -48,7 +48,7 @@ em {
 
 .oppskrifter {
   /* display: inline-block; */
-  width: 80%;
+  width: 100%;
   height: 100vh;
   /* flex: 1 1 auto; */
   overflow: auto;
