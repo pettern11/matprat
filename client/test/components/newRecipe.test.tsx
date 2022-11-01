@@ -170,6 +170,7 @@ describe('NewRecipe tests', () => {
     document.body.appendChild(div);
     // Wait for events to complete
     setTimeout(() => {
+      console.log(wrapper.debug());
       wrapper.find('#ingred1').simulate('click');
 
       wrapper.find('#addRecipeBtn').simulate('click');

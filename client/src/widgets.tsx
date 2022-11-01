@@ -25,12 +25,12 @@ export class RecipeView extends Component<{ img: string; name: string; numbOfPor
 export class Cards extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
     return (
-        <div className="card cards">
-          <div className="card-body">
-            <h5 className="card-title">{this.props.title}</h5>
-            <div className="card-text">{this.props.children}</div>
-          </div>
+      <div className="card cards">
+        <div className="card-body">
+          <h5 className="card-title">{this.props.title}</h5>
+          <div className="card-text">{this.props.children}</div>
         </div>
+      </div>
     );
   }
 }
@@ -64,12 +64,12 @@ export class Oppskrifter extends Component<{ title: ReactNode; children: ReactNo
 export class Mat extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
     return (
-        <div className="card mat">
-          <div className="card-body">
-            <h5 className="card-title">{this.props.title}</h5>
-            <div className="card-text">{this.props.children}</div>
-          </div>
+      <div className="card mat">
+        <div className="card-body">
+          <h5 className="card-title">{this.props.title}</h5>
+          <div className="card-text">{this.props.children}</div>
         </div>
+      </div>
     );
   }
 }
@@ -101,7 +101,11 @@ export class Row extends Component<{ children: ReactNode }> {
  *
  * Properties: width, right
  */
-export class Column extends Component<{ width?: number; right?: boolean; children: ReactNode }> {
+export class Column extends Component<{
+  width?: number | undefined;
+  right?: boolean | undefined;
+  children: ReactNode;
+}> {
   render() {
     return (
       <div className={'col' + (this.props.width ? '-' + this.props.width : '')}>
@@ -111,13 +115,23 @@ export class Column extends Component<{ width?: number; right?: boolean; childre
   }
 }
 
+// export class Colscroll extends Component<{ width?: number; right?: boolean; children: ReactNode }> {
+//   render() {
+//     return (
+//       <div className={'col' + (this.props.width ? '-' + this.props.width : '')} >
+//         <div className={'float-' + (this.props.right ? 'end' : 'start')}>{this.props.children}</div>
+//       </div>
+//     );
+//   }
+// }
+
 /**
  * Renders a success button using Bootstrap styles.
  *
  * Properties: small, onClick
  */
 class ButtonSuccess extends Component<{
-  small?: boolean;
+  small?: boolean | undefined;
   children: ReactNode;
   onClick: () => void;
 }> {
@@ -387,12 +401,14 @@ export class Alert extends Component {
 
   render() {
     return (
-      <div>
+      <div id="alerts">
         {this.alerts.map((alert, i) => (
           <div
             key={alert.id}
+            id={'test'}
             className={'alert alert-dismissible alert-' + alert.type}
             role="alert"
+            onClick={this.deleteMessage(i)}
           >
             {alert.text}
             <button
@@ -404,6 +420,12 @@ export class Alert extends Component {
         ))}
       </div>
     );
+  }
+
+  deleteMessage(i) {
+    setTimeout(() => {
+      this.alerts.splice(i, 1);
+    }, 1500);
   }
 
   /**
