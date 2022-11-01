@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ShowAllRecipe tests Snapshot showAllRecipe draws correctly 1`] = `
+<Fragment>
+  <Car
+    title="Søkefelt"
+  >
+    <FormInput
+      id="indexsearch"
+      onChange={[Function]}
+      type="text"
+      value=""
+    />
+  </Car>
+  <div
+    className="container"
+  >
+    <Row>
+      <Oppskrifter
+        title="Oppskrifter"
+      >
+        <select
+          id="sortBy"
+          onChange={[Function]}
+        >
+          <option>
+            Sorter
+          </option>
+          <option
+            value="0"
+          >
+            A-Z
+          </option>
+          <option
+            value="1"
+          >
+            Z-A
+          </option>
+          <option
+            value="2"
+          >
+            Nyeste
+          </option>
+        </select>
+        <br />
+        <div
+          className="container"
+        >
+          <Row>
+            <Cards
+              key="1"
+              title=""
+            >
+              <NavLink
+                className="black"
+                to="/recipe/1"
+              >
+                <RecipeView
+                  img="pizza.jpg"
+                  name="Pizza"
+                  numbOfPors={4}
+                />
+              </NavLink>
+            </Cards>
+            <Cards
+              key="2"
+              title=""
+            >
+              <NavLink
+                className="black"
+                to="/recipe/2"
+              >
+                <RecipeView
+                  img="kjøttboller.jpg"
+                  name="Kjøttboller i brunsaus"
+                  numbOfPors={4}
+                />
+              </NavLink>
+            </Cards>
+          </Row>
+        </div>
+      </Oppskrifter>
+    </Row>
+  </div>
+</Fragment>
+`;
