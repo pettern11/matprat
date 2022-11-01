@@ -45,6 +45,10 @@ export type Ingredient = {
   ingred_id: number;
   ingred_navn: string;
 };
+export type IceboxIngredient = {
+  ingred_id: number;
+  ingred_navn: string;
+};
 export type List = {
   id: number;
   ingred_id: number;
@@ -121,6 +125,15 @@ class Service {
         if (error) return reject(error);
 
         resolve(results as Ingredient[]);
+      });
+    });
+  }
+  getAllIceboxIngredients() {
+    return new Promise<IceboxIngredient[]>((resolve, reject) => {
+      pool.query('SELECT * FROM icebox', (error, results: RowDataPacket[]) => {
+        if (error) return reject(error);
+
+        resolve(results as IceboxIngredient[]);
       });
     });
   }

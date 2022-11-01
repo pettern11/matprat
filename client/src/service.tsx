@@ -51,6 +51,10 @@ export type List = {
   mengde: number;
   maleenhet: string;
 };
+export type IceboxIngredient = {
+  ingred_id: number;
+  ingred_navn: string;
+};
 class Service {
   /**
    * Get all tasks.
@@ -84,6 +88,9 @@ class Service {
     return axios
       .post<{}>('/addingredient', { ingredient: ingredient })
       .then((response) => response.data);
+  }
+  getAllIceboxIngredients() {
+    return axios.get<IceboxIngredient[]>('/icebox').then((response) => response.data);
   }
   createIngredient(name: string) {
     return axios.post<{}>('/newingredient', { name: name }).then((response) => response.data);

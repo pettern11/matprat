@@ -21,6 +21,7 @@ import { EditRecipe } from './components/editRecipe';
 import { ShowRecipe } from './components/showRecipe';
 import { LikedRecipes } from './components/liked';
 import { ShoppingList } from './components/shoppingList';
+import { Icebox } from './components/icebox';
 
 import service, { Recipe } from './service';
 import { createHashHistory } from 'history';
@@ -33,6 +34,7 @@ export class Menu extends Component {
           <NavBar.Link to="/newrecipe">Ny oppskrift</NavBar.Link>
           <NavBar.Link to="/shoppinglist">Handleliste</NavBar.Link>
           <NavBar.Link to="/liked">Liked</NavBar.Link>
+          <NavBar.Link to="/icebox">Kjøleskap</NavBar.Link>
         </NavBar>
       </>
     );
@@ -142,6 +144,7 @@ ReactDOM.render(
       <Route exact path="/recipe/edit/:id" component={EditRecipe} />
       <Route exact path="/shoppinglist" component={ShoppingList} />
       <Route exact path="/liked" component={LikedRecipes}></Route>
+      <Route exact path="/icebox" component={Icebox}></Route>
     </div>
   </HashRouter>,
   document.getElementById('root') || document.createElement('div')
