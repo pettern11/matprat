@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button tests Button Danger render 1`] = `
+<button
+  class="btn btn-danger"
+  type="button"
+>
+  Test button danger
+</button>
+`;
+
+exports[`Button tests Button Light render 1`] = `
+<button
+  class="btn btn-light"
+  id="1"
+  type="button"
+>
+  Test button light
+</button>
+`;
+
+exports[`Button tests Button Success render 1`] = `
+<button
+  class="btn btn-success"
+  type="button"
+>
+  Test button success
+</button>
+`;

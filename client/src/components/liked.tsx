@@ -34,21 +34,19 @@ export class LikedRecipes extends Component {
       <Oppskrifter title="Likede oppskrifter">
         <div className="container">
           <Row>
-            
-              {this.recipes
-                .filter((recipe) => recipe.liked == true)
-                .map((likedRecipe) => (
-                  <Cards title="" key={likedRecipe.oppskrift_id}>
-                    <NavLink className="black" to={'/recipe/' + likedRecipe.oppskrift_id}>
-                      <RecipeView
-                        img={likedRecipe.bilde_adr}
-                        name={likedRecipe.oppskrift_navn}
-                        numbOfPors={likedRecipe.ant_pors}
-                      ></RecipeView>
-                    </NavLink>
-                  </Cards>
-                ))}
-           
+            {this.recipes
+              .filter((recipe) => recipe.liked == true)
+              .map((likedRecipe) => (
+                <Cards title="" key={likedRecipe.oppskrift_id}>
+                  <NavLink className="black" to={'/recipe/' + likedRecipe.oppskrift_id}>
+                    <RecipeView
+                      img={likedRecipe.bilde_adr}
+                      name={likedRecipe.oppskrift_navn}
+                      numbOfPors={likedRecipe.ant_pors}
+                    ></RecipeView>
+                  </NavLink>
+                </Cards>
+              ))}
           </Row>
         </div>
       </Oppskrifter>

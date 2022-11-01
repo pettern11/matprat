@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Collumn tests Collumn 1`] = `
+<div
+  class="col"
+>
+  <div
+    class="float-start"
+  >
+    test
+  </div>
+</div>
+`;

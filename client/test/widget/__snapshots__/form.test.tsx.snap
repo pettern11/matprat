@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Form tests Form Checkbox 1`] = `
+<input
+  checked=""
+  class="form-check-input"
+  type="checkbox"
+/>
+`;
+
+exports[`Form tests Form Select 1`] = `
+<select
+  class="custom-select"
+  valule="select"
+>
+  <option>
+    Valg 1
+  </option>
+  <option>
+    Valg 2
+  </option>
+</select>
+`;
+
+exports[`Form tests Form label 1`] = `
+<label
+  class="col-form-label"
+>
+  Form label
+</label>
+`;
+
+exports[`Form tests Form textarea 1`] = `
+<textarea
+  class="form-control"
+  id="1"
+>
+  string
+</textarea>
+`;

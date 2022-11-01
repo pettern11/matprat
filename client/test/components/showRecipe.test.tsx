@@ -8,7 +8,9 @@ import { EditRecipe } from '../../src/components/editRecipe';
 import { ShowRecipe } from '../../src/components/showRecipe';
 import { LikedRecipes } from '../../src/components/liked';
 import { ShoppingList } from '../../src/components/shoppingList';
-const mock_addCountry = document.createElement('input');
+import { createHashHistory } from 'history';
+
+const history = createHashHistory();
 jest.mock('../../src/service', () => {
   class Service {
     getAllCountry() {

@@ -2,15 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Alert, Card, Row, Column, Form, Button, RecipeView } from '.././widgets';
 import { NavLink, Redirect } from 'react-router-dom';
-import service, {
-  Country,
-  Category,
-  Ingredient,
-  Recipe,
-  Recipe_Content,
-  List,
-  ElementShoppingList,
-} from '.././service';
+import service, { Ingredient, Recipe, Recipe_Content } from '.././service';
 import { createHashHistory } from 'history';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -36,51 +28,54 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
         <Card title="Endre oppskriften">
           {/* input navn */}
           <Row>
-          <Column>
-            <Column width={2}>
-              <Form.Label>Name:</Form.Label>
-            </Column>
             <Column>
-              <Form.Textarea
-                type="text"
-                value={this.recipe.oppskrift_navn}
-                onChange={(event) => (this.recipe.oppskrift_navn = event.currentTarget.value)}
-                rows={5}
-             />
+              <Column width={2}>
+                <Form.Label>Name:</Form.Label>
+              </Column>
+              <Column>
+                <Form.Textarea
+                  type="text"
+                  id="recipe_name"
+                  value={this.recipe.oppskrift_navn}
+                  onChange={(event) => (this.recipe.oppskrift_navn = event.currentTarget.value)}
+                  rows={5}
+                />
+              </Column>
             </Column>
-          </Column>
-          {/* input beksrivelse */}
-          <Column>
-            <Column width={2}>
-              <Form.Label>Description:</Form.Label>
-            </Column>
+            {/* input beksrivelse */}
             <Column>
-              <Form.Textarea
-                style={{ width: '300px' }}
-                type="text"
-                value={this.recipe.oppskrift_beskrivelse}
-                onChange={(event) =>
-                  (this.recipe.oppskrift_beskrivelse = event.currentTarget.value)
-                }
-                rows={5}
-              />
+              <Column width={2}>
+                <Form.Label>Description:</Form.Label>
+              </Column>
+              <Column>
+                <Form.Textarea
+                  id="recipe_description"
+                  style={{ width: '300px' }}
+                  type="text"
+                  value={this.recipe.oppskrift_beskrivelse}
+                  onChange={(event) =>
+                    (this.recipe.oppskrift_beskrivelse = event.currentTarget.value)
+                  }
+                  rows={5}
+                />
+              </Column>
             </Column>
-          </Column>
-          {/* input steg */}
-          <Column>
-            <Column width={2}>
-              <Form.Label>Steg:</Form.Label>
-            </Column>
+            {/* input steg */}
             <Column>
-              <Form.Textarea
-                style={{ width: '600px' }}
-                type="text"
-                value={this.recipe.oppskrift_steg}
-                onChange={(event) => (this.recipe.oppskrift_steg = event.currentTarget.value)}
-                rows={5}
-              />
+              <Column width={2}>
+                <Form.Label>Steg:</Form.Label>
+              </Column>
+              <Column>
+                <Form.Textarea
+                  id="recipe_step"
+                  style={{ width: '600px' }}
+                  type="text"
+                  value={this.recipe.oppskrift_steg}
+                  onChange={(event) => (this.recipe.oppskrift_steg = event.currentTarget.value)}
+                  rows={5}
+                />
+              </Column>
             </Column>
-          </Column>
           </Row>
           {/* input antall porsjoner */}
           <Column>
@@ -89,6 +84,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
             </Column>
             <Column>
               <Form.Input
+                id="recipe_portions"
                 type="number"
                 value={this.recipe.ant_pors}
                 //@ts-ignore
@@ -103,6 +99,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
             </Column>
             <Column>
               <Form.Input
+                id="recipe_image"
                 type="text"
                 value={this.recipe.bilde_adr}
                 onChange={(event) => (this.recipe.bilde_adr = event.currentTarget.value)}
@@ -115,8 +112,9 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
             <div id="outprintIngredient">
               {this.recipeContent.map((rc, i) => (
                 <p key={i}>
-                  {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}{' '}
+                  {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}
                   <input
+                    id={'ingredNumber' + i.toString()}
                     style={{ width: '50px' }}
                     type="number"
                     value={rc.mengde}
@@ -127,6 +125,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                   />
                   <input
                     style={{ width: '100px' }}
+                    id={'ingredType' + i.toString()}
                     type="text"
                     value={rc.maleenhet}
                     onChange={(event) => (
@@ -140,22 +139,23 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                     x
                   </Button.Danger>
                 </p>
-              ))}{' '}
+              ))}
             </div>
           </Column>
           {/* print ut alle ingrediense som allerede er i databasen */}
           {/* vidre ideer her er at vi setter en viss lengde og bredde på diven og så hvis den overflower så må man bare skulle 
           nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
           <Column>
-          <br />
-            Ingrediensene som allered er lagret, hvis ingrediensen din ikke er her kan du legge den til!
+            <br />
+            Ingrediensene som allered er lagret, hvis ingrediensen din ikke er her kan du legge den
+            til!
             <br />
             <br />
             <Column>
               {this.ingredients.map((ingredient) => (
                 <>
                   <Button.Light
-                    id={ingredient.ingred_id}
+                    id={ingredient.ingred_id.toString() + 'addbutton'}
                     key={ingredient.ingred_id}
                     onClick={() => {
                       this.addIngredientFunc(ingredient.ingred_id, this.props.match.params.id);
@@ -169,6 +169,12 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
           </Column>
         </Card>
         <Button.Success onClick={() => this.pushNewChanges()}>Endre oppskrift</Button.Success>
+        <Button.Danger
+          id="cancelEdit"
+          onClick={() => history.push('/recipe/' + this.props.match.params.id)}
+        >
+          Cancel
+        </Button.Danger>
       </>
     );
   }
@@ -219,16 +225,22 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
     service
       .getAllIngredient()
       .then((ingredients) => (this.ingredients = ingredients))
-      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
-    console.log(this.props.match.params.id);
+      .catch((error) => {
+        Alert.danger('Error getting ingredients: ' + error.message);
+      });
 
-    this.getIngredRecipe();
+    service
+      .getRecipeContent(this.props.match.params.id)
+      .then((recipeContent) => (this.recipeContent = recipeContent))
+      .then(() => this.recipeContent)
+      .catch((error) => Alert.danger('Error getting recipe content: ' + error.message));
 
     service
       .getRecipe(this.props.match.params.id)
       .then((recipe) => {
         this.recipe = recipe[0];
       })
+      .then(() => console.log(this.recipe))
       .catch((error) => Alert.danger('Error getting recipe: ' + error.message));
   }
 }

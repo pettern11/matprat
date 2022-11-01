@@ -112,12 +112,20 @@ router.post('/newcategory', (request, response) => {
 });
 
 router.put('/update_recipe_ingredient', (request, response) => {
-  console.log(1);
-  console.log('se her', request.body.recipeContent);
-  service
-    .updateRecipeIngredient(request.body.recipeContent)
-    .then(() => response.send())
-    .catch((error) => response.status(500).send(error));
+  const data = request.body.recipeContent;
+  if (
+    data.oppskrift_navn &&
+    data.oppskrift_beskrivelse &&
+    data.oppskrift_steg &&
+    data.ant_pors &&
+    data.kategori_id &&
+    data.land_id != ''
+  ) {
+    service
+      .updateRecipeIngredient(request.body.recipeContent)
+      .then(() => response.send())
+      .catch((error) => response.status(500).send(error));
+  } else response.status(400).send('Fill in all the fields');
 });
 router.put('/updateingredient', (request, response) => {
   service.updateIngredientShoppinglist(request.body.ingredient).then(() => response.send());
