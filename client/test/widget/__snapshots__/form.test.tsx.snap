@@ -8,6 +8,20 @@ exports[`Form tests Form Checkbox 1`] = `
 />
 `;
 
+exports[`Form tests Form Select 1`] = `
+<select
+  class="custom-select"
+  valule="select"
+>
+  <option>
+    Valg 1
+  </option>
+  <option>
+    Valg 2
+  </option>
+</select>
+`;
+
 exports[`Form tests Form label 1`] = `
 <label
   class="col-form-label"

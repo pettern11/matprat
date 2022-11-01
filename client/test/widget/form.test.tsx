@@ -33,4 +33,17 @@ describe('Form tests', () => {
       done();
     });
   });
+  test('Form Select', (done) => {
+    const wrapper = render(
+      <Form.Select valule={'select'} onChange={() => console.log('selected')}>
+        <option>Valg 1</option>
+        <option>Valg 2</option>
+      </Form.Select>
+    );
+
+    setTimeout(() => {
+      expect(wrapper).toMatchSnapshot();
+      done();
+    });
+  });
 });
