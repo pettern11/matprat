@@ -4,9 +4,6 @@ import { shallow, mount } from 'enzyme';
 import { Alert, Card, Row, Column, Form, Button, RecipeView } from '../../src/widgets';
 import { ShowRecipe } from '../../src/components/showRecipe';
 
-import { createHashHistory } from 'history';
-
-const history = createHashHistory();
 jest.mock('../../src/service', () => {
   class Service {
     getAllCountry() {
