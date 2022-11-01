@@ -62,7 +62,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
             }}
           />
           <label htmlFor="checkbox" id="heart">
-            test
+            <img src="https://static5.depositphotos.com/1001759/463/i/600/depositphotos_4634746-stock-photo-red-heart-isolated-white-background.jpg"></img>
           </label>
           <h5>Oppskrift:</h5>
           <pre>{this.recipe.oppskrift_steg}</pre>

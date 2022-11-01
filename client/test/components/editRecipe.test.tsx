@@ -52,17 +52,19 @@ jest.mock('../../src/service', () => {
       ]);
     }
     getRecipe(id: number) {
-      return Promise.resolve({
-        oppskrift_id: 1,
-        oppskrift_navn: 'Pizza',
-        oppskrift_beskrivelse: 'Pizza er god og enkel',
-        oppskrift_steg: 'Bland deigen og la den heve',
-        ant_pors: 4,
-        bilde_adr: 'pizza.jpg',
-        kategori_id: 2,
-        land_id: 2,
-        ant_like: 1,
-      });
+      return Promise.resolve([
+        {
+          oppskrift_id: 1,
+          oppskrift_navn: 'Pizza',
+          oppskrift_beskrivelse: 'Pizza er god og enkel',
+          oppskrift_steg: 'Bland deigen og la den heve',
+          ant_pors: 4,
+          bilde_adr: 'pizza.jpg',
+          kategori_id: 2,
+          land_id: 2,
+          ant_like: 1,
+        },
+      ]);
     }
 
     getRecipeContent(id: number) {
@@ -108,30 +110,18 @@ jest.mock('../../src/service', () => {
 });
 
 describe('editRecipe test', () => {
-  // test.skip('getAllIngredient fail', (done) => {
-  //   const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
-  //   let spy = jest.spyOn(EditRecipe.prototype, 'getAllIngredient').mockReturnValue(1);
-
-  //   wrapper
-  //     .getAllIngredient()
-  //     .then(() => {
-  //       throw new Error('error');
-  //     })
-  //     .catch(() => {
-  //       done();
-  //     });
-  // });
-
-  test.skip('add ingredent sucess', (done) => {
+  test('add ingredent sucess', (done) => {
     const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
     //@ts-ignore
     let spy = jest.spyOn(EditRecipe.prototype, 'addIngredientFunc').mockReturnValue(1);
     setTimeout(() => {
-      wrapper.find(Button.Light).at(2).simulate('click', { ingred_id: 1, recipe_id: 1 });
-      setTimeout(() => {
-        expect(spy).toBe(1);
-        done();
-      });
+      wrapper.find(Button.Light).at(2).simulate('click', { ingred_id: 3, recipe_id: 1 });
+      expect(wrapper.find(Button.Light).at(2).text()).toEqual('<ButtonLight />');
+      console.log(wrapper.debug());
+      // setTimeout(() => {
+      //   expect(spy).toBe(1);
+      done();
+      // });
     });
   });
   test('save recipe fail', (done) => {
