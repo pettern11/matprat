@@ -25,7 +25,6 @@ import { createHashHistory } from 'history';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 export class LikedRecipes extends Component {
-  likedList: List[] = [];
   originalrecipes: Recipe[] = [];
   recipes: Recipe[] = [];
 

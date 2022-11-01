@@ -109,6 +109,13 @@ class Service {
       .post<{ id: number }>('/createrecipe', { recipe: recipe })
       .then((response) => response.data.id);
   }
+
+  addIngredientToIcebox(selectedIceboxIngredient: IceboxIngredient) {
+    return axios
+      .post<{}>('/addingredienttoicebox', { selectedIceboxIngredient: selectedIceboxIngredient })
+      .then((response) => response.data);
+  }
+
   createRecipeIngredient(recipe_content: Recipe_Content[]) {
     console.log('egentlig andre console lgo', recipe_content);
     return axios

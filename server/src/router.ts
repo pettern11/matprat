@@ -95,6 +95,13 @@ router.post('/addingredient', (request, response) => {
     .then(() => response.send())
     .catch((error) => response.status(500).send(error));
 });
+router.post('/addingredienttoicebox', (request, response) => {
+  const data = request.body;
+  service
+    .addIngredientToIcebox(data.selectedIceboxIngredient)
+    .then(() => response.send())
+    .catch((error) => response.status(500).send(error));
+});
 router.post('/newingredient', (request, response) => {
   const data = request.body;
   service

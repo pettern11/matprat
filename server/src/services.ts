@@ -172,6 +172,20 @@ class Service {
     });
   }
 
+  addIngredientToIcebox(selectedIceboxIngredient: IceboxIngredient) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'INSERT INTO icebox SET ingred_id=?, ingred_navn=?',
+        [selectedIceboxIngredient.ingred_id, selectedIceboxIngredient.ingred_navn],
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
+
+          resolve();
+        }
+      );
+    });
+  }
+
   updateIngredientShoppinglist(ingredient: List) {
     return new Promise<void>((resolve, reject) => {
       pool.query(
