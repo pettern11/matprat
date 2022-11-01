@@ -2,12 +2,8 @@ import * as React from 'react';
 
 import { shallow, mount } from 'enzyme';
 import { Alert, Card, Row, Column, Form, Button, RecipeView } from '../../src/widgets';
-import { NavLink } from 'react-router-dom';
-import { NewRecipe } from '../../src/components/newRecipe';
-import { EditRecipe } from '../../src/components/editRecipe';
 import { ShowRecipe } from '../../src/components/showRecipe';
-import { LikedRecipes } from '../../src/components/liked';
-import { ShoppingList } from '../../src/components/shoppingList';
+
 import { createHashHistory } from 'history';
 
 const history = createHashHistory();

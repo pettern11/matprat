@@ -91,6 +91,9 @@ export class Home extends Component {
                     </tr>
                   </table>
                 </center>
+                <NavLink className="black" to={'/showallrecipe'}>
+                  Knapp til allllle oppskriftene
+                </NavLink>
               </Card>
             </div>
           </div>

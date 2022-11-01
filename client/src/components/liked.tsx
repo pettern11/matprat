@@ -1,31 +1,12 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import {
-  Alert,
-  Card,
-  Cards,
-  Oppskrifter,
-  Row,
-  Column,
-  Form,
-  Button,
-  RecipeView,
-} from '.././widgets';
-import { NavLink, Redirect } from 'react-router-dom';
-import service, {
-  Country,
-  Category,
-  Ingredient,
-  Recipe,
-  Recipe_Content,
-  List,
-  ElementShoppingList,
-} from '.././service';
+import { Alert, Cards, Oppskrifter, Row, RecipeView } from '.././widgets';
+import { NavLink } from 'react-router-dom';
+import service, { Recipe, List } from '.././service';
 import { createHashHistory } from 'history';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 export class LikedRecipes extends Component {
-  likedList: List[] = [];
   originalrecipes: Recipe[] = [];
   recipes: Recipe[] = [];
 
