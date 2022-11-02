@@ -1,12 +1,12 @@
 import axios from 'axios';
 import pool from '../src/mysql-pool';
 import app from '../src/app';
-import taskService, { Task } from '../src/services';
+import {service, Recipe, Recipe_Content, Country, Category, IngredientToShoppinglist, ElementHandleliste, Ingredient, List } from '../src/services';
 
-const testTasks: Task[] = [
-  { id: 1, title: 'Les leksjon', description: '', done: false },
-  { id: 2, title: 'Møt opp på forelesning', description: '', done: false },
-  { id: 3, title: 'Gjør øving', description: '', done: false },
+const handleliste: IngredientToShoppinglist[] = [
+    { ingred_id: 1, mengde: 1, maleenhet: 'stk' },
+    { ingred_id: 2, mengde: 1, maleenhet: 'stk' },
+    { ingred_id: 3, mengde: 1, maleenhet: 'stk' },
 ];
 
 // Since API is not compatible with v1, API version is increased to v2
@@ -20,7 +20,7 @@ beforeAll((done) => {
 
 beforeEach((done) => {
   // Delete all tasks, and reset id auto-increment start value
-  pool.query('TRUNCATE TABLE Tasks', (error) => {
+  pool.query('TRUNCATE TABLE matprat', (error) => {
     if (error) return done(error);
 
     // Create testTasks sequentially in order to set correct id, and call done() when finished

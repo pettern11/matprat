@@ -12,9 +12,9 @@ exports[`Rending Should render after snapshot 1`] = `
         1
         .
          
-        pizzadeig
+        Chicken
          
-        <input
+        <FormInput
           onBlur={[Function]}
           onChange={[Function]}
           size={2}
@@ -60,9 +60,9 @@ exports[`Rending Should render after snapshot 1`] = `
         2
         .
          
-        pizza fyll
+        Salmon
          
-        <input
+        <FormInput
           onBlur={[Function]}
           onChange={[Function]}
           size={2}
@@ -70,7 +70,7 @@ exports[`Rending Should render after snapshot 1`] = `
           value={1}
         />
          
-        L
+        kg
         <ButtonDanger
           onClick={[Function]}
         >
@@ -118,7 +118,7 @@ exports[`Rending Should render after snapshot 1`] = `
       >
         Navn:
          
-        <input
+        <FormInput
           id="navn"
           onChange={[Function]}
           type="text"
@@ -126,7 +126,7 @@ exports[`Rending Should render after snapshot 1`] = `
         />
         Antall:
          
-        <input
+        <FormInput
           id="mengde"
           onChange={[Function]}
           type="number"
@@ -134,7 +134,7 @@ exports[`Rending Should render after snapshot 1`] = `
         />
         Måleenhet:
          
-        <input
+        <FormInput
           id="maleenhet"
           onChange={[Function]}
           type="text"
@@ -169,19 +169,19 @@ exports[`Rending Should render after snapshot 1`] = `
           key="1"
           value={1}
         >
-          pizzadeig
+          Chicken
         </option>
         <option
           key="2"
           value={2}
         >
-          pizza fyll
+          Salmon
         </option>
         <option
           key="3"
           value={3}
         >
-          kjøttboller
+          Beef
         </option>
       </select>
     </Column>
