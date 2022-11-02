@@ -53,7 +53,16 @@ CREATE TABLE handleliste(
     ingred_id INT NOT NULL,
     mengde VARCHAR(255) NOT NULL,
     maleenhet VARCHAR(255) NOT NULL,
-      PRIMARY KEY(id))ENGINE=InnoDB CHARSET=latin1;;
+      PRIMARY KEY(id))ENGINE=InnoDB CHARSET=latin1;
+
+CREATE TABLE icebox (
+  ingred_id int NOT NULL,
+  ingred_navn varchar(255) NOT NULL,
+  PRIMARY KEY(ingred_id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE icebox
+  ADD CONSTRAINT icebox_fk1 FOREIGN KEY (ingred_id) REFERENCES ingrediens (ingred_id);
 
 ALTER TABLE oppskrift
   ADD CONSTRAINT oppskrift_fk1 FOREIGN KEY(kategori_id) 
