@@ -76,6 +76,18 @@ router.get('/ingredient', (_request, response) => {
     .then((rows) => response.send(rows))
     .catch((error) => response.status(500).send(error));
 });
+router.get('/icebox', (_request, response) => {
+  service
+    .getAllIceboxIngredients()
+    .then((rows) => response.send(rows))
+    .catch((error) => response.status(500).send(error));
+});
+router.get('/recipecontent', (_request, response) => {
+  service
+    .getAllRecipeContent()
+    .then((rows) => response.send(rows))
+    .catch((error) => response.status(500).send(error));
+});
 router.get('/shoppinglist', (_request, response) => {
   service
     .getShoppingList()
@@ -86,6 +98,13 @@ router.post('/addingredient', (request, response) => {
   const data = request.body;
   service
     .addIngredientShoppinglist(data.ingredient)
+    .then(() => response.send())
+    .catch((error) => response.status(500).send(error));
+});
+router.post('/addingredienttoicebox', (request, response) => {
+  const data = request.body;
+  service
+    .addIngredientToIcebox(data.selectedIceboxIngredient)
     .then(() => response.send())
     .catch((error) => response.status(500).send(error));
 });
@@ -147,6 +166,12 @@ router.delete('/deleteingredient/:recipeid/:ingredid', (request, response) => {
 router.delete('/deleteingredientshoppinglist/:id', (request, response) => {
   service
     .deleteIngredientShoppinglist(Number(request.params.id))
+    .then((_result) => response.send())
+    .catch((error) => response.status(500).send(error));
+});
+router.delete('/deleteiceboxingredient/:ingred_id', (request, response) => {
+  service
+    .deleteIceboxIngredient(Number(request.params.ingred_id))
     .then((_result) => response.send())
     .catch((error) => response.status(500).send(error));
 });

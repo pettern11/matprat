@@ -49,6 +49,7 @@ describe('Index test', () => {
             <NavBar.Link to="/newrecipe">Ny oppskrift</NavBar.Link>
             <NavBar.Link to="/shoppinglist">Handleliste</NavBar.Link>
             <NavBar.Link to="/liked">Liked</NavBar.Link>
+            <NavBar.Link to="/showallrecipe">Alle oppskrifter</NavBar.Link>
           </NavBar>
         )
       ).toEqual(true);
