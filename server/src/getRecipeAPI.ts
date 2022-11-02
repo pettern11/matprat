@@ -52,7 +52,6 @@ class API_Calls {
         .then((data) => Recipe(data.meals))
         .catch((err) => console.log('Error getting recipe N-Y', err));
     });
-    pushRecipe();
   }
   getCategory() {
     fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list')
@@ -82,7 +81,9 @@ apiCalls.getRecipeA_C();
 apiCalls.getRecipeD_M();
 apiCalls.getRecipeN_Y();
 
-// setTimeout(() => {}, 13000);
+setTimeout(() => {
+  pushRecipe();
+}, 13000);
 // setTimeout(() => {
 //   matchRecipeIngredient();
 // }, 10000);
