@@ -45,7 +45,6 @@ export class ShoppingList extends Component {
                     ?.ingred_navn
                 }{' '}
                 <input
-                  id="mengde"
                   type="string"
                   onChange={(event) => {
                     //@ts-ignore
@@ -148,7 +147,7 @@ export class ShoppingList extends Component {
             <Column>
             Antall:{' '}
             <Form.Input
-              id="mengde"
+              id="exisitingmengde"
               type="number"
               value={this.selectedIngredient.mengde}
               onChange={(event) => {//@ts-ignore
@@ -159,7 +158,7 @@ export class ShoppingList extends Component {
             <Column>
             Måleenhet:{' '}
             <Form.Input
-              id="maleenhet"
+              id="exisitingmaleenhet"
               type="text"
               value={this.selectedIngredient.maleenhet}
               onChange={(event) => {
