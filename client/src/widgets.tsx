@@ -133,6 +133,7 @@ export class Column extends Component<{
 class ButtonSuccess extends Component<{
   small?: boolean | undefined;
   children: ReactNode;
+  id?: string;
   onClick: () => void;
 }> {
   render() {
@@ -140,6 +141,7 @@ class ButtonSuccess extends Component<{
       <button
         type="button"
         className="btn btn-success"
+        id={this.props.id?.toString()}
         style={
           this.props.small
             ? {
@@ -166,6 +168,7 @@ class ButtonSuccess extends Component<{
 class ButtonDanger extends Component<{
   small?: boolean;
   children: ReactNode;
+  id?: string;
   onClick: () => void;
 }> {
   render() {
@@ -173,6 +176,7 @@ class ButtonDanger extends Component<{
       <button
         type="button"
         className="btn btn-danger"
+        id={this.props.id?.toString()}
         style={
           this.props.small
             ? {
@@ -198,7 +202,7 @@ class ButtonDanger extends Component<{
 class ButtonLight extends Component<{
   small?: boolean;
   children: ReactNode;
-  id: number;
+  id?: string;
   onClick: () => void;
 }> {
   render() {
@@ -206,7 +210,7 @@ class ButtonLight extends Component<{
       <button
         type="button"
         className="btn btn-light"
-        id={this.props.id.toString()}
+        id={this.props.id?.toString()}
         style={
           this.props.small
             ? {

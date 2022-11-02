@@ -21,6 +21,7 @@ import { EditRecipe } from './components/editRecipe';
 import { ShowRecipe } from './components/showRecipe';
 import { LikedRecipes } from './components/liked';
 import { ShoppingList } from './components/shoppingList';
+import { Icebox } from './components/icebox';
 import { ShowAllRecipe } from './components/showAllRecipe';
 
 import service, { Recipe } from './service';
@@ -34,7 +35,8 @@ export class Menu extends Component {
           <NavBar.Link to="/newrecipe">Ny oppskrift</NavBar.Link>
           <NavBar.Link to="/shoppinglist">Handleliste</NavBar.Link>
           <NavBar.Link to="/liked">Liked</NavBar.Link>
-          <NavBar.Link to="/showallrecipe">Alle oppskrifter</NavBar.Link>
+          <NavBar.Link to="/showallrecipe">Show all</NavBar.Link>
+          <NavBar.Link to="/icebox">Kjøleskap</NavBar.Link>
         </NavBar>
       </>
     );
@@ -60,16 +62,18 @@ export class Home extends Component {
             <h1>Anbefalt oppskrift:</h1>
             <br></br>
             <div className={'recipeToDay'}>
-              {this.recipes
-                .filter((recipes, i) => i == random)
-                .map((recipe, rei) => (
-                  <div key={rei}>
-                    <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
-                      <p id="frontname">{recipe.oppskrift_navn}</p>
-                      <img src={recipe.bilde_adr} className="frontPicture" alt="recipe" />
-                    </NavLink>
-                  </div>
-                ))}
+              {this.recipes.length != 0
+                ? this.recipes
+                    .filter((recipes, i) => i == random)
+                    .map((recipe, rei) => (
+                      <div key={rei}>
+                        <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
+                          <p id="frontname">{recipe.oppskrift_navn}</p>
+                          <img src={recipe.bilde_adr} className="frontPicture" alt="recipe" />
+                        </NavLink>
+                      </div>
+                    ))
+                : ''}
             </div>
 
             <div>
@@ -77,20 +81,25 @@ export class Home extends Component {
                 <center>
                   <table>
                     <tr>
-                      {this.suggestedRecipeList.map((likedRecipe) => (
-                        <td>
-                          <NavLink className="black" to={'/recipe/' + likedRecipe.oppskrift_id}>
-                            <RecipeView
-                              img={likedRecipe.bilde_adr}
-                              name={likedRecipe.oppskrift_navn}
-                              numbOfPors={likedRecipe.ant_pors}
-                            ></RecipeView>
-                          </NavLink>
-                        </td>
-                      ))}
+                      {this.recipes.length != 0
+                        ? this.suggestedRecipeList.map((likedRecipe) => (
+                            <td>
+                              <NavLink className="black" to={'/recipe/' + likedRecipe.oppskrift_id}>
+                                <RecipeView
+                                  img={likedRecipe.bilde_adr}
+                                  name={likedRecipe.oppskrift_navn}
+                                  numbOfPors={likedRecipe.ant_pors}
+                                ></RecipeView>
+                              </NavLink>
+                            </td>
+                          ))
+                        : ''}
                     </tr>
                   </table>
                 </center>
+                <NavLink className="black" to={'/showallrecipe'}>
+                  Knapp til allllle oppskriftene
+                </NavLink>
               </Card>
             </div>
           </div>
@@ -103,43 +112,57 @@ export class Home extends Component {
       .getAllRepice()
       .then((recipes) => {
         this.recipes = recipes;
-
-        this.recipes
-          .filter((recipe) => recipe.liked == true)
-          .map(
-            (likedRecipe) => (
-              this.likedFromCountrey.push(likedRecipe.land_id),
-              this.likedFromCategory.push(likedRecipe.kategori_id)
-            )
-          );
-        console.log(this.likedFromCountrey, this.likedFromCategory);
-
-        this.recipes.map((element) => {
-          console.log(this.likedFromCountrey.includes(element.land_id));
-          if (
-            this.likedFromCountrey.includes(element.land_id) &&
-            this.likedFromCategory.includes(element.kategori_id) &&
-            element.liked == false
-          ) {
-            this.suggestedRecipe.push(element);
+        if (this.recipes.filter((recipe) => recipe.liked == true).length <= 0) {
+          //loop five times to get five random recipes
+          for (let i = 0; i < 5; i++) {
+            this.suggestedRecipeList.push(
+              this.recipes[Math.floor(Math.random() * this.recipes.length)]
+            );
           }
-        });
+        } else {
+          this.recipes
+            .filter((recipe) => recipe.liked == true)
+            .map(
+              (likedRecipe) => (
+                //@ts-ignore
+                this.likedFromCountrey.push(likedRecipe.land_id),
+                //@ts-ignore
+                this.likedFromCategory.push(likedRecipe.kategori_id)
+              )
+            );
+          console.log(this.likedFromCountrey, this.likedFromCategory);
 
-        for (let i = 0; i < this.recipes.length; i++) {
-          if (this.likedFromCategory.includes(this.recipes[i].kategori_id)) {
-            this.suggestedRecipe.push(this.recipes[i]);
-          } else {
+          this.recipes.map((element) => {
+            //@ts-ignore
+            console.log(this.likedFromCountrey.includes(element.land_id));
+            if (
+              //@ts-ignore
+              this.likedFromCountrey.includes(element.land_id) &&
+              //@ts-ignore
+              this.likedFromCategory.includes(element.kategori_id) &&
+              element.liked == false
+            ) {
+              this.suggestedRecipe.push(element);
+            }
+          });
+
+          for (let i = 0; i < this.recipes.length; i++) {
+            //@ts-ignore
+            if (this.likedFromCategory.includes(this.recipes[i].kategori_id)) {
+              this.suggestedRecipe.push(this.recipes[i]);
+            } else {
+            }
           }
-        }
 
-        for (let i = 0; i < 5; i++) {
-          //random number from suggestedRecipe
-          let random = Math.floor(Math.random() * this.suggestedRecipe.length);
-          this.suggestedRecipeList.push(this.suggestedRecipe[random]);
+          for (let i = 0; i < 5; i++) {
+            //random number from suggestedRecipe
+            let random = Math.floor(Math.random() * this.suggestedRecipe.length);
+            this.suggestedRecipeList.push(this.suggestedRecipe[random]);
 
-          this.suggestedRecipe.splice(random, 1);
+            this.suggestedRecipe.splice(random, 1);
+          }
+          console.log(this.suggestedRecipeList);
         }
-        console.log(this.suggestedRecipeList);
       })
       .catch((error) => Alert.danger('Error getting tasks: ' + error.message));
   }
@@ -157,6 +180,7 @@ ReactDOM.render(
       <Route exact path="/recipe/edit/:id" component={EditRecipe} />
       <Route exact path="/shoppinglist" component={ShoppingList} />
       <Route exact path="/liked" component={LikedRecipes}></Route>
+      <Route exact path="/icebox" component={Icebox}></Route>
     </div>
   </HashRouter>,
   document.getElementById('root') || document.createElement('div')

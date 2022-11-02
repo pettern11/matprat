@@ -15,20 +15,20 @@ på den forhåndsdefinerte oppgaven. Kravene for å få god uttelling er uansett
 I prosjektet skal dere utvikle en webapplikasjon for matoppskrifter. Følgende krav og betingelser
 gjelder:
 
--   [ ] Det skal være mulig å søke etter, legge til, endre og slette oppskrifter.
--   [ ] Antall porsjoner må kunne justeres, og da må også mengden av hver ingrediens i en oppskrift oppdateres.
--   [ ] Det skal være mulig å “like” en oppskrift etter at den er registrert.
--   [ ] Det skal være enkelt å oppdage oppskrifter. Dette kan f.eks. gjøres gjennom søk, ved å liste opp nye og populære registreringer, ved å tilby filtrering basert på kategori, land, ingredienser osv.
--   [ ] Det skal være mulig å legge oppskriftens ingredienser i en handleliste.
--   [ ] Ingredienser må kunne fjernes fra handlelisten i etterkant.
--   [ ] Handlelisten må kunne nullstilles.
+-   [x] Det skal være mulig å søke etter, legge til, endre og slette oppskrifter.
+-   [x] Antall porsjoner må kunne justeres, og da må også mengden av hver ingrediens i en oppskrift oppdateres.
+-   [x] Det skal være mulig å “like” en oppskrift etter at den er registrert.
+-   [x] Det skal være enkelt å oppdage oppskrifter. Dette kan f.eks. gjøres gjennom søk, ved å liste opp nye og populære registreringer, ved å tilby filtrering basert på kategori, land, ingredienser osv.
+-   [x] Det skal være mulig å legge oppskriftens ingredienser i en handleliste.
+-   [x] Ingredienser må kunne fjernes fra handlelisten i etterkant.
+-   [x] Handlelisten må kunne nullstilles.
 -   [ ] Systemet skal tilby en funksjon som foreslår oppskrifter basert på en eller flere oppgitte ingredienser.
 
 ## Mulig tilleggsfunksjonalitet:
 
--   [ ] [Henting av oppskrifter fra eksterne kilder, f.eks. TheMealDB](https://www.themealdb.com/api.php)
+-   [x] [Henting av oppskrifter fra eksterne kilder, f.eks. TheMealDB](https://www.themealdb.com/api.php)
 -   [ ] Deling av oppskrifter og handlelister, f.eks. via sosiale medier, e-post eller som weblenker.
--   [ ] Anbefalinger som viser lignende oppskrifter.
+-   [x] Anbefalinger som viser lignende oppskrifter.
 -   [ ] Brukerhåndtering gjennom pålogging med autentisering:
     -   Teori:
         -   Les om hashing teori her: https://crackstation.net/hashing-security.htm

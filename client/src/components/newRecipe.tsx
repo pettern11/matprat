@@ -306,6 +306,7 @@ export class NewRecipe extends Component {
       kategori_id: this.category_id,
       land_id: this.country_id,
       ant_like: 0,
+      liked: false,
     };
     if (this.recipe_content.length == 0) {
       Alert.info('Du må legge til ingredienser i oppskriften din');

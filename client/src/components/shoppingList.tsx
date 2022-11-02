@@ -45,17 +45,21 @@ export class ShoppingList extends Component {
                     ?.ingred_navn
                 }{' '}
                 <input
-                  id="mengde"
                   type="string"
                   onChange={(event) => {
                     //@ts-ignore
                     sl.mengde = event.currentTarget.value;
                     console.log(sl.mengde);
                   }}
+                  onBlur={() => this.updatePortions(sl)}
+
                   value={sl.mengde}
                   size={2}
                 ></input>{' '}
                 {sl.maleenhet}
+                
+                <Button.Danger onClick={() => this.decrementPortions(sl)}>-</Button.Danger>
+                <Button.Success onClick={() => this.incrementPortions(sl)}>+</Button.Success>
                 <Button.Danger onClick={() => this.deleteIngredient(sl.id)}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -72,12 +76,7 @@ export class ShoppingList extends Component {
                     />
                   </svg>
                 </Button.Danger>
-                <Button.Success onClick={() => this.updatePortions(sl)}>
-                  Endre antall
-                </Button.Success>
-                <Button.Danger onClick={() => this.decrementPortions(sl)}>-</Button.Danger>
-                <Button.Success onClick={() => this.incrementPortions(sl)}>+</Button.Success>
-              </p>
+                </p>
             ))}
             <Button.Danger onClick={() => this.deleteAll()}>Slett alle</Button.Danger>
           </Column>
@@ -148,7 +147,7 @@ export class ShoppingList extends Component {
             <Column>
             Antall:{' '}
             <Form.Input
-              id="mengde"
+              id="exisitingmengde"
               type="number"
               value={this.selectedIngredient.mengde}
               onChange={(event) => {//@ts-ignore
@@ -159,7 +158,7 @@ export class ShoppingList extends Component {
             <Column>
             Måleenhet:{' '}
             <Form.Input
-              id="maleenhet"
+              id="exisitingmaleenhet"
               type="text"
               value={this.selectedIngredient.maleenhet}
               onChange={(event) => {
