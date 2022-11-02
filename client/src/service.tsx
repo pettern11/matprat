@@ -51,6 +51,10 @@ export type List = {
   mengde: number;
   maleenhet: string;
 };
+export type IceboxIngredient = {
+  ingred_id: number;
+  ingred_navn: string;
+};
 class Service {
   /**
    * Get all tasks.
@@ -85,6 +89,17 @@ class Service {
       .post<{}>('/addingredient', { ingredient: ingredient })
       .then((response) => response.data);
   }
+  getAllIceboxIngredients() {
+    return axios.get<IceboxIngredient[]>('/icebox').then((response) => response.data);
+  }
+  getAllRecipeContent() {
+    return axios.get<Recipe_Content[]>('/recipecontent').then((response) => response.data);
+  }
+  deleteIceboxIngredient(ingred_id: number) {
+    return axios
+      .delete<IceboxIngredient>('/deleteiceboxingredient/' + ingred_id)
+      .then((response) => response.data);
+  }
   createIngredient(name: string) {
     return axios.post<{}>('/newingredient', { name: name }).then((response) => response.data);
   }
@@ -102,6 +117,13 @@ class Service {
       .post<{ id: number }>('/createrecipe', { recipe: recipe })
       .then((response) => response.data.id);
   }
+
+  addIngredientToIcebox(selectedIceboxIngredient: IceboxIngredient) {
+    return axios
+      .post<{}>('/addingredienttoicebox', { selectedIceboxIngredient: selectedIceboxIngredient })
+      .then((response) => response.data);
+  }
+
   createRecipeIngredient(recipe_content: Recipe_Content[]) {
     console.log('egentlig andre console lgo', recipe_content);
     return axios

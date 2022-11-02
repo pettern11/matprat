@@ -45,6 +45,10 @@ export type Ingredient = {
   ingred_id: number;
   ingred_navn: string;
 };
+export type IceboxIngredient = {
+  ingred_id: number;
+  ingred_navn: string;
+};
 export type List = {
   id: number;
   ingred_id: number;
@@ -95,6 +99,16 @@ class Service {
     });
   }
 
+  getAllRecipeContent() {
+    return new Promise<Recipe_Content[]>((resolve, reject) => {
+      pool.query('SELECT * FROM oppskrift_innhold', (error, results: RowDataPacket[]) => {
+        if (error) return reject(error);
+
+        resolve(results as Recipe_Content[]);
+      });
+    });
+  }
+
   getAllCountry() {
     return new Promise<Country[]>((resolve, reject) => {
       pool.query('SELECT * FROM land', (error, results: RowDataPacket[]) => {
@@ -124,6 +138,15 @@ class Service {
       });
     });
   }
+  getAllIceboxIngredients() {
+    return new Promise<IceboxIngredient[]>((resolve, reject) => {
+      pool.query('SELECT * FROM icebox', (error, results: RowDataPacket[]) => {
+        if (error) return reject(error);
+
+        resolve(results as IceboxIngredient[]);
+      });
+    });
+  }
 
   getShoppingList() {
     return new Promise<List[]>((resolve, reject) => {
@@ -150,6 +173,20 @@ class Service {
       pool.query(
         'INSERT INTO handleliste SET ingred_id=?, mengde=?, maleenhet=?',
         [ingredient.ingred_id, ingredient.mengde, ingredient.maleenhet],
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
+
+          resolve();
+        }
+      );
+    });
+  }
+
+  addIngredientToIcebox(selectedIceboxIngredient: IceboxIngredient) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'INSERT INTO icebox SET ingred_id=?, ingred_navn=?',
+        [selectedIceboxIngredient.ingred_id, selectedIceboxIngredient.ingred_navn],
         (error, results: ResultSetHeader) => {
           if (error) return reject(error);
 
@@ -223,6 +260,7 @@ class Service {
       );
     });
   }
+
   createRecipeIngredient(recipe_content: Recipe_Content[]) {
     return new Promise<void>((resolve, reject) => {
       recipe_content.forEach((element) => {
@@ -295,6 +333,20 @@ class Service {
       pool.query(
         'DELETE FROM handleliste WHERE id = ?',
         [id],
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
+          if (results.affectedRows == 0) return reject(new Error('No row deleted'));
+
+          resolve();
+        }
+      );
+    });
+  }
+  deleteIceboxIngredient(ingred_id: number) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'DELETE FROM icebox WHERE ingred_id = ?',
+        [ingred_id],
         (error, results: ResultSetHeader) => {
           if (error) return reject(error);
           if (results.affectedRows == 0) return reject(new Error('No row deleted'));

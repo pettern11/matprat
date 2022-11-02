@@ -21,6 +21,7 @@ import { EditRecipe } from './components/editRecipe';
 import { ShowRecipe } from './components/showRecipe';
 import { LikedRecipes } from './components/liked';
 import { ShoppingList } from './components/shoppingList';
+import { Icebox } from './components/icebox';
 import { ShowAllRecipe } from './components/showAllRecipe';
 
 import service, { Recipe } from './service';
@@ -34,7 +35,6 @@ export class Menu extends Component {
           <NavBar.Link to="/newrecipe">Ny oppskrift</NavBar.Link>
           <NavBar.Link to="/shoppinglist">Handleliste</NavBar.Link>
           <NavBar.Link to="/liked">Liked</NavBar.Link>
-          <NavBar.Link to="/showallrecipe">Alle oppskrifter</NavBar.Link>
         </NavBar>
       </>
     );
@@ -106,52 +106,57 @@ export class Home extends Component {
       .getAllRepice()
       .then((recipes) => {
         this.recipes = recipes;
-        if(this.recipes.filter((recipe) => recipe.liked == true).length <= 0){
+        if (this.recipes.filter((recipe) => recipe.liked == true).length <= 0) {
           //loop five times to get five random recipes
           for (let i = 0; i < 5; i++) {
-          this.suggestedRecipeList.push(this.recipes[Math.floor(Math.random() * this.recipes.length)]);
-        }}
-        else{
-        this.recipes
-          .filter((recipe) => recipe.liked == true)
-          .map(
-            (likedRecipe) => (
-              //@ts-ignore
-              this.likedFromCountrey.push(likedRecipe.land_id),
-              //@ts-ignore
-              this.likedFromCategory.push(likedRecipe.kategori_id)
-            )
-          );
-        console.log(this.likedFromCountrey, this.likedFromCategory);
+            this.suggestedRecipeList.push(
+              this.recipes[Math.floor(Math.random() * this.recipes.length)]
+            );
+          }
+        } else {
+          this.recipes
+            .filter((recipe) => recipe.liked == true)
+            .map(
+              (likedRecipe) => (
+                //@ts-ignore
+                this.likedFromCountrey.push(likedRecipe.land_id),
+                //@ts-ignore
+                this.likedFromCategory.push(likedRecipe.kategori_id)
+              )
+            );
+          console.log(this.likedFromCountrey, this.likedFromCategory);
 
-        this.recipes.map((element) => {              //@ts-ignore
-          console.log(this.likedFromCountrey.includes(element.land_id));
-          if (//@ts-ignore
-            this.likedFromCountrey.includes(element.land_id) &&
+          this.recipes.map((element) => {
             //@ts-ignore
-            this.likedFromCategory.includes(element.kategori_id) &&
-            element.liked == false
-          ) {
-            this.suggestedRecipe.push(element);
+            console.log(this.likedFromCountrey.includes(element.land_id));
+            if (
+              //@ts-ignore
+              this.likedFromCountrey.includes(element.land_id) &&
+              //@ts-ignore
+              this.likedFromCategory.includes(element.kategori_id) &&
+              element.liked == false
+            ) {
+              this.suggestedRecipe.push(element);
+            }
+          });
+
+          for (let i = 0; i < this.recipes.length; i++) {
+            //@ts-ignore
+            if (this.likedFromCategory.includes(this.recipes[i].kategori_id)) {
+              this.suggestedRecipe.push(this.recipes[i]);
+            } else {
+            }
           }
-        });
 
-        for (let i = 0; i < this.recipes.length; i++) {//@ts-ignore
-          if (this.likedFromCategory.includes(this.recipes[i].kategori_id)) {
-            this.suggestedRecipe.push(this.recipes[i]);
-          } else {
+          for (let i = 0; i < 5; i++) {
+            //random number from suggestedRecipe
+            let random = Math.floor(Math.random() * this.suggestedRecipe.length);
+            this.suggestedRecipeList.push(this.suggestedRecipe[random]);
+
+            this.suggestedRecipe.splice(random, 1);
           }
+          console.log(this.suggestedRecipeList);
         }
-
-        for (let i = 0; i < 5; i++) {
-          //random number from suggestedRecipe
-          let random = Math.floor(Math.random() * this.suggestedRecipe.length);
-          this.suggestedRecipeList.push(this.suggestedRecipe[random]);
-
-          this.suggestedRecipe.splice(random, 1);
-        }
-        console.log(this.suggestedRecipeList);
-      }
       })
       .catch((error) => Alert.danger('Error getting tasks: ' + error.message));
   }
@@ -169,6 +174,7 @@ ReactDOM.render(
       <Route exact path="/recipe/edit/:id" component={EditRecipe} />
       <Route exact path="/shoppinglist" component={ShoppingList} />
       <Route exact path="/liked" component={LikedRecipes}></Route>
+      <Route exact path="/icebox" component={Icebox}></Route>
     </div>
   </HashRouter>,
   document.getElementById('root') || document.createElement('div')
