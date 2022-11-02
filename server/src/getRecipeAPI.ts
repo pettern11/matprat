@@ -24,7 +24,7 @@ let country = [];
 let category = [];
 let ingredient = [];
 let recipe_ingredient = [];
-
+let totLength = 0;
 class API_Calls {
   alfabeth1 = ['a', 'b', 'c'];
   alfabeth2 = ['d', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
@@ -33,7 +33,7 @@ class API_Calls {
     this.alfabeth1.forEach((letter) => {
       fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
         .then((res) => res.json())
-        .then((data) => Recipe(data.meals))
+        .then((data) => (Recipe(data.meals), (totLength += data.meals.length)))
         .catch((err) => console.log('error getting recipe A-C', err));
     });
   }
@@ -41,7 +41,7 @@ class API_Calls {
     this.alfabeth2.forEach((letter) => {
       fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
         .then((res) => res.json())
-        .then((data) => Recipe(data.meals))
+        .then((data) => (Recipe(data.meals), (totLength += data.meals.length)))
         .catch((err) => console.log('error getting recipe D-M', err));
     });
   }
@@ -49,7 +49,7 @@ class API_Calls {
     this.alfabeth3.forEach((letter) => {
       fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
         .then((res) => res.json())
-        .then((data) => Recipe(data.meals))
+        .then((data) => (Recipe(data.meals), (totLength += data.meals.length)))
         .catch((err) => console.log('Error getting recipe N-Y', err));
     });
   }
@@ -81,9 +81,9 @@ apiCalls.getRecipeA_C();
 apiCalls.getRecipeD_M();
 apiCalls.getRecipeN_Y();
 
-setTimeout(() => {
-  pushRecipe();
-}, 13000);
+// setTimeout(() => {
+//   pushRecipe();
+// }, 13000);
 // setTimeout(() => {
 //   matchRecipeIngredient();
 // }, 10000);
@@ -270,7 +270,8 @@ function Recipe(array) {
         }
       }
     });
-  }, 2000);
+    totLength == recipe.length ? pushRecipe() : '';
+  }, 5000);
 }
 //pusher opp alle oppskriftene til databasen
 function pushRecipe() {
@@ -300,7 +301,8 @@ function pushRecipe() {
 
 //pusher opp koblingen mellom oppskrifter og ingredienter
 function matchRecipeIngredient() {
-  recipe_ingredient.forEach((element) => {
+  console.log(recipe_ingredient.length);
+  recipe_ingredient.forEach((element, i) => {
     //hvis det er en ingrediens uten megde setter vi mengden til 1
     let number;
     if (isNaN(element.number)) {
@@ -309,6 +311,7 @@ function matchRecipeIngredient() {
       number = element.number;
     }
     //pusher opp koblingen mellom oppskrift og ingrediens til databasen
+    console.log(i);
     pool.query(
       'INSERT INTO oppskrift_innhold SET oppskrift_id=?, ingred_id=?, mengde=?, maleenhet=?',
       [element.recipe_id, element.ingred_id, number, element.type],
