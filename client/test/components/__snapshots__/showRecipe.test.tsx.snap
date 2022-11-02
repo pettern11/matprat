@@ -34,7 +34,9 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
       htmlFor="checkbox"
       id="heart"
     >
-      test
+      <img
+        src="https://static5.depositphotos.com/1001759/463/i/600/depositphotos_4634746-stock-photo-red-heart-isolated-white-background.jpg"
+      />
     </label>
     <h5>
       Oppskrift:
@@ -154,7 +156,9 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
       htmlFor="checkbox"
       id="heart"
     >
-      test
+      <img
+        src="https://static5.depositphotos.com/1001759/463/i/600/depositphotos_4634746-stock-photo-red-heart-isolated-white-background.jpg"
+      />
     </label>
     <h5>
       Oppskrift:
@@ -274,7 +278,9 @@ exports[`ShowRecipe tests Number increment works 1`] = `
       htmlFor="checkbox"
       id="heart"
     >
-      test
+      <img
+        src="https://static5.depositphotos.com/1001759/463/i/600/depositphotos_4634746-stock-photo-red-heart-isolated-white-background.jpg"
+      />
     </label>
     <h5>
       Oppskrift:
@@ -394,7 +400,9 @@ exports[`ShowRecipe tests Number of likes 1`] = `
       htmlFor="checkbox"
       id="heart"
     >
-      test
+      <img
+        src="https://static5.depositphotos.com/1001759/463/i/600/depositphotos_4634746-stock-photo-red-heart-isolated-white-background.jpg"
+      />
     </label>
     <h5>
       Oppskrift:

@@ -24,7 +24,6 @@ let country = [];
 let category = [];
 let ingredient = [];
 let recipe_ingredient = [];
-//@ts-ignore
 
 class API_Calls {
   alfabeth1 = ['a', 'b', 'c'];
@@ -34,37 +33,43 @@ class API_Calls {
     this.alfabeth1.forEach((letter) => {
       fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
         .then((res) => res.json())
-        .then((data) => a_to_c(data.meals));
+        .then((data) => Recipe(data.meals))
+        .catch((err) => console.log('error getting recipe A-C', err));
     });
   }
   getRecipeD_M() {
     this.alfabeth2.forEach((letter) => {
       fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
         .then((res) => res.json())
-        .then((data) => d_to_m(data.meals));
+        .then((data) => Recipe(data.meals))
+        .catch((err) => console.log('error getting recipe D-M', err));
     });
   }
   getRecipeN_Y() {
     this.alfabeth3.forEach((letter) => {
       fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
         .then((res) => res.json())
-        .then((data) => n_to_y(data.meals));
+        .then((data) => Recipe(data.meals))
+        .catch((err) => console.log('Error getting recipe N-Y', err));
     });
   }
   getCategory() {
     fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list')
       .then((res) => res.json())
-      .then((data) => addCategory(data.meals));
+      .then((data) => Category(data.meals))
+      .catch((err) => console.log('Error getting category', err));
   }
   getCountry() {
     fetch('https://www.themealdb.com/api/json/v1/1/list.php?a=list')
       .then((res) => res.json())
-      .then((data) => addCountry(data.meals));
+      .then((data) => Country(data.meals))
+      .catch((err) => console.log('Error getting country', err));
   }
   getIngredients() {
     fetch('https://www.themealdb.com/api/json/v1/1/list.php?i=list')
       .then((res) => res.json())
-      .then((data) => addIngredient(data.meals));
+      .then((data) => pushIngredient(data.meals))
+      .catch((err) => console.log('Error getting ingredient', err));
   }
 }
 const apiCalls = new API_Calls();
@@ -83,29 +88,13 @@ setTimeout(() => {
 //   matchRecipeIngredient();
 // }, 10000);
 
-function matchRecipeIngredient() {
-  recipe_ingredient.forEach((element) => {
-    // console.log(element);
-    let number;
-    if (isNaN(element.number)) {
-      number = 1;
-    } else {
-      number = element.number;
-    }
-    console.log(element.recipe_id);
-    pool.query(
-      'INSERT INTO oppskrift_innhold SET oppskrift_id=?, ingred_id=?, mengde=?, maleenhet=?',
-      [element.recipe_id, element.ingred_id, number, element.type],
-      (error, results) => {
-        if (error) return error;
-
-        results;
-      }
-    );
+//funskjon som først får land fra api, og legger det til i arrayet country
+//deretter pushet det opp til databasen slik at det får en id fordi landene har ikke en id fra TheMealDB
+//så henter den iden og legger det til i arrayet country
+function Country(array) {
+  array.forEach((element) => {
+    country.push(element.strArea);
   });
-}
-function pushCountry() {
-  //@ts-ignore
   country.forEach((element) => {
     pool.query('INSERT INTO land SET land_navn=?', [element], (error, results) => {
       if (error) return error;
@@ -113,9 +102,41 @@ function pushCountry() {
       results;
     });
   });
+  country = [];
+  pool.query('SELECT * FROM land', (error, results: []) => {
+    if (error) return error;
+    country = results;
+  });
 }
-function pushIngredient() {
-  //@ts-ignore
+
+//funskjon som først får kategori fra api, og legger det til i arrayet category
+//deretter pushet det opp til databasen slik at det får en id fordi kategoriene har ikke en id fra TheMealDB
+//så henter den iden og legger det til i arrayet category
+function Category(array) {
+  array.forEach((element) => {
+    category.push(element.strCategory);
+  });
+  category.forEach((element) => {
+    pool.query('INSERT INTO kategori SET kategori_navn=?', [element], (error, results) => {
+      if (error) return error;
+
+      results;
+    });
+  });
+  category = [];
+  pool.query('SELECT * FROM kategori', (error, results: []) => {
+    if (error) return error;
+    category = results;
+  });
+}
+
+//funksjonen som først får ingrediensene fra api, og legger det til i arrayet ingredient
+//deretter blir alle ingredienese pushet opp til databasen
+function pushIngredient(array) {
+  array.forEach((element) => {
+    ingredient.push({ id: element.idIngredient, name: element.strIngredient });
+  });
+
   ingredient.forEach((element) => {
     pool.query(
       'INSERT INTO ingrediens SET ingred_id=?, ingred_navn=?',
@@ -128,50 +149,8 @@ function pushIngredient() {
     );
   });
 }
-function pushCategory() {
-  //@ts-ignore
-  category.forEach((element) => {
-    pool.query('INSERT INTO kategori SET kategori_navn=?', [element], (error, results) => {
-      if (error) return error;
 
-      results;
-    });
-  });
-}
-function getCountryID() {
-  country = [];
-  pool.query('SELECT * FROM land', (error, results: []) => {
-    if (error) return error;
-    country = results;
-  });
-}
-function getCategoryID() {
-  category = [];
-  pool.query('SELECT * FROM kategori', (error, results: []) => {
-    if (error) return error;
-    category = results;
-  });
-}
-function addCategory(array) {
-  array.forEach((element) => {
-    category.push(element.strCategory);
-  });
-  pushCategory();
-  getCategoryID();
-}
-function addCountry(array) {
-  array.forEach((element) => {
-    country.push(element.strArea);
-  });
-  pushCountry();
-  getCountryID();
-}
-function addIngredient(array) {
-  array.forEach((element) => {
-    ingredient.push({ id: element.idIngredient, name: element.strIngredient });
-  });
-  pushIngredient();
-}
+//fjerner alle bokstavene fra ingrediens måleenheten og returnerer bare tallet
 function stringToNumber(string) {
   let number;
   let numsStr = string.replace(/[^0-9/]/g, '');
@@ -186,11 +165,13 @@ function stringToNumber(string) {
   }
   return number;
 }
+//fjerner alle tallene fra ingrediens måleenheten og returnerer bare bokstavene
 function removeNumber(string) {
   let numberFree = string.replace(/[0-9/']/g, '');
   return numberFree;
 }
-function a_to_c(array) {
+
+function Recipe(array) {
   setTimeout(() => {
     array.forEach((element) => {
       if (!recipe.includes(element.idMeal)) {
@@ -261,8 +242,6 @@ function a_to_c(array) {
             });
           }
         }
-        // console.log(measure, i);
-        // element.idMeal == 52765 ? console.log('her er jeg', element.strIngredient1) : '';
 
         recipe.push({
           id: element.idMeal,
@@ -272,12 +251,8 @@ function a_to_c(array) {
           country: country[indexCountry].land_id,
           category: category[indexCategory].kategori_id,
         });
-        // let elementID = element.idMeal;
-        // ingred.forEach((ingredient, i) => {
-        //   console.log(elementID);
-        // });
+
         for (let i = 0; i < 20; i++) {
-          // console.log(element.idMeal, ingred[i], measure[i]);
           if (
             measure[i] == undefined ||
             (isNaN(measure[i].number) && measure[i].type == '') ||
@@ -293,232 +268,12 @@ function a_to_c(array) {
             type: measure[i].type,
           });
         }
-        // console.log(recipe_ingredient);
-      } //@ts-ignore
+      }
     });
   }, 2000);
 }
-
-function d_to_m(array) {
-  setTimeout(() => {
-    array.forEach((element) => {
-      if (!recipe.includes(element.idMeal)) {
-        const indexCountry = country.map((e) => e.land_navn).indexOf(element.strArea);
-        const indexCategory = category.map((e) => e.kategori_navn).indexOf(element.strCategory);
-        const ingredient_list = [
-          element.strIngredient1,
-          element.strIngredient2,
-          element.strIngredient3,
-          element.strIngredient4,
-          element.strIngredient5,
-          element.strIngredient6,
-          element.strIngredient7,
-          element.strIngredient8,
-          element.strIngredient9,
-          element.strIngredient10,
-          element.strIngredient11,
-          element.strIngredient12,
-          element.strIngredient13,
-          element.strIngredient14,
-          element.strIngredient15,
-          element.strIngredient16,
-          element.strIngredient17,
-          element.strIngredient18,
-          element.strIngredient19,
-          element.strIngredient20,
-        ];
-        const ingredient_measure = [
-          element.strMeasure1,
-          element.strMeasure2,
-          element.strMeasure3,
-          element.strMeasure4,
-          element.strMeasure5,
-          element.strMeasure6,
-          element.strMeasure7,
-          element.strMeasure8,
-          element.strMeasure9,
-          element.strMeasure10,
-          element.strMeasure11,
-          element.strMeasure12,
-          element.strMeasure13,
-          element.strMeasure14,
-          element.strMeasure15,
-          element.strMeasure16,
-          element.strMeasure17,
-          element.strMeasure18,
-          element.strMeasure19,
-          element.strMeasure20,
-        ];
-        let ingred = [];
-        let measure = [];
-        for (let i = 0; i < 20; i++) {
-          let indexIngred = ingredient
-            .map((e) => e.name.toLowerCase())
-            .indexOf(ingredient_list[i] ? ingredient_list[i].toLowerCase() : '');
-
-          if (ingredient[indexIngred]) {
-            ingred.push(ingredient[indexIngred].id);
-          }
-
-          if (ingredient_measure[i]) {
-            measure.push({
-              number:
-                stringToNumber(ingredient_measure[i]) == NaN
-                  ? '1'
-                  : stringToNumber(ingredient_measure[i]),
-              type: removeNumber(ingredient_measure[i]),
-            });
-          }
-        }
-        // console.log(measure, i);
-        // element.idMeal == 52765 ? console.log('her er jeg', element.strIngredient1) : '';
-
-        recipe.push({
-          id: element.idMeal,
-          name: element.strMeal,
-          instruction: element.strInstructions,
-          picture: element.strMealThumb,
-          country: country[indexCountry].land_id,
-          category: category[indexCategory].kategori_id,
-        });
-        // let elementID = element.idMeal;
-        // ingred.forEach((ingredient, i) => {
-        //   console.log(elementID);
-        // });
-        for (let i = 0; i < 20; i++) {
-          // console.log(element.idMeal, ingred[i], measure[i]);
-          if (
-            measure[i] == undefined ||
-            (isNaN(measure[i].number) && measure[i].type == '') ||
-            (measure[i].number && measure[i].type == null)
-          ) {
-            break;
-          }
-
-          recipe_ingredient.push({
-            recipe_id: element.idMeal,
-            ingred_id: ingred[i],
-            number: measure[i].number,
-            type: measure[i].type,
-          });
-        }
-        // console.log(recipe_ingredient);
-      } //@ts-ignore
-    });
-  }, 2000);
-}
-function n_to_y(array) {
-  setTimeout(() => {
-    array.forEach((element) => {
-      if (!recipe.includes(element.idMeal)) {
-        const indexCountry = country.map((e) => e.land_navn).indexOf(element.strArea);
-        const indexCategory = category.map((e) => e.kategori_navn).indexOf(element.strCategory);
-        const ingredient_list = [
-          element.strIngredient1,
-          element.strIngredient2,
-          element.strIngredient3,
-          element.strIngredient4,
-          element.strIngredient5,
-          element.strIngredient6,
-          element.strIngredient7,
-          element.strIngredient8,
-          element.strIngredient9,
-          element.strIngredient10,
-          element.strIngredient11,
-          element.strIngredient12,
-          element.strIngredient13,
-          element.strIngredient14,
-          element.strIngredient15,
-          element.strIngredient16,
-          element.strIngredient17,
-          element.strIngredient18,
-          element.strIngredient19,
-          element.strIngredient20,
-        ];
-        const ingredient_measure = [
-          element.strMeasure1,
-          element.strMeasure2,
-          element.strMeasure3,
-          element.strMeasure4,
-          element.strMeasure5,
-          element.strMeasure6,
-          element.strMeasure7,
-          element.strMeasure8,
-          element.strMeasure9,
-          element.strMeasure10,
-          element.strMeasure11,
-          element.strMeasure12,
-          element.strMeasure13,
-          element.strMeasure14,
-          element.strMeasure15,
-          element.strMeasure16,
-          element.strMeasure17,
-          element.strMeasure18,
-          element.strMeasure19,
-          element.strMeasure20,
-        ];
-        let ingred = [];
-        let measure = [];
-        for (let i = 0; i < 20; i++) {
-          let indexIngred = ingredient
-            .map((e) => e.name.toLowerCase())
-            .indexOf(ingredient_list[i] ? ingredient_list[i].toLowerCase() : '');
-
-          if (ingredient[indexIngred]) {
-            ingred.push(ingredient[indexIngred].id);
-          }
-
-          if (ingredient_measure[i]) {
-            measure.push({
-              number:
-                stringToNumber(ingredient_measure[i]) == NaN
-                  ? '1'
-                  : stringToNumber(ingredient_measure[i]),
-              type: removeNumber(ingredient_measure[i]),
-            });
-          }
-        }
-        // console.log(measure, i);
-        // element.idMeal == 52765 ? console.log('her er jeg', element.strIngredient1) : '';
-
-        recipe.push({
-          id: element.idMeal,
-          name: element.strMeal,
-          instruction: element.strInstructions,
-          picture: element.strMealThumb,
-          country: country[indexCountry].land_id,
-          category: category[indexCategory].kategori_id,
-        });
-        // let elementID = element.idMeal;
-        // ingred.forEach((ingredient, i) => {
-        //   console.log(elementID);
-        // });
-        for (let i = 0; i < 20; i++) {
-          // console.log(element.idMeal, ingred[i], measure[i]);
-          if (
-            measure[i] == undefined ||
-            (isNaN(measure[i].number) && measure[i].type == '') ||
-            (measure[i].number && measure[i].type == null)
-          ) {
-            break;
-          }
-
-          recipe_ingredient.push({
-            recipe_id: element.idMeal,
-            ingred_id: ingred[i],
-            number: measure[i].number,
-            type: measure[i].type,
-          });
-        }
-        // console.log(recipe_ingredient);
-      } //@ts-ignore
-    });
-  }, 2000);
-}
+//pusher opp alle oppskriftene til databasen
 function pushRecipe() {
-  console.log('kommer vi hit?');
-  console.log(recipe.length);
-  //@ts-ignore
   recipe.forEach((element) => {
     pool.query(
       'INSERT INTO oppskrift SET oppskrift_id=?, oppskrift_navn=?, oppskrift_beskrivelse=?, oppskrift_steg=?,ant_pors=?,bilde_adr=?,kategori_id=?,land_id=?,ant_like=?',
@@ -539,5 +294,29 @@ function pushRecipe() {
       }
     );
   });
+  //når alle oppskriftene er pushet opp kjører funksjonen matchRecipeIngredient
   matchRecipeIngredient();
+}
+
+//pusher opp koblingen mellom oppskrifter og ingredienter
+function matchRecipeIngredient() {
+  recipe_ingredient.forEach((element) => {
+    //hvis det er en ingrediens uten megde setter vi mengden til 1
+    let number;
+    if (isNaN(element.number)) {
+      number = 1;
+    } else {
+      number = element.number;
+    }
+    //pusher opp koblingen mellom oppskrift og ingrediens til databasen
+    pool.query(
+      'INSERT INTO oppskrift_innhold SET oppskrift_id=?, ingred_id=?, mengde=?, maleenhet=?',
+      [element.recipe_id, element.ingred_id, number, element.type],
+      (error, results) => {
+        if (error) return error;
+
+        results;
+      }
+    );
+  });
 }
