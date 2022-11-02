@@ -12,7 +12,7 @@ import service, {
   ElementShoppingList,
 } from '.././service';
 import { createHashHistory } from 'history';
-
+ 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 export class ShoppingList extends Component {
   shoppingList: List[] = [];
@@ -44,7 +44,8 @@ export class ShoppingList extends Component {
                   this.ingredients.find((ingredient) => ingredient.ingred_id == sl.ingred_id)
                     ?.ingred_navn
                 }{' '}
-                <input
+                {/* @ts-ignore */}
+                <Form.Input
                   type="string"
                   onChange={(event) => {
                     //@ts-ignore
@@ -55,7 +56,7 @@ export class ShoppingList extends Component {
 
                   value={sl.mengde}
                   size={2}
-                ></input>{' '}
+                ></Form.Input>{' '}
                 {sl.maleenhet}
                 
                 <Button.Danger onClick={() => this.decrementPortions(sl)}>-</Button.Danger>
@@ -85,16 +86,18 @@ export class ShoppingList extends Component {
           <Column>
             <p key={1}>
               Navn:{' '}
-              <input
+              {/* @ts-ignore */}
+              <Form.Input
                 id="navn"
                 type="text"
                 onChange={(event) => {
                   this.elementHandleliste.ingred_navn = event.currentTarget.value;
                 }}
                 value={this.elementHandleliste.ingred_navn}
-              ></input>
+              ></Form.Input>
               Antall:{' '}
-              <input
+               {/* @ts-ignore */}
+               <Form.Input
                 id="mengde"
                 type="number"
                 onChange={(event) => {
@@ -102,16 +105,17 @@ export class ShoppingList extends Component {
                   this.elementHandleliste.mengde = event.currentTarget.value;
                 }}
                 value={this.elementHandleliste.mengde}
-              ></input>
+              ></Form.Input>
               Måleenhet:{' '}
-              <input
+               {/* @ts-ignore */}
+               <Form.Input
                 id="maleenhet"
                 type="text"
                 onChange={(event) => {
                   this.elementHandleliste.maleenhet = event.currentTarget.value;
                 }}
                 value={this.elementHandleliste.maleenhet}
-              ></input>
+              ></Form.Input>
               <Button.Success onClick={() => this.addItem(this.elementHandleliste)}>
                 Legg til
               </Button.Success>
@@ -133,8 +137,8 @@ export class ShoppingList extends Component {
             />
             <select
               id="selectExistingIngredient"
-              onChange={(event) => {
-                this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
+              onChange={(event) => {                  
+                    this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
               }}
             >
               {this.selectedIngredients.map((ingredient) => (
@@ -213,8 +217,14 @@ export class ShoppingList extends Component {
     this.selectedIngredients = this.ingredients.filter((ingredient) =>
       ingredient.ingred_navn.toLowerCase().includes(searchterm.toLowerCase())
     );
+    if(this.selectedIngredients.length > 0){
     this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
+    }else{
+      this.selectedIngredient.ingred_id = 0;
+      Alert.danger('Ingen ingredienser funnet');
+    }
     console.log(this.selectedIngredients);
+    console.log(this.selectedIngredient);
   }
   incrementPortions(ingredient: List) {
     ingredient.mengde++;
@@ -286,8 +296,10 @@ export class ShoppingList extends Component {
     ) {
       item.mengde = 1;
       Alert.danger('Du må fylle inn antall av ingrediensen, dette må være heltall større enn 0');
+      return false;
     } else if (item.maleenhet == null || item.maleenhet == undefined || item.maleenhet == '') {
       Alert.danger('Du må fylle inn måleenhet');
+      return false;
     } else {
       service
         .createIngredient(item.ingred_navn)
