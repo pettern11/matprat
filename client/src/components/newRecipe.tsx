@@ -57,6 +57,7 @@ export class NewRecipe extends Component {
                   value={this.name}
                   onChange={(event) => (this.name = event.currentTarget.value)}
                   rows={3}
+                  style={{ width: '210px' }}
                 />
               </Column>
             </Column>
@@ -72,6 +73,7 @@ export class NewRecipe extends Component {
                   value={this.description}
                   onChange={(event) => (this.description = event.currentTarget.value)}
                   rows={3}
+                  style={{ width: '210px' }}
                 />
               </Column>
             </Column>
@@ -87,25 +89,13 @@ export class NewRecipe extends Component {
                   value={this.steps}
                   onChange={(event) => (this.steps = event.currentTarget.value)}
                   rows={3}
+                  style={{ width: '210px' }}
                 />
               </Column>
             </Column>
           </Row>
+          <br />
           <Row>
-            {/* input bilde url */}
-            <Column>
-              <Column width={2}>
-                <Form.Label>Bildeurl:</Form.Label>
-              </Column>
-              <Column>
-                <Form.Input
-                  id="recipe_picture_url_input"
-                  type="text"
-                  value={this.picture_adr}
-                  onChange={(event) => (this.picture_adr = event.currentTarget.value)}
-                />
-              </Column>
-            </Column>
             {/* velg land retten kommer fra */}
             <Column>
               <Column width={2}>
@@ -186,29 +176,65 @@ export class NewRecipe extends Component {
                 {/* må lage select og options som cars */}
               </Column>
             </Column>
-          </Row>
-          {/* input antall porsjoner */}
-          <Column>
-            <Column width={2}>
-              <Form.Label>Porsjoner:</Form.Label>
-            </Column>
+            {/* input bilde url */}
             <Column>
-              <Form.Input
-                id="recipe_portions_input"
-                type="number"
-                value={this.portions}
-                //@ts-ignore
-                onChange={(event) => (this.portions = event.currentTarget.value)}
-              />
-            </Column>
-          </Column>
-          {/* print ut alle ingrediense som allerede er i databasen */}
-          {/* vidre ideer her er at vi setter en viss lengde og bredde på diven og så hvis den overflower så må man bare skulle 
-          nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
-          <Column>
-            <Card title="Søk etter ingrediens">
+              <Column width={2}>
+                <Form.Label>Bildeurl:</Form.Label>
+              </Column>
               <Column>
-                <h6>Søk</h6>
+                <Form.Input
+                  id="recipe_picture_url_input"
+                  type="text"
+                  value={this.picture_adr}
+                  onChange={(event) => (this.picture_adr = event.currentTarget.value)}
+                />
+              </Column>
+            </Column>
+          </Row>
+          <br />
+          <Row>
+            {/* input antall porsjoner */}
+            <Column>
+              <Column width={2}>
+                <Form.Label>Porsjoner:</Form.Label>
+              </Column>
+              <Column>
+                <Form.Input
+                  id="recipe_portions_input"
+                  type="number"
+                  value={this.portions}
+                  //@ts-ignore
+                  onChange={(event) => (this.portions = event.currentTarget.value)}
+                />
+              </Column>
+            </Column>
+            {/* print ut alle ingrediense som allerede er i databasen */}
+            {/* vidre ideer her er at vi setter en viss lengde og bredde på diven og så hvis den overflower så må man bare skulle 
+          nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
+            <Column>
+              <Column>
+                <Column width={2}>
+                  <Form.Label>Søk:</Form.Label>
+                </Column>
+                <select
+                  id="selectIngredientNewRecipe"
+                  onChange={(event) => {
+                    this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
+                    console.log(event.currentTarget.selectedOptions[0].text);
+                    this.selectedIngredient.ingred_navn =
+                      event.currentTarget.selectedOptions[0].text;
+                  }}
+                  style={{ width: '210px' }}
+                >
+                  <option selected disabled>
+                    Velg ingrediens
+                  </option>
+                  {this.selectedIngredients.map((ingredient) => (
+                    <option key={ingredient.ingred_id} value={ingredient.ingred_id}>
+                      {ingredient.ingred_navn}
+                    </option>
+                  ))}
+                </select>
                 <Form.Input
                   id="newRecipeSearch"
                   type="text"
@@ -218,21 +244,6 @@ export class NewRecipe extends Component {
                     this.searchterm = event.currentTarget.value;
                   }}
                 />
-                <select
-                  id="selectIngredientNewRecipe"
-                  onChange={(event) => {
-                    this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
-                    console.log(event.currentTarget.selectedOptions[0].text);
-                    this.selectedIngredient.ingred_navn =
-                      event.currentTarget.selectedOptions[0].text;
-                  }}
-                >
-                  {this.selectedIngredients.map((ingredient) => (
-                    <option key={ingredient.ingred_id} value={ingredient.ingred_id}>
-                      {ingredient.ingred_navn}
-                    </option>
-                  ))}
-                </select>
               </Column>
               <Button.Success
                 id="btnIngredAdd"
@@ -243,27 +254,28 @@ export class NewRecipe extends Component {
               >
                 Legg til ny ingrediens
               </Button.Success>
-            </Card>
-          </Column>
-          {/* legg til ingredienser */}
-          <Column>
-            <Form.Input
-              id="createIngredient"
-              type="text"
-              style={{ width: '400px' }}
-              value={this.ingredient}
-              onChange={(event) => (this.ingredient = event.currentTarget.value)}
-              placeholder="Legg til ingredienser"
-            ></Form.Input>
-            <Button.Success
-              id="createIngredientFunc"
-              onClick={() => {
-                this.addIngredientFunc();
-              }}
-            >
-              Legg til
-            </Button.Success>
-          </Column>
+            </Column>
+            {/* legg til ingredienser */}
+            <Column>
+              <Form.Input
+                id="createIngredient"
+                type="text"
+                style={{ width: '210px' }}
+                value={this.ingredient}
+                onChange={(event) => (this.ingredient = event.currentTarget.value)}
+                placeholder="Legg til ingredienser"
+              ></Form.Input>
+              <Button.Success
+                id="createIngredientFunc"
+                onClick={() => {
+                  this.addIngredientFunc();
+                }}
+              >
+                Legg til
+              </Button.Success>
+            </Column>
+          </Row>
+          <br />
           {/* velg hvor mye av hver inngrediense */}
           <Column>
             <h5>
@@ -273,6 +285,7 @@ export class NewRecipe extends Component {
             <div id="ingreditentList"></div>
           </Column>
         </Card>
+
         <Button.Success
           id="addRecipeBtn"
           onClick={() => {
@@ -421,10 +434,13 @@ export class NewRecipe extends Component {
           .catch((error) => Alert.danger('Error : ' + error.message))
       );
     }
+
+    this.category_name = '';
   }
   addCountryFunc() {
     // sjekker om landet allerede finnes i arrayen med land, hvis ikke legger den til landet i databasen
     // hentet fra databasen
+
     let isFound = this.countries.some((country) => {
       if (country.land_navn.toLowerCase() == this.country_name.toLowerCase()) {
         return true;
@@ -474,7 +490,10 @@ export class NewRecipe extends Component {
         .catch((error) => Alert.danger('Error : ' + error.message));
       this.ingredient = '';
     } else Alert.info('Ingrediensen finnes allerede eller du har ikke skrevet noe');
+
+    this.country_name = '';
   }
+
   checkCountry(value: number) {
     this.country_id = value;
   }
