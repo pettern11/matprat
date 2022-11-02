@@ -25,7 +25,7 @@ export class RecipeView extends Component<{ img: string; name: string; numbOfPor
 export class Cards extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
     return (
-      <div className="card cards">
+      <div className="card cards cards-white">
         <div className="card-body">
           <h5 className="card-title">{this.props.title}</h5>
           <div className="card-text">{this.props.children}</div>
@@ -247,7 +247,7 @@ export class Button {
 class NavBarLink extends Component<{ to: string; children: ReactNode }> {
   render() {
     return (
-      <NavLink className="nav-link" activeClassName="active" to={this.props.to}>
+      <NavLink className="nav-link nav-link-white" activeClassName="active" to={this.props.to}>
         {this.props.children}
       </NavLink>
     );
@@ -266,7 +266,7 @@ export class NavBar extends Component<{ brand: ReactNode; children: ReactNode }>
     return (
       <nav className="navbar navbar-expand-sm navbar-light bg-light">
         <div className="container-fluid justify-content-start">
-          <NavLink className="navbar-brand" activeClassName="active" exact to="/">
+          <NavLink className="navbar-brand navbar-brand-white" activeClassName="active" exact to="/">
             {this.props.brand}
           </NavLink>
           <div className="navbar-nav">{this.props.children}</div>
@@ -402,6 +402,8 @@ export class Form {
 export class Alert extends Component {
   alerts: { id: number; text: ReactNode; type: string }[] = [];
   nextId: number = 0;
+  
+
 
   render() {
     return (
@@ -419,6 +421,7 @@ export class Alert extends Component {
               type="button"
               className="btn-close btn-sm"
               onClick={() => this.alerts.splice(i, 1)}
+              
             />
           </div>
         ))}
