@@ -163,6 +163,12 @@ router.delete('/deleteingredientshoppinglist/:id', (request, response) => {
     .then((_result) => response.send())
     .catch((error) => response.status(500).send(error));
 });
+router.delete('/deleteiceboxingredient/:ingred_id', (request, response) => {
+  service
+    .deleteIceboxIngredient(Number(request.params.ingred_id))
+    .then((_result) => response.send())
+    .catch((error) => response.status(500).send(error));
+});
 router.delete('/deleteallshoppinglist', (request, response) => {
   service
     .deleteAllShoppinglist()

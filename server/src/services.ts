@@ -250,6 +250,7 @@ class Service {
       );
     });
   }
+
   createRecipeIngredient(recipe_content: Recipe_Content[]) {
     return new Promise<void>((resolve, reject) => {
       recipe_content.forEach((element) => {
@@ -322,6 +323,20 @@ class Service {
       pool.query(
         'DELETE FROM handleliste WHERE id = ?',
         [id],
+        (error, results: ResultSetHeader) => {
+          if (error) return reject(error);
+          if (results.affectedRows == 0) return reject(new Error('No row deleted'));
+
+          resolve();
+        }
+      );
+    });
+  }
+  deleteIceboxIngredient(ingred_id: number) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'DELETE FROM icebox WHERE ingred_id = ?',
+        [ingred_id],
         (error, results: ResultSetHeader) => {
           if (error) return reject(error);
           if (results.affectedRows == 0) return reject(new Error('No row deleted'));

@@ -62,21 +62,21 @@ export class Icebox extends Component {
                 this.homo();
               }}
             >
-              {this.selectedIngredients.map((ingredient) => (
-                <option key={ingredient.ingred_id} value={ingredient.ingred_id}>
+              {this.selectedIngredients.map((ingredient, i) => (
+                <option key={i} value={ingredient.ingred_id}>
                   {ingredient.ingred_navn}
                 </option>
               ))}
             </select>
           </Column>
           <Column>
-            {this.iceboxIngredients.map((ingredient) => (
-              <Row key={ingredient.ingred_id}>
+            {this.iceboxIngredients.map((ingredient, i) => (
+              <Row key={i}>
                 <Column width={3}>{ingredient.ingred_navn}</Column>
                 <Column width={2}>
                   <Button.Success
                     onClick={() => {
-                      this.deleteIceboxIngredients();
+                      this.deleteIceboxIngredient(ingredient.ingred_id);
                     }}
                   >
                     X
@@ -118,10 +118,19 @@ export class Icebox extends Component {
     console.log(this.selectedIngredients);
   }
   homo() {
+    let arr = ['test'];
+    if (arr.includes('test')) {
+      console.log('ja');
+    }
     service
       .addIngredientToIcebox(this.selectedIceboxIngredient)
       .then(() => this.mounted())
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
   }
-  deleteIceboxIngredient() {}
+  deleteIceboxIngredient(ingred_id: number) {
+    service
+      .deleteIceboxIngredient(ingred_id)
+      .then(() => this.mounted())
+      .catch((error) => Alert.danger('Error deleting task: ' + error.message));
+  }
 }
