@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS oppskrift_innhold;
+DROP TABLE IF EXISTS icebox;
 
 DROP TABLE IF EXISTS oppskrift;
 DROP TABLE IF EXISTS handleliste;
