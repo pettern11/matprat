@@ -45,7 +45,7 @@ export class ShowAllRecipe extends Component {
               <select
                 id="sortBy"
                 // value={props.value}
-                onChange={(event) => this.sort(Number(event.target.value))}
+                onChange={(event) => this.sortRecipe(Number(event.target.value))}
               >
                 <option>Sorter</option>
                 <option value="0">A-Z</option>
@@ -75,7 +75,7 @@ export class ShowAllRecipe extends Component {
       </>
     );
   }
-  sort(value: number) {
+  sortRecipe(value: number) {
     if (value == 0) {
       this.recipes.sort(function (a, b) {
         const x = a.oppskrift_navn.toLowerCase();
