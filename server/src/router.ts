@@ -82,6 +82,12 @@ router.get('/icebox', (_request, response) => {
     .then((rows) => response.send(rows))
     .catch((error) => response.status(500).send(error));
 });
+router.get('/recipecontent', (_request, response) => {
+  service
+    .getAllRecipeContent()
+    .then((rows) => response.send(rows))
+    .catch((error) => response.status(500).send(error));
+});
 router.get('/shoppinglist', (_request, response) => {
   service
     .getShoppingList()

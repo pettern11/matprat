@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Alert, Card, Row, Column, Form, Button, RecipeView } from '.././widgets';
+import { Alert, Card, Row, Column, Form, Button, RecipeView, Cards } from '.././widgets';
 import { NavLink, Redirect } from 'react-router-dom';
 import service, {
   Country,
@@ -18,9 +18,14 @@ const history = createHashHistory(); // Use history.push(...) to programmaticall
 export class Icebox extends Component {
   shoppingList: List[] = [];
   ingredients: Ingredient[] = [];
+  recipes: Recipe[] = [];
   iceboxIngredients: IceboxIngredient[] = [];
   selectedIngredients: Ingredient[] = [];
   searchterm: string = '';
+  originalrecipes: Recipe[] = [];
+  recipeContent: Recipe_Content[] = [];
+  uniqueRecipeId = [];
+  unique = [];
 
   selectedIceboxIngredient: IceboxIngredient = {
     ingred_id: 1,
@@ -29,6 +34,25 @@ export class Icebox extends Component {
   selectedIngredient: List = {
     id: 0,
     ingred_id: 1,
+    mengde: 0,
+    maleenhet: '',
+  };
+  recipe: Recipe = {
+    oppskrift_id: 0,
+    oppskrift_navn: '',
+    oppskrift_beskrivelse: '',
+    oppskrift_steg: '',
+    ant_pors: 0,
+    bilde_adr: '',
+    kategori_id: 0,
+    land_id: 0,
+    ant_like: 0,
+    liked: false,
+  };
+
+  recipeContens: Recipe_Content = {
+    oppskrift_id: 0,
+    ingred_id: 0,
     mengde: 0,
     maleenhet: '',
   };
@@ -57,21 +81,19 @@ export class Icebox extends Component {
                   (e) => e.ingred_id == this.selectedIceboxIngredient.ingred_id
                 )[0].ingred_navn;
 
-                console.log(this.selectedIceboxIngredient.ingred_navn);
-
-                this.homo();
+                this.addIngredientToIcebox();
               }}
             >
-              {this.selectedIngredients.map((ingredient, i) => (
-                <option key={i} value={ingredient.ingred_id}>
+              {this.selectedIngredients.map((ingredient, idx) => (
+                <option key={idx} value={ingredient.ingred_id}>
                   {ingredient.ingred_navn}
                 </option>
               ))}
             </select>
           </Column>
           <Column>
-            {this.iceboxIngredients.map((ingredient, i) => (
-              <Row key={i}>
+            {this.iceboxIngredients.map((ingredient, idx) => (
+              <Row key={idx}>
                 <Column width={3}>{ingredient.ingred_navn}</Column>
                 <Column width={2}>
                   <Button.Success
@@ -86,9 +108,42 @@ export class Icebox extends Component {
             ))}
           </Column>
         </Card>
+        <Card title="Oppskrifter basert på dine ingredienser">
+          <Row>
+            <>
+              {console.log(this.uniqueRecipeId)}
+              {this.recipes
+                .filter((recipe) => this.uniqueRecipeId.some((e) => e == recipe.oppskrift_id))
+
+                /*              .filter((recipe) => {
+                this.recipeContent.map(
+                  (rc) =>
+                    this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn
+                );
+              })*/
+                .map((recipe, idx) => (
+                  <Cards title="" key={idx}>
+                    <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
+                      <RecipeView
+                        img={recipe.bilde_adr}
+                        name={recipe.oppskrift_navn}
+                        numbOfPors={recipe.ant_pors}
+                      ></RecipeView>
+                    </NavLink>
+                  </Cards>
+                ))}
+            </>
+          </Row>
+        </Card>
       </>
     );
   }
+  /*
+    Kolonne 2 - oppskrifter basert på dine ingredienser
+
+    Icebox --> ingrediens --> oppskrift_innhold --> oppskrift
+  
+  */
 
   mounted() {
     service
@@ -108,7 +163,40 @@ export class Icebox extends Component {
     service
       .getAllIceboxIngredients()
       .then((iceboxIngredients) => (this.iceboxIngredients = iceboxIngredients))
+      .catch((error) => Alert.danger('Error getting icebox ingredients: ' + error.message));
+
+    service
+      .getAllRepice()
+      .then((recipes) => {
+        this.originalrecipes = recipes;
+        this.recipes = recipes;
+      })
       .catch((error) => Alert.danger('Error getting tasks: ' + error.message));
+
+    this.iceboxIngredients;
+    service
+      .getAllRecipeContent()
+      .then((recipeContent: Recipe_Content[]) => (this.recipeContent = recipeContent))
+      .then(() => {
+        this.unique = this.recipeContent
+          .filter((rc) => this.iceboxIngredients.some((ii) => rc.ingred_id == ii.ingred_id))
+
+          .filter((element) => {
+            const isDuplicate = this.uniqueRecipeId.includes(element.oppskrift_id);
+
+            if (!isDuplicate) {
+              this.uniqueRecipeId.push(element.oppskrift_id);
+
+              return true;
+            }
+            return false;
+          });
+
+        console.log(this.uniqueRecipeId);
+      })
+      .catch((error: { message: string }) =>
+        Alert.danger('Error getting recipe content: ' + error.message)
+      );
   }
   search(searchterm: string) {
     this.selectedIngredients = this.ingredients.filter((ingredient) =>
@@ -117,20 +205,16 @@ export class Icebox extends Component {
     this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
     console.log(this.selectedIngredients);
   }
-  homo() {
-    let arr = ['test'];
-    if (arr.includes('test')) {
-      console.log('ja');
-    }
+  addIngredientToIcebox() {
     service
       .addIngredientToIcebox(this.selectedIceboxIngredient)
       .then(() => this.mounted())
-      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+      .catch((error) => Alert.danger('Error, ingredient already added: ' + error.message));
   }
   deleteIceboxIngredient(ingred_id: number) {
     service
       .deleteIceboxIngredient(ingred_id)
       .then(() => this.mounted())
-      .catch((error) => Alert.danger('Error deleting task: ' + error.message));
+      .catch((error) => Alert.danger('Error deleting icebox ingredient: ' + error.message));
   }
 }

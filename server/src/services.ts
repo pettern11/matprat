@@ -99,6 +99,16 @@ class Service {
     });
   }
 
+  getAllRecipeContent() {
+    return new Promise<Recipe_Content[]>((resolve, reject) => {
+      pool.query('SELECT * FROM oppskrift_innhold', (error, results: RowDataPacket[]) => {
+        if (error) return reject(error);
+
+        resolve(results as Recipe_Content[]);
+      });
+    });
+  }
+
   getAllCountry() {
     return new Promise<Country[]>((resolve, reject) => {
       pool.query('SELECT * FROM land', (error, results: RowDataPacket[]) => {

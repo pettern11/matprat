@@ -21,11 +21,11 @@ export class NewRecipe extends Component {
   recipe_content: Recipe_Content[] = [];
   ingredient: string = '';
   selectedIngredients: Ingredient[] = [];
-
+  selectIngredientReset: Ingredient = { ingred_id: 0, ingred_navn: 'Velg ingrediens' };
   selectedIngredient: Ingredient = {
     ingred_id: 1,
     ingred_navn: '',
-  }
+  };
 
   recipeIngredients: Ingredient[] = [];
 
@@ -207,43 +207,43 @@ export class NewRecipe extends Component {
           nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
           <Column>
             <Card title="Søk etter ingrediens">
-            <Column>
-            <h6>Søk</h6>
-            <Form.Input
-              id="newRecipeSearch"
-              type="text"
-              value={this.searchterm}
-              onChange={(event) => {
-                this.search(event.currentTarget.value);
-                this.searchterm = event.currentTarget.value;
-              }}
-            />
-            <select
-              id="selectIngredientNewRecipe"
-              onChange={(event) => {
-                this.selectedIngredient.ingred_id = Number(event.currentTarget.value); console.log(event.currentTarget.selectedOptions[0].text)
-                this.selectedIngredient.ingred_navn = event.currentTarget.selectedOptions[0].text;
-              }}
-            >
-              {this.selectedIngredients.map((ingredient) => (
-                <option key={ingredient.ingred_id} value={ingredient.ingred_id}>
-                  {ingredient.ingred_navn}
-                </option>
-              ))}
-            </select>
-            </Column>
-            <Button.Success 
-            id='btnIngredAdd'
-            onClick={() => {console.log(this.selectedIngredient);
-              this.chooseIngredientFunc(this.selectedIngredient.ingred_id);
-            }}>
-              Legg til ny ingrediens
-            </Button.Success>
+              <Column>
+                <h6>Søk</h6>
+                <Form.Input
+                  id="newRecipeSearch"
+                  type="text"
+                  value={this.searchterm}
+                  onChange={(event) => {
+                    this.search(event.currentTarget.value);
+                    this.searchterm = event.currentTarget.value;
+                  }}
+                />
+                <select
+                  id="selectIngredientNewRecipe"
+                  onChange={(event) => {
+                    this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
+                    console.log(event.currentTarget.selectedOptions[0].text);
+                    this.selectedIngredient.ingred_navn =
+                      event.currentTarget.selectedOptions[0].text;
+                  }}
+                >
+                  {this.selectedIngredients.map((ingredient) => (
+                    <option key={ingredient.ingred_id} value={ingredient.ingred_id}>
+                      {ingredient.ingred_navn}
+                    </option>
+                  ))}
+                </select>
+              </Column>
+              <Button.Success
+                id="btnIngredAdd"
+                onClick={() => {
+                  console.log(this.selectedIngredient);
+                  this.chooseIngredientFunc(this.selectedIngredient.ingred_id);
+                }}
+              >
+                Legg til ny ingrediens
+              </Button.Success>
             </Card>
-
-
-
-
           </Column>
           {/* legg til ingredienser */}
           <Column>
@@ -287,11 +287,12 @@ export class NewRecipe extends Component {
   search(searchterm: string) {
     this.selectedIngredients = this.ingredients.filter((ingredient) =>
       ingredient.ingred_navn.toLowerCase().includes(searchterm.toLowerCase())
-    );console.log(this.selectedIngredients);
-    if(this.selectedIngredients.length === 0){
-      this.selectedIngredient = {ingred_id: 0, ingred_navn: ''};
-    }else{
-    this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
+    );
+    console.log(this.selectedIngredients);
+    if (this.selectedIngredients.length === 0) {
+      this.selectedIngredient = { ingred_id: 0, ingred_navn: '' };
+    } else {
+      this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
     }
   }
   addRecipe() {
@@ -305,6 +306,7 @@ export class NewRecipe extends Component {
       kategori_id: this.category_id,
       land_id: this.country_id,
       ant_like: 0,
+      liked: false,
     };
     if (this.recipe_content.length == 0) {
       Alert.info('Du må legge til ingredienser i oppskriften din');
@@ -327,74 +329,76 @@ export class NewRecipe extends Component {
     console.log(this.recipe_content);
   }
   chooseIngredientFunc(id: number) {
-    if(id === 0 || id === undefined || id === null || id === ''){
+    if (id === 0 || id === undefined || id === null || id === '') {
       Alert.info('Du må velge en ingrediens');
-    } else if(this.recipeIngredients.some((e) => e == id)){
+    } else if (this.recipeIngredients.some((e) => e == id)) {
       Alert.info('Denne ingrediensen er allerede lagt til');
-    } else{
-      console.log(this.recipeIngredients.some((e) => e == id))
+    } else {
+      this.selectedIngredient = this.selectIngredientReset;
+      console.log(this.recipeIngredients.some((e) => e == id));
       console.log('før', this.recipeIngredients);
-    this.recipeIngredients.push(id);
-    console.log('etter', this.recipeIngredients);
+      this.recipeIngredients.push(id);
+      console.log('etter', this.recipeIngredients);
 
-
-    let name = this.ingredients.find((ingredient) => ingredient.ingred_id == id)?.ingred_navn;
-    const btn = document.getElementById('ingred' + id) as HTMLButtonElement | null;
-    if (btn != null) {
-      btn.disabled = true;
-    }
-    /* id må være any for å kunne bruke variablen i setattribute. Den forventer to strings så 
+      let name = this.ingredients.find((ingredient) => ingredient.ingred_id == id)?.ingred_navn;
+      const btn = document.getElementById('ingred' + id) as HTMLButtonElement | null;
+      if (btn != null) {
+        btn.disabled = true;
+      }
+      /* id må være any for å kunne bruke variablen i setattribute. Den forventer to strings så 
     hvis vi hadde deklarert den som number hadde setAttribute blitt sint*/
-    // lager en const som legges til i objectet recipe_content
-    const add = { oppskrift_id: 0, ingred_id: id, mengde: 0, maleenhet: '' };
+      // lager en const som legges til i objectet recipe_content
+      const add = { oppskrift_id: 0, ingred_id: id, mengde: 0, maleenhet: '' };
 
-    this.recipe_content.push(add);
+      this.recipe_content.push(add);
 
-    // finner index til dette elemetet i objektet, skal brukes senere til å mappe
-    // hver enkelt inputfelt til et obejct sin menge eller måleenhet
-    const index = this.recipe_content
-      .map(function (element) {
-        return element.ingred_id;
-      })
-      .indexOf(id);
+      // finner index til dette elemetet i objektet, skal brukes senere til å mappe
+      // hver enkelt inputfelt til et obejct sin menge eller måleenhet
+      const index = this.recipe_content
+        .map(function (element) {
+          return element.ingred_id;
+        })
+        .indexOf(id);
 
-    const emFood = document.createElement('em');
-    const inputNumberOf = document.createElement('input');
-    const inputMeasurment = document.createElement('input');
-    const deleteBtn = document.createElement('button');
-    const ingredList = document.getElementById('ingreditentList') || document.createElement('div');
-    emFood.innerHTML = ' <br />' + name;
-    emFood.setAttribute('id', 'emFood' + id);
+      const emFood = document.createElement('em');
+      const inputNumberOf = document.createElement('input');
+      const inputMeasurment = document.createElement('input');
+      const deleteBtn = document.createElement('button');
+      const ingredList =
+        document.getElementById('ingreditentList') || document.createElement('div');
+      emFood.innerHTML = ' <br />' + name;
+      emFood.setAttribute('id', 'emFood' + id);
 
-    inputNumberOf.type = 'number';
-    inputNumberOf.setAttribute('id', 'inputNumberOf' + id);
-    //@ts-ignore
-    inputNumberOf.value = this.recipe_content[index].mengde;
-    inputNumberOf.onchange = (event) =>
-      (this.recipe_content[index].mengde = event.currentTarget.value);
+      inputNumberOf.type = 'number';
+      inputNumberOf.setAttribute('id', 'inputNumberOf' + id);
+      //@ts-ignore
+      inputNumberOf.value = this.recipe_content[index].mengde;
+      inputNumberOf.onchange = (event) =>
+        (this.recipe_content[index].mengde = event.currentTarget.value);
 
-    inputMeasurment.type = 'text';
-    inputMeasurment.setAttribute('id', 'inputMeasurment' + id);
-    inputMeasurment.value = this.recipe_content[index].maleenhet;
-    inputMeasurment.onchange = (event) =>
-      (this.recipe_content[index].maleenhet = event.currentTarget.value);
+      inputMeasurment.type = 'text';
+      inputMeasurment.setAttribute('id', 'inputMeasurment' + id);
+      inputMeasurment.value = this.recipe_content[index].maleenhet;
+      inputMeasurment.onchange = (event) =>
+        (this.recipe_content[index].maleenhet = event.currentTarget.value);
 
-    deleteBtn.innerHTML = 'x';
-    deleteBtn.onclick = () => {
-      this.recipeIngredients.splice(index, 1);
-      this.recipe_content.splice(index, 1);
-      btn != null ? (btn.disabled = false) : '';
-      emFood.remove();
-      inputNumberOf.remove();
-      inputMeasurment.remove();
-      deleteBtn.remove();
-    };
+      deleteBtn.innerHTML = 'x';
+      deleteBtn.onclick = () => {
+        this.recipeIngredients.splice(index, 1);
+        this.recipe_content.splice(index, 1);
+        btn != null ? (btn.disabled = false) : '';
+        emFood.remove();
+        inputNumberOf.remove();
+        inputMeasurment.remove();
+        deleteBtn.remove();
+      };
 
-    ingredList.appendChild(emFood);
-    ingredList.appendChild(inputNumberOf);
-    ingredList.appendChild(inputMeasurment);
-    ingredList.appendChild(deleteBtn);
-    }}
+      ingredList.appendChild(emFood);
+      ingredList.appendChild(inputNumberOf);
+      ingredList.appendChild(inputMeasurment);
+      ingredList.appendChild(deleteBtn);
+    }
+  }
   addCategoryFunc() {
     // sjekker om kategorien allerede finnes i arrayen med kategorier, hvis ikke legger den til landet i databasen
     // hentet fra databasen
@@ -459,11 +463,16 @@ export class NewRecipe extends Component {
         .then(() =>
           service
             .getAllIngredient()
-            .then((ingredients) => (this.ingredients = ingredients, this.chooseIngredientFunc(ingredients[ingredients.length - 1].ingred_id)))
+            .then(
+              (ingredients) => (
+                (this.ingredients = ingredients),
+                this.chooseIngredientFunc(ingredients[ingredients.length - 1].ingred_id)
+              )
+            )
             .catch((error) => Alert.danger('Error : ' + error.message))
         )
         .catch((error) => Alert.danger('Error : ' + error.message));
-        this.ingredient = '';
+      this.ingredient = '';
     } else Alert.info('Ingrediensen finnes allerede eller du har ikke skrevet noe');
   }
   checkCountry(value: number) {
@@ -487,7 +496,14 @@ export class NewRecipe extends Component {
       .catch((error) => Alert.danger('Error getting categories: ' + error.message));
     service
       .getAllIngredient()
-      .then((ingredients) => (this.ingredients = ingredients, this.selectedIngredients = ingredients, this.selectedIngredient.ingred_navn = ingredients[0].ingred_navn, this.selectedIngredient.ingred_id = ingredients[0].ingred_id))
+      .then(
+        (ingredients) => (
+          (this.ingredients = ingredients),
+          (this.selectedIngredients = ingredients),
+          (this.selectedIngredient.ingred_navn = ingredients[0].ingred_navn),
+          (this.selectedIngredient.ingred_id = ingredients[0].ingred_id)
+        )
+      )
       .catch((error) => Alert.danger('Error getting categories: ' + error.message));
   }
 }

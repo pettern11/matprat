@@ -92,6 +92,9 @@ class Service {
   getAllIceboxIngredients() {
     return axios.get<IceboxIngredient[]>('/icebox').then((response) => response.data);
   }
+  getAllRecipeContent() {
+    return axios.get<Recipe_Content[]>('/recipecontent').then((response) => response.data);
+  }
   deleteIceboxIngredient(ingred_id: number) {
     return axios
       .delete<IceboxIngredient>('/deleteiceboxingredient/' + ingred_id)
