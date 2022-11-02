@@ -35,6 +35,8 @@ export class Menu extends Component {
           <NavBar.Link to="/newrecipe">Ny oppskrift</NavBar.Link>
           <NavBar.Link to="/shoppinglist">Handleliste</NavBar.Link>
           <NavBar.Link to="/liked">Liked</NavBar.Link>
+          <NavBar.Link to="/showallrecipe">Show all</NavBar.Link>
+          <NavBar.Link to="/icebox">Kjøleskap</NavBar.Link>
         </NavBar>
       </>
     );
@@ -60,16 +62,18 @@ export class Home extends Component {
             <h1>Anbefalt oppskrift:</h1>
             <br></br>
             <div className={'recipeToDay'}>
-              {this.recipes
-                .filter((recipes, i) => i == random)
-                .map((recipe, rei) => (
-                  <div key={rei}>
-                    <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
-                      <p id="frontname">{recipe.oppskrift_navn}</p>
-                      <img src={recipe.bilde_adr} className="frontPicture" alt="recipe" />
-                    </NavLink>
-                  </div>
-                ))}
+              {this.recipes.length != 0
+                ? this.recipes
+                    .filter((recipes, i) => i == random)
+                    .map((recipe, rei) => (
+                      <div key={rei}>
+                        <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
+                          <p id="frontname">{recipe.oppskrift_navn}</p>
+                          <img src={recipe.bilde_adr} className="frontPicture" alt="recipe" />
+                        </NavLink>
+                      </div>
+                    ))
+                : ''}
             </div>
 
             <div>
@@ -77,17 +81,19 @@ export class Home extends Component {
                 <center>
                   <table>
                     <tr>
-                      {this.suggestedRecipeList.map((likedRecipe) => (
-                        <td>
-                          <NavLink className="black" to={'/recipe/' + likedRecipe.oppskrift_id}>
-                            <RecipeView
-                              img={likedRecipe.bilde_adr}
-                              name={likedRecipe.oppskrift_navn}
-                              numbOfPors={likedRecipe.ant_pors}
-                            ></RecipeView>
-                          </NavLink>
-                        </td>
-                      ))}
+                      {this.recipes.length != 0
+                        ? this.suggestedRecipeList.map((likedRecipe) => (
+                            <td>
+                              <NavLink className="black" to={'/recipe/' + likedRecipe.oppskrift_id}>
+                                <RecipeView
+                                  img={likedRecipe.bilde_adr}
+                                  name={likedRecipe.oppskrift_navn}
+                                  numbOfPors={likedRecipe.ant_pors}
+                                ></RecipeView>
+                              </NavLink>
+                            </td>
+                          ))
+                        : ''}
                     </tr>
                   </table>
                 </center>
