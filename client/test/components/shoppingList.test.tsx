@@ -57,6 +57,55 @@ describe('Rending', () => {
     });
   })
 });
-describe('Functionality without database interaction', () => {
+describe('Functionality', () => {
+
+  test('Input fields change value new item', (done)=>{
+  const wrapper = shallow(<ShoppingList />);
+
+  wrapper.find('#navn').simulate('change', { currentTarget: { value: 'Pizza' } });
+  wrapper.find('#mengde').simulate('change', { currentTarget: { value: 5 } });
+  wrapper.find('#maleenhet').simulate('change', { currentTarget: { value: 'stk' } });
+
+  
+    console.log(wrapper.debug())
+  setTimeout(() => {
+    
+    expect(wrapper.find('#navn').prop('value')).toBe('Pizza');
+    expect(wrapper.find('#mengde').prop('value')).toBe(5);
+    expect(wrapper.find('#maleenhet').prop('value')).toBe('stk');
+
+    done();
+  });
+
+
+});
+  test('Input fields change value existing value', (done)=>{
+  const wrapper = shallow(<ShoppingList />);
+
+  wrapper.find('#shoppinglistsearch').simulate('change', { currentTarget: { value: 'Pizza' } });
+  wrapper.find('#existingmengde').simulate('change', { currentTarget: { value: 5 } });
+  wrapper.find('#existingmaleenhet').simulate('change', { currentTarget: { value: 'stk' } });
+
+  setTimeout(() => {
+    
+    expect(wrapper.find('#shoppinglistsearch').prop('value')).toBe(undefined);
+    expect(wrapper.find('#existingmengde').prop('value')).toBe(5);
+    expect(wrapper.find('#existingmaleenhet').prop('value')).toBe('stk');
+
+    done();
+  });
+
+  // wrapper.find('#shoppinglistsearch').simulate('change', { currentTarget: { value: 'pizzadei' } });
+
+
+  // setTimeout(() => {
+  //    expect(wrapper.find('#shoppinglistsearch').prop('value')).toBe('undefined');
+
+
+  //   done();
+  // });
+
+
+});
   
 });

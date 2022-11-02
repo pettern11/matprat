@@ -15,7 +15,6 @@ exports[`Rending Should render after snapshot 1`] = `
         pizzadeig
          
         <input
-          id="mengde"
           onBlur={[Function]}
           onChange={[Function]}
           size={2}
@@ -64,7 +63,6 @@ exports[`Rending Should render after snapshot 1`] = `
         pizza fyll
          
         <input
-          id="mengde"
           onBlur={[Function]}
           onChange={[Function]}
           size={2}
@@ -191,7 +189,7 @@ exports[`Rending Should render after snapshot 1`] = `
       Antall:
        
       <FormInput
-        id="mengde"
+        id="exisitingmengde"
         onChange={[Function]}
         type="number"
         value={0}
@@ -201,7 +199,7 @@ exports[`Rending Should render after snapshot 1`] = `
       Måleenhet:
        
       <FormInput
-        id="maleenhet"
+        id="exisitingmaleenhet"
         onChange={[Function]}
         type="text"
         value=""

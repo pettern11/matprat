@@ -106,21 +106,29 @@ export class Home extends Component {
       .getAllRepice()
       .then((recipes) => {
         this.recipes = recipes;
-
+        if(this.recipes.filter((recipe) => recipe.liked == true).length <= 0){
+          //loop five times to get five random recipes
+          for (let i = 0; i < 5; i++) {
+          this.suggestedRecipeList.push(this.recipes[Math.floor(Math.random() * this.recipes.length)]);
+        }}
+        else{
         this.recipes
           .filter((recipe) => recipe.liked == true)
           .map(
             (likedRecipe) => (
+              //@ts-ignore
               this.likedFromCountrey.push(likedRecipe.land_id),
+              //@ts-ignore
               this.likedFromCategory.push(likedRecipe.kategori_id)
             )
           );
         console.log(this.likedFromCountrey, this.likedFromCategory);
 
-        this.recipes.map((element) => {
+        this.recipes.map((element) => {              //@ts-ignore
           console.log(this.likedFromCountrey.includes(element.land_id));
-          if (
+          if (//@ts-ignore
             this.likedFromCountrey.includes(element.land_id) &&
+            //@ts-ignore
             this.likedFromCategory.includes(element.kategori_id) &&
             element.liked == false
           ) {
@@ -128,7 +136,7 @@ export class Home extends Component {
           }
         });
 
-        for (let i = 0; i < this.recipes.length; i++) {
+        for (let i = 0; i < this.recipes.length; i++) {//@ts-ignore
           if (this.likedFromCategory.includes(this.recipes[i].kategori_id)) {
             this.suggestedRecipe.push(this.recipes[i]);
           } else {
@@ -143,6 +151,7 @@ export class Home extends Component {
           this.suggestedRecipe.splice(random, 1);
         }
         console.log(this.suggestedRecipeList);
+      }
       })
       .catch((error) => Alert.danger('Error getting tasks: ' + error.message));
   }
