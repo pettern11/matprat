@@ -28,6 +28,7 @@ export class ShowAllRecipe extends Component {
   render() {
     return (
       <>
+      <br/>
         <Car title="Søkefelt">
           <Form.Input
             id="indexsearch"
@@ -39,37 +40,31 @@ export class ShowAllRecipe extends Component {
             }}
           />
         </Car>
-        <div className="container">
-          <Row>
-            <Oppskrifter title="Oppskrifter">
-              <select
-                id="sortBy"
-                // value={props.value}
-                onChange={(event) => this.sortRecipe(Number(event.target.value))}
-              >
-                <option>Sorter</option>
-                <option value="0">A-Z</option>
-                <option value="1">Z-A</option>
-                <option value="2">Nyeste</option>
-              </select>
-              <br></br>
+        <select
+          id="sortBy"
+          // value={props.value}
+          onChange={(event) => this.sortRecipe(Number(event.target.value))}
+        >
+          <option>Sorter</option>
+          <option value="0">A-Z</option>
+          <option value="1">Z-A</option>
+          <option value="2">Nyeste</option>
+        </select>
+        <br></br>
 
-              <div className="container">
-                <Row>
-                  {this.recipes.map((recipe) => (
-                    <Cards title="" key={recipe.oppskrift_id}>
-                      <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
-                        <RecipeView
-                          img={recipe.bilde_adr}
-                          name={recipe.oppskrift_navn}
-                          numbOfPors={recipe.ant_pors}
-                        ></RecipeView>
-                      </NavLink>
-                    </Cards>
-                  ))}
-                </Row>
-              </div>
-            </Oppskrifter>
+        <div className="container-fluid ">
+          <Row>
+            {this.recipes.map((recipe) => (
+              <Cards title="" key={recipe.oppskrift_id}>
+                <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
+                  <RecipeView
+                    img={recipe.bilde_adr}
+                    name={recipe.oppskrift_navn}
+                    numbOfPors={recipe.ant_pors}
+                  ></RecipeView>
+                </NavLink>
+              </Cards>
+            ))}
           </Row>
         </div>
       </>

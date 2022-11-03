@@ -12,8 +12,8 @@ export class LikedRecipes extends Component {
 
   render() {
     return (
-      <Oppskrifter title="Likede oppskrifter">
-        <div className="container">
+     
+        <div className="container-fluid">
           <Row>
             {this.recipes
               .filter((recipe) => recipe.liked == true)
@@ -30,7 +30,7 @@ export class LikedRecipes extends Component {
               ))}
           </Row>
         </div>
-      </Oppskrifter>
+     
     );
   }
 

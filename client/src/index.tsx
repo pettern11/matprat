@@ -31,14 +31,14 @@ export class Menu extends Component {
   render() {
     return (
       <>
-      <div className="header">
-        <NavBar brand="Mat">
-          <NavBar.Link to="/showallrecipe">Alle oppskrifter</NavBar.Link>
-          <NavBar.Link to="/newrecipe">Ny oppskrift</NavBar.Link>
-          <NavBar.Link to="/liked">Liked</NavBar.Link>
-          <NavBar.Link to="/shoppinglist">Handleliste</NavBar.Link>
-          <NavBar.Link to="/icebox">Kjøleskap</NavBar.Link>
-        </NavBar>
+        <div className="header">
+          <NavBar brand="Hjem">
+            <NavBar.Link to="/showallrecipe">Alle oppskrifter</NavBar.Link>
+            <NavBar.Link to="/newrecipe">Ny oppskrift</NavBar.Link>
+            <NavBar.Link to="/liked">Liked</NavBar.Link>
+            <NavBar.Link to="/shoppinglist">Handleliste</NavBar.Link>
+            <NavBar.Link to="/icebox">Kjøleskap</NavBar.Link>
+          </NavBar>
         </div>
       </>
     );
@@ -70,39 +70,43 @@ export class Home extends Component {
                     .map((recipe, rei) => (
                       <div key={rei}>
                         <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
-                          <p id="frontname">{recipe.oppskrift_navn}</p>
                           <img src={recipe.bilde_adr} className="frontPicture" alt="recipe" />
+                          <br />
+                          <br />
+                          <h3 id="frontname" style={{ color: 'black' }}>
+                            {recipe.oppskrift_navn}
+                          </h3>
                         </NavLink>
                       </div>
                     ))
                 : ''}
             </div>
-
+            <br />
+            <br />
             <div>
-              <Card title="Anbefalte oppskrifter basert på dine likte:">
+              <div title="Anbefalte oppskrifter basert på dine likte:">
+                Anbefalte oppskrifter basert på det du liker
                 <center>
-                  <table>
-                    <tr>
-                      {this.recipes.length != 0
-                        ? this.suggestedRecipeList.map((likedRecipe) => (
-                            <td>
-                              <NavLink className="black" to={'/recipe/' + likedRecipe.oppskrift_id}>
-                                <RecipeView
-                                  img={likedRecipe.bilde_adr}
-                                  name={likedRecipe.oppskrift_navn}
-                                  numbOfPors={likedRecipe.ant_pors}
-                                ></RecipeView>
-                              </NavLink>
-                            </td>
-                          ))
-                        : ''}
-                    </tr>
-                  </table>
+                  <Row>
+                    {this.recipes.length != 0
+                      ? this.suggestedRecipeList.map((likedRecipe) => (
+                          <Cards>
+                            <NavLink className="black" to={'/recipe/' + likedRecipe.oppskrift_id}>
+                              <RecipeView
+                                img={likedRecipe.bilde_adr}
+                                name={likedRecipe.oppskrift_navn}
+                                numbOfPors={likedRecipe.ant_pors}
+                              ></RecipeView>
+                            </NavLink>
+                          </Cards>
+                        ))
+                      : ''}
+                  </Row>
                 </center>
-                <NavLink className="black" to={'/showallrecipe'}>
-                  Knapp til allllle oppskriftene
-                </NavLink>
-              </Card>
+                <NavBar.Link to={'/showallrecipe'} style={{ width: '130px' }}>
+                  Alle oppskrifter
+                </NavBar.Link>
+              </div>
             </div>
           </div>
         </Card>
