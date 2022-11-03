@@ -149,19 +149,26 @@ function stringToNumber(string) {
   let numsStr = string.replace(/[^0-9/]/g, '');
   let firstNumber = parseInt(numsStr);
   let restOfString = numsStr.replace(firstNumber, '');
-  if (restOfString.includes('/')) {
-    let newString = restOfString.replace('/', '');
-    let secondNumber = parseInt(newString);
-    number = firstNumber / secondNumber;
-  } else {
-    number = firstNumber;
-  }
+  // if (restOfString.includes('/')) {
+  //   let newString = restOfString.replace('/', '');
+  //   let secondNumber = parseInt(newString);
+  //   number = firstNumber / secondNumber;
+  // } else {
+  number = firstNumber;
+  // }
   return number;
 }
 //fjerner alle tallene fra ingrediens måleenheten og returnerer bare bokstavene
 function removeNumber(string) {
-  let numberFree = string.replace(/[0-9/']/g, '');
-  return numberFree;
+  //okey tore, nå skal du bli satt på sporet
+  //du skal lage en regex som beholder alle boksavene i string du får inn som parameter
+  //men du skal også fjerne oz hvis det er mellomrom før oz og etter oz
+  //så skal du returnere stringen uten tallene og oz
+  let newString = string.replace(/[^a-zA-Z]/g, '');
+  if (newString.includes('oz')) {
+    newString = newString.replace('oz', '');
+  }
+  return newString;
 }
 
 function Recipe(array) {
@@ -223,6 +230,7 @@ function Recipe(array) {
           let indexIngred = ingredient
             .map((e) => e.name.toLowerCase())
             .indexOf(ingredient_list[i] ? ingredient_list[i].toLowerCase() : '');
+
           //legger til ingrediens id i ingred arrayet
           if (ingredient[indexIngred]) {
             ingred.push(ingredient[indexIngred].id);
@@ -231,8 +239,12 @@ function Recipe(array) {
           if (ingredient_measure[i]) {
             let a = stringToNumber(ingredient_measure[i]);
             let b = removeNumber(ingredient_measure[i]);
+            // element.idMeal == 52767 ? console.log(isNaN(a), a) : '';
+            element.idMeal == 52767 ? console.log(b != '', b) : '';
+
             // sjekker om antall er null og om type er '', hvis det er det får det ikke bli puishet opp i arrayet
-            if (!isNaN(a) && b != '') {
+            if (!isNaN(a) || b != '') {
+              // element.idMeal == 52767 ? console.log(a, b) : '';
               measure.push({
                 number: a,
                 type: b,
