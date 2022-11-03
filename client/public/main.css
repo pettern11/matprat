@@ -93,23 +93,20 @@ em {
   /* border-radius: 10px; */
 }
 
-
-
 /*  */
 
 .cards {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    width: 220px;
-    height: 355px;
-    align-self: normal;
-    margin-top: auto;
-    margin: 20px 1px;
-    padding: 0px 0px 0px;
-    transition: all 0.2s !important;
-  }
-
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  width: 220px;
+  height: 355px;
+  align-self: normal;
+  margin-top: auto;
+  margin: 10px 9px;
+  padding: 0px 0px 0px;
+  transition: all 0.2s !important;
+}
 
 .cards:hover {
   transform: translateY(-5px);
@@ -121,7 +118,7 @@ em {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
-.cards-white{
+.cards-white {
   background-color: #fff;
   color: #777;
 }
@@ -139,11 +136,11 @@ em {
   /* transition: all 0.4s !important; */
 }
 
-.cards-white::after{
+.cards-white::after {
   background-color: #fff;
 }
 
-.cards:hover::after{
+.cards:hover::after {
   /* transform: scaleX(1.4) scaleY(1.6); */
   opacity: 0;
 }
@@ -186,7 +183,7 @@ em {
   overflow: auto;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
 .mat {
@@ -214,6 +211,14 @@ em {
   height: 100%;
 }
 
+.container-fluid {
+  /* width: 100%;
+    margin: 0px 0px;
+    display: flex;
+    flex-flow: column;
+    height: 100%; */
+}
+
 .container .row {
   flex: 1 1 auto;
 }
@@ -224,18 +229,17 @@ em {
 }
 
 .recipe-title {
-    font-size: 23px;
-    margin-top: 10px;
+  font-size: 23px;
+  margin-top: 10px;
 }
 
 .row {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  width: 100%;
+  /* width: 100%; */
 }
-
 
 .card-body {
   padding: 0px 0px 0px;
