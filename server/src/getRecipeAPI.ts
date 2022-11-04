@@ -18,6 +18,8 @@ const pool = mysql.createPool({
   typeCast: (field, next) =>
     field.type == 'TINY' && field.length == 1 ? field.string() == '1' : next(),
 });
+let doneVariable = false;
+
 let interval = 0;
 let recipe = [];
 let country = [];
@@ -239,12 +241,9 @@ function Recipe(array) {
           if (ingredient_measure[i]) {
             let a = stringToNumber(ingredient_measure[i]);
             let b = removeNumber(ingredient_measure[i]);
-            // element.idMeal == 52767 ? console.log(isNaN(a), a) : '';
-            element.idMeal == 52767 ? console.log(b != '', b) : '';
 
             // sjekker om antall er null og om type er '', hvis det er det får det ikke bli puishet opp i arrayet
             if (!isNaN(a) || b != '') {
-              // element.idMeal == 52767 ? console.log(a, b) : '';
               measure.push({
                 number: a,
                 type: b,
@@ -342,6 +341,9 @@ function matchRecipeIngredient() {
   }, 1000);
 }
 function done() {
-  console.log('Scriptet er ferdig og du kan trykke ctrl + c to gangerfor å avslutte scriptet');
-  clearInterval(interval);
+  if (!doneVariable) {
+    console.log('Scriptet er ferdig og du kan trykke ctrl + c to gangerfor å avslutte scriptet');
+    clearInterval(interval);
+    doneVariable = true;
+  }
 }
