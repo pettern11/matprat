@@ -21,13 +21,10 @@ export class NewRecipe extends Component {
   recipe_content: Recipe_Content[] = [];
   ingredient: string = '';
   selectedIngredients: Ingredient[] = [];
-  selectIngredientReset: Ingredient = { ingred_id: 0, ingred_navn: 'Velg ingrediens' };
   selectedIngredient: Ingredient = {
     ingred_id: 1,
     ingred_navn: '',
   };
-
-  recipeIngredients: Ingredient[] = [];
 
   name: string = '';
   description: string = '';
@@ -220,16 +217,16 @@ export class NewRecipe extends Component {
                   id="selectIngredientNewRecipe"
                   onChange={(event) => {
                     this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
-                    console.log(event.currentTarget.selectedOptions[0].text);
                     this.selectedIngredient.ingred_navn =
                       event.currentTarget.selectedOptions[0].text;
                   }}
                   style={{ width: '210px' }}
                 >
-                  <option selected disabled>
-                    Velg ingrediens
-                  </option>
-                  {this.selectedIngredients.map((ingredient) => (
+                  {this.selectedIngredients.map((ingredient, i) => (
+                    // @ts-ignore
+                    // {i==0?console.log('homo'):''}
+                    //make the first option the selected option
+
                     <option key={ingredient.ingred_id} value={ingredient.ingred_id}>
                       {ingredient.ingred_navn}
                     </option>
@@ -248,8 +245,9 @@ export class NewRecipe extends Component {
               <Button.Success
                 id="btnIngredAdd"
                 onClick={() => {
-                  console.log(this.selectedIngredient);
-                  this.chooseIngredientFunc(this.selectedIngredient.ingred_id);
+                  this.chooseIngredientFunc(
+                    document.getElementById('selectIngredientNewRecipe')[0].value
+                  );
                 }}
               >
                 Legg til ny ingrediens
@@ -301,11 +299,14 @@ export class NewRecipe extends Component {
     this.selectedIngredients = this.ingredients.filter((ingredient) =>
       ingredient.ingred_navn.toLowerCase().includes(searchterm.toLowerCase())
     );
-    console.log(this.selectedIngredients);
+    //@ts-ignore
+    document.getElementById('selectIngredientNewRecipe').value =
+      this.selectedIngredients[0].ingred_id;
     if (this.selectedIngredients.length === 0) {
       this.selectedIngredient = { ingred_id: 0, ingred_navn: '' };
     } else {
-      this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
+      //@ts-ignore
+      // this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
     }
   }
   addRecipe() {
@@ -333,26 +334,17 @@ export class NewRecipe extends Component {
     this.recipe_content.forEach((element) => {
       element.oppskrift_id = id;
     });
-    console.log('første console log', this.recipe_content);
     service
       .createRecipeIngredient(this.recipe_content)
       .then(() => history.push('/recipe/' + id))
       .catch((error) => Alert.danger('Creating new recipe: ' + error.message));
-
-    console.log(this.recipe_content);
   }
   chooseIngredientFunc(id: number) {
-    if (id === 0 || id === undefined || id === null || id === '') {
+    if (id === 0 || id === undefined || id === null || id === NaN) {
       Alert.info('Du må velge en ingrediens');
-    } else if (this.recipeIngredients.some((e) => e == id)) {
+    } else if (this.recipe_content.some((e) => e.ingred_id == id)) {
       Alert.info('Denne ingrediensen er allerede lagt til');
     } else {
-      this.selectedIngredient = this.selectIngredientReset;
-      console.log(this.recipeIngredients.some((e) => e == id));
-      console.log('før', this.recipeIngredients);
-      this.recipeIngredients.push(id);
-      console.log('etter', this.recipeIngredients);
-
       let name = this.ingredients.find((ingredient) => ingredient.ingred_id == id)?.ingred_navn;
       const btn = document.getElementById('ingred' + id) as HTMLButtonElement | null;
       if (btn != null) {
@@ -397,7 +389,6 @@ export class NewRecipe extends Component {
 
       deleteBtn.innerHTML = 'x';
       deleteBtn.onclick = () => {
-        this.recipeIngredients.splice(index, 1);
         this.recipe_content.splice(index, 1);
         btn != null ? (btn.disabled = false) : '';
         emFood.remove();
@@ -422,7 +413,6 @@ export class NewRecipe extends Component {
       return false;
     });
 
-    console.log(isFound);
     const result =
       this.category_name.charAt(0).toUpperCase() + this.category_name.slice(1).toLowerCase();
     this.category_name = result;
@@ -448,7 +438,6 @@ export class NewRecipe extends Component {
       return false;
     });
 
-    console.log(isFound);
     const result =
       this.country_name.charAt(0).toUpperCase() + this.country_name.slice(1).toLowerCase();
     this.country_name = result;
@@ -465,14 +454,12 @@ export class NewRecipe extends Component {
     // sjekker om ingrediensen allerede finnes i arrayen med ingredienser
     // hentet fra databasen
     let isFound = this.ingredients.some((ingredient) => {
-      console.log(ingredient.ingred_navn == this.ingredient);
       if (ingredient.ingred_navn.toLowerCase() == this.ingredient.toLowerCase()) {
         return true;
       }
       return false;
     });
 
-    console.log(isFound);
     if (!isFound && this.ingredient != '') {
       service
         .createIngredient(this.ingredient)
@@ -502,7 +489,7 @@ export class NewRecipe extends Component {
     this.category_id = value;
   }
   mounted() {
-    this.selectedIngredient.ingred_id = 1;
+    this.selectedIngredient.ingred_id = 0;
     this.selectedIngredient.ingred_navn = '';
 
     service
