@@ -216,6 +216,7 @@ export class NewRecipe extends Component {
                 <select
                   id="selectIngredientNewRecipe"
                   onChange={(event) => {
+                    console.log(event.target.value);
                     this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
                     this.selectedIngredient.ingred_navn =
                       event.currentTarget.selectedOptions[0].text;
@@ -245,9 +246,7 @@ export class NewRecipe extends Component {
               <Button.Success
                 id="btnIngredAdd"
                 onClick={() => {
-                  this.chooseIngredientFunc(
-                    document.getElementById('selectIngredientNewRecipe')[0].value
-                  );
+                  this.chooseIngredientFunc(this.selectedIngredient.ingred_id);
                 }}
               >
                 Legg til ny ingrediens
@@ -300,13 +299,14 @@ export class NewRecipe extends Component {
       ingredient.ingred_navn.toLowerCase().includes(searchterm.toLowerCase())
     );
     //@ts-ignore
-    document.getElementById('selectIngredientNewRecipe').value =
-      this.selectedIngredients[0].ingred_id;
+
     if (this.selectedIngredients.length === 0) {
       this.selectedIngredient = { ingred_id: 0, ingred_navn: '' };
     } else {
+      document.getElementById('selectIngredientNewRecipe').value =
+        this.selectedIngredients[0].ingred_id;
       //@ts-ignore
-      // this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
+      this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
     }
   }
   addRecipe() {
@@ -345,6 +345,8 @@ export class NewRecipe extends Component {
     } else if (this.recipe_content.some((e) => e.ingred_id == id)) {
       Alert.info('Denne ingrediensen er allerede lagt til');
     } else {
+      this.searchterm = '';
+      this.search(this.searchterm);
       let name = this.ingredients.find((ingredient) => ingredient.ingred_id == id)?.ingred_navn;
       const btn = document.getElementById('ingred' + id) as HTMLButtonElement | null;
       if (btn != null) {
@@ -469,7 +471,9 @@ export class NewRecipe extends Component {
             .then(
               (ingredients) => (
                 (this.ingredients = ingredients),
-                this.chooseIngredientFunc(ingredients[ingredients.length - 1].ingred_id)
+                (this.selectedIngredients = ingredients),
+                this.chooseIngredientFunc(ingredients[ingredients.length - 1].ingred_id),
+                this.search(this.searchterm)
               )
             )
             .catch((error) => Alert.danger('Error : ' + error.message))
