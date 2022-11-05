@@ -192,21 +192,7 @@ export class NewRecipe extends Component {
           </Row>
           <br />
           <Row>
-            {/* input antall porsjoner */}
-            <Column>
-              <Column width={2}>
-                <Form.Label>Porsjoner:</Form.Label>
-              </Column>
-              <Column>
-                <Form.Input
-                  id="recipe_portions_input"
-                  type="number"
-                  value={this.portions}
-                  //@ts-ignore
-                  onChange={(event) => (this.portions = event.currentTarget.value)}
-                />
-              </Column>
-            </Column>
+            
             {/* print ut alle ingrediense som allerede er i databasen */}
             {/* vidre ideer her er at vi setter en viss lengde og bredde på diven og så hvis den overflower så må man bare skulle 
           nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
@@ -270,8 +256,24 @@ export class NewRecipe extends Component {
                 Legg til
               </Button.Success>
             </Column>
+            {/* input antall porsjoner */}
+            <Column>
+              <Column width={2}>
+                <Form.Label>Porsjoner:</Form.Label>
+              </Column>
+              <Column>
+                <Form.Input
+                  id="recipe_portions_input"
+                  type="number"
+                  value={this.portions}
+                  //@ts-ignore
+                  onChange={(event) => (this.portions = event.currentTarget.value)}
+                />
+              </Column>
+            </Column>
           </Row>
-          <br />
+        </Card>
+        <Card>
           {/* velg hvor mye av hver inngrediense */}
           <Column>
             <div id="outprintIngredient" className="scroll">

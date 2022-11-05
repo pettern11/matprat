@@ -31,8 +31,8 @@ export class ShowAllRecipe extends Component {
       <>
         {/* <br/> */}
         <div>
-        <br />
-        <Car title="Søkefelt">
+        {/* <br /> */}
+        {/* <Car title="Søkefelt"> */}
           <Form.Input
             id="indexsearch"
             type="text"
@@ -43,7 +43,7 @@ export class ShowAllRecipe extends Component {
               this.searchterm = event.currentTarget.value;
             }}
           />
-          </Car>
+          {/* </Car> */}
 
           <select
             id="sortBy"
