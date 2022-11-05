@@ -18,10 +18,13 @@ router.get('/recipe/:id', (_request, response) => {
 
   service
     .getRecipe(id)
-    .then((rows) =>{ 
+    .then((rows) => {
       if (rows.length === 0) {
-      response.status(404).send(`Oppskrift med id ${id} ikke funnet.`);
-    } else{response.send(rows)}})
+        response.status(404).send(`Oppskrift med id ${id} ikke funnet.`);
+      } else {
+        response.send(rows);
+      }
+    })
     .catch((error) => response.status(500).send(error));
 });
 
@@ -59,7 +62,9 @@ router.post('/createrecipe', (request, response) => {
     service
       .createRecipe(data.recipe)
       .then((id) => response.send({ id: id }))
-      .catch((error) => {response.status(500).send(error)});
+      .catch((error) => {
+        response.status(500).send(error);
+      });
   else response.status(400).send('Missing crutial information, fill in all the fields');
 });
 
@@ -136,30 +141,18 @@ router.post('/newcategory', (request, response) => {
 });
 
 router.put('/update_recipe_ingredient', (request, response) => {
-  const data = request.body.recipeContent;
-  if (
-    data.oppskrift_navn &&
-    data.oppskrift_beskrivelse &&
-    data.oppskrift_steg &&
-    data.ant_pors &&
-    data.kategori_id &&
-    data.land_id != ''
-  ) {
-    service
-      .updateRecipeIngredient(request.body.recipeContent)
-      .then(() => response.send())
-      .catch((error) => response.status(500).send(error));
-  } else response.status(400).send('Fill in all the fields');
+  service
+    .updateRecipeIngredient(request.body.recipeContent)
+    .then(() => response.send())
+    .catch((error) => response.status(500).send(error));
 });
 router.put('/updateingredient', (request, response) => {
   service.updateIngredientShoppinglist(request.body.ingredient).then(() => response.send());
   // .catch((error) => response.status(500).send(error));
 });
-router.put('/update_recipe', (request, response) => {
-  const data = request.body.recipe;
-  console.log(data);
+router.put('/update_recipe/:id', (request, response) => {
   service
-    .updateRecipe(data)
+    .updateRecipe(request.body.recipe)
     .then(() => response.send())
     .catch((error) => response.status(500).send(error));
 });

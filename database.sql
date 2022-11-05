@@ -42,12 +42,11 @@ CREATE TABLE kategori(
 
 
 CREATE TABLE oppskrift_innhold(
-    id INT NOT NULL AUTO_INCREMENT,
     oppskrift_id INT NOT NULL,
     ingred_id INT NOT NULL ,
     mengde VARCHAR(255) NOT NULL,
     maleenhet VARCHAR(255) NOT NULL,
-      PRIMARY KEY(id))ENGINE=InnoDB CHARSET=latin1;;
+      PRIMARY KEY(oppskrift_id, ingred_id))ENGINE=InnoDB CHARSET=latin1;;
 
 CREATE TABLE handleliste(
     id INT NOT NULL AUTO_INCREMENT,
