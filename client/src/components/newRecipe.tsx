@@ -279,11 +279,42 @@ export class NewRecipe extends Component {
           <br />
           {/* velg hvor mye av hver inngrediense */}
           <Column>
-            <h5>
-              Klikk på ingrediensene over for at de skal komme hit og du kan velge hvor mye du skal
-              ha av hver ingrediens
-            </h5>
-            <div id="ingreditentList"></div>
+            <div id="outprintIngredient" className="scroll">
+              {this.recipe_content.map((rc, i) => (
+                <Row key={i}>
+                  <p style={{ width: '215px' }}>
+                    {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}
+                  </p>
+                  <input
+                    className="form-control"
+                    id={'ingredNumber' + i.toString()}
+                    style={{ width: '75px', marginRight: '0px' }}
+                    type="number"
+                    value={rc.mengde}
+                    onChange={(event) =>
+                      //@ts-ignore
+                      (rc.mengde = event.currentTarget.value)
+                    }
+                  />
+                  <input
+                    className="form-control"
+                    style={{ width: '120px' }}
+                    id={'ingredType' + i.toString()}
+                    type="text"
+                    value={rc.maleenhet}
+                    onChange={(event) =>
+                      //@ts-ignore
+                      (rc.maleenhet = event.currentTarget.value)
+                    }
+                  />
+                  <Column width={2}>
+                    <Button.Danger onClick={() => this.deleteIngredient(rc.ingred_id)}>
+                      x
+                    </Button.Danger>
+                  </Column>
+                </Row>
+              ))}
+            </div>
           </Column>
         </Card>
 
@@ -297,6 +328,12 @@ export class NewRecipe extends Component {
         </Button.Success>
       </>
     );
+  }
+  deleteIngredient(ingred_id: number) {
+    //find index of ingred_id in recipeContent
+    const index = this.recipe_content.findIndex((element) => element.ingred_id == ingred_id);
+    //splice this index from recipeContent
+    this.recipe_content.splice(index, 1);
   }
   search(searchterm: string) {
     this.selectedIngredients = this.ingredients.filter((ingredient) =>
@@ -343,19 +380,13 @@ export class NewRecipe extends Component {
       .then(() => history.push('/recipe/' + id))
       .catch((error) => Alert.danger('Creating new recipe: ' + error.message));
   }
+
   chooseIngredientFunc(id: number) {
     if (id === 0 || id === undefined || id === null || id === NaN) {
       Alert.info('Du må velge en ingrediens');
     } else if (this.recipe_content.some((e) => e.ingred_id == id)) {
       Alert.info('Denne ingrediensen er allerede lagt til');
     } else {
-      this.searchterm = '';
-      this.search(this.searchterm);
-      let name = this.ingredients.find((ingredient) => ingredient.ingred_id == id)?.ingred_navn;
-      const btn = document.getElementById('ingred' + id) as HTMLButtonElement | null;
-      if (btn != null) {
-        btn.disabled = true;
-      }
       /* id må være any for å kunne bruke variablen i setattribute. Den forventer to strings så 
     hvis vi hadde deklarert den som number hadde setAttribute blitt sint*/
       // lager en const som legges til i objectet recipe_content
@@ -365,50 +396,9 @@ export class NewRecipe extends Component {
 
       // finner index til dette elemetet i objektet, skal brukes senere til å mappe
       // hver enkelt inputfelt til et obejct sin menge eller måleenhet
-      const index = this.recipe_content
-        .map(function (element) {
-          return element.ingred_id;
-        })
-        .indexOf(id);
-
-      const emFood = document.createElement('em');
-      const inputNumberOf = document.createElement('input');
-      const inputMeasurment = document.createElement('input');
-      const deleteBtn = document.createElement('button');
-      const ingredList =
-        document.getElementById('ingreditentList') || document.createElement('div');
-      emFood.innerHTML = ' <br />' + name;
-      emFood.setAttribute('id', 'emFood' + id);
-
-      inputNumberOf.type = 'number';
-      inputNumberOf.setAttribute('id', 'inputNumberOf' + id);
-      //@ts-ignore
-      inputNumberOf.value = this.recipe_content[index].mengde;
-      inputNumberOf.onchange = (event) =>
-        (this.recipe_content[index].mengde = event.currentTarget.value);
-
-      inputMeasurment.type = 'text';
-      inputMeasurment.setAttribute('id', 'inputMeasurment' + id);
-      inputMeasurment.value = this.recipe_content[index].maleenhet;
-      inputMeasurment.onchange = (event) =>
-        (this.recipe_content[index].maleenhet = event.currentTarget.value);
-
-      deleteBtn.innerHTML = 'x';
-      deleteBtn.onclick = () => {
-        this.recipe_content.splice(index, 1);
-        btn != null ? (btn.disabled = false) : '';
-        emFood.remove();
-        inputNumberOf.remove();
-        inputMeasurment.remove();
-        deleteBtn.remove();
-      };
-
-      ingredList.appendChild(emFood);
-      ingredList.appendChild(inputNumberOf);
-      ingredList.appendChild(inputMeasurment);
-      ingredList.appendChild(deleteBtn);
     }
     this.searchterm = '';
+    this.search(this.searchterm);
   }
   addCategoryFunc() {
     // sjekker om kategorien allerede finnes i arrayen med kategorier, hvis ikke legger den til landet i databasen
@@ -487,7 +477,7 @@ export class NewRecipe extends Component {
       this.ingredient = '';
     } else Alert.info('Ingrediensen finnes allerede eller du har ikke skrevet noe');
 
-    this.country_name = "";
+    this.country_name = '';
   }
 
   checkCountry(value: number) {
