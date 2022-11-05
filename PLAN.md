@@ -82,9 +82,9 @@ Daily stand-up:
 
 ### Uke 44
 
--   [ ] Legge til ingredienser handleliste
--   [ ] Fjerne ingredienser fra handleliste
--   [ ] Nullstille handleliste
+-   [x] Legge til ingredienser handleliste
+-   [x] Fjerne ingredienser fra handleliste
+-   [x] Nullstille handleliste
 
 ### Uke 45 (ferdig)
 
