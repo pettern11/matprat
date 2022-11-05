@@ -35,6 +35,7 @@ export class Icebox extends Component {
               }}
             />
             <select
+              className="form-select"
               id="selectExistingIngredient"
               onChange={(event) => {
                 let id = Number(event.target.value);
@@ -54,7 +55,7 @@ export class Icebox extends Component {
           <Column>
             {this.choosenIngredient.map((ingredient, idx) => (
               <Row key={idx}>
-                <Column width={3}>{ingredient.ingred_navn}</Column>
+                <p style={{ width: '150px' }}>{ingredient.ingred_navn}</p>
                 <Column width={2}>
                   <Button.Success
                     onClick={() => {

@@ -10,6 +10,7 @@ import {
   Alert,
   Column,
   Row,
+  Rows,
   Form,
   Button,
   RecipeView,
@@ -89,7 +90,7 @@ export class Home extends Component {
                 <div title="Anbefalte oppskrifter basert på dine likte:">
                   Anbefalte oppskrifter basert på det du liker
                   <center>
-                    <Row>
+                    <Rows>
                       {this.recipes.length != 0
                         ? this.suggestedRecipeList.map((likedRecipe) => (
                             <Cards>
@@ -103,7 +104,7 @@ export class Home extends Component {
                             </Cards>
                           ))
                         : ''}
-                    </Row>
+                    </Rows>
                   </center>
                   <NavBar.Link to={'/showallrecipe'} style={{ width: '130px' }}>
                     Alle oppskrifter
