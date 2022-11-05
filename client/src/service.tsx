@@ -48,7 +48,7 @@ export type Ingredient = {
 export type List = {
   id: number;
   ingred_id: number;
-  mengde: number;
+  mengde: string;
   maleenhet: string;
 };
 export type IceboxIngredient = {
@@ -155,6 +155,7 @@ class Service {
       .then((response) => response.data);
   }
   deleteIngredient(recipe_id: number, ingred_id: number) {
+    console.log('her er det', recipe_id, ingred_id);
     return axios
       .delete<Recipe_Content>('/deleteingredient/' + recipe_id + '/' + ingred_id)
       .then((response) => response.data);
