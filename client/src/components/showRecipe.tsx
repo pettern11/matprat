@@ -39,20 +39,21 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
         <Card title="">
           <img className="stort" src={this.recipe.bilde_adr}></img>
           <h1>{this.recipe.oppskrift_navn}</h1>
+          <br/>
           {this.recipe.oppskrift_beskrivelse != '' ? (
             <p>Beskrivelse: {this.recipe.oppskrift_beskrivelse}</p>
           ) : (
             ''
           )}
-          <p>
+          <p className="font-weight-bold" style={{marginBottom: '0px' }}>
             Kategori:{' '}
             {
               this.categories.find((kategori) => kategori.kategori_id == this.recipe.kategori_id)
                 ?.kategori_navn
             }
           </p>
-          <p>Antall likes: {this.recipe.ant_like}</p>
-          <Form.Checkbox
+          
+          {/* <Form.Checkbox
             checked={this.recipe.liked}
             id="checkbox"
             onChange={() => {
@@ -66,10 +67,82 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
               width={'50px'}
               src="https://static5.depositphotos.com/1001759/463/i/600/depositphotos_4634746-stock-photo-red-heart-isolated-white-background.jpg"
             ></img>
+          </label> */}
+          <input
+            type="checkbox"
+            id="checkbox"
+            checked={this.recipe.liked}
+            onChange={() => {
+              service.likeRecipe(this.recipe.oppskrift_id, !this.recipe.liked).then(() => {
+                ShowRecipe.instance()?.mounted();
+              });
+            }}
+          />
+          <label htmlFor="checkbox">
+            <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
+              <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
+                <path
+                  d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z"
+                  id="heart"
+                  fill="#AAB8C2"
+                />
+                <circle id="main-circ" fill="#E2264D" opacity="0" cx="29.5" cy="29.5" r="1.5" />
+
+                <g id="grp7" opacity="0" transform="translate(7 6)">
+                  <circle id="oval1" fill="#9CD8C3" cx="2" cy="6" r="2" />
+                  <circle id="oval2" fill="#8CE8C3" cx="5" cy="2" r="2" />
+                </g>
+
+                <g id="grp6" opacity="0" transform="translate(0 28)">
+                  <circle id="oval1" fill="#CC8EF5" cx="2" cy="7" r="2" />
+                  <circle id="oval2" fill="#91D2FA" cx="3" cy="2" r="2" />
+                </g>
+
+                <g id="grp3" opacity="0" transform="translate(52 28)">
+                  <circle id="oval2" fill="#9CD8C3" cx="2" cy="7" r="2" />
+                  <circle id="oval1" fill="#8CE8C3" cx="4" cy="2" r="2" />
+                </g>
+
+                <g id="grp2" opacity="0" transform="translate(44 6)">
+                  <circle id="oval2" fill="#CC8EF5" cx="5" cy="6" r="2" />
+                  <circle id="oval1" fill="#CC8EF5" cx="2" cy="2" r="2" />
+                </g>
+
+                <g id="grp5" opacity="0" transform="translate(14 50)">
+                  <circle id="oval1" fill="#91D2FA" cx="6" cy="5" r="2" />
+                  <circle id="oval2" fill="#91D2FA" cx="2" cy="2" r="2" />
+                </g>
+
+                <g id="grp4" opacity="0" transform="translate(35 50)">
+                  <circle id="oval1" fill="#F48EA7" cx="6" cy="5" r="2" />
+                  <circle id="oval2" fill="#F48EA7" cx="2" cy="2" r="2" />
+                </g>
+
+                <g id="grp1" opacity="0" transform="translate(24)">
+                  <circle id="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2" />
+                  <circle id="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2" />
+                </g>
+              </g>
+            </svg>
           </label>
-          <h5>Oppskrift:</h5>
+          <p>Antall likes: {this.recipe.ant_like}</p>
+          <h3>Oppskrift:</h3>
+          <br />
           <pre>{this.recipe.oppskrift_steg}</pre>
-          <h3>Ingredienser</h3>
+          <h3>Ingredienser:</h3>
+          <br />
+          {this.recipeContent.map((rc, i) => (
+            <Row key={i}>
+              <p style={{ width: '250px' }}>
+                {i + 1}.{' '}
+                {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}{' '}
+              </p>
+              <p style={{ width: '75px' }}>
+                {((rc.mengde * this.portions) / this.recipe.ant_pors).toFixed(1)}
+              </p>
+              <p style={{ width: '130px' }}>{rc.maleenhet}</p>
+            </Row>
+          ))}
           Porsjoner{' '}
           <Button.Danger id="btnDec" onClick={this.decrementPortions}>
             -
@@ -78,13 +151,6 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
           <Button.Success id="btnInc" onClick={this.incrementPortions}>
             +
           </Button.Success>
-          {this.recipeContent.map((rc, i) => (
-            <p key={i}>
-              {i + 1}.{' '}
-              {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}{' '}
-              {((rc.mengde * this.portions) / this.recipe.ant_pors).toFixed(1)} {rc.maleenhet}
-            </p>
-          ))}
         </Card>
         <Button.Success onClick={() => history.push('/recipe/edit/' + this.props.match.params.id)}>
           Endre oppskrift

@@ -131,15 +131,6 @@ export class ShoppingList extends Component {
         <Card title="Add existing ingredients">
           <Column>
             Søk:
-            <Form.Input
-              id="shoppinglistsearch"
-              type="text"
-              value={this.searchterm}
-              onChange={(event) => {
-                this.search(event.currentTarget.value);
-                this.searchterm = event.currentTarget.value;
-              }}
-            />
             <select
               className="form-select"
               id="selectExistingIngredient"
