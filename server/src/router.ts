@@ -152,7 +152,7 @@ router.put('/updateingredient', (request, response) => {
 });
 router.put('/update_recipe/:id', (request, response) => {
   service
-    .updateRecipe(request.body.recipe
+    .updateRecipe(request.body.recipe)
     .then(() => response.send())
     .catch((error) => response.status(500).send(error));
 });
