@@ -19,6 +19,8 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
     ant_like: 0,
     liked: false,
   };
+  addIngredientToRecipe: Recipe_Content[] = [];
+  iDsDeletedIngredient: any = [];
   recipeContent: Recipe_Content[] = [];
   ingredients: Ingredient[] = [];
   selectedIngredients: Ingredient[] = [];
@@ -178,11 +180,28 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
   //legger til nye ingredienser, sjekker først om de finnes, så legger den til i databasen og så blir det hentet ned igjen
 
   pushNewChanges() {
-    console.log('nå sendes objektet', this.recipeContent);
-    console.log(this.recipe);
     service
       .updateRecipe(this.recipe)
       .catch((error) => Alert.danger('Error updating recipe info: ' + error.message));
+
+    this.iDsDeletedIngredient.forEach((element: any) => {
+      service
+        .deleteIngredient(element.recipe_id, element.ingred_id)
+        .catch((error) => Alert.danger('Error deleting ingredient: ' + error.message));
+    });
+    //map throug recipeContent and update elements inn addIngredientToRecipe if ingredient already exists
+    //than splice the elemnt from recipeContent
+    //takk:)
+    this.addIngredientToRecipe.map((element, i) => {
+      this.recipeContent.map((rc, j) => {
+        if (element.ingred_id == rc.ingred_id) {
+          service
+            .createRecipeIngredient([rc])
+            .then(() => this.recipeContent.splice(j, 1))
+            .catch((error) => Alert.danger('Error adding ingredient to recipe: ' + error.message));
+        }
+      });
+    });
 
     service
       .updateRecipeIngredient(this.recipeContent)
@@ -198,6 +217,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
     if (!ifExist.includes(true)) {
       const add = { oppskrift_id: recipe_id, ingred_id: ingred_id, mengde: 0, maleenhet: '' };
       this.recipeContent.push(add);
+      this.addIngredientToRecipe.push(add);
     } else {
       Alert.info('denne ingrediensen finnes allerede i oppskriften');
     }
@@ -207,6 +227,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
     const index = this.recipeContent.findIndex((element) => element.ingred_id == ingred_id);
     //splice this index from recipeContent
     this.recipeContent.splice(index, 1);
+    this.iDsDeletedIngredient.push({ ingred_id: ingred_id, recipe_id: this.recipe.oppskrift_id });
   }
   mounted() {
     service

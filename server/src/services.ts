@@ -17,7 +17,7 @@ export type Recipe = {
 export type Recipe_Content = {
   oppskrift_id: number;
   ingred_id: number;
-  mengde: number;
+  mengde: string;
   maleenhet: string;
 };
 
@@ -91,7 +91,6 @@ class Service {
         [id],
         (error, results: RowDataPacket[]) => {
           if (error) return reject(error);
-          console.log(results);
 
           resolve(results as Recipe_Content[]);
         }
@@ -262,8 +261,6 @@ class Service {
   createRecipeIngredient(recipe_content: Recipe_Content[]) {
     return new Promise<void>((resolve, reject) => {
       recipe_content.forEach((element) => {
-        console.log(element);
-
         pool.query(
           'INSERT INTO oppskrift_innhold SET oppskrift_id=?, ingred_id=?, mengde=?,maleenhet=?',
           [element.oppskrift_id, element.ingred_id, element.mengde, element.maleenhet],
@@ -278,10 +275,9 @@ class Service {
   }
   updateRecipeIngredient(recipeContent: Recipe_Content[]) {
     return new Promise<void>((resolve, reject) => {
-      console.log('homofaenfitte', recipeContent);
       recipeContent.forEach((element) => {
         pool.query(
-          'INSERT INTO oppskrift_innhold SET mengde=?, maleenhet=? WHERE oppskrift_id=? AND ingred_id=?',
+          'UPDATE oppskrift_innhold SET mengde=?, maleenhet=? WHERE oppskrift_id=? AND ingred_id=?',
           [element.mengde, element.maleenhet, element.oppskrift_id, element.ingred_id],
           (error: any, _results: any) => {
             if (error) return reject(error);
@@ -307,6 +303,7 @@ class Service {
   }
   deleteIngredient(recipe_id: number, ingred_id: number) {
     return new Promise<void>((resolve, reject) => {
+      console.log(recipe_id, ingred_id);
       pool.query(
         'DELETE FROM oppskrift_innhold WHERE oppskrift_id = ? AND ingred_id = ?',
         [recipe_id, ingred_id],
@@ -373,7 +370,6 @@ class Service {
   }
   updateLiked(oppskrift_id: number, liked: boolean) {
     return new Promise<void>((resolve, reject) => {
-      console.log(liked);
       let likeIncrementsAntLike =
         liked == true
           ? 'UPDATE oppskrift SET ant_like=ant_like+1 WHERE oppskrift_id=?'
