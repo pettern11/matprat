@@ -154,7 +154,6 @@ export class ShoppingList extends Component {
                 </option>
               ))}
             </select>
-          
             Antall:{' '}
             <Form.Input
               id="exisitingmengde"
@@ -165,7 +164,6 @@ export class ShoppingList extends Component {
                 this.selectedIngredient.mengde = event.currentTarget.value;
               }}
             />
-         
             Måleenhet:{' '}
             <Form.Input
               id="exisitingmaleenhet"
@@ -212,6 +210,16 @@ export class ShoppingList extends Component {
             ? //@ts-ignore
               document.getElementById('selectExistingIngredient').value
             : '')
+        )
+      )
+      .then(
+        () => (
+          (this.ingredients = this.ingredients.sort((a, b) =>
+            a.ingred_navn.localeCompare(b.ingred_navn)
+          )),
+          (this.selectedIngredients = this.selectedIngredients.sort((a, b) =>
+            a.ingred_navn.localeCompare(b.ingred_navn)
+          ))
         )
       )
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));

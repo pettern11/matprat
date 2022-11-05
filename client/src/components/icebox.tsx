@@ -141,6 +141,16 @@ export class Icebox extends Component {
           (this.ingredients = ingredients), (this.selectedIngredients = ingredients)
         )
       )
+      .then(
+        () => (
+          (this.ingredients = this.ingredients.sort((a, b) =>
+            a.ingred_navn.localeCompare(b.ingred_navn)
+          )),
+          (this.selectedIngredients = this.selectedIngredients.sort((a, b) =>
+            a.ingred_navn.localeCompare(b.ingred_navn)
+          ))
+        )
+      )
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
 
     service

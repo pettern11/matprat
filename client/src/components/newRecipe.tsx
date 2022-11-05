@@ -509,6 +509,16 @@ export class NewRecipe extends Component {
           (this.selectedIngredient.ingred_id = ingredients[0].ingred_id)
         )
       )
+      .then(
+        () => (
+          (this.ingredients = this.ingredients.sort((a, b) =>
+            a.ingred_navn.localeCompare(b.ingred_navn)
+          )),
+          (this.selectedIngredients = this.selectedIngredients.sort((a, b) =>
+            a.ingred_navn.localeCompare(b.ingred_navn)
+          ))
+        )
+      )
       .catch((error) => Alert.danger('Error getting categories: ' + error.message));
   }
 }

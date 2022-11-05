@@ -249,6 +249,17 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
           (this.ingredients = ingredients), (this.selectedIngredients = ingredients)
         )
       )
+      //sort the ingredients and selectedingredients alphabetically by name
+      .then(
+        () => (
+          (this.ingredients = this.ingredients.sort((a, b) =>
+            a.ingred_navn.localeCompare(b.ingred_navn)
+          )),
+          (this.selectedIngredients = this.selectedIngredients.sort((a, b) =>
+            a.ingred_navn.localeCompare(b.ingred_navn)
+          ))
+        )
+      )
       .catch((error) => {
         Alert.danger('Error getting ingredients: ' + error.message);
       });
