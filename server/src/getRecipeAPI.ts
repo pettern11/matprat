@@ -166,7 +166,10 @@ function removeNumber(string) {
   //du skal lage en regex som beholder alle boksavene i string du får inn som parameter
   //men du skal også fjerne oz hvis det er mellomrom før oz og etter oz
   //så skal du returnere stringen uten tallene og oz
-  let newString = string.replace(/[^a-zA-Z]/g, '');
+  //men du skal beholde mellomromene
+  //
+
+  let newString = string.replace(/[^a-zA-Z ]/g, '');
   if (newString.includes('oz')) {
     newString = newString.replace('oz', '');
   }
