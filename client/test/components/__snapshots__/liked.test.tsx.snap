@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LikedRecipes tests Snapshot LikedRecipes draws correctly 1`] = `
+<div
+  className="container-fluid"
+>
+  <Row>
+    <Cards
+      key="1"
+      title=""
+    >
+      <NavLink
+        className="black"
+        to="/recipe/1"
+      >
+        <RecipeView
+          img="pizza.jpg"
+          name="Pizza"
+          numbOfPors={4}
+        />
+      </NavLink>
+    </Cards>
+  </Row>
+</div>
+`;

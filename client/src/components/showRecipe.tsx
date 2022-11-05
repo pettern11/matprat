@@ -104,6 +104,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
   }
 
   mounted() {
+    console.log(this.props.match.params.id);
     service
       .getAllIngredient()
       .then((ingredients) => (this.ingredients = ingredients))

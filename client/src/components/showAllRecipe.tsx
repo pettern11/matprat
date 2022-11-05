@@ -28,7 +28,7 @@ export class ShowAllRecipe extends Component {
   render() {
     return (
       <>
-      <br/>
+        <br />
         <Car title="Søkefelt">
           <Form.Input
             id="indexsearch"

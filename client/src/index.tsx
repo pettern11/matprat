@@ -45,6 +45,7 @@ export class Menu extends Component {
   }
 }
 export class Home extends Component {
+  isMounted = false;
   suggestedRecipe: Recipe[] = [];
   recipes: Recipe[] = [];
   suggestedRecipeList: Recipe[] = [];
@@ -59,61 +60,66 @@ export class Home extends Component {
 
     return (
       <>
-        <Card title="">
-          <div className="frontpage">
-            <h1>Anbefalt oppskrift:</h1>
-            <br></br>
-            <div className={'recipeToDay'}>
-              {this.recipes.length != 0
-                ? this.recipes
-                    .filter((recipes, i) => i == random)
-                    .map((recipe, rei) => (
-                      <div key={rei}>
-                        <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
-                          <img src={recipe.bilde_adr} className="frontPicture" alt="recipe" />
-                          <br />
-                          <br />
-                          <h3 id="frontname" style={{ color: 'black' }}>
-                            {recipe.oppskrift_navn}
-                          </h3>
-                        </NavLink>
-                      </div>
-                    ))
-                : ''}
-            </div>
-            <br />
-            <br />
-            <div>
-              <div title="Anbefalte oppskrifter basert på dine likte:">
-                Anbefalte oppskrifter basert på det du liker
-                <center>
-                  <Row>
-                    {this.recipes.length != 0
-                      ? this.suggestedRecipeList.map((likedRecipe) => (
-                          <Cards>
-                            <NavLink className="black" to={'/recipe/' + likedRecipe.oppskrift_id}>
-                              <RecipeView
-                                img={likedRecipe.bilde_adr}
-                                name={likedRecipe.oppskrift_navn}
-                                numbOfPors={likedRecipe.ant_pors}
-                              ></RecipeView>
-                            </NavLink>
-                          </Cards>
-                        ))
-                      : ''}
-                  </Row>
-                </center>
-                <NavBar.Link to={'/showallrecipe'} style={{ width: '130px' }}>
-                  Alle oppskrifter
-                </NavBar.Link>
+        {this.isMounted ? (
+          <Card title="">
+            <div className="frontpage">
+              <h1>Anbefalt oppskrift:</h1>
+              <br></br>
+              <div className={'recipeToDay'}>
+                {this.recipes.length != 0
+                  ? this.recipes
+                      .filter((recipes, i) => i == random)
+                      .map((recipe, rei) => (
+                        <div key={rei}>
+                          <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
+                            <img src={recipe.bilde_adr} className="frontPicture" alt="recipe" />
+                            <br />
+                            <br />
+                            <h3 id="frontname" style={{ color: 'black' }}>
+                              {recipe.oppskrift_navn}
+                            </h3>
+                          </NavLink>
+                        </div>
+                      ))
+                  : ''}
+              </div>
+              <br />
+              <br />
+              <div>
+                <div title="Anbefalte oppskrifter basert på dine likte:">
+                  Anbefalte oppskrifter basert på det du liker
+                  <center>
+                    <Row>
+                      {this.recipes.length != 0
+                        ? this.suggestedRecipeList.map((likedRecipe) => (
+                            <Cards>
+                              <NavLink className="black" to={'/recipe/' + likedRecipe.oppskrift_id}>
+                                <RecipeView
+                                  img={likedRecipe.bilde_adr}
+                                  name={likedRecipe.oppskrift_navn}
+                                  numbOfPors={likedRecipe.ant_pors}
+                                ></RecipeView>
+                              </NavLink>
+                            </Cards>
+                          ))
+                        : ''}
+                    </Row>
+                  </center>
+                  <NavBar.Link to={'/showallrecipe'} style={{ width: '130px' }}>
+                    Alle oppskrifter
+                  </NavBar.Link>
+                </div>
               </div>
             </div>
-          </div>
-        </Card>
+          </Card>
+        ) : (
+          ''
+        )}
       </>
     );
   }
   mounted() {
+    this.isMounted = false;
     service
       .getAllRepice()
       .then((recipes) => {
@@ -171,6 +177,7 @@ export class Home extends Component {
         }
       })
       .catch((error) => Alert.danger('Error getting tasks: ' + error.message));
+    this.isMounted = true;
   }
 }
 

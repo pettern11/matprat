@@ -2,6 +2,7 @@
 
 exports[`ShowAllRecipe tests Snapshot showAllRecipe draws correctly 1`] = `
 <Fragment>
+  <br />
   <Car
     title="Søkefelt"
   >
@@ -12,74 +13,64 @@ exports[`ShowAllRecipe tests Snapshot showAllRecipe draws correctly 1`] = `
       value=""
     />
   </Car>
+  <select
+    id="sortBy"
+    onChange={[Function]}
+  >
+    <option>
+      Sorter
+    </option>
+    <option
+      value="0"
+    >
+      A-Z
+    </option>
+    <option
+      value="1"
+    >
+      Z-A
+    </option>
+    <option
+      value="2"
+    >
+      Nyeste
+    </option>
+  </select>
+  <br />
   <div
-    className="container"
+    className="container-fluid "
   >
     <Row>
-      <Oppskrifter
-        title="Oppskrifter"
+      <Cards
+        key="1"
+        title=""
       >
-        <select
-          id="sortBy"
-          onChange={[Function]}
+        <NavLink
+          className="black"
+          to="/recipe/1"
         >
-          <option>
-            Sorter
-          </option>
-          <option
-            value="0"
-          >
-            A-Z
-          </option>
-          <option
-            value="1"
-          >
-            Z-A
-          </option>
-          <option
-            value="2"
-          >
-            Nyeste
-          </option>
-        </select>
-        <br />
-        <div
-          className="container"
+          <RecipeView
+            img="pizza.jpg"
+            name="Pizza"
+            numbOfPors={4}
+          />
+        </NavLink>
+      </Cards>
+      <Cards
+        key="2"
+        title=""
+      >
+        <NavLink
+          className="black"
+          to="/recipe/2"
         >
-          <Row>
-            <Cards
-              key="1"
-              title=""
-            >
-              <NavLink
-                className="black"
-                to="/recipe/1"
-              >
-                <RecipeView
-                  img="pizza.jpg"
-                  name="Pizza"
-                  numbOfPors={4}
-                />
-              </NavLink>
-            </Cards>
-            <Cards
-              key="2"
-              title=""
-            >
-              <NavLink
-                className="black"
-                to="/recipe/2"
-              >
-                <RecipeView
-                  img="kjøttboller.jpg"
-                  name="Kjøttboller i brunsaus"
-                  numbOfPors={4}
-                />
-              </NavLink>
-            </Cards>
-          </Row>
-        </div>
-      </Oppskrifter>
+          <RecipeView
+            img="kjøttboller.jpg"
+            name="Kjøttboller i brunsaus"
+            numbOfPors={4}
+          />
+        </NavLink>
+      </Cards>
     </Row>
   </div>
 </Fragment>
