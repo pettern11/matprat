@@ -31,9 +31,41 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
   render() {
     return (
       <>
-        <Card title={this.recipe.oppskrift_navn}>
+        <Card title="Endre oppskriften">
           {/* input navn */}
           <Row>
+            <Column>
+              <Column width={2}>
+                <Form.Label>Name:</Form.Label>
+              </Column>
+              <Column>
+                <Form.Textarea
+                  type="text"
+                  id="recipe_name"
+                  value={this.recipe.oppskrift_navn}
+                  onChange={(event) => (this.recipe.oppskrift_navn = event.currentTarget.value)}
+                  rows={5}
+                />
+              </Column>
+            </Column>
+            {/* input beksrivelse */}
+            <Column>
+              <Column width={2}>
+                <Form.Label>Description:</Form.Label>
+              </Column>
+              <Column>
+                <Form.Textarea
+                  id="recipe_description"
+                  style={{ width: '300px' }}
+                  type="text"
+                  value={this.recipe.oppskrift_beskrivelse}
+                  onChange={(event) =>
+                    (this.recipe.oppskrift_beskrivelse = event.currentTarget.value)
+                  }
+                  rows={5}
+                />
+              </Column>
+            </Column>
             {/* input steg */}
             <Column>
               <Column width={2}>
@@ -66,6 +98,20 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
               />
             </Column>
           </Column>
+          {/* input bilde url */}
+          <Column>
+            <Column width={2}>
+              <Form.Label>Bildeurl:</Form.Label>
+            </Column>
+            <Column>
+              <Form.Input
+                id="recipe_image"
+                type="text"
+                value={this.recipe.bilde_adr}
+                onChange={(event) => (this.recipe.bilde_adr = event.currentTarget.value)}
+              />
+            </Column>
+          </Column>
 
           {/* renderer alle ingrediensene som er linket til oppskriften, her kan man også endre på hvor mye det er av hver ingrediens og måleenheten */}
           <Column>
@@ -93,7 +139,9 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                       (rc.maleenhet = event.currentTarget.value), console.log(this.recipeContent)
                     )}
                   />
-                  <Button.Danger onClick={() => this.deleteIngredient(rc.ingred_id)}>
+                  <Button.Danger
+                    onClick={() => this.deleteIngredient(rc.oppskrift_id, rc.ingred_id)}
+                  >
                     x
                   </Button.Danger>
                 </p>
@@ -176,10 +224,33 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
     }
   }
   //legger til nye ingredienser, sjekker først om de finnes, så legger den til i databasen og så blir det hentet ned igjen
+  addIngredientFunc(ingred_id: number, recipe_id: number) {
+    //sjekker om ingrediensen allerede finnes i oppskriften
+    const ifExist = this.recipeContent.map((element) =>
+      element.ingred_id == ingred_id ? true : false
+    );
+    //hvis ingrediensen ikke finnes i oppskriften vil den bli lagt til
+    if (!ifExist.includes(true)) {
+      const add = { oppskrift_id: recipe_id, ingred_id: ingred_id, mengde: 0, maleenhet: '' };
 
+      //gjennbruker .createRecipeIngredient, den forventer et array så pakker da add inn i et array
+      service
+        .createRecipeIngredient([add])
+        .then(() => this.getIngredRecipe())
+        .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+    } else {
+      Alert.info('denne ingrediensen finnes allerede i oppskriften');
+    }
+  }
+  //lager en egen funksjon for å hente ingrediensene til en oppskrift fordi jeg bruker den to steder, praktisk
+  getIngredRecipe() {
+    service
+      .getRecipeContent(this.props.match.params.id)
+      .then((recipeContent) => (this.recipeContent = recipeContent))
+      .catch((error) => Alert.danger('Error getting recipe content: ' + error.message));
+  }
   pushNewChanges() {
     console.log('nå sendes objektet', this.recipeContent);
-    console.log(this.recipe);
     service
       .updateRecipe(this.recipe)
       .catch((error) => Alert.danger('Error updating recipe info: ' + error.message));
@@ -189,24 +260,11 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
       .then(() => history.push('/recipe/' + this.props.match.params.id))
       .catch((error) => Alert.danger('Error updating recipe content: ' + error.message));
   }
-  addIngredientFunc(ingred_id: number, recipe_id: number) {
-    //sjekker om ingrediensen allerede finnes i oppskriften
-    const ifExist = this.recipeContent.map((element) =>
-      element.ingred_id == ingred_id ? true : false
-    );
-    //hvis ingrediensen ikke finnes i oppskriften vil den bli lagt til
-    if (!ifExist.includes(true)) {
-      const add = { oppskrift_id: recipe_id, ingred_id: ingred_id, mengde: 0, maleenhet: '' };
-      this.recipeContent.push(add);
-    } else {
-      Alert.info('denne ingrediensen finnes allerede i oppskriften');
-    }
-  }
-  deleteIngredient(ingred_id: number) {
-    //find index of ingred_id in recipeContent
-    const index = this.recipeContent.findIndex((element) => element.ingred_id == ingred_id);
-    //splice this index from recipeContent
-    this.recipeContent.splice(index, 1);
+  deleteIngredient(recipe_id: number, ingred_id: number) {
+    service
+      .deleteIngredient(recipe_id, ingred_id)
+      .then(() => this.getIngredRecipe())
+      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
   }
   mounted() {
     service
@@ -223,6 +281,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
     service
       .getRecipeContent(this.props.match.params.id)
       .then((recipeContent) => (this.recipeContent = recipeContent))
+      .then(() => this.recipeContent)
       .catch((error) => Alert.danger('Error getting recipe content: ' + error.message));
 
     service
@@ -230,6 +289,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
       .then((recipe) => {
         this.recipe = recipe[0];
       })
+      .then(() => console.log(this.recipe))
       .catch((error) => Alert.danger('Error getting recipe: ' + error.message));
   }
 }

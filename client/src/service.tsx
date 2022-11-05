@@ -150,7 +150,9 @@ class Service {
     return axios.delete<{}>('/deleteallshoppinglist').then((response) => response.data);
   }
   updateRecipe(recipe: Recipe) {
-    return axios.put('/update_recipe', { recipe: recipe }).then((response) => response.data);
+    return axios
+      .put('/update_recipe/' + recipe.oppskrift_id, { recipe: recipe })
+      .then((response) => response.data);
   }
   deleteIngredient(recipe_id: number, ingred_id: number) {
     return axios
