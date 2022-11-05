@@ -158,16 +158,6 @@ class Service {
     });
   }
 
-  createCountry(name: string) {
-    return new Promise<void>((resolve, reject) => {
-      pool.query('INSERT INTO land SET land_navn=?', [name], (error, results: ResultSetHeader) => {
-        if (error) return reject(error);
-
-        resolve();
-      });
-    });
-  }
-
   addIngredientShoppinglist(ingredient: IngredientToShoppinglist) {
     return new Promise<void>((resolve, reject) => {
       pool.query(
@@ -210,6 +200,15 @@ class Service {
     });
   }
 
+  createCountry(name: string) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query('INSERT INTO land SET land_navn=?', [name], (error, results: ResultSetHeader) => {
+        if (error) return reject(error);
+
+        resolve();
+      });
+    });
+  }
   createCategory(name: string) {
     return new Promise<void>((resolve, reject) => {
       pool.query(
@@ -239,7 +238,6 @@ class Service {
 
   createRecipe(recipe: Recipe) {
     return new Promise<number>((resolve, reject) => {
-      console.log(recipe);
       pool.query(
         'INSERT INTO oppskrift SET oppskrift_navn=?, oppskrift_beskrivelse=?, oppskrift_steg=?,ant_pors=?,bilde_adr=?,kategori_id=?,land_id=?,ant_like=?',
         [

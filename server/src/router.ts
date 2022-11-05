@@ -18,7 +18,13 @@ router.get('/recipe/:id', (_request, response) => {
 
   service
     .getRecipe(id)
-    .then((rows) => response.send(rows))
+    .then((rows) => {
+      if (rows.length === 0) {
+        response.status(404).send(`Oppskrift med id ${id} ikke funnet.`);
+      } else {
+        response.send(rows);
+      }
+    })
     .catch((error) => response.status(500).send(error));
 });
 
@@ -43,6 +49,8 @@ router.post('/create_recipe_ingredient', (request, response) => {
 router.post('/createrecipe', (request, response) => {
   const data = request.body;
   console.log(data.recipe);
+  //tror denne ifen kan fjernes, siden den ikke gjør noe, hvis det blir en feil i databasen blir det catchet i og status 500 sendt
+  // hvis man skal ha en slik feilsjekking bør den settes i then, tror jeg hilsen Petter
   if (
     data.recipe.oppskrift_navn &&
     data.recipe.oppskrift_beskrivelse &&
@@ -54,7 +62,9 @@ router.post('/createrecipe', (request, response) => {
     service
       .createRecipe(data.recipe)
       .then((id) => response.send({ id: id }))
-      .catch((error) => response.status(500).send(error));
+      .catch((error) => {
+        response.status(500).send(error);
+      });
   else response.status(400).send('Missing crutial information, fill in all the fields');
 });
 
@@ -142,7 +152,7 @@ router.put('/updateingredient', (request, response) => {
 });
 router.put('/update_recipe/:id', (request, response) => {
   service
-    .updateRecipe(request.body.recipe)
+    .updateRecipe(request.body.recipe
     .then(() => response.send())
     .catch((error) => response.status(500).send(error));
 });
