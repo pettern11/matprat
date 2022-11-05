@@ -21,13 +21,10 @@ export class NewRecipe extends Component {
   recipe_content: Recipe_Content[] = [];
   ingredient: string = '';
   selectedIngredients: Ingredient[] = [];
-  selectIngredientReset: Ingredient = { ingred_id: 0, ingred_navn: 'Velg ingrediens' };
   selectedIngredient: Ingredient = {
     ingred_id: 1,
     ingred_navn: '',
   };
-
-  recipeIngredients: Ingredient[] = [];
 
   name: string = '';
   description: string = '';
@@ -57,6 +54,7 @@ export class NewRecipe extends Component {
                   value={this.name}
                   onChange={(event) => (this.name = event.currentTarget.value)}
                   rows={3}
+                  style={{ width: '210px' }}
                 />
               </Column>
             </Column>
@@ -72,6 +70,7 @@ export class NewRecipe extends Component {
                   value={this.description}
                   onChange={(event) => (this.description = event.currentTarget.value)}
                   rows={3}
+                  style={{ width: '210px' }}
                 />
               </Column>
             </Column>
@@ -87,25 +86,13 @@ export class NewRecipe extends Component {
                   value={this.steps}
                   onChange={(event) => (this.steps = event.currentTarget.value)}
                   rows={3}
+                  style={{ width: '210px' }}
                 />
               </Column>
             </Column>
           </Row>
+          <br />
           <Row>
-            {/* input bilde url */}
-            <Column>
-              <Column width={2}>
-                <Form.Label>Bildeurl:</Form.Label>
-              </Column>
-              <Column>
-                <Form.Input
-                  id="recipe_picture_url_input"
-                  type="text"
-                  value={this.picture_adr}
-                  onChange={(event) => (this.picture_adr = event.currentTarget.value)}
-                />
-              </Column>
-            </Column>
             {/* velg land retten kommer fra */}
             <Column>
               <Column width={2}>
@@ -186,29 +173,66 @@ export class NewRecipe extends Component {
                 {/* må lage select og options som cars */}
               </Column>
             </Column>
-          </Row>
-          {/* input antall porsjoner */}
-          <Column>
-            <Column width={2}>
-              <Form.Label>Porsjoner:</Form.Label>
-            </Column>
+            {/* input bilde url */}
             <Column>
-              <Form.Input
-                id="recipe_portions_input"
-                type="number"
-                value={this.portions}
-                //@ts-ignore
-                onChange={(event) => (this.portions = event.currentTarget.value)}
-              />
-            </Column>
-          </Column>
-          {/* print ut alle ingrediense som allerede er i databasen */}
-          {/* vidre ideer her er at vi setter en viss lengde og bredde på diven og så hvis den overflower så må man bare skulle 
-          nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
-          <Column>
-            <Card title="Søk etter ingrediens">
+              <Column width={2}>
+                <Form.Label>Bildeurl:</Form.Label>
+              </Column>
               <Column>
-                <h6>Søk</h6>
+                <Form.Input
+                  id="recipe_picture_url_input"
+                  type="text"
+                  value={this.picture_adr}
+                  onChange={(event) => (this.picture_adr = event.currentTarget.value)}
+                />
+              </Column>
+            </Column>
+          </Row>
+          <br />
+          <Row>
+            {/* input antall porsjoner */}
+            <Column>
+              <Column width={2}>
+                <Form.Label>Porsjoner:</Form.Label>
+              </Column>
+              <Column>
+                <Form.Input
+                  id="recipe_portions_input"
+                  type="number"
+                  value={this.portions}
+                  //@ts-ignore
+                  onChange={(event) => (this.portions = event.currentTarget.value)}
+                />
+              </Column>
+            </Column>
+            {/* print ut alle ingrediense som allerede er i databasen */}
+            {/* vidre ideer her er at vi setter en viss lengde og bredde på diven og så hvis den overflower så må man bare skulle 
+          nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
+            <Column>
+              <Column>
+                <Column width={2}>
+                  <Form.Label>Søk:</Form.Label>
+                </Column>
+                <select
+                  id="selectIngredientNewRecipe"
+                  onChange={(event) => {
+                    console.log(event.target.value);
+                    this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
+                    this.selectedIngredient.ingred_navn =
+                      event.currentTarget.selectedOptions[0].text;
+                  }}
+                  style={{ width: '210px' }}
+                >
+                  {this.selectedIngredients.map((ingredient, i) => (
+                    // @ts-ignore
+                    // {i==0?console.log('homo'):''}
+                    //make the first option the selected option
+
+                    <option key={ingredient.ingred_id} value={ingredient.ingred_id}>
+                      {ingredient.ingred_navn}
+                    </option>
+                  ))}
+                </select>
                 <Form.Input
                   id="newRecipeSearch"
                   type="text"
@@ -218,52 +242,37 @@ export class NewRecipe extends Component {
                     this.searchterm = event.currentTarget.value;
                   }}
                 />
-                <select
-                  id="selectIngredientNewRecipe"
-                  onChange={(event) => {
-                    this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
-                    console.log(event.currentTarget.selectedOptions[0].text);
-                    this.selectedIngredient.ingred_navn =
-                      event.currentTarget.selectedOptions[0].text;
-                  }}
-                >
-                  {this.selectedIngredients.map((ingredient) => (
-                    <option key={ingredient.ingred_id} value={ingredient.ingred_id}>
-                      {ingredient.ingred_navn}
-                    </option>
-                  ))}
-                </select>
               </Column>
               <Button.Success
                 id="btnIngredAdd"
                 onClick={() => {
-                  console.log(this.selectedIngredient);
                   this.chooseIngredientFunc(this.selectedIngredient.ingred_id);
                 }}
               >
                 Legg til ny ingrediens
               </Button.Success>
-            </Card>
-          </Column>
-          {/* legg til ingredienser */}
-          <Column>
-            <Form.Input
-              id="createIngredient"
-              type="text"
-              style={{ width: '400px' }}
-              value={this.ingredient}
-              onChange={(event) => (this.ingredient = event.currentTarget.value)}
-              placeholder="Legg til ingredienser"
-            ></Form.Input>
-            <Button.Success
-              id="createIngredientFunc"
-              onClick={() => {
-                this.addIngredientFunc();
-              }}
-            >
-              Legg til
-            </Button.Success>
-          </Column>
+            </Column>
+            {/* legg til ingredienser */}
+            <Column>
+              <Form.Input
+                id="createIngredient"
+                type="text"
+                style={{ width: '210px' }}
+                value={this.ingredient}
+                onChange={(event) => (this.ingredient = event.currentTarget.value)}
+                placeholder="Legg til ingredienser"
+              ></Form.Input>
+              <Button.Success
+                id="createIngredientFunc"
+                onClick={() => {
+                  this.addIngredientFunc();
+                }}
+              >
+                Legg til
+              </Button.Success>
+            </Column>
+          </Row>
+          <br />
           {/* velg hvor mye av hver inngrediense */}
           <Column>
             <h5>
@@ -273,6 +282,7 @@ export class NewRecipe extends Component {
             <div id="ingreditentList"></div>
           </Column>
         </Card>
+
         <Button.Success
           id="addRecipeBtn"
           onClick={() => {
@@ -288,10 +298,14 @@ export class NewRecipe extends Component {
     this.selectedIngredients = this.ingredients.filter((ingredient) =>
       ingredient.ingred_navn.toLowerCase().includes(searchterm.toLowerCase())
     );
-    console.log(this.selectedIngredients);
+    //@ts-ignore
+
     if (this.selectedIngredients.length === 0) {
       this.selectedIngredient = { ingred_id: 0, ingred_navn: '' };
     } else {
+      document.getElementById('selectIngredientNewRecipe').value =
+        this.selectedIngredients[0].ingred_id;
+      //@ts-ignore
       this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
     }
   }
@@ -320,26 +334,19 @@ export class NewRecipe extends Component {
     this.recipe_content.forEach((element) => {
       element.oppskrift_id = id;
     });
-    console.log('første console log', this.recipe_content);
     service
       .createRecipeIngredient(this.recipe_content)
       .then(() => history.push('/recipe/' + id))
       .catch((error) => Alert.danger('Creating new recipe: ' + error.message));
-
-    console.log(this.recipe_content);
   }
   chooseIngredientFunc(id: number) {
-    if (id === 0 || id === undefined || id === null || id === '') {
+    if (id === 0 || id === undefined || id === null || id === NaN) {
       Alert.info('Du må velge en ingrediens');
-    } else if (this.recipeIngredients.some((e) => e == id)) {
+    } else if (this.recipe_content.some((e) => e.ingred_id == id)) {
       Alert.info('Denne ingrediensen er allerede lagt til');
     } else {
-      this.selectedIngredient = this.selectIngredientReset;
-      console.log(this.recipeIngredients.some((e) => e == id));
-      console.log('før', this.recipeIngredients);
-      this.recipeIngredients.push(id);
-      console.log('etter', this.recipeIngredients);
-
+      this.searchterm = '';
+      this.search(this.searchterm);
       let name = this.ingredients.find((ingredient) => ingredient.ingred_id == id)?.ingred_navn;
       const btn = document.getElementById('ingred' + id) as HTMLButtonElement | null;
       if (btn != null) {
@@ -384,7 +391,6 @@ export class NewRecipe extends Component {
 
       deleteBtn.innerHTML = 'x';
       deleteBtn.onclick = () => {
-        this.recipeIngredients.splice(index, 1);
         this.recipe_content.splice(index, 1);
         btn != null ? (btn.disabled = false) : '';
         emFood.remove();
@@ -409,7 +415,6 @@ export class NewRecipe extends Component {
       return false;
     });
 
-    console.log(isFound);
     const result =
       this.category_name.charAt(0).toUpperCase() + this.category_name.slice(1).toLowerCase();
     this.category_name = result;
@@ -421,10 +426,13 @@ export class NewRecipe extends Component {
           .catch((error) => Alert.danger('Error : ' + error.message))
       );
     }
+
+    this.category_name = '';
   }
   addCountryFunc() {
     // sjekker om landet allerede finnes i arrayen med land, hvis ikke legger den til landet i databasen
     // hentet fra databasen
+
     let isFound = this.countries.some((country) => {
       if (country.land_navn.toLowerCase() == this.country_name.toLowerCase()) {
         return true;
@@ -432,7 +440,6 @@ export class NewRecipe extends Component {
       return false;
     });
 
-    console.log(isFound);
     const result =
       this.country_name.charAt(0).toUpperCase() + this.country_name.slice(1).toLowerCase();
     this.country_name = result;
@@ -449,14 +456,12 @@ export class NewRecipe extends Component {
     // sjekker om ingrediensen allerede finnes i arrayen med ingredienser
     // hentet fra databasen
     let isFound = this.ingredients.some((ingredient) => {
-      console.log(ingredient.ingred_navn == this.ingredient);
       if (ingredient.ingred_navn.toLowerCase() == this.ingredient.toLowerCase()) {
         return true;
       }
       return false;
     });
 
-    console.log(isFound);
     if (!isFound && this.ingredient != '') {
       service
         .createIngredient(this.ingredient)
@@ -466,7 +471,9 @@ export class NewRecipe extends Component {
             .then(
               (ingredients) => (
                 (this.ingredients = ingredients),
-                this.chooseIngredientFunc(ingredients[ingredients.length - 1].ingred_id)
+                (this.selectedIngredients = ingredients),
+                this.chooseIngredientFunc(ingredients[ingredients.length - 1].ingred_id),
+                this.search(this.searchterm)
               )
             )
             .catch((error) => Alert.danger('Error : ' + error.message))
@@ -474,7 +481,10 @@ export class NewRecipe extends Component {
         .catch((error) => Alert.danger('Error : ' + error.message));
       this.ingredient = '';
     } else Alert.info('Ingrediensen finnes allerede eller du har ikke skrevet noe');
+
+    this.country_name = '';
   }
+
   checkCountry(value: number) {
     this.country_id = value;
   }
@@ -483,7 +493,7 @@ export class NewRecipe extends Component {
     this.category_id = value;
   }
   mounted() {
-    this.selectedIngredient.ingred_id = 1;
+    this.selectedIngredient.ingred_id = 0;
     this.selectedIngredient.ingred_navn = '';
 
     service

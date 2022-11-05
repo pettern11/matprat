@@ -37,7 +37,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
     return (
       <div>
         <Card title="">
-          <img src={this.recipe.bilde_adr} width="200px"></img>
+          <img src={this.recipe.bilde_adr}></img>
           <h1>{this.recipe.oppskrift_navn}</h1>
           {this.recipe.oppskrift_beskrivelse != '' ? (
             <p>Beskrivelse: {this.recipe.oppskrift_beskrivelse}</p>
@@ -62,13 +62,22 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
             }}
           />
           <label htmlFor="checkbox" id="heart">
-            <img src="https://static5.depositphotos.com/1001759/463/i/600/depositphotos_4634746-stock-photo-red-heart-isolated-white-background.jpg"></img>
+            <img
+              width={'50px'}
+              src="https://static5.depositphotos.com/1001759/463/i/600/depositphotos_4634746-stock-photo-red-heart-isolated-white-background.jpg"
+            ></img>
           </label>
           <h5>Oppskrift:</h5>
           <pre>{this.recipe.oppskrift_steg}</pre>
           <h3>Ingredienser</h3>
-          Porsjoner <Button.Danger id="btnDec" onClick={this.decrementPortions}>-</Button.Danger>{' '}
-          <b>{this.portions}</b> <Button.Success id="btnInc" onClick={this.incrementPortions}>+</Button.Success>
+          Porsjoner{' '}
+          <Button.Danger id="btnDec" onClick={this.decrementPortions}>
+            -
+          </Button.Danger>{' '}
+          <b>{this.portions}</b>{' '}
+          <Button.Success id="btnInc" onClick={this.incrementPortions}>
+            +
+          </Button.Success>
           {this.recipeContent.map((rc, i) => (
             <p key={i}>
               {i + 1}.{' '}
@@ -81,13 +90,13 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
           Endre oppskrift
         </Button.Success>
         <Button.Danger
-        //@ts-ignore
+          //@ts-ignore
           id="deleteRecipe"
           onClick={() => this.deleteRecipe(this.props.match.params.id)}
         >
           Slett oppskrift
         </Button.Danger>
-        <Button.Success id='btnSend' onClick={this.ingredientsToShoppingList}>
+        <Button.Success id="btnSend" onClick={this.ingredientsToShoppingList}>
           Send ingredienser til handleliste
         </Button.Success>
       </div>
