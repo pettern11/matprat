@@ -16,12 +16,12 @@ const recipes: Recipe[] = [
 ];
 
 const recipeContent: Recipe_Content[] = [
-  {oppskrift_id: 1, ingred_id: 1, mengde: 1, maleenhet: 'stk'},
-  {oppskrift_id: 1, ingred_id: 2, mengde: 1, maleenhet: 'stk'},
-  {oppskrift_id: 1, ingred_id: 3, mengde: 1, maleenhet: 'stk'},
-  {oppskrift_id: 2, ingred_id: 1, mengde: 1, maleenhet: 'stk'},
-  {oppskrift_id: 3, ingred_id: 2, mengde: 1, maleenhet: 'stk'},
-  {oppskrift_id: 3, ingred_id: 3, mengde: 1, maleenhet: 'stk'},
+  {oppskrift_id: 1, ingred_id: 1, mengde: "1", maleenhet: 'stk'},
+  {oppskrift_id: 1, ingred_id: 2, mengde: "1", maleenhet: 'stk'},
+  {oppskrift_id: 1, ingred_id: 3, mengde: "1", maleenhet: 'stk'},
+  {oppskrift_id: 2, ingred_id: 1, mengde: "1", maleenhet: 'stk'},
+  {oppskrift_id: 3, ingred_id: 2, mengde: "1", maleenhet: 'stk'},
+  {oppskrift_id: 3, ingred_id: 3, mengde: "1", maleenhet: 'stk'}, 
 ];
 
 axios.defaults.baseURL = 'http://localhost:3001/api/v2';
@@ -38,9 +38,12 @@ beforeEach((done) => {
     if (error) return done(error)
 
     service
-      .createRecipe(recipes[0])
-      .then(() => service.createRecipe(recipes[1]))
-      .then(() => service.createRecipe(recipes[2]))
+      .createRecipeIngredient([recipeContent[0]])
+      .then(() => service.createRecipeIngredient([recipeContent[1]]))
+      .then(() => service.createRecipeIngredient([recipeContent[2]]))
+      .then(() => service.createRecipeIngredient([recipeContent[3]]))   
+      .then(() => service.createRecipeIngredient([recipeContent[4]]))
+      .then(() => service.createRecipeIngredient([recipeContent[5]])) 
       .then(() => done());
   });
 });
@@ -49,4 +52,15 @@ beforeEach((done) => {
 afterAll((done) => {
   if (!webServer) return done(new Error());
   webServer.close(() => pool.end(() => done()));
+});
+
+describe('oppskrift_innhold GET(200)', () => {
+  test('Return all recipe content', (done) => {
+    axios.get('/recipecontent').then((response) => {
+      console.log(response.data);
+      expect(response.status).toBe(200);
+      expect(response.data).toEqual(recipeContent);
+      done();
+    });
+  });
 });
