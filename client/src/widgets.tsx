@@ -26,7 +26,7 @@ export class Cards extends Component<{ title: ReactNode; children: ReactNode }> 
   render() {
     return (
       <div className="card cards cards-white">
-        <div className="card-body">
+        <div className="card-body cards-body">
           <h5 className="card-title">{this.props.title}</h5>
           <div className="card-text">{this.props.children}</div>
         </div>
@@ -93,6 +93,12 @@ export class Car extends Component<{ title: ReactNode; children: ReactNode }> {
 export class Row extends Component<{ children: ReactNode }> {
   render() {
     return <div className="row">{this.props.children}</div>;
+  }
+}
+
+export class Rows extends Component<{ children: ReactNode }> {
+  render() {
+    return <div className="row rows">{this.props.children}</div>;
   }
 }
 

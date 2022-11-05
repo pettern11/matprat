@@ -100,6 +100,7 @@ export class NewRecipe extends Component {
               </Column>
               <Column>
                 <select
+                  className="form-select"
                   key={'choseCountry'}
                   id="choseCountry"
                   onChange={() => {
@@ -140,6 +141,7 @@ export class NewRecipe extends Component {
               </Column>
               <Column>
                 <select
+                  className="form-select"
                   key={'choseCategory'}
                   id="choseCategory"
                   onChange={() => {
@@ -214,6 +216,7 @@ export class NewRecipe extends Component {
                   <Form.Label>Søk:</Form.Label>
                 </Column>
                 <select
+                  className="form-select"
                   id="selectIngredientNewRecipe"
                   onChange={(event) => {
                     console.log(event.target.value);
@@ -235,6 +238,7 @@ export class NewRecipe extends Component {
                 </select>
                 <Form.Input
                   id="newRecipeSearch"
+                  placeholder="Søk"
                   type="text"
                   value={this.searchterm}
                   onChange={(event) => {
@@ -249,7 +253,7 @@ export class NewRecipe extends Component {
                   this.chooseIngredientFunc(this.selectedIngredient.ingred_id);
                 }}
               >
-                Legg til ny ingrediens
+                Legg til ingrediens
               </Button.Success>
             </Column>
             {/* legg til ingredienser */}
@@ -260,7 +264,7 @@ export class NewRecipe extends Component {
                 style={{ width: '210px' }}
                 value={this.ingredient}
                 onChange={(event) => (this.ingredient = event.currentTarget.value)}
-                placeholder="Legg til ingredienser"
+                placeholder="Legg til ny ingrediens"
               ></Form.Input>
               <Button.Success
                 id="createIngredientFunc"
@@ -404,6 +408,7 @@ export class NewRecipe extends Component {
       ingredList.appendChild(inputMeasurment);
       ingredList.appendChild(deleteBtn);
     }
+    this.searchterm = '';
   }
   addCategoryFunc() {
     // sjekker om kategorien allerede finnes i arrayen med kategorier, hvis ikke legger den til landet i databasen
@@ -482,7 +487,7 @@ export class NewRecipe extends Component {
       this.ingredient = '';
     } else Alert.info('Ingrediensen finnes allerede eller du har ikke skrevet noe');
 
-    this.country_name = '';
+    this.country_name = "";
   }
 
   checkCountry(value: number) {
