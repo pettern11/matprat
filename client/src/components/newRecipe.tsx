@@ -219,7 +219,6 @@ export class NewRecipe extends Component {
                   className="form-select"
                   id="selectIngredientNewRecipe"
                   onChange={(event) => {
-                    console.log(event.target.value);
                     this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
                     this.selectedIngredient.ingred_navn =
                       event.currentTarget.selectedOptions[0].text;
@@ -227,10 +226,6 @@ export class NewRecipe extends Component {
                   style={{ width: '210px' }}
                 >
                   {this.selectedIngredients.map((ingredient, i) => (
-                    // @ts-ignore
-                    // {i==0?console.log('homo'):''}
-                    //make the first option the selected option
-
                     <option key={ingredient.ingred_id} value={ingredient.ingred_id}>
                       {ingredient.ingred_navn}
                     </option>

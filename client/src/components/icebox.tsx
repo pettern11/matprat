@@ -130,7 +130,6 @@ export class Icebox extends Component {
       ingredient.ingred_navn.toLowerCase().includes(searchterm.toLowerCase())
     );
     this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
-    console.log(this.selectedIngredients);
   }
 
   mounted() {

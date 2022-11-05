@@ -55,7 +55,6 @@ export class ShoppingList extends Component {
                     onChange={(event) => {
                       //@ts-ignore
                       sl.mengde = event.currentTarget.value;
-                      console.log(sl.mengde);
                     }}
                     onBlur={() => this.updatePortions(sl)}
                     value={sl.mengde}
@@ -171,7 +170,6 @@ export class ShoppingList extends Component {
               value={this.selectedIngredient.maleenhet}
               onChange={(event) => {
                 this.selectedIngredient.maleenhet = event.currentTarget.value;
-                console.log(this.selectedIngredient);
               }}
             />
             <Button.Success onClick={() => this.addExistingItem(this.selectedIngredient)}>
@@ -234,8 +232,6 @@ export class ShoppingList extends Component {
       this.selectedIngredient.ingred_id = 0;
       Alert.danger('Ingen ingredienser funnet');
     }
-    console.log(this.selectedIngredients);
-    console.log(this.selectedIngredient);
   }
   incrementPortions(ingredient: List) {
     ingredient.mengde++;
@@ -286,8 +282,6 @@ export class ShoppingList extends Component {
   }
 
   addItem(item: ElementShoppingList) {
-    console.log(this.ingredients.length);
-    console.log(this.ingredients);
     item.ingred_id = this.ingredients[this.ingredients.length - 1].ingred_id + 1;
     if (item.ingred_navn == null || item.ingred_navn == undefined || item.ingred_navn == '') {
       Alert.danger('Du må fylle inn navn på ingrediensen');

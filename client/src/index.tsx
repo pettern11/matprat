@@ -143,11 +143,8 @@ export class Home extends Component {
                 this.likedFromCategory.push(likedRecipe.kategori_id)
               )
             );
-          console.log(this.likedFromCountrey, this.likedFromCategory);
 
           this.recipes.map((element) => {
-            //@ts-ignore
-            console.log(this.likedFromCountrey.includes(element.land_id));
             if (
               //@ts-ignore
               this.likedFromCountrey.includes(element.land_id) &&
@@ -174,7 +171,6 @@ export class Home extends Component {
 
             this.suggestedRecipe.splice(random, 1);
           }
-          console.log(this.suggestedRecipeList);
         }
       })
       .catch((error) => Alert.danger('Error getting tasks: ' + error.message));

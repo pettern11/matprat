@@ -83,7 +83,6 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                   className="form-select"
                   id="selectIngredientNewRecipe"
                   onChange={(event) => {
-                    console.log(event.target.value);
                     this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
                     this.selectedIngredient.ingred_navn =
                       event.currentTarget.selectedOptions[0].text;
@@ -91,10 +90,6 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                   style={{ width: '210px' }}
                 >
                   {this.selectedIngredients.map((ingredient, i) => (
-                    // @ts-ignore
-                    // {i==0?console.log('homo'):''}
-                    //make the first option the selected option
-
                     <option key={ingredient.ingred_id} value={ingredient.ingred_id}>
                       {ingredient.ingred_navn}
                     </option>
@@ -138,10 +133,10 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                     style={{ width: '75px', marginRight: '0px' }}
                     type="number"
                     value={rc.mengde}
-                    onChange={(event) => (
+                    onChange={(event) =>
                       //@ts-ignore
-                      (rc.mengde = event.currentTarget.value), console.log(this.recipeContent)
-                    )}
+                      (rc.mengde = event.currentTarget.value)
+                    }
                   />
                   <input
                     className="form-control"
@@ -149,10 +144,10 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                     id={'ingredType' + i.toString()}
                     type="text"
                     value={rc.maleenhet}
-                    onChange={(event) => (
+                    onChange={(event) =>
                       //@ts-ignore
-                      (rc.maleenhet = event.currentTarget.value), console.log(this.recipeContent)
-                    )}
+                      (rc.maleenhet = event.currentTarget.value)
+                    }
                   />
                   <Column width={2}>
                     <Button.Danger onClick={() => this.deleteIngredient(rc.ingred_id)}>
