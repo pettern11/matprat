@@ -35,11 +35,14 @@ export class ShoppingList extends Component {
   render() {
     return (
       <>
+        <br></br>
+        <br></br>
+        <br></br>
         <Card title="Handleliste">
           <Column>
             <div id="liste" className="">
               {this.shoppingList.map((sl, i) => (
-                <Row key={sl.ingred_id}>
+                <Row key={sl.ingred_id + 'a' + i}>
                   {/* <Row> */}
                   <p style={{ width: '190px' }}>
                     {i + 1}.{' '}
@@ -169,7 +172,12 @@ export class ShoppingList extends Component {
                 this.selectedIngredient.maleenhet = event.currentTarget.value;
               }}
             />
-            <Button.Success onClick={() => this.addExistingItem(this.selectedIngredient)}>
+            <Button.Success
+              onClick={() =>
+                // console.log(this.selectedIngredient)}>
+                this.addExistingItem(this.selectedIngredient)
+              }
+            >
               Legg til
             </Button.Success>
           </Column>
