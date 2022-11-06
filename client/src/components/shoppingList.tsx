@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Alert, Card, Row, Column, Form, Button, RecipeView } from '.././widgets';
@@ -187,21 +188,10 @@ export class ShoppingList extends Component {
   }
 
   mounted() {
-    this.elementHandleliste.ingred_id = 0;
-    this.elementHandleliste.ingred_navn = '';
-    this.elementHandleliste.mengde = 0;
-    this.elementHandleliste.maleenhet = '';
-
     this.searchterm = '';
     this.selectedIngredient.mengde = 0;
     this.selectedIngredient.maleenhet = '';
-
-    service
-      .getShoppingList()
-      .then((shoppingList: List[]) => (this.shoppingList = shoppingList))
-      .catch((error: { message: string }) =>
-        Alert.danger('Error getting shoppingList: ' + error.message)
-      );
+    console;
 
     service
       .getAllIngredient()
@@ -215,20 +205,33 @@ export class ShoppingList extends Component {
             : '')
         )
       )
-      .then(
-        () => (
-          (this.ingredients = this.ingredients.sort((a, b) =>
-            a.ingred_navn.localeCompare(b.ingred_navn)
-          )),
-          (this.selectedIngredients = this.selectedIngredients.sort((a, b) =>
-            a.ingred_navn.localeCompare(b.ingred_navn)
-          ))
-        )
-      )
+
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+    service
+      .getShoppingList()
+      .then((shoppingList: List[]) => (this.shoppingList = shoppingList))
+      // .then(() => this.sortFastest())
+      .catch((error: { message: string }) =>
+        Alert.danger('Error getting shoppingList: ' + error.message)
+      );
+    //siden inngredients er så stort array hvis vi bruker scripetet
+    //vil ta opp mot 8 sekunder å laste siden fordi det er så mange elementer
+    //derfor setter vi sorteringen til sluttx
   }
+  sortFastest() {
+    this.ingredients.sort((a, b) => {
+      if (a.ingred_navn < b.ingred_navn) {
+        return -1;
+      }
+      if (a.ingred_navn > b.ingred_navn) {
+        return 1;
+      }
+      return 0;
+    });
+  }
+
   search(searchterm: string) {
-    this.selectedIngredients = this.ingredients.filter((ingredient) =>
+    this.selectedIngredient = this.ingredients.filter((ingredient) =>
       ingredient.ingred_navn.toLowerCase().includes(searchterm.toLowerCase())
     );
     if (this.selectedIngredients.length > 0) {
