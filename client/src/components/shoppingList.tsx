@@ -39,7 +39,8 @@ export class ShoppingList extends Component {
           <Column>
             <div id="liste" className="">
               {this.shoppingList.map((sl, i) => (
-                <Row key={i}>
+                <Row key={sl.ingred_id}>
+                  {/* <Row> */}
                   <p style={{ width: '190px' }}>
                     {i + 1}.{' '}
                     {
@@ -93,7 +94,7 @@ export class ShoppingList extends Component {
         </Card>
         <Card title="Legg til ingredienser">
           <Column>
-            <p key={1}>
+            <p>
               Navn: {/* @ts-ignore */}
               <Form.Input
                 id="navn"
@@ -138,8 +139,13 @@ export class ShoppingList extends Component {
                 this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
               }}
             >
-              {this.selectedIngredients.map((ingredient) => (
+              {/* {this.selectedIngredients.map((ingredient, i) => (
                 <option key={ingredient.ingred_id} value={ingredient.ingred_id}>
+                  {ingredient.ingred_navn}
+                </option>
+              ))} */}
+              {this.selectedIngredients.map((ingredient, i) => (
+                <option key={i} value={ingredient.ingred_id}>
                   {ingredient.ingred_navn}
                 </option>
               ))}
