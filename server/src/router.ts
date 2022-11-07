@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { request } from 'express';
 import { service } from './services';
 
 /**
@@ -45,7 +45,6 @@ router.get('/recipecontent/:id', (_request, response) => {
 
 router.post('/create_recipe_ingredient', (request, response) => {
   const data = request.body;
-  console.log('tredje console log', data.recipe_content);
   service
     .createRecipeIngredient(data.recipe_content)
     .then((_result) => response.status(201).send('Oppskrift innhold opprettet.'))
@@ -54,7 +53,6 @@ router.post('/create_recipe_ingredient', (request, response) => {
 
 router.post('/createrecipe', (request, response) => {
   const data = request.body;
-  console.log(data.recipe);
   //tror denne ifen kan fjernes, siden den ikke gjør noe, hvis det blir en feil i databasen blir det catchet i og status 500 sendt
   // hvis man skal ha en slik feilsjekking bør den settes i then, tror jeg hilsen Petter
   if (
@@ -105,18 +103,25 @@ router.get('/recipecontent', (_request, response) => {
     .catch((error) => response.status(500).send(error));
 });
 router.get('/shoppinglist', (_request, response) => {
+  
   service
     .getShoppingList()
     .then((rows) => response.send(rows))
     .catch((error) => response.status(500).send(error));
 });
 router.post('/addingredient', (request, response) => {
-  const data = request.body;
+  const data = request.body.ingredient;
+  console.log(data);
+  if(data.ingred_id == '' || data.ingred_id == null
+  || data.mengde == '' || data.mengde == null
+  || data.maleenhet == '' || data.maleenhet == null){
+    response.status(400).send('Missing crutial information, fill in all the fields');
+  } else {
   service
-    .addIngredientShoppinglist(data.ingredient)
+    .addIngredientShoppinglist(data)
     .then(() => response.send())
     .catch((error) => response.status(500).send(error));
-});
+}});
 router.post('/addingredienttoicebox', (request, response) => {
   const data = request.body;
   service
@@ -155,17 +160,22 @@ router.put('/update_recipe_ingredient', (request, response) => {
     .catch((error) => response.status(500).send(error));
 });
 router.put('/updateingredient', (request, response) => {
-  service.updateIngredientShoppinglist(request.body.ingredient).then(() => response.send());
-  // .catch((error) => response.status(500).send(error));
-});
-router.put('/update_recipe/:id', (request, response) => {
-  service
-    .updateRecipe(request.body.recipe)
+  const data = request.body.ingredient;
+  console.log(data)
+
+  service.updateIngredientShoppinglist(data)
     .then(() => response.send())
     .catch((error) => response.status(500).send(error));
 });
+router.put('/update_recipe/:id', (request, response) => {
+  console.log(request.body);
+  service
+    .updateRecipe(request.body.recipe)
+    .then(() =>{
+      response.send()})
+    .catch((error) => response.status(500).send('Ingen oppskrift ble oppdatert'));
+});
 router.delete('/deleteingredient/:recipeid/:ingredid', (request, response) => {
-  console.log(request.params.recipeid, request.params.ingredid);
   service
     .deleteIngredient(Number(request.params.recipeid), Number(request.params.ingredid))
     .then((_result) =>{console.log(_result); response.status(203).send('Oppskrift innhold slettet.')})
