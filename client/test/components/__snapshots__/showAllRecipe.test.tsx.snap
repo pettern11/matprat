@@ -2,45 +2,44 @@
 
 exports[`ShowAllRecipe tests Snapshot showAllRecipe draws correctly 1`] = `
 <Fragment>
-  <br />
-  <Car
-    title="Søkefelt"
-  >
+  <div>
     <FormInput
       id="indexsearch"
       onChange={[Function]}
+      placeholder="Søk etter oppskrift"
       type="text"
       value=""
     />
-  </Car>
-  <select
-    id="sortBy"
-    onChange={[Function]}
-  >
-    <option>
-      Sorter
-    </option>
-    <option
-      value="0"
+    <select
+      className="form-select"
+      id="sortBy"
+      onChange={[Function]}
     >
-      A-Z
-    </option>
-    <option
-      value="1"
-    >
-      Z-A
-    </option>
-    <option
-      value="2"
-    >
-      Nyeste
-    </option>
-  </select>
+      <option>
+        Sorter
+      </option>
+      <option
+        value="0"
+      >
+        A-Z
+      </option>
+      <option
+        value="1"
+      >
+        Z-A
+      </option>
+      <option
+        value="2"
+      >
+        Nyeste
+      </option>
+    </select>
+  </div>
   <br />
   <div
     className="container-fluid "
   >
-    <Row>
+    <Rows>
       <Cards
         key="1"
         title=""
@@ -71,7 +70,7 @@ exports[`ShowAllRecipe tests Snapshot showAllRecipe draws correctly 1`] = `
           />
         </NavLink>
       </Cards>
-    </Row>
+    </Rows>
   </div>
 </Fragment>
 `;
