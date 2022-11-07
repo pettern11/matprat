@@ -180,7 +180,7 @@ export class ShoppingList extends Component {
     );
   }
 
-  mounted(search: string | '', jk: boolean) {
+  mounted(search: string, jk: boolean) {
     this.searchterm = search;
     this.selectedIngredient.mengde = 0;
     this.selectedIngredient.maleenhet = '';

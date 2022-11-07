@@ -137,19 +137,15 @@ export class Icebox extends Component {
       .getAllIngredient()
       .then(
         (ingredients) => (
-          (this.ingredients = ingredients), (this.selectedIngredients = ingredients)
-        )
-      )
-      .then(
-        () => (
-          (this.ingredients = this.ingredients.sort((a, b) =>
+          (this.ingredients = ingredients.sort((a, b) =>
             a.ingred_navn.localeCompare(b.ingred_navn)
           )),
-          (this.selectedIngredients = this.selectedIngredients.sort((a, b) =>
+          (this.selectedIngredients = ingredients.sort((a, b) =>
             a.ingred_navn.localeCompare(b.ingred_navn)
           ))
         )
       )
+
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
 
     service
@@ -165,8 +161,12 @@ export class Icebox extends Component {
     //service that gets all ingredients in icebox
     service
       .getAllIceboxIngredients()
-      .then((ingredients) => (this.choosenIngredient = ingredients))
-      .then(() => this.filterRecipes())
+      .then((ingredients) => {
+        (this.choosenIngredient = ingredients),
+          //waits for all ingredients to be added to choosenIngredient before filtering recipes
+          this.choosenIngredient.length == ingredients.length ? this.filterRecipes() : '';
+      })
+      // .then(() => this.filterRecipes())
       .catch((error) => Alert.danger('Error getting icebox ingredients: ' + error.message));
   }
 }
