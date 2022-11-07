@@ -1,6 +1,7 @@
+// @ts-nocheck
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Alert, Card, Row, Column, Form, Button, RecipeView } from '.././widgets';
+import { Alert, Card, Row, Column, Form, Button, RecipeView, Car } from '.././widgets';
 import { NavLink, Redirect } from 'react-router-dom';
 import service, {
   Country,
@@ -15,6 +16,7 @@ import { createHashHistory } from 'history';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 export class ShoppingList extends Component {
+  newIngredient: string = '';
   shoppingList: List[] = [];
   ingredients: Ingredient[] = [];
   selectedIngredients: Ingredient[] = [];
@@ -31,7 +33,6 @@ export class ShoppingList extends Component {
     mengde: 0,
     maleenhet: '',
   };
-
   render() {
     return (
       <>
@@ -95,46 +96,19 @@ export class ShoppingList extends Component {
             </div>
           </Column>
         </Card>
-        <Card title="Legg til ingredienser">
-          <Column>
-            <p>
-              Navn: {/* @ts-ignore */}
-              <Form.Input
-                id="navn"
-                type="text"
-                onChange={(event) => {
-                  this.elementHandleliste.ingred_navn = event.currentTarget.value;
-                }}
-                value={this.elementHandleliste.ingred_navn}
-              ></Form.Input>
-              Antall: {/* @ts-ignore */}
-              <Form.Input
-                id="mengde"
-                type="number"
-                onChange={(event) => {
-                  //@ts-ignore
-                  this.elementHandleliste.mengde = event.currentTarget.value;
-                }}
-                value={this.elementHandleliste.mengde}
-              ></Form.Input>
-              Måleenhet: {/* @ts-ignore */}
-              <Form.Input
-                id="maleenhet"
-                type="text"
-                onChange={(event) => {
-                  this.elementHandleliste.maleenhet = event.currentTarget.value;
-                }}
-                value={this.elementHandleliste.maleenhet}
-              ></Form.Input>
-              <Button.Success onClick={() => this.addItem(this.elementHandleliste)}>
-                Legg til
-              </Button.Success>
-            </p>
-          </Column>
-        </Card>
-        <Card title="Add existing ingredients">
+
+        <Card title="Legg til varer i kurven din">
           <Column>
             Søk:
+            <Form.Input
+              id="shoppinglistsearch"
+              type="text"
+              value={this.searchterm}
+              onChange={(event) => {
+                this.search(event.currentTarget.value);
+                this.searchterm = event.currentTarget.value;
+              }}
+            />
             <select
               className="form-select"
               id="selectExistingIngredient"
@@ -182,51 +156,56 @@ export class ShoppingList extends Component {
             </Button.Success>
           </Column>
         </Card>
+        <Card title="Legg til ny vare">
+          <Column>
+            <Form.Input
+              id="createIngredient"
+              type="text"
+              style={{ width: '210px' }}
+              value={this.newIngredient}
+              onChange={(event) => (this.newIngredient = event.currentTarget.value)}
+              placeholder="Legg til ny ingrediens"
+            ></Form.Input>
+            <Button.Success
+              id="createIngredientFunc"
+              onClick={() => {
+                this.addIngredient(this.newIngredient);
+              }}
+            >
+              Legg til
+            </Button.Success>
+          </Column>
+        </Card>
       </>
     );
   }
 
-  mounted() {
-    this.elementHandleliste.ingred_id = 0;
-    this.elementHandleliste.ingred_navn = '';
-    this.elementHandleliste.mengde = 0;
-    this.elementHandleliste.maleenhet = '';
-
-    this.searchterm = '';
+  mounted(search: string | '', jk: boolean) {
+    this.searchterm = search;
     this.selectedIngredient.mengde = 0;
     this.selectedIngredient.maleenhet = '';
 
+    service
+      .getAllIngredient()
+      .then(
+        (ingredients) => (
+          (this.ingredients = ingredients.sort((a, b) =>
+            a.ingred_navn.localeCompare(b.ingred_navn)
+          )),
+          (this.selectedIngredients = ingredients)
+        )
+      )
+      .then(() => (jk ? this.search(search) : ''))
+
+      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
     service
       .getShoppingList()
       .then((shoppingList: List[]) => (this.shoppingList = shoppingList))
       .catch((error: { message: string }) =>
         Alert.danger('Error getting shoppingList: ' + error.message)
       );
-
-    service
-      .getAllIngredient()
-      .then(
-        (ingredients) => (
-          (this.ingredients = ingredients),
-          (this.selectedIngredients = ingredients),
-          (this.selectedIngredient.ingred_id = document.getElementById('selectExistingIngredient')
-            ? //@ts-ignore
-              document.getElementById('selectExistingIngredient').value
-            : '')
-        )
-      )
-      .then(
-        () => (
-          (this.ingredients = this.ingredients.sort((a, b) =>
-            a.ingred_navn.localeCompare(b.ingred_navn)
-          )),
-          (this.selectedIngredients = this.selectedIngredients.sort((a, b) =>
-            a.ingred_navn.localeCompare(b.ingred_navn)
-          ))
-        )
-      )
-      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
   }
+
   search(searchterm: string) {
     this.selectedIngredients = this.ingredients.filter((ingredient) =>
       ingredient.ingred_navn.toLowerCase().includes(searchterm.toLowerCase())
@@ -286,44 +265,29 @@ export class ShoppingList extends Component {
       .catch((error) => Alert.danger('Error deleting shopping list: ' + error.message));
   }
 
-  addItem(item: ElementShoppingList) {
-    item.ingred_id = this.ingredients[this.ingredients.length - 1].ingred_id + 1;
-    if (item.ingred_navn == null || item.ingred_navn == undefined || item.ingred_navn == '') {
+  addIngredient(item: string) {
+    if (item == null || item == undefined || item == '') {
       Alert.danger('Du må fylle inn navn på ingrediensen');
     } else if (
-      this.ingredients.some(
-        (ing) => ing.ingred_navn.toLowerCase() == item.ingred_navn.toLowerCase()
-      ) == true
+      this.ingredients.some((ing) => ing.ingred_navn.toLowerCase() == item.toLowerCase()) == true
     ) {
       Alert.danger('Ingrediensen eksisterer allerede');
-    } else if (
-      item.mengde == null ||
-      item.mengde == undefined ||
-      //@ts-ignore
-      item.mengde == '' ||
-      item.mengde < 0 ||
-      item.mengde == 0
-    ) {
-      item.mengde = 1;
-      Alert.danger('Du må fylle inn antall av ingrediensen, dette må være heltall større enn 0');
-      return false;
-    } else if (item.maleenhet == null || item.maleenhet == undefined || item.maleenhet == '') {
-      Alert.danger('Du må fylle inn måleenhet');
-      return false;
     } else {
+      this.newIngredient = '';
       service
-        .createIngredient(item.ingred_navn)
+        .createIngredient(item)
+        //sender parametere inn i mounted for å søke på ingrediensen når mounted er ferdig
+        //dette virker mest praktisk fordi componentDidMount og componentDidUpdate ikke fungerte
         .then(() => {
-          service
-            .addIngredient(item)
-            .then(() => this.mounted())
-            .catch((error) => Alert.danger('Error adding item to shopping list: ' + error.message));
+          this.mounted(item, true);
         })
+
         .catch((error) => Alert.danger('Error creating new ingredient: ' + error.message));
     }
   }
 
   addExistingItem(item: List) {
+    item.ingred_id = document.getElementById('selectExistingIngredient')?.value; //@ts-ignore
     if (
       item.mengde == null ||
       item.mengde == undefined ||
