@@ -33,16 +33,22 @@ router.get('/recipecontent/:id', (_request, response) => {
 
   service
     .getRecipeContent(id)
-    .then((rows) => response.send(rows))
+    .then((rows) =>{
+      if(rows.length === 0){
+        response.status(404).send(`Oppskrift med id ${id} ikke funnet.`); 
+      } else {
+      response.send(rows)}
+    })
     .catch((error) => response.status(500).send(error));
 });
+
 
 router.post('/create_recipe_ingredient', (request, response) => {
   const data = request.body;
   console.log('tredje console log', data.recipe_content);
   service
     .createRecipeIngredient(data.recipe_content)
-    .then((_result) => response.send())
+    .then((_result) => response.status(201).send('Oppskrift innhold opprettet.'))
     .catch((error) => response.status(500).send(error));
 });
 
@@ -141,9 +147,11 @@ router.post('/newcategory', (request, response) => {
 });
 
 router.put('/update_recipe_ingredient', (request, response) => {
+  const data = request.body;
+  console.log(data)
   service
     .updateRecipeIngredient(request.body.recipeContent)
-    .then(() => response.send())
+    .then(() =>{console.log(response); response.status(202).send('Oppskrift innhold oppdatert.')})
     .catch((error) => response.status(500).send(error));
 });
 router.put('/updateingredient', (request, response) => {
@@ -160,7 +168,7 @@ router.delete('/deleteingredient/:recipeid/:ingredid', (request, response) => {
   console.log(request.params.recipeid, request.params.ingredid);
   service
     .deleteIngredient(Number(request.params.recipeid), Number(request.params.ingredid))
-    .then((_result) => response.send())
+    .then((_result) =>{console.log(_result); response.status(203).send('Oppskrift innhold slettet.')})
     .catch((error) => response.status(500).send(error));
 });
 router.delete('/deleteingredientshoppinglist/:id', (request, response) => {

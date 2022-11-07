@@ -17,7 +17,7 @@ export type Recipe = {
 export type Recipe_Content = {
   oppskrift_id: number;
   ingred_id: number;
-  mengde: number;
+  mengde: string;
   maleenhet: string;
 };
 
@@ -91,7 +91,6 @@ class Service {
         [id],
         (error, results: RowDataPacket[]) => {
           if (error) return reject(error);
-          console.log(results);
 
           resolve(results as Recipe_Content[]);
         }
@@ -262,7 +261,6 @@ class Service {
   createRecipeIngredient(recipe_content: Recipe_Content[]) {
     return new Promise<void>((resolve, reject) => {
       recipe_content.forEach((element) => {
-        console.log(element);
 
         pool.query(
           'INSERT INTO oppskrift_innhold SET oppskrift_id=?, ingred_id=?, mengde=?,maleenhet=?',
@@ -281,10 +279,10 @@ class Service {
       console.log('homofaenfitte', recipeContent);
       recipeContent.forEach((element) => {
         pool.query(
-          'INSERT INTO oppskrift_innhold SET mengde=?, maleenhet=? WHERE oppskrift_id=? AND ingred_id=?',
+          'UPDATE oppskrift_innhold SET mengde=?, maleenhet=? WHERE oppskrift_id=? AND ingred_id=?',
           [element.mengde, element.maleenhet, element.oppskrift_id, element.ingred_id],
           (error: any, _results: any) => {
-            if (error) return reject(error);
+            if (error){ return reject(error)};
 
             resolve();
           }

@@ -54,7 +54,7 @@ afterAll((done) => {
   webServer.close(() => pool.end(() => done()));
 });
 
-describe('oppskrift_innhold GET(200)', () => {
+describe('oppskrift_innhold GET', () => {
   test('Return all recipe content', (done) => {
     axios.get('/recipecontent').then((response) => {
       console.log(response.data);
@@ -63,4 +63,76 @@ describe('oppskrift_innhold GET(200)', () => {
       done();
     });
   });
+
+  test('Return recipe content by recipe id', (done) => {
+    axios.get('/recipecontent/1').then((response) => {
+      expect(response.status).toBe(200);
+      expect(response.data).toEqual([recipeContent[0], recipeContent[1], recipeContent[2]]);
+      done();
+    });
+  });
+
+  test('Return recipe content by nonexisting id', (done) => {
+    axios.get('/recipecontent/4').catch((error) => {
+      expect(error.response.status).toBe(404);
+      expect(error.response.data).toEqual(`Oppskrift med id 4 ikke funnet.`);
+      done();
+    });
+  });
+
 });
+
+describe('oppskrift_innhold POST', () => {
+  test('Create recipe content', (done) => {
+    axios.post('/create_recipe_ingredient', {recipe_content: [{oppskrift_id: 2, ingred_id: 3, mengde: "1", maleenhet: 'stk'}]}).then((response) => {
+      expect(response.status).toBe(201);
+      expect(response.data).toEqual('Oppskrift innhold opprettet.');
+      //expect(response.data).toEqual({oppskrift_id: 2, ingred_id: 3, mengde: "1", maleenhet: 'stk'});
+      done();
+    });
+  });
+
+  test('Create recipe content with missing data', (done) => {
+    axios.post('/create_recipe_ingredient', {recipe_content:[{oppskrift_id: 4, ingred_id: 3, mengde: "1"}]}).catch((error) => {
+      expect(error.response.status).toBe(500);
+      done();
+    });
+  });
+});
+
+describe('oppskrift_innhold PUT', () => {
+  test('Update recipe content', (done) => {
+    axios.put('/update_recipe_ingredient', {recipeContent:[{oppskrift_id: 1, ingred_id: 1, mengde: "2", maleenhet: 'stk'}]}).then((response) => {
+      expect(response.status).toBe(202);
+      expect(response.data).toEqual('Oppskrift innhold oppdatert.');
+      done();
+    });
+  });
+
+  test('Update recipe content with missing data', (done) => {
+    axios.put('/update_recipe_ingredient', {recipeContent:[{oppskrift_id: 1, ingred_id: 1, mengde: "2"}]}).catch((error) => {
+      expect(error.response.status).toBe(500);
+      done();
+    });
+  });
+
+});
+
+describe('oppskrift_innhold DELETE', () => {
+  test('Delete recipe content', (done) => {
+    axios.delete('/deleteingredient/1/1').then((response) => {
+      expect(response.status).toBe(203);
+      expect(response.data).toEqual('Oppskrift innhold slettet.');
+      done();
+    });
+  });
+
+  test('Delete recipe content with nonexisting id', (done) => {
+    axios.delete('/deleteingredient/4/1').catch((error) => {
+      expect(error.response.status).toBe(500);
+      done();
+    });
+  });
+
+});
+
