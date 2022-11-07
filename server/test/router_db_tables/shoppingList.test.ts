@@ -4,9 +4,9 @@ import app from '../../src/app';
 import {service, IngredientToShoppinglist} from '../../src/services';
 
 const handleliste: IngredientToShoppinglist[] = [
-    { ingred_id: 1, mengde: 1, maleenhet: 'stk' },
-    { ingred_id: 2, mengde: 1, maleenhet: 'stk' },
-    { ingred_id: 3, mengde: 1, maleenhet: 'stk' },
+    {ingred_id: 1, mengde: "1", maleenhet: 'stk' },
+    {ingred_id: 2, mengde: "1", maleenhet: 'stk' },
+    {ingred_id: 3, mengde: "1", maleenhet: 'stk' },
 ];
 
 // Since API is not compatible with v1, API version is increased to v2
@@ -20,14 +20,14 @@ beforeAll((done) => {
 
 beforeEach((done) => {
   // Delete all tasks, and reset id auto-increment start value
-  pool.query('TRUNCATE TABLE matprat', (error) => {
+  pool.query('TRUNCATE TABLE handleliste', (error) => {
     if (error) return done(error);
 
     // Create testTasks sequentially in order to set correct id, and call done() when finished
-    taskService
-      .create(testTasks[0].title, testTasks[0].description)
-      .then(() => taskService.create(testTasks[1].title, testTasks[1].description)) // Create testTask[1] after testTask[0] has been created
-      .then(() => taskService.create(testTasks[2].title, testTasks[2].description)) // Create testTask[2] after testTask[1] has been created
+    service
+      .addIngredientShoppinglist(handleliste[0])
+      .then(() => service.addIngredientShoppinglist(handleliste[1])) // Create testTask[1] after testTask[0] has been created
+      .then(() => service.addIngredientShoppinglist(handleliste[2])) // Create testTask[2] after testTask[1] has been created
       .then(() => done()); // Call done() after testTask[2] has been created
   });
 });
@@ -38,63 +38,80 @@ afterAll((done) => {
   webServer.close(() => pool.end(() => done()));
 });
 
-// describe('Fetch tasks (GET)', () => {
-//   test('Fetch all tasks (200 OK)', (done) => {
-//     axios.get('/tasks').then((response) => {
-//       expect(response.status).toEqual(200);
-//       expect(response.data).toEqual(testTasks);
-//       done();
-//     });
-//   });
 
-//   test('Fetch task (200 OK)', (done) => {
-//     axios.get('/tasks/1').then((response) => {
-//       expect(response.status).toEqual(200);
-//       expect(response.data).toEqual(testTasks[0]);
-//       done();
-//     });
-//   });
 
-//   test.skip('Fetch all tasks (500 Internal Server Error)', (done) => {
-//     axios.get('/tasks').rejects.toThrow('Request failed with status code 500');
-//     done();
-//   });
+describe('Fetch shoppinglist items (GET)', () => {
+  test('Fetch all shoppinglist items (200 OK)', (done) => {
 
-//   test('Fetch task (404 Not Found)', (done) => {
-//     axios
-//       .get('/tasks/4')
-//       .then((_response) => done(new Error()))
-//       .catch((error) => {
-//         expect(error.message).toEqual('Request failed with status code 404');
-//         done();
-//       });
-//   });
-// });
+    const handlelisteexpect: any = [
+      {id: 1, ingred_id: 1, mengde: "1", maleenhet: 'stk' },
+      {id: 2, ingred_id: 2, mengde: "1", maleenhet: 'stk' },
+      {id: 3, ingred_id: 3, mengde: "1", maleenhet: 'stk' },
+    ];
 
-// describe('Create new task (POST)', () => {
-//   test('Create new task (200 OK)', (done) => {
-//     axios.post('/tasks', { title: 'Ny oppgave' }).then((response) => {
-//       expect(response.status).toEqual(200);
-//       expect(response.data).toEqual({ id: 4 });
-//       done();
-//     });
-//   });
-// });
+    axios.get('/shoppinglist').then((response) => {
+      expect(response.status).toEqual(200);
+      expect(response.data).toEqual(handlelisteexpect);
+      done();
+    });
+  });
+  
+});
 
-// describe('Delete task (DELETE)', () => {
-//   test('Delete task (200 OK)', (done) => {
-//     axios.delete('/tasks/2').then((response) => {
-//       expect(response.status).toEqual(200);
-//       done();
-//     });
-//   });
-// });
+describe('Add ingredient to shoppinglist (POST)', () => {
+  test('Add ingredient to shoppinglist (200 OK)', (done) => {
+    axios.post('/addingredient', {ingredient: {ingred_id: 4, mengde: "5", maleenhet: 'pølser' }}).then((response) => {
+      
+      expect(response.status).toEqual(200);
+      done();
+    });
+  });
 
-// describe('Update task', () => {
-//   test('Update task (200 OK)', (done) => {
-//     axios.put('/tasks/2', { title: 'Ny oppgave' }).then((response) => {
-//       expect(response.status).toEqual(200);
-//       done();
-//     });
-//   });
-// });
+  test('Missing maleenhet (400 Bad Request)', (done) => {
+    axios.post('/addingredient', {ingredient: {ingred_id: 4, mengde: "5"}}).catch((error) => {
+      console.log(error.message);
+      expect(error.response.data).toEqual('Missing crutial information, fill in all the fields');
+      expect(error.response.status).toEqual(400);
+      //expect(response.statusText).toEqual('Bad Request');
+      done();
+    });
+  });
+});
+
+
+describe('Delete ingredient from shoppinglist (DELETE)', () => {
+  //delete ingredient from shoppinglist /deleteingredientshoppinglist/:id
+  test('Delete ingredient from shoppinglist (200 OK)', (done) => {
+    axios.delete('/deleteingredientshoppinglist/2').then((response) => {
+      expect(response.status).toEqual(200);
+      done();
+    });
+  });
+
+  //delete non-existing ingredient from shoppinglist /deleteingredientshoppinglist/:id
+  test('Delete non-existing ingredient from shoppinglist (500 Not Found)', (done) => {
+    axios.delete('/deleteingredientshoppinglist/4').catch((error) => {
+      expect(error.response.status).toEqual(500);
+      done();
+    });
+  });
+});
+
+describe('Update ingredient in shoppinglist (PUT)', () => {
+  test('Update ingredient in shoppinglist (200 OK)', (done) => {
+    axios.put('/updateingredient', {ingredient: {id:3, ingred_id: 4, mengde: "5", maleenhet: 'pølser' }}).then((response) => {
+      expect(response.status).toEqual(200);
+      done();
+    });
+  });
+
+  test('Update non-existing ingredient in shoppinglist (500 Not Found)', (done) => {
+    axios.put('/updateingredient', {ingredient: {id: 4, ingred_id: 4, mengde: "5", maleenhet: 'pølser' }}).catch((error) => {
+      expect(error.response.status).toEqual(500);
+      done();
+    });
+  });
+});
+
+
+
