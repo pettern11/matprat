@@ -18,7 +18,7 @@ export type Recipe = {
 export type Recipe_Content = {
   oppskrift_id: number;
   ingred_id: number;
-  mengde: number;
+  mengde: string;
   maleenhet: string;
 };
 

@@ -32,7 +32,7 @@ export type Category = {
 //ingridient for shoppinglist, slightly different from the other ingridient
 export type IngredientToShoppinglist = {
   ingred_id: number;
-  mengde: number;
+  mengde: string;
   maleenhet: string;
 };
 export type ElementHandleliste = {
@@ -192,6 +192,7 @@ class Service {
         [ingredient.mengde, ingredient.maleenhet, ingredient.id],
         (error, results: ResultSetHeader) => {
           if (error) return reject(error);
+          if (results.affectedRows === 0) return reject('Not found');
 
           resolve();
         }
@@ -280,7 +281,7 @@ class Service {
           'UPDATE oppskrift_innhold SET mengde=?, maleenhet=? WHERE oppskrift_id=? AND ingred_id=?',
           [element.mengde, element.maleenhet, element.oppskrift_id, element.ingred_id],
           (error: any, _results: any) => {
-            if (error) return reject(error);
+            if (error){ return reject(error)};
 
             resolve();
           }
@@ -293,8 +294,11 @@ class Service {
       pool.query(
         'UPDATE oppskrift SET oppskrift_steg=?, ant_pors=? WHERE oppskrift_id=?',
         [recipe.oppskrift_steg, recipe.ant_pors, recipe.oppskrift_id],
-        (error: any, _results: any) => {
+        (error: any, _results: any) => {console.log('error',error)
+        console.log('riktig',_results)
           if (error) return reject(error);
+
+          if(_results.affectedRows == 0){return reject()};
 
           resolve();
         }
