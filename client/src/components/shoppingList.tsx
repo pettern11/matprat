@@ -197,7 +197,9 @@ export class ShoppingList extends Component {
       .getAllIngredient()
       .then(
         (ingredients) => (
-          (this.ingredients = ingredients),
+          (this.ingredients = ingredients.sort((a, b) =>
+            a.ingred_navn.localeCompare(b.ingred_navn)
+          )),
           (this.selectedIngredients = ingredients),
           (this.selectedIngredient.ingred_id = document.getElementById('selectExistingIngredient')
             ? //@ts-ignore
@@ -210,24 +212,9 @@ export class ShoppingList extends Component {
     service
       .getShoppingList()
       .then((shoppingList: List[]) => (this.shoppingList = shoppingList))
-      // .then(() => this.sortFastest())
       .catch((error: { message: string }) =>
         Alert.danger('Error getting shoppingList: ' + error.message)
       );
-    //siden inngredients er så stort array hvis vi bruker scripetet
-    //vil ta opp mot 8 sekunder å laste siden fordi det er så mange elementer
-    //derfor setter vi sorteringen til sluttx
-  }
-  sortFastest() {
-    this.ingredients.sort((a, b) => {
-      if (a.ingred_navn < b.ingred_navn) {
-        return -1;
-      }
-      if (a.ingred_navn > b.ingred_navn) {
-        return 1;
-      }
-      return 0;
-    });
   }
 
   search(searchterm: string) {
@@ -291,6 +278,7 @@ export class ShoppingList extends Component {
 
   addItem(item: ElementShoppingList) {
     item.ingred_id = this.ingredients[this.ingredients.length - 1].ingred_id + 1;
+    console.log(item);
     if (item.ingred_navn == null || item.ingred_navn == undefined || item.ingred_navn == '') {
       Alert.danger('Du må fylle inn navn på ingrediensen');
     } else if (
@@ -327,6 +315,7 @@ export class ShoppingList extends Component {
   }
 
   addExistingItem(item: List) {
+    item.ingred_id = document.getElementById('selectExistingIngredient')?.value; //@ts-ignore
     if (
       item.mengde == null ||
       item.mengde == undefined ||
