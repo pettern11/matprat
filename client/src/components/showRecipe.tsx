@@ -1,16 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Alert, Card, Row, Column, Form, Button, RecipeView } from '.././widgets';
-import { NavLink, Redirect } from 'react-router-dom';
-import service, {
-  Country,
-  Category,
-  Ingredient,
-  Recipe,
-  Recipe_Content,
-  List,
-  ElementShoppingList,
-} from '.././service';
+import { Alert, Card, Row, Button } from '.././widgets';
+import service, { Category, Ingredient, Recipe, Recipe_Content } from '.././service';
 import { createHashHistory } from 'history';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -31,7 +22,6 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
   recipeContent: Recipe_Content[] = [];
   ingredients: Ingredient[] = [];
   categories: Category[] = [];
-  //liked: boolean = this.recipe.liked;
 
   render() {
     return (
@@ -39,20 +29,19 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
         <Card title="">
           <img className="stort" src={this.recipe.bilde_adr}></img>
           <h1>{this.recipe.oppskrift_navn}</h1>
-          <br/>
+          <br />
           {this.recipe.oppskrift_beskrivelse != '' ? (
             <p>Beskrivelse: {this.recipe.oppskrift_beskrivelse}</p>
           ) : (
             ''
           )}
-          <p className="font-weight-bold" style={{marginBottom: '0px' }}>
+          <p className="font-weight-bold" style={{ marginBottom: '0px' }}>
             Kategori:{' '}
             {
               this.categories.find((kategori) => kategori.kategori_id == this.recipe.kategori_id)
                 ?.kategori_navn
             }
           </p>
-          
           {/* <Form.Checkbox
             checked={this.recipe.liked}
             id="checkbox"
@@ -80,7 +69,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
           />
           <label htmlFor="checkbox">
             <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
-              <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
+              <g id="Group" fill="none" fillRule="evenodd" transform="translate(467 392)">
                 <path
                   d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z"
                   id="heart"
@@ -134,8 +123,9 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
           {this.recipeContent.map((rc, i) => (
             <Row key={i}>
               <p style={{ width: '250px' }}>
-                {i + 1}.{' '}
-                {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}{' '}
+                {i + 1}. {/* find name of ingridient */}
+                {this.ingredients.find((ing) => ing.ingred_id == rc.ingred_id)?.ingred_navn}
+                {/* {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}{' '} */}
               </p>
               <p style={{ width: '75px' }}>
                 {((rc.mengde * this.portions) / this.recipe.ant_pors).toFixed(1)}
