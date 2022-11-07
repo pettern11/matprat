@@ -77,7 +77,7 @@ export class Mat extends Component<{ title: ReactNode; children: ReactNode }> {
 export class Car extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
     return (
-      <div className="card car">
+      <div className="card car car-white">
         <div className="card-body">
           <h5 className="card-title">{this.props.title}</h5>
           <div className="card-text">{this.props.children}</div>
@@ -260,6 +260,16 @@ class NavBarLink extends Component<{ to: string; children: ReactNode }> {
   }
 }
 
+class NavBarLinks extends Component<{ to: string; children: ReactNode }> {
+  render() {
+    return (
+      <NavLink className="nav-link nav-links nav-links-white" activeClassName="active" to={this.props.to}>
+        {this.props.children}
+      </NavLink>
+    );
+  }
+}
+
 /**
  * Renders a NavBar using Bootstrap classes.
  *
@@ -267,6 +277,7 @@ class NavBarLink extends Component<{ to: string; children: ReactNode }> {
  */
 export class NavBar extends Component<{ brand: ReactNode; children: ReactNode }> {
   static Link = NavBarLink;
+  static Links = NavBarLinks;
 
   render() {
     return (
@@ -413,7 +424,7 @@ export class Alert extends Component {
 
   render() {
     return (
-      <div id="alerts">
+      <div id="alerts" className="alerts">
         {this.alerts.map((alert, i) => (
           <div
             key={alert.id}
@@ -438,7 +449,7 @@ export class Alert extends Component {
   deleteMessage(i) {
     setTimeout(() => {
       this.alerts.splice(i, 1);
-    }, 1500);
+    }, 1000);
   }
 
   /**

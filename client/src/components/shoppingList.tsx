@@ -36,146 +36,143 @@ export class ShoppingList extends Component {
   render() {
     return (
       <>
-        <br></br>
-        <br></br>
-        <br></br>
-        <Card title="Handleliste">
-          <Column>
-            <div id="liste" className="">
-              {this.shoppingList.map((sl, i) => (
-                <Row key={sl.ingred_id + 'a' + i}>
-                  {/* <Row> */}
-                  <p style={{ width: '190px' }}>
-                    {i + 1}.{' '}
-                    {
-                      this.ingredients.find((ingredient) => ingredient.ingred_id == sl.ingred_id)
-                        ?.ingred_navn
-                    }{' '}
-                    {/* @ts-ignore */}
-                  </p>
-                  <input
-                    className="form-control"
-                    type="number"
-                    style={{ width: '75px', marginRight: '10px' }}
-                    onChange={(event) => {
-                      //@ts-ignore
-                      sl.mengde = event.currentTarget.value;
-                    }}
-                    onBlur={() => this.updatePortions(sl)}
-                    value={sl.mengde}
-                    size={2}
-                  ></input>{' '}
-                  <p style={{ width: '110px' }}>{sl.maleenhet}</p>
-                  <Column width={1}>
-                    <Button.Danger onClick={() => this.decrementPortions(sl)}>-</Button.Danger>
-                  </Column>
-                  <Column width={1}>
-                    <Button.Success onClick={() => this.incrementPortions(sl)}>+</Button.Success>
-                  </Column>
-                  <Column width={1}>
-                    <Button.Danger onClick={() => this.deleteIngredient(sl.id)}>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        className="bi bi-trash"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                        <path
-                          fillRule="evenodd"
-                          d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-                        />
-                      </svg>
-                    </Button.Danger>
-                  </Column>
-                </Row>
-              ))}
-              <Button.Danger onClick={() => this.deleteAll()}>Slett alle</Button.Danger>
-            </div>
-          </Column>
-        </Card>
-
-        <Card title="Legg til varer i kurven din">
-          <Column>
-            Søk:
-            <Form.Input
-              id="shoppinglistsearch"
-              type="text"
-              value={this.searchterm}
-              onChange={(event) => {
-                this.search(event.currentTarget.value);
-                this.searchterm = event.currentTarget.value;
-              }}
-            />
-            <select
-              className="form-select"
-              id="selectExistingIngredient"
-              onChange={(event) => {
-                this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
-              }}
-            >
-              {/* {this.selectedIngredients.map((ingredient, i) => (
-                <option key={ingredient.ingred_id} value={ingredient.ingred_id}>
-                  {ingredient.ingred_navn}
-                </option>
-              ))} */}
-              {this.selectedIngredients.map((ingredient, i) => (
-                <option key={i} value={ingredient.ingred_id}>
-                  {ingredient.ingred_navn}
-                </option>
-              ))}
-            </select>
-            Antall:{' '}
-            <Form.Input
-              id="exisitingmengde"
-              type="number"
-              value={this.selectedIngredient.mengde}
-              onChange={(event) => {
-                //@ts-ignore
-                this.selectedIngredient.mengde = event.currentTarget.value;
-              }}
-            />
-            Måleenhet:{' '}
-            <Form.Input
-              id="exisitingmaleenhet"
-              type="text"
-              value={this.selectedIngredient.maleenhet}
-              onChange={(event) => {
-                this.selectedIngredient.maleenhet = event.currentTarget.value;
-              }}
-            />
-            <Button.Success
-              onClick={() =>
-                // console.log(this.selectedIngredient)}>
-                this.addExistingItem(this.selectedIngredient)
-              }
-            >
-              Legg til
-            </Button.Success>
-          </Column>
-        </Card>
-        <Card title="Legg til ny vare">
-          <Column>
-            <Form.Input
-              id="createIngredient"
-              type="text"
-              style={{ width: '210px' }}
-              value={this.newIngredient}
-              onChange={(event) => (this.newIngredient = event.currentTarget.value)}
-              placeholder="Legg til ny ingrediens"
-            ></Form.Input>
-            <Button.Success
-              id="createIngredientFunc"
-              onClick={() => {
-                this.addIngredient(this.newIngredient);
-              }}
-            >
-              Legg til
-            </Button.Success>
-          </Column>
-        </Card>
+        <div className="margintop">
+          <Card title="Handleliste">
+            <Column>
+              <div id="liste" className="">
+                {this.shoppingList.map((sl, i) => (
+                  <Row key={i}>
+                    <p style={{ width: '190px' }}>
+                      {i + 1}.{' '}
+                      {
+                        this.ingredients.find((ingredient) => ingredient.ingred_id == sl.ingred_id)
+                          ?.ingred_navn
+                      }{' '}
+                      {/* @ts-ignore */}
+                    </p>
+                    <input
+                      className="form-control"
+                      type="number"
+                      style={{ width: '75px', marginRight: '10px' }}
+                      onChange={(event) => {
+                        //@ts-ignore
+                        sl.mengde = event.currentTarget.value;
+                      }}
+                      onBlur={() => this.updatePortions(sl)}
+                      value={sl.mengde}
+                      size={2}
+                    ></input>{' '}
+                    <p style={{ width: '110px' }}>{sl.maleenhet}</p>
+                    <Column width={1}>
+                      <Button.Danger onClick={() => this.decrementPortions(sl)}>-</Button.Danger>
+                    </Column>
+                    <Column width={1}>
+                      <Button.Success onClick={() => this.incrementPortions(sl)}>+</Button.Success>
+                    </Column>
+                    <Column width={1}>
+                      <Button.Danger onClick={() => this.deleteIngredient(sl.id)}>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          className="bi bi-trash"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                          <path
+                            fillRule="evenodd"
+                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                          />
+                        </svg>
+                      </Button.Danger>
+                    </Column>
+                  </Row>
+                ))}
+                <Button.Danger onClick={() => this.deleteAll()}>Slett alle</Button.Danger>
+              </div>
+            </Column>
+          </Card>
+          <Card title="Legg til ingredienser">
+            <Column>
+              <p key={1} style={{ width: '210px' }}>
+                Navn: {/* @ts-ignore */}
+                <Form.Input
+                  id="navn"
+                  type="text"
+                  onChange={(event) => {
+                    this.elementHandleliste.ingred_navn = event.currentTarget.value;
+                  }}
+                  value={this.elementHandleliste.ingred_navn}
+                ></Form.Input>
+                Antall: {/* @ts-ignore */}
+                <Form.Input
+                  id="mengde"
+                  type="number"
+                  onChange={(event) => {
+                    //@ts-ignore
+                    this.elementHandleliste.mengde = event.currentTarget.value;
+                  }}
+                  value={this.elementHandleliste.mengde}
+                ></Form.Input>
+                Måleenhet: {/* @ts-ignore */}
+                <Form.Input
+                  id="maleenhet"
+                  type="text"
+                  onChange={(event) => {
+                    this.elementHandleliste.maleenhet = event.currentTarget.value;
+                  }}
+                  value={this.elementHandleliste.maleenhet}
+                ></Form.Input>
+                <Button.Success onClick={() => this.addItem(this.elementHandleliste)}>
+                  Legg til
+                </Button.Success>
+              </p>
+            </Column>
+          </Card>
+          <Card title="Add existing ingredients">
+            <Column>
+              <p key={2} style={{ width: '210px' }}>
+                Søk:
+                <select
+                  className="form-select"
+                  id="selectExistingIngredient"
+                  onChange={(event) => {
+                    this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
+                  }}
+                >
+                  {this.selectedIngredients.map((ingredient) => (
+                    <option key={ingredient.ingred_id} value={ingredient.ingred_id}>
+                      {ingredient.ingred_navn}
+                    </option>
+                  ))}
+                </select>
+                Antall:{' '}
+                <Form.Input
+                  id="exisitingmengde"
+                  type="number"
+                  value={this.selectedIngredient.mengde}
+                  onChange={(event) => {
+                    //@ts-ignore
+                    this.selectedIngredient.mengde = event.currentTarget.value;
+                  }}
+                />
+                Måleenhet:{' '}
+                <Form.Input
+                  id="exisitingmaleenhet"
+                  type="text"
+                  value={this.selectedIngredient.maleenhet}
+                  onChange={(event) => {
+                    this.selectedIngredient.maleenhet = event.currentTarget.value;
+                  }}
+                />
+                <Button.Success onClick={() => this.addExistingItem(this.selectedIngredient)}>
+                  Legg til
+                </Button.Success>
+              </p>
+            </Column>
+          </Card>
+        </div>
       </>
     );
   }

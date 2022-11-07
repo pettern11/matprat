@@ -25,7 +25,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
 
   render() {
     return (
-      <div>
+      <div className="margintop">
         <Card title="">
           <img className="stort" src={this.recipe.bilde_adr}></img>
           <h1>{this.recipe.oppskrift_navn}</h1>
@@ -133,7 +133,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
               <p style={{ width: '130px' }}>{rc.maleenhet}</p>
             </Row>
           ))}
-          Porsjoner{' '}
+          Porsjoner:{' '}
           <Button.Danger id="btnDec" onClick={this.decrementPortions}>
             -
           </Button.Danger>{' '}

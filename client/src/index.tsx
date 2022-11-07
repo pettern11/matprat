@@ -61,69 +61,77 @@ export class Home extends Component {
 
     return (
       <>
-        <Card title="">
-          <div className="frontpage">
-            <h1>Anbefalt oppskrift:</h1>
-            <br></br>
-            <div className={'recipeToDay'}>
-              {this.recipes.length != 0
-                ? this.recipes
-                    .filter((recipes, i) => i == random)
-                    .map((recipe, rei) => (
-                      <div key={rei}>
-                        <NavLink
-                          key={rei + 'navlink'}
-                          className="black"
-                          to={'/recipe/' + recipe.oppskrift_id}
-                        >
-                          <img
-                            key={rei + 'picture'}
-                            src={recipe.bilde_adr}
-                            className="frontPicture"
-                            alt="recipe"
-                          />
-                          <br />
-                          <br />
-                          <h3 key={rei + 'name'} id="frontname" style={{ color: 'black' }}>
-                            {recipe.oppskrift_navn}
-                          </h3>
-                        </NavLink>
-                      </div>
-                    ))
-                : ''}
-            </div>
-            <br />
-            <br />
-            <div>
-              <div title="Anbefalte oppskrifter basert på dine likte:">
-                Anbefalte oppskrifter basert på det du liker
-                <Rows>
-                  {this.recipes.length != 0
-                    ? this.suggestedRecipeList.map((likedRecipe) => (
-                        <Cards key={likedRecipe.oppskrift_id + 'card'}>
-                          <NavLink
-                            key={likedRecipe.oppskrift_id + 'navlink2'}
-                            className="black"
-                            to={'/recipe/' + likedRecipe.oppskrift_id}
-                          >
-                            <RecipeView
-                              key={likedRecipe.oppskrift_id + 'recipeview'}
-                              img={likedRecipe.bilde_adr}
-                              name={likedRecipe.oppskrift_navn}
-                              numbOfPors={likedRecipe.ant_pors}
-                            ></RecipeView>
-                          </NavLink>
-                        </Cards>
-                      ))
-                    : ''}
-                </Rows>
-                <NavBar.Link to={'/showallrecipe'} style={{ width: '130px' }}>
-                  Alle oppskrifter
-                </NavBar.Link>
+        <div className="margintop">
+          <Card title="">
+            <div className="frontpage">
+              <h1>Anbefalt oppskrift:</h1>
+              <br></br>
+              <center>
+                <Car>
+                  <div className={'recipeToDay'}>
+                    {this.recipes.length != 0
+                      ? this.recipes
+                          .filter((recipes, i) => i == random)
+                          .map((recipe, rei) => (
+                            <div key={rei}>
+                              <NavLink
+                                key={rei + 'navlink'}
+                                className="black"
+                                to={'/recipe/' + recipe.oppskrift_id}
+                              >
+                                <img
+                                  key={rei + 'picture'}
+                                  src={recipe.bilde_adr}
+                                  className="frontPicture"
+                                  alt="recipe"
+                                />
+                                <br />
+                                <br />
+                                <h3 key={rei + 'name'} id="frontname" style={{ color: 'black' }}>
+                                  {recipe.oppskrift_navn}
+                                </h3>
+                              </NavLink>
+                            </div>
+                          ))
+                      : ''}
+                  </div>
+                </Car>
+              </center>
+              <br />
+              <br />
+              <div>
+                <div title="Anbefalte oppskrifter basert på dine likte:">
+                  <h5>Anbefalte oppskrifter basert på det du liker</h5>
+                  <br />
+                  <Rows>
+                    {this.recipes.length != 0
+                      ? this.suggestedRecipeList.map((likedRecipe) => (
+                          <Cards key={likedRecipe.oppskrift_id + 'card'}>
+                            <NavLink
+                              key={likedRecipe.oppskrift_id + 'navlink2'}
+                              className="black"
+                              to={'/recipe/' + likedRecipe.oppskrift_id}
+                            >
+                              <RecipeView
+                                key={likedRecipe.oppskrift_id + 'recipeview'}
+                                img={likedRecipe.bilde_adr}
+                                name={likedRecipe.oppskrift_navn}
+                                numbOfPors={likedRecipe.ant_pors}
+                              ></RecipeView>
+                            </NavLink>
+                          </Cards>
+                        ))
+                      : ''}
+                  </Rows>
+                  <br />
+                  <NavBar.Links to={'/showallrecipe'} style={{ width: '130px' }}>
+                    Alle oppskrifter
+                  </NavBar.Links>
+                </div>
               </div>
             </div>
-          </div>
-        </Card>
+          </Card>
+        </div>
       </>
     );
   }

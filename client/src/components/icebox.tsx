@@ -22,70 +22,72 @@ export class Icebox extends Component {
   render() {
     return (
       <>
-        <Card title="Dine ingredienser:">
-          <Column>
-            <h6>Søk</h6>
-            <Form.Input
-              id="shoppinglistsearch"
-              type="text"
-              value={this.searchterm}
-              onChange={(event) => {
-                this.search(event.currentTarget.value);
-                this.searchterm = event.currentTarget.value;
-              }}
-            />
-            <select
-              className="form-select"
-              id="selectExistingIngredient"
-              onChange={(event) => {
-                let id = Number(event.target.value);
-                //find name of ingredient
-                let name =
-                  this.selectedIngredients.find((e) => e.ingred_id == id)?.ingred_navn || '';
-                this.addIngredientToIcebox(id, name);
-              }}
-            >
-              {this.selectedIngredients.map((ingredient, idx) => (
-                <option key={idx} value={ingredient.ingred_id}>
-                  {ingredient.ingred_navn}
-                </option>
+        <div className="margintop">
+          <Card title="Dine ingredienser:">
+            <Column>
+              <h6>Søk</h6>
+              <Form.Input
+                id="shoppinglistsearch"
+                type="text"
+                value={this.searchterm}
+                onChange={(event) => {
+                  this.search(event.currentTarget.value);
+                  this.searchterm = event.currentTarget.value;
+                }}
+              />
+              <select
+                className="form-select"
+                id="selectExistingIngredient"
+                onChange={(event) => {
+                  let id = Number(event.target.value);
+                  //find name of ingredient
+                  let name =
+                    this.selectedIngredients.find((e) => e.ingred_id == id)?.ingred_navn || '';
+                  this.addIngredientToIcebox(id, name);
+                }}
+              >
+                {this.selectedIngredients.map((ingredient, idx) => (
+                  <option key={idx} value={ingredient.ingred_id}>
+                    {ingredient.ingred_navn}
+                  </option>
+                ))}
+              </select>
+            </Column>
+            <Column>
+              {this.choosenIngredient.map((ingredient, idx) => (
+                <Row key={idx}>
+                  <p style={{ width: '150px' }}>{ingredient.ingred_navn}</p>
+                  <Column width={2}>
+                    <Button.Success
+                      onClick={() => {
+                        this.deleteIceboxIngredient(ingredient.ingred_id);
+                      }}
+                    >
+                      X
+                    </Button.Success>
+                  </Column>
+                </Row>
               ))}
-            </select>
-          </Column>
-          <Column>
-            {this.choosenIngredient.map((ingredient, idx) => (
-              <Row key={idx}>
-                <p style={{ width: '150px' }}>{ingredient.ingred_navn}</p>
-                <Column width={2}>
-                  <Button.Success
-                    onClick={() => {
-                      this.deleteIceboxIngredient(ingredient.ingred_id);
-                    }}
-                  >
-                    X
-                  </Button.Success>
-                </Column>
-              </Row>
-            ))}
-          </Column>
-        </Card>
-        <Card title="Oppskrifter basert på dine ingredienser">
-          <Row>
-            <>
-              {this.filteredRecipes.map((recipe, idx) => (
-                <Cards title="" key={idx}>
-                  <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
-                    <RecipeView
-                      img={recipe.bilde_adr}
-                      name={recipe.oppskrift_navn}
-                      numbOfPors={recipe.ant_pors}
-                    ></RecipeView>
-                  </NavLink>
-                </Cards>
-              ))}
-            </>
-          </Row>
-        </Card>
+            </Column>
+          </Card>
+          <Card title="Oppskrifter basert på dine ingredienser">
+            <Row>
+              <>
+                {this.filteredRecipes.map((recipe, idx) => (
+                  <Cards title="" key={idx}>
+                    <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
+                      <RecipeView
+                        img={recipe.bilde_adr}
+                        name={recipe.oppskrift_navn}
+                        numbOfPors={recipe.ant_pors}
+                      ></RecipeView>
+                    </NavLink>
+                  </Cards>
+                ))}
+              </>
+            </Row>
+          </Card>
+        </div>
       </>
     );
   }
