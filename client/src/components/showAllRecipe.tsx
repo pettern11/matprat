@@ -10,6 +10,7 @@ import {
   Alert,
   Column,
   Row,
+  Rows,
   Form,
   Button,
   RecipeView,
@@ -28,32 +29,38 @@ export class ShowAllRecipe extends Component {
   render() {
     return (
       <>
-      <br/>
-        <Car title="Søkefelt">
+        {/* <br/> */}
+        <div>
+        {/* <br /> */}
+        {/* <Car title="Søkefelt"> */}
           <Form.Input
             id="indexsearch"
             type="text"
+            placeholder="Søk etter oppskrift"
             value={this.searchterm}
             onChange={(event) => {
               this.search(event.currentTarget.value);
               this.searchterm = event.currentTarget.value;
             }}
           />
-        </Car>
-        <select
-          id="sortBy"
-          // value={props.value}
-          onChange={(event) => this.sortRecipe(Number(event.target.value))}
-        >
-          <option>Sorter</option>
-          <option value="0">A-Z</option>
-          <option value="1">Z-A</option>
-          <option value="2">Nyeste</option>
-        </select>
+          {/* </Car> */}
+
+          <select
+            id="sortBy"
+            // value={props.value}
+            onChange={(event) => this.sortRecipe(Number(event.target.value))}
+            className="form-select"
+          >
+            <option>Sorter</option>
+            <option value="0">A-Z</option>
+            <option value="1">Z-A</option>
+            <option value="2">Nyeste</option>
+          </select>
+        </div>
         <br></br>
 
         <div className="container-fluid ">
-          <Row>
+          <Rows>
             {this.recipes.map((recipe) => (
               <Cards title="" key={recipe.oppskrift_id}>
                 <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
@@ -65,7 +72,7 @@ export class ShowAllRecipe extends Component {
                 </NavLink>
               </Cards>
             ))}
-          </Row>
+          </Rows>
         </div>
       </>
     );

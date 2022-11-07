@@ -45,7 +45,6 @@ router.get('/recipecontent/:id', (_request, response) => {
 
 router.post('/create_recipe_ingredient', (request, response) => {
   const data = request.body;
-  console.log('tredje console log', data.recipe_content);
   service
     .createRecipeIngredient(data.recipe_content)
     .then((_result) => response.status(201).send('Oppskrift innhold opprettet.'))
@@ -54,7 +53,6 @@ router.post('/create_recipe_ingredient', (request, response) => {
 
 router.post('/createrecipe', (request, response) => {
   const data = request.body;
-  console.log(data.recipe);
   //tror denne ifen kan fjernes, siden den ikke gjør noe, hvis det blir en feil i databasen blir det catchet i og status 500 sendt
   // hvis man skal ha en slik feilsjekking bør den settes i then, tror jeg hilsen Petter
   if (
@@ -165,7 +163,6 @@ router.put('/update_recipe/:id', (request, response) => {
     .catch((error) => response.status(500).send(error));
 });
 router.delete('/deleteingredient/:recipeid/:ingredid', (request, response) => {
-  console.log(request.params.recipeid, request.params.ingredid);
   service
     .deleteIngredient(Number(request.params.recipeid), Number(request.params.ingredid))
     .then((_result) =>{console.log(_result); response.status(203).send('Oppskrift innhold slettet.')})

@@ -35,6 +35,7 @@ export class Icebox extends Component {
               }}
             />
             <select
+              className="form-select"
               id="selectExistingIngredient"
               onChange={(event) => {
                 let id = Number(event.target.value);
@@ -54,7 +55,7 @@ export class Icebox extends Component {
           <Column>
             {this.choosenIngredient.map((ingredient, idx) => (
               <Row key={idx}>
-                <Column width={3}>{ingredient.ingred_navn}</Column>
+                <p style={{ width: '150px' }}>{ingredient.ingred_navn}</p>
                 <Column width={2}>
                   <Button.Success
                     onClick={() => {
@@ -129,7 +130,6 @@ export class Icebox extends Component {
       ingredient.ingred_navn.toLowerCase().includes(searchterm.toLowerCase())
     );
     this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
-    console.log(this.selectedIngredients);
   }
 
   mounted() {
@@ -138,6 +138,16 @@ export class Icebox extends Component {
       .then(
         (ingredients) => (
           (this.ingredients = ingredients), (this.selectedIngredients = ingredients)
+        )
+      )
+      .then(
+        () => (
+          (this.ingredients = this.ingredients.sort((a, b) =>
+            a.ingred_navn.localeCompare(b.ingred_navn)
+          )),
+          (this.selectedIngredients = this.selectedIngredients.sort((a, b) =>
+            a.ingred_navn.localeCompare(b.ingred_navn)
+          ))
         )
       )
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));

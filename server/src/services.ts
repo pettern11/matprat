@@ -276,7 +276,6 @@ class Service {
   }
   updateRecipeIngredient(recipeContent: Recipe_Content[]) {
     return new Promise<void>((resolve, reject) => {
-      console.log('homofaenfitte', recipeContent);
       recipeContent.forEach((element) => {
         pool.query(
           'UPDATE oppskrift_innhold SET mengde=?, maleenhet=? WHERE oppskrift_id=? AND ingred_id=?',
@@ -305,6 +304,7 @@ class Service {
   }
   deleteIngredient(recipe_id: number, ingred_id: number) {
     return new Promise<void>((resolve, reject) => {
+      console.log(recipe_id, ingred_id);
       pool.query(
         'DELETE FROM oppskrift_innhold WHERE oppskrift_id = ? AND ingred_id = ?',
         [recipe_id, ingred_id],
@@ -371,7 +371,6 @@ class Service {
   }
   updateLiked(oppskrift_id: number, liked: boolean) {
     return new Promise<void>((resolve, reject) => {
-      console.log(liked);
       let likeIncrementsAntLike =
         liked == true
           ? 'UPDATE oppskrift SET ant_like=ant_like+1 WHERE oppskrift_id=?'

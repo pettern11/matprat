@@ -7,7 +7,6 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
   >
     <img
       src="pizza.jpg"
-      width="200px"
     />
     <h1>
       Pizza
@@ -36,6 +35,7 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
     >
       <img
         src="https://static5.depositphotos.com/1001759/463/i/600/depositphotos_4634746-stock-photo-red-heart-isolated-white-background.jpg"
+        width="50px"
       />
     </label>
     <h5>
@@ -47,7 +47,8 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
     <h3>
       Ingredienser
     </h3>
-    Porsjoner 
+    Porsjoner
+     
     <ButtonDanger
       id="btnDec"
       onClick={[Function]}
@@ -129,7 +130,6 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
   >
     <img
       src="pizza.jpg"
-      width="200px"
     />
     <h1>
       Pizza
@@ -158,6 +158,7 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
     >
       <img
         src="https://static5.depositphotos.com/1001759/463/i/600/depositphotos_4634746-stock-photo-red-heart-isolated-white-background.jpg"
+        width="50px"
       />
     </label>
     <h5>
@@ -169,7 +170,8 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
     <h3>
       Ingredienser
     </h3>
-    Porsjoner 
+    Porsjoner
+     
     <ButtonDanger
       id="btnDec"
       onClick={[Function]}
@@ -251,7 +253,6 @@ exports[`ShowRecipe tests Number increment works 1`] = `
   >
     <img
       src="pizza.jpg"
-      width="200px"
     />
     <h1>
       Pizza
@@ -280,6 +281,7 @@ exports[`ShowRecipe tests Number increment works 1`] = `
     >
       <img
         src="https://static5.depositphotos.com/1001759/463/i/600/depositphotos_4634746-stock-photo-red-heart-isolated-white-background.jpg"
+        width="50px"
       />
     </label>
     <h5>
@@ -291,7 +293,8 @@ exports[`ShowRecipe tests Number increment works 1`] = `
     <h3>
       Ingredienser
     </h3>
-    Porsjoner 
+    Porsjoner
+     
     <ButtonDanger
       id="btnDec"
       onClick={[Function]}
@@ -373,7 +376,6 @@ exports[`ShowRecipe tests Number of likes 1`] = `
   >
     <img
       src="pizza.jpg"
-      width="200px"
     />
     <h1>
       Pizza
@@ -402,6 +404,7 @@ exports[`ShowRecipe tests Number of likes 1`] = `
     >
       <img
         src="https://static5.depositphotos.com/1001759/463/i/600/depositphotos_4634746-stock-photo-red-heart-isolated-white-background.jpg"
+        width="50px"
       />
     </label>
     <h5>
@@ -413,7 +416,8 @@ exports[`ShowRecipe tests Number of likes 1`] = `
     <h3>
       Ingredienser
     </h3>
-    Porsjoner 
+    Porsjoner
+     
     <ButtonDanger
       id="btnDec"
       onClick={[Function]}
