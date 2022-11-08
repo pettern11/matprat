@@ -131,7 +131,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
                 {/* {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}{' '} */}
               </p>
               <p style={{ width: '75px' }}>
-                {((rc.mengde * this.portions) / this.recipe.ant_pors).toFixed(1)}
+                {((Number(rc.mengde) * this.portions) / this.recipe.ant_pors).toFixed(1)}
               </p>
               <p style={{ width: '130px' }}>{rc.maleenhet}</p>
             </Row>
@@ -237,18 +237,11 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
     this.recipeContent.forEach((rc) => {
       const ingredient = {
         ingred_id: rc.ingred_id,
-        mengde: (rc.mengde * this.portions) / this.recipe.ant_pors,
+        mengde: (Number(rc.mengde) * this.portions) / this.recipe.ant_pors,
         maleenhet: rc.maleenhet,
       };
       service.addIngredient(ingredient);
     });
     history.push('/shoppinglist');
-  }
-  updateAntLikes() {
-    if (this.recipe.liked == true) {
-      this.recipe.ant_like++;
-    } else {
-      this.recipe.ant_like--;
-    }
   }
 }
