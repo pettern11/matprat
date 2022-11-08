@@ -188,20 +188,6 @@ describe('editRecipe test', () => {
       done();
     });
   });
-
-  test('search field input for ingredient', (done) => {
-    //spy on search from edit recipe
-
-    const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
-    wrapper
-      .find('#newRecipeSearch')
-      .simulate('change', { currentTarget: { value: 'kjottboller' } });
-    setTimeout(() => {
-      expect(wrapper.find('#newRecipeSearch').prop('value')).toBe('kjottboller');
-      console.log(wrapper.debug());
-      done();
-    });
-  });
 });
 
 describe.skip('skip', () => {
