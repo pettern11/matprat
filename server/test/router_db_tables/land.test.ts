@@ -1,7 +1,7 @@
 import axios from 'axios';
 import pool from '../../src/mysql-pool';
 import app from '../../src/app';
-import {service, Country} from '../../src/services';
+import {landService, Country} from '../../src/service/land-services';
 
 const land: Country[] = [
     {land_id: 1, land_navn: 'Norge' },
@@ -24,10 +24,10 @@ beforeEach((done) => {
     if (error) return done(error);
 
     // Create testTasks sequentially in order to set correct id, and call done() when finished
-    service
+    landService
       .createCountry(land[0].land_navn)
-      .then(() => service.createCountry(land[1].land_navn)) 
-      .then(() => service.createCountry(land[2].land_navn)) 
+      .then(() => landService.createCountry(land[1].land_navn)) 
+      .then(() => landService.createCountry(land[2].land_navn)) 
       .then(() => done()); // Call done() after kategori[2] has been created
   });
 });
@@ -77,4 +77,4 @@ describe('Create country (POST)', () => {
   });
 
 });
-
+ 

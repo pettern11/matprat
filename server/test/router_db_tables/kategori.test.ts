@@ -1,7 +1,7 @@
 import axios from 'axios';
 import pool from '../../src/mysql-pool';
 import app from '../../src/app';
-import {service, Category} from '../../src/services';
+import {kategoriService, Category} from '../../src/service/kategori-services';
 
 const kategori: Category[] = [
     {kategori_id: 1, kategori_navn: 'vegetar' },
@@ -24,10 +24,10 @@ beforeEach((done) => {
     if (error) return done(error);
 
     // Create testTasks sequentially in order to set correct id, and call done() when finished
-    service
+    kategoriService
       .createCategory(kategori[0].kategori_navn)
-      .then(() => service.createCategory(kategori[1].kategori_navn)) 
-      .then(() => service.createCategory(kategori[2].kategori_navn)) 
+      .then(() => kategoriService.createCategory(kategori[1].kategori_navn)) 
+      .then(() => kategoriService.createCategory(kategori[2].kategori_navn)) 
       .then(() => done()); // Call done() after kategori[2] has been created
   });
 });
@@ -56,7 +56,7 @@ describe('Create new category (POST)', () => {
       expect(response.status).toEqual(201);
       done();
     });
-  });
+  }); 
 
   test('Create new category without name attribute (Bad Request)', (done) => {
     const newCategory: any = { };
