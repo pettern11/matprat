@@ -107,7 +107,7 @@ export class ShowAllRecipe extends Component {
         this.originalrecipes = recipes;
         this.recipes = recipes;
       })
-      .catch((error) => Alert.danger('Error getting tasks: ' + error.message));
+      .catch((error) => Alert.danger('Error getting recipes: ' + error.message));
   }
   search(searchterm: string) {
     this.recipes = this.originalrecipes.filter((recipe) =>

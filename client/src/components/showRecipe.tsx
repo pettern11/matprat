@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Alert, Card, Row, Button } from '.././widgets';
+import { Alert, Card, Row, Button, Cards, Rows, RecipeView } from '.././widgets';
+import { NavLink } from 'react-router-dom';
 import service, { Category, Ingredient, Recipe, Recipe_Content } from '.././service';
 import { createHashHistory } from 'history';
 
@@ -22,6 +23,8 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
   recipeContent: Recipe_Content[] = [];
   ingredients: Ingredient[] = [];
   categories: Category[] = [];
+  allRecipes: Recipe[] = [];
+  recommendedRecipes: Recipe[] = [];
 
   render() {
     return (
@@ -155,11 +158,34 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
         <Button.Success id="btnSend" onClick={this.ingredientsToShoppingList}>
           Send ingredienser til handleliste
         </Button.Success>
+        {/* Recomend 5 recipes based on the category */}
+        <h3>Andre oppskrifter i samme kategori:</h3>
+        <Rows>
+          {this.recommendedRecipes.map((recipe) => (
+            <Cards title="" key={recipe.oppskrift_id}>
+              <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
+                <RecipeView
+                  img={recipe.bilde_adr}
+                  name={recipe.oppskrift_navn}
+                  numbOfPors={recipe.ant_pors}
+                ></RecipeView>
+              </NavLink>
+            </Cards>
+          ))}
+        </Rows>
       </div>
     );
   }
 
   mounted() {
+    service
+      .getRecipe(this.props.match.params.id)
+      .then((recipe) => {
+        this.recipe = recipe[0];
+        this.portions = recipe[0].ant_pors;
+      })
+      .catch((error) => Alert.danger('Error getting recipe: ' + error.message));
+
     service
       .getAllIngredient()
       .then((ingredients) => (this.ingredients = ingredients))
@@ -171,17 +197,27 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
       .catch((error) => Alert.danger('Error getting recipe content: ' + error.message));
 
     service
-      .getRecipe(this.props.match.params.id)
-      .then((recipe) => {
-        this.recipe = recipe[0];
-        this.portions = recipe[0].ant_pors;
-      })
-      .catch((error) => Alert.danger('Error getting recipe: ' + error.message));
-
-    service
       .getAllCategory()
       .then((categories) => (this.categories = categories))
       .catch((error) => Alert.danger('Error getting categories: ' + error.message));
+
+    service
+      .getAllRepice()
+      .then((recipes) => {
+        this.allRecipes = recipes;
+        this.findRecommendedRecipes(recipes.length);
+      })
+      .catch((error) => Alert.danger('Error getting recipes: ' + error.message));
+  }
+
+  findRecommendedRecipes(lengtCheck: number) {
+    if (this.allRecipes.length == lengtCheck && this.recipe.kategori_id != 0) {
+      this.recommendedRecipes = this.allRecipes
+        .filter((recipe) => recipe.kategori_id == this.recipe.kategori_id)
+        .slice(0, 5);
+    } else {
+      this.findRecommendedRecipes(lengtCheck);
+    }
   }
   incrementPortions() {
     this.portions++;
