@@ -1,7 +1,7 @@
 import axios from 'axios';
 import pool from '../../src/mysql-pool';
 import app from '../../src/app';
-import {service, IceboxIngredient} from '../../src/services';
+import {iceboxService, IceboxIngredient} from '../../src/service/icebox-services';
 
 const icebox: IceboxIngredient[] = [
   {ingred_id: 1, ingred_navn: 'pølse' },
@@ -24,10 +24,10 @@ beforeEach((done) => {
     if (error) return done(error);
 
     // Create testTasks sequentially in order to set correct id, and call done() when finished
-    service
+    iceboxService
       .addIngredientToIcebox(icebox[0])
-      .then(() => service.addIngredientToIcebox(icebox[1]))
-      .then(() => service.addIngredientToIcebox(icebox[2]))
+      .then(() => iceboxService.addIngredientToIcebox(icebox[1]))
+      .then(() => iceboxService.addIngredientToIcebox(icebox[2]))
       .then(() => done()); // Call done() after kategori[2] has been created
   });
 });
