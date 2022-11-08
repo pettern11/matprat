@@ -74,19 +74,16 @@ exports[`editRecipe test page renders correct with snapshot 1`] = `
               }
             >
               <option
-                key="3"
                 value={3}
               >
                 kjottboller
               </option>
               <option
-                key="2"
                 value={2}
               >
                 pizza fyll
               </option>
               <option
-                key="1"
                 value={1}
               >
                 pizzadeig
@@ -104,6 +101,26 @@ exports[`editRecipe test page renders correct with snapshot 1`] = `
             onClick={[Function]}
           >
             Legg til ny ingrediens
+          </ButtonSuccess>
+        </Column>
+        <Column>
+          <FormInput
+            id="createIngredient"
+            onChange={[Function]}
+            placeholder="Legg til ny ingrediens"
+            style={
+              {
+                "width": "210px",
+              }
+            }
+            type="text"
+            value=""
+          />
+          <ButtonSuccess
+            id="createIngredientFunc"
+            onClick={[Function]}
+          >
+            Legg til
           </ButtonSuccess>
         </Column>
       </Row>
