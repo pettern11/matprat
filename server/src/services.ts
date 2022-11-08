@@ -296,8 +296,7 @@ class Service {
       pool.query(
         'UPDATE oppskrift SET oppskrift_steg=?, ant_pors=? WHERE oppskrift_id=?',
         [recipe.oppskrift_steg, recipe.ant_pors, recipe.oppskrift_id],
-        (error: any, _results: any) => {console.log('error',error)
-        console.log('riktig',_results)
+        (error: any, _results: any) => {
           if (error) return reject(error);
 
           if(_results.affectedRows == 0){return reject()};
@@ -384,8 +383,9 @@ class Service {
       pool.query(
         'UPDATE oppskrift SET liked=? WHERE oppskrift_id=?',
         [liked, oppskrift_id],
-        (error, _result) => {
+        (error, _result: ResultSetHeader) => {
           if (error) return reject(error);
+          if(_result.affectedRows == 0){ return reject()};
 
           resolve();
         }

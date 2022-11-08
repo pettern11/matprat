@@ -79,26 +79,60 @@ describe('Fetch recipes (GET)', () => {
     });
   });
 
+  test('Fetch recipe by invalid id', (done) => {
+    axios.get('/recipe/hei').catch((error) => {
+      expect(error.response.status).toEqual(500);
+      done();
+    });
+  });
+
 });
 
 describe('Create recipe (POST)', () =>{
-  //tror de tre neste testene kan slås sammen til en test, eller at alle rett og slett tester det samme
+
+  const newRecipe: any = { recipe: {
+    oppskrift_id: 4,
+    oppskrift_navn: 'New Recipe',
+    oppskrift_beskrivelse: 'Make food',
+    oppskrift_steg: 'Throw eggs in pan',
+    ant_pors: 4,
+    bilde_adr: 'https://www.picture.com',
+    kategori_id: 1,
+    land_id: 1,
+    ant_like: 0,
+    liked: false
+  }};
+
+  test('Create recipe (201)', (done) => {
+  axios.post('/createrecipe', newRecipe).then((response) => {
+    expect(response.status).toEqual(201);
+    expect(response.data).toEqual({id: 4});
+    done();
+  });
+});  
+
+const existingRecipe: any = { recipe: {oppskrift_navn: 'Chicken Rice', oppskrift_beskrivelse: 'Good chicken dish', oppskrift_steg: 'Cook rice and chicken', ant_pors: 4, bilde_adr: 'https://www.picture.com', kategori_id: 1, land_id: 1, ant_like: 0, liked: false},
+};
+  
+  //Dette skal være mulig, man skal kunne opprette en oppskrift med samme navn som en annen oppskrift og som da kan være helt lik
   test('Create already existing recipe', (done) => {
-    axios.post('/createrecipe', recipes[0]).catch((error) => {
-      expect(error.response.status).toEqual(500);
+    axios.post('/createrecipe', existingRecipe).then((response) => {
+      expect(response.status).toEqual(201);
+      expect(response.data).toEqual({id: 4});
+
       done();
     });
   });
 
   test('Create recipe with missing fields', (done) => {
-    axios.post('/createrecipe', {oppskrift_navn: 'Chicken Rice', oppskrift_beskrivelse: 'Good chicken dish', oppskrift_steg: 'Cook rice and chicken', ant_pors: 4, bilde_adr: 'https://www.picture.com', kategori_id: 1, land_id: 1, ant_like: 0, liked: false}).catch((error) => {
-      expect(error.response.status).toEqual(500);
+    axios.post('/createrecipe', {recipe: {oppskrift_navn: 'Chicken Rice', oppskrift_steg: 'Cook rice and chicken', ant_pors: 4, bilde_adr: 'https://www.picture.com', kategori_id: 1, land_id: 1, ant_like: 0, liked: false}}).catch((error) => {
+      expect(error.response.status).toEqual(400);
       done();
     });
   });
 
   test('Create recipe with invalid fields', (done) => {
-    axios.post('/createrecipe', {oppskrift_navn: 'Chicken Rice', oppskrift_beskrivelse: 'Good chicken dish', oppskrift_steg: 'Cook rice and chicken', ant_pors: 4, bilde_adr: 'https://www.picture.com', kategori_id: '1', land_id: 1, ant_like: 0, liked: false}).catch((error) => {
+    axios.post('/createrecipe', {recipe: {oppskrift_navn: 'Chicken Riceiyf', oppskrift_beskrivelse: 'Good chicken dishafe', oppskrift_steg: 'Cook rice and chickenafse', ant_pors: 4, bilde_adr: 'https://www.picture.com', kategori_id: 'hei', land_id: 1, ant_like: 0, liked: false}}).catch((error) => {
       expect(error.response.status).toEqual(500);
       done();
     });
@@ -117,6 +151,13 @@ describe('Delete recipe (DELETE)', () => {
 
   test('Delete recipe by id that does not exist', (done) => {
     axios.delete('/deleterecipe/4').catch((error) => {
+      expect(error.response.status).toEqual(500);
+      done();
+    });
+  });
+
+  test('Delete recipe with invalid id', (done) => {
+    axios.delete('/deleterecipe/hei').catch((error) => {
       expect(error.response.status).toEqual(500);
       done();
     });
@@ -149,6 +190,26 @@ describe('Update recipe (PUT)', () => {
       done();
     });
   });
+
+  test('Update liked', (done) => {
+    axios.put('/recipelike/1', {liked: true}).then((response) => {
+      expect(response.status).toEqual(200);
+      done();
+    });
+  });
+  test('Update liked invalid oppskrift_id', (done) => {
+    axios.put('/recipelike/100', {liked: true}).catch((error) => {
+      expect(error.response.status).toEqual(500);
+      done();
+    });
+  });
+  test('Update liked without oppskrift_id', (done) => {
+    axios.put('/recipelike/hei', {liked: true}).catch((error) => {
+      expect(error.response.status).toEqual(500);
+      done();
+    });
+  });
+
   
 
 });

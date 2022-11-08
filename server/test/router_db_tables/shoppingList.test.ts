@@ -79,7 +79,7 @@ describe('Add ingredient to shoppinglist (POST)', () => {
 });
 
 
-describe('Delete ingredient from shoppinglist (DELETE)', () => {
+describe('Delete from shoppinglist (DELETE)', () => {
   //delete ingredient from shoppinglist /deleteingredientshoppinglist/:id
   test('Delete ingredient from shoppinglist (200 OK)', (done) => {
     axios.delete('/deleteingredientshoppinglist/2').then((response) => {
@@ -88,13 +88,23 @@ describe('Delete ingredient from shoppinglist (DELETE)', () => {
     });
   });
 
-  //delete non-existing ingredient from shoppinglist /deleteingredientshoppinglist/:id
+  //delete ingredient from shoppinglist with wrong id /deleteingredientshoppinglist/:id
   test('Delete non-existing ingredient from shoppinglist (500 Not Found)', (done) => {
     axios.delete('/deleteingredientshoppinglist/4').catch((error) => {
       expect(error.response.status).toEqual(500);
       done();
     });
   });
+
+  //delete all ingredients from shooopinglist /deleteallshoppinglist
+  test('Delete all ingredients from shoppinglist (200 OK)', (done) => {
+    axios.delete('/deleteallshoppinglist').then((response) => {
+      expect(response.status).toEqual(200);
+      done();
+    });
+  });
+
+
 });
 
 describe('Update ingredient in shoppinglist (PUT)', () => {
@@ -107,6 +117,20 @@ describe('Update ingredient in shoppinglist (PUT)', () => {
 
   test('Update non-existing ingredient in shoppinglist (500 Not Found)', (done) => {
     axios.put('/updateingredient', {ingredient: {id: 4, ingred_id: 4, mengde: "5", maleenhet: 'pølser' }}).catch((error) => {
+      expect(error.response.status).toEqual(500);
+      done();
+    });
+  });
+
+  test('Update ingredient with invalid id', (done) => {
+    axios.put('/updateingredient', {ingredient: {id: 'a', ingred_id: 4, mengde: "5", maleenhet: 'pølser' }}).catch((error) => {
+      expect(error.response.status).toEqual(500);
+      done();
+    });
+  });
+
+  test('Update ingredient with missing maleenhet', (done) => {
+    axios.put('/updateingredient', {ingredient: {id: 3, ingred_id: 4, mengde: "5"}}).catch((error) => {
       expect(error.response.status).toEqual(500);
       done();
     });

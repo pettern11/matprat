@@ -53,23 +53,22 @@ router.post('/create_recipe_ingredient', (request, response) => {
 
 router.post('/createrecipe', (request, response) => {
   const data = request.body;
-  //tror denne ifen kan fjernes, siden den ikke gjør noe, hvis det blir en feil i databasen blir det catchet i og status 500 sendt
-  // hvis man skal ha en slik feilsjekking bør den settes i then, tror jeg hilsen Petter
-  if (
+
+ if(
     data.recipe.oppskrift_navn &&
     data.recipe.oppskrift_beskrivelse &&
     data.recipe.oppskrift_steg &&
     data.recipe.ant_pors &&
     data.recipe.kategori_id &&
     data.recipe.land_id != ''
-  )
+  ){
     service
       .createRecipe(data.recipe)
-      .then((id) => response.send({ id: id }))
+      .then((id) => {response.status(201).send({ id: id })})
       .catch((error) => {
         response.status(500).send(error);
       });
-  else response.status(400).send('Missing crutial information, fill in all the fields');
+    }else response.status(400).send('Missing crutial information, fill in all the fields');
 });
 
 router.get('/country', (_request, response) => {
@@ -174,7 +173,6 @@ router.put('/updateingredient', (request, response) => {
     .catch((error) => response.status(500).send(error));
 });
 router.put('/update_recipe/:id', (request, response) => {
-  console.log(request.body);
   service
     .updateRecipe(request.body.recipe)
     .then(() =>{

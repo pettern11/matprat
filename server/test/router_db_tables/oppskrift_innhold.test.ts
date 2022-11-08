@@ -80,9 +80,16 @@ describe('oppskrift_innhold GET', () => {
     });
   });
 
+  test('Fetch recipe content with invalid id', (done) => {
+    axios.get('/recipecontent/heidu').catch((error) => {
+      expect(error.response.status).toBe(500);
+      done();
+    });
+  });
+
 });
 
-describe('oppskrift_innhold POST', () => {
+describe('Lag ny oppskrift_innhold POST', () => {
   test('Create recipe content', (done) => {
     axios.post('/create_recipe_ingredient', {recipe_content: [{oppskrift_id: 2, ingred_id: 3, mengde: "1", maleenhet: 'stk'}]}).then((response) => {
       expect(response.status).toBe(201);
@@ -100,7 +107,7 @@ describe('oppskrift_innhold POST', () => {
   });
 });
 
-describe('oppskrift_innhold PUT', () => {
+describe('Oppdater oppskrift_innhold (ingredienser til oppskrift) PUT', () => {
   test('Update recipe content', (done) => {
     axios.put('/update_recipe_ingredient', {recipeContent:[{oppskrift_id: 1, ingred_id: 1, mengde: "2", maleenhet: 'stk'}]}).then((response) => {
       expect(response.status).toBe(202);
@@ -129,6 +136,13 @@ describe('oppskrift_innhold DELETE', () => {
 
   test('Delete recipe content with nonexisting id', (done) => {
     axios.delete('/deleteingredient/4/1').catch((error) => {
+      expect(error.response.status).toBe(500);
+      done();
+    });
+  });
+
+  test('Delete recipe content with invalid id', (done) => {
+    axios.delete('/deleteingredient/heidu/1').catch((error) => {
       expect(error.response.status).toBe(500);
       done();
     });
