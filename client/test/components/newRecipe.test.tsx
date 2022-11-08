@@ -96,6 +96,12 @@ jest.mock('../../src/service', () => {
     createRecipe() {
       return Promise.resolve(1);
     }
+    createCountry(country: string) {
+      return Promise.resolve(1);
+    }
+    createCategory(category: string) {
+      return Promise.resolve(1);
+    }
   }
   return new Service();
 });
@@ -131,7 +137,6 @@ describe('NewRecipe tests', () => {
         .simulate('change', {
           target: { value: 2, name: 'enkelt' },
         });
-      // wrapper.find('#ingred1').simulate('click');
       wrapper.find('#addRecipeBtn').simulate('click');
       setTimeout(() => {
         expect(
@@ -146,40 +151,6 @@ describe('NewRecipe tests', () => {
     });
   });
 
-  test.skip('Try create recipe and fail because name, description, etc..', (done) => {
-    const wrapper = shallow(<NewRecipe />);
-    const wrapperAlert = shallow(<Alert />);
-    let divId = 'ingreditentList';
-    let testIdEM = 'emFood1';
-    let testValueEM = 'pizzadeig';
-    let testIdMengde = 'inputNumberOf1';
-    let testValueMengde = '1';
-    let testIdMaleenhet = 'inputMeasurment1';
-    let testValueMaleenhet = 'stk';
-    let div = document.createElement('div');
-    let em = document.createElement('em');
-    let inputMengde = document.createElement('input');
-    let inputMaleenhet = document.createElement('input');
-    div.setAttribute('id', divId);
-    em.setAttribute('id', testIdEM);
-    inputMengde.setAttribute('id', testIdMengde);
-    inputMaleenhet.setAttribute('id', testIdMaleenhet);
-    em.innerHTML = testValueEM;
-    inputMengde.value = testValueMengde;
-    inputMaleenhet.value = testValueMaleenhet;
-    div.innerHTML = em.outerHTML + inputMengde.outerHTML + inputMaleenhet.outerHTML;
-    document.body.appendChild(div);
-    // Wait for events to complete
-    setTimeout(() => {
-      console.log(wrapper.debug());
-      wrapper.find('#ingred1').simulate('click');
-
-      wrapper.find('#addRecipeBtn').simulate('click');
-      setTimeout(() => {
-        done();
-      });
-    });
-  });
   test('Create ingredient', (done) => {
     const wrapper = shallow(<NewRecipe />);
     setTimeout(() => {
@@ -188,7 +159,36 @@ describe('NewRecipe tests', () => {
       });
 
       wrapper.find('#createIngredientFunc').simulate('click');
+      setTimeout(() => {
+        expect(wrapper.find('#createIngredient').prop('value')).toEqual('');
+      });
       done();
+    });
+  });
+  test('Create a new country', (done) => {
+    const wrapper = shallow(<NewRecipe />);
+    setTimeout(() => {
+      wrapper.find('#addCountry').simulate('change', {
+        currentTarget: { value: 'China' },
+      });
+      wrapper.find('#addCountryBtn').simulate('click');
+      setTimeout(() => {
+        expect(wrapper.find('#addCountryBtn').simulate('click')).toReturn;
+        done();
+      });
+    });
+  });
+  test('Create a new category', (done) => {
+    const wrapper = shallow(<NewRecipe />);
+    setTimeout(() => {
+      wrapper.find('#addCategory').simulate('change', {
+        currentTarget: { value: 'Digg mat' },
+      });
+      wrapper.find('#addCategoryBtn').simulate('click');
+      setTimeout(() => {
+        expect(wrapper.find('#addCountryBtn').simulate('click')).toReturn;
+        done();
+      });
     });
   });
   test('Try create ingredient and fail', (done) => {
@@ -204,6 +204,53 @@ describe('NewRecipe tests', () => {
             </div>
           )
         ).toEqual(true);
+        done();
+      });
+    });
+  });
+  test('Create recipe', (done) => {
+    const wrapper = shallow(<NewRecipe />);
+    setTimeout(() => {
+      wrapper.find('#recipe_name_input').simulate('change', { currentTarget: { value: 'pizza' } });
+      wrapper
+        .find('#recipe_description_input')
+        .simulate('change', { currentTarget: { value: 'Digg og enkel mat' } });
+      wrapper.find('#recipe_steps_input').simulate('change', {
+        currentTarget: { value: 'Lag pizza deig og ta på fyll, stek i ovnen' },
+      });
+      wrapper.find('#recipe_portions_input').simulate('change', {
+        currentTarget: { value: 'Lag pizza deig og ta på fyll, stek i ovnen' },
+      });
+      wrapper.find('#recipe_picture_url_input').simulate('change', {
+        currentTarget: { value: 'Lag pizza deig og ta på fyll, stek i ovnen' },
+      });
+      wrapper
+        .find('#choseCountry')
+        .at(0)
+        .simulate('change', {
+          target: { value: 1, name: 'Sverige' },
+        });
+      wrapper
+        .find('#choseCategory')
+        .at(0)
+        .simulate('change', {
+          target: { value: 2, name: 'enkelt' },
+        });
+      wrapper
+        .find('#selectIngredientNewRecipe')
+        .simulate('onchange', { target: { value: 'kjøttboller' } });
+      wrapper.find('#btnIngredAdd').simulate('click');
+      wrapper.find('#ingredNumber0').simulate('change', {
+        currentTarget: { value: '1' },
+      });
+      wrapper.find('#ingredType0').simulate('change', {
+        currentTarget: { value: 'stk' },
+      });
+
+      wrapper.find('#addRecipeBtn').simulate('click');
+      setTimeout(() => {
+        //expect path to be id of recipe
+        expect(window.location.href).toEqual('http://localhost/#/');
         done();
       });
     });
