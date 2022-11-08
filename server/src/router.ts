@@ -12,7 +12,6 @@ router.get('/', (_request, response) => {
     .then((rows) => response.send(rows))
     .catch((error) => response.status(500).send(error));
 });
-
 router.get('/recipe/:id', (_request, response) => {
   let id: number = parseInt(_request.params.id);
 
@@ -27,7 +26,6 @@ router.get('/recipe/:id', (_request, response) => {
     })
     .catch((error) => response.status(500).send(error));
 });
-
 router.get('/recipecontent/:id', (_request, response) => {
   let id: number = parseInt(_request.params.id);
 
@@ -41,36 +39,6 @@ router.get('/recipecontent/:id', (_request, response) => {
     })
     .catch((error) => response.status(500).send(error));
 });
-
-
-router.post('/create_recipe_ingredient', (request, response) => {
-  const data = request.body;
-  service
-    .createRecipeIngredient(data.recipe_content)
-    .then((_result) => response.status(201).send('Oppskrift innhold opprettet.'))
-    .catch((error) => response.status(500).send(error));
-});
-
-router.post('/createrecipe', (request, response) => {
-  const data = request.body;
-
- if(
-    data.recipe.oppskrift_navn &&
-    data.recipe.oppskrift_beskrivelse &&
-    data.recipe.oppskrift_steg &&
-    data.recipe.ant_pors &&
-    data.recipe.kategori_id &&
-    data.recipe.land_id != ''
-  ){
-    service
-      .createRecipe(data.recipe)
-      .then((id) => {response.status(201).send({ id: id })})
-      .catch((error) => {
-        response.status(500).send(error);
-      });
-    }else response.status(400).send('Missing crutial information, fill in all the fields');
-});
-
 router.get('/country', (_request, response) => {
   service
     .getAllCountry()
@@ -107,6 +75,34 @@ router.get('/shoppinglist', (_request, response) => {
     .getShoppingList()
     .then((rows) => response.send(rows))
     .catch((error) => response.status(500).send(error));
+});
+
+
+router.post('/create_recipe_ingredient', (request, response) => {
+  const data = request.body;
+  service
+    .createRecipeIngredient(data.recipe_content)
+    .then((_result) => response.status(201).send('Oppskrift innhold opprettet.'))
+    .catch((error) => response.status(500).send(error));
+});
+router.post('/createrecipe', (request, response) => {
+  const data = request.body;
+
+ if(
+    data.recipe.oppskrift_navn &&
+    data.recipe.oppskrift_beskrivelse &&
+    data.recipe.oppskrift_steg &&
+    data.recipe.ant_pors &&
+    data.recipe.kategori_id &&
+    data.recipe.land_id != ''
+  ){
+    service
+      .createRecipe(data.recipe)
+      .then((id) => {response.status(201).send({ id: id })})
+      .catch((error) => {
+        response.status(500).send(error);
+      });
+    }else response.status(400).send('Missing crutial information, fill in all the fields');
 });
 router.post('/addingredient', (request, response) => {
   const data = request.body.ingredient;
@@ -179,6 +175,14 @@ router.put('/update_recipe/:id', (request, response) => {
       response.send()})
     .catch((error) => response.status(500).send('Ingen oppskrift ble oppdatert'));
 });
+router.put('/recipelike/:oppskrift_id', (req, res) => {
+  service
+    .updateLiked(Number(req.params.oppskrift_id), req.body.liked)
+    .then((_result) => res.send())
+    .catch((error) => res.status(500).send(error));
+});
+
+
 router.delete('/deleteingredient/:recipeid/:ingredid', (request, response) => {
   service
     .deleteIngredient(Number(request.params.recipeid), Number(request.params.ingredid))
@@ -213,10 +217,5 @@ router.delete('/deleterecipe/:id', (request, response) => {
     .then((_result) => response.send())
     .catch((error) => response.status(500).send(error));
 });
-router.put('/recipelike/:oppskrift_id', (req, res) => {
-  service
-    .updateLiked(Number(req.params.oppskrift_id), req.body.liked)
-    .then((_result) => res.send())
-    .catch((error) => res.status(500).send(error));
-});
+
 export default router;
