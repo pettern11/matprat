@@ -26,8 +26,8 @@ export type Country = {
   land_navn: string;
 };
 export type Category = {
-  land_id: number;
-  land_navn: string;
+  kategori_id: number;
+  kategori_navn: string;
 };
 //ingridient for shoppinglist, slightly different from the other ingridient
 export type IngredientToShoppinglist = {
@@ -228,7 +228,9 @@ class Service {
         'INSERT INTO ingrediens SET ingred_navn=?',
         [name],
         (error, results: ResultSetHeader) => {
-          if (error) return reject(error);
+          console.log('res',results);
+          console.log('err',error);
+          if (error){console.log('dette skjer'); return reject(error)};
 
           resolve();
         }
@@ -336,12 +338,13 @@ class Service {
   }
   deleteIceboxIngredient(ingred_id: number) {
     return new Promise<void>((resolve, reject) => {
+      console.log(ingred_id);
       pool.query(
         'DELETE FROM icebox WHERE ingred_id = ?',
         [ingred_id],
-        (error, results: ResultSetHeader) => {
+        (error, results: ResultSetHeader) => {console.log(results)
           if (error) return reject(error);
-          if (results.affectedRows == 0) return reject(new Error('No row deleted'));
+          if (results.affectedRows == 0) return reject(results);
 
           resolve();
         }

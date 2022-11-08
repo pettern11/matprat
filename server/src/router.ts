@@ -75,7 +75,7 @@ router.post('/createrecipe', (request, response) => {
 router.get('/country', (_request, response) => {
   service
     .getAllCountry()
-    .then((rows) => response.send(rows))
+    .then((rows) => response.status(200).send(rows))
     .catch((error) => response.status(500).send(error));
 });
 router.get('/category', (_request, response) => {
@@ -123,32 +123,38 @@ router.post('/addingredient', (request, response) => {
     .catch((error) => response.status(500).send(error));
 }});
 router.post('/addingredienttoicebox', (request, response) => {
-  const data = request.body;
+  const data = request.body.selectedIceboxIngredient;
+
   service
-    .addIngredientToIcebox(data.selectedIceboxIngredient)
-    .then(() => response.send())
-    .catch((error) => response.status(500).send(error));
+    .addIngredientToIcebox(data)
+    .then(() => response.status(201).send())
+    .catch((error) => {
+      if(error.errno == 1062){
+      response.status(400).send('Ingredient already in icebox');
+    } else {
+      response.status(500).send(error)}});
 });
 router.post('/newingredient', (request, response) => {
-  const data = request.body;
+  const data = request.body.ingred_navn;
   service
-    .createIngredient(data.name)
-    .then(() => response.send())
+    .createIngredient(data)
+    .then(() => response.status(201).send())
     .catch((error) => response.status(500).send(error));
 });
 router.post('/newcountry', (request, response) => {
-  const data = request.body;
+  const data = request.body.name;
+  console.log(data);
   service
-    .createCountry(data.name)
-    .then(() => response.send())
+    .createCountry(data)
+    .then(() => response.status(201).send())
     .catch((error) => response.status(500).send(error));
 });
 router.post('/newcategory', (request, response) => {
-  const data = request.body;
+  const data = request.body.name;
   service
-    .createCategory(data.name)
-    .then(() => response.send())
-    .catch((error: any) => response.status(500).send(error));
+    .createCategory(data)
+    .then(() => response.status(201).send())
+    .catch((error) => response.status(500).send(error));
 });
 
 router.put('/update_recipe_ingredient', (request, response) => {
@@ -190,8 +196,12 @@ router.delete('/deleteingredientshoppinglist/:id', (request, response) => {
 router.delete('/deleteiceboxingredient/:ingred_id', (request, response) => {
   service
     .deleteIceboxIngredient(Number(request.params.ingred_id))
-    .then((_result) => response.send())
-    .catch((error) => response.status(500).send(error));
+    .then((_result) => response.status(202).send())
+    .catch((error) => {
+      if(error.affectedRows == 0){ 
+      response.status(400).send('Ingredient not in icebox');
+    } else {
+      response.status(500).send(error)}});
 });
 router.delete('/deleteallshoppinglist', (request, response) => {
   service
