@@ -2,24 +2,28 @@
 
 exports[`LikedRecipes tests Snapshot LikedRecipes draws correctly 1`] = `
 <div
-  className="container-fluid"
+  className="margintop"
 >
-  <Row>
-    <Cards
-      key="1"
-      title=""
-    >
-      <NavLink
-        className="black"
-        to="/recipe/1"
+  <div
+    className="container-fluid"
+  >
+    <Rows>
+      <Cards
+        key="1"
+        title=""
       >
-        <RecipeView
-          img="pizza.jpg"
-          name="Pizza"
-          numbOfPors={4}
-        />
-      </NavLink>
-    </Cards>
-  </Row>
+        <NavLink
+          className="black"
+          to="/recipe/1"
+        >
+          <RecipeView
+            img="pizza.jpg"
+            name="Pizza"
+            numbOfPors={4}
+          />
+        </NavLink>
+      </Cards>
+    </Rows>
+  </div>
 </div>
 `;

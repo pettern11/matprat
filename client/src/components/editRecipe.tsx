@@ -126,10 +126,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                 {this.recipeContent.map((rc, i) => (
                   <Row key={i}>
                     <p style={{ width: '215px' }}>
-                      {
-                        this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0]
-                          .ingred_navn
-                      }
+                      {this.ingredients.find((ing) => ing.ingred_id == rc.ingred_id)?.ingred_navn}
                     </p>
                     <input
                       className="form-control"
