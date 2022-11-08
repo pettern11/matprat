@@ -1,11 +1,37 @@
 import * as React from 'react';
 
-import { shallow, mount } from 'enzyme';
+import { shallow, mount, render } from 'enzyme';
 import { Alert, Card, Row, Column, Form, Button, RecipeView } from '../../src/widgets';
 import { ShowAllRecipe } from '../../src/components/showAllRecipe';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('../../src/service', () => {
   class Service {
+    getAllCountry() {
+      return Promise.resolve([
+        {
+          land_id: 1,
+          land_navn: 'Sverige',
+        },
+        {
+          land_id: 2,
+          land_navn: 'Italia',
+        },
+      ]);
+    }
+    getAllCategory() {
+      return Promise.resolve([
+        {
+          kategori_id: 1,
+          kategori_navn: 'Ikea mat',
+        },
+        {
+          kategori_id: 2,
+          kategori_navn: 'enkelt',
+        },
+      ]);
+    }
+
     getAllRepice(id: number) {
       return Promise.resolve([
         {
@@ -58,13 +84,15 @@ describe('ShowAllRecipe tests', () => {
   });
   test('Select Nyeste at sort', (done) => {
     const wrapper = shallow(<ShowAllRecipe />);
+    wrapper.find('#sortBy').simulate('change', { target: { value: 3, name: 'Nyeste' } });
+
     //find select sortBy and simulate change and choose target value 1 and name Z-A
     setTimeout(() => {
       //siden shallow ikke ser så dypt får vi ikke igjen hele objektet men bare et tomt objekt. Derfor tester
       //jeg om det er et tomt objekt som returneres. det denne testen viser er at hvis knappen blir trykket på
       //så vil det hvertfall bli returnert et objekt.
       expect(
-        wrapper.find('#sortBy').simulate('change', { target: { value: 2, name: 'Nyeste' } })
+        wrapper.find('#sortBy').simulate('change', { target: { value: 3, name: 'Nyeste' } })
       ).toEqual({});
       done();
     });
@@ -72,9 +100,22 @@ describe('ShowAllRecipe tests', () => {
   test('Select Z-A at sort', (done) => {
     const wrapper = shallow(<ShowAllRecipe />);
     //find select sortBy and simulate change and choose target value 1 and name Z-A
+    wrapper.find('#sortBy').simulate('change', { target: { value: 1, name: 'A-Z' } });
+
     setTimeout(() => {
       expect(
-        wrapper.find('#sortBy').simulate('change', { target: { value: 1, name: 'Z-A' } })
+        wrapper.find('#sortBy').simulate('change', { target: { value: 2, name: 'Z-A' } })
+      ).toEqual({});
+      done();
+    });
+  });
+  test('Select Land at sort', (done) => {
+    const wrapper = shallow(<ShowAllRecipe />);
+    //find select sortBy and simulate change and choose target value 4 and name Land
+    wrapper.find('#sortBy').simulate('change', { target: { value: 4, name: 'Land' } });
+    setTimeout(() => {
+      expect(
+        wrapper.find('#sortBy').simulate('change', { target: { value: 4, name: 'Land' } })
       ).toEqual({});
       done();
     });
@@ -82,10 +123,10 @@ describe('ShowAllRecipe tests', () => {
   test('Select A-Z at sort', (done) => {
     const wrapper = shallow(<ShowAllRecipe />);
     //find select sortBy and simulate change and choose target value 1 and name Z-A
-    wrapper.find('#sortBy').simulate('change', { target: { value: 0, name: 'A-Z' } });
+    wrapper.find('#sortBy').simulate('change', { target: { value: 1, name: 'A-Z' } });
     setTimeout(() => {
       expect(
-        wrapper.find('#sortBy').simulate('change', { target: { value: 0, name: 'A-Z' } })
+        wrapper.find('#sortBy').simulate('change', { target: { value: 1, name: 'A-Z' } })
       ).toEqual({});
 
       done();

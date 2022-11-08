@@ -16,7 +16,7 @@ export class Icebox extends Component {
   selectedIngredient: List = {
     id: 0,
     ingred_id: 1,
-    mengde: 0,
+    mengde: '',
     maleenhet: '',
   };
   render() {
@@ -27,7 +27,7 @@ export class Icebox extends Component {
             <Column>
               <h6>Søk</h6>
               <Form.Input
-                id="shoppinglistsearch"
+                id="iceboxlistsearch"
                 type="text"
                 value={this.searchterm}
                 onChange={(event) => {
@@ -58,13 +58,13 @@ export class Icebox extends Component {
                 <Row key={idx}>
                   <p style={{ width: '150px' }}>{ingredient.ingred_navn}</p>
                   <Column width={2}>
-                    <Button.Success
+                    <Button.Danger
                       onClick={() => {
                         this.deleteIceboxIngredient(ingredient.ingred_id);
                       }}
                     >
                       X
-                    </Button.Success>
+                    </Button.Danger>
                   </Column>
                 </Row>
               ))}
@@ -108,6 +108,9 @@ export class Icebox extends Component {
           this.filterRecipes()
         )
       )
+      .then(() => {
+        return;
+      })
       .catch((error) => Alert.danger('Error deleting icebox ingredient: ' + error.message));
   }
 
@@ -131,7 +134,8 @@ export class Icebox extends Component {
     this.selectedIngredients = this.ingredients.filter((ingredient) =>
       ingredient.ingred_navn.toLowerCase().includes(searchterm.toLowerCase())
     );
-    this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
+    this.selectedIngredient.ingred_id = this.selectedIngredients[0]?.ingred_id || 0;
+    return;
   }
 
   mounted() {

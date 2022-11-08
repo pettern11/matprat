@@ -19,6 +19,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
     ant_like: 0,
     liked: false,
   };
+  ingredient: string = '';
   addIngredientToRecipe: Recipe_Content[] = [];
   iDsDeletedIngredient: any = [];
   recipeContent: Recipe_Content[] = [];
@@ -91,7 +92,8 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                     style={{ width: '210px' }}
                   >
                     {this.selectedIngredients.map((ingredient, i) => (
-                      <option key={ingredient.ingred_id} value={ingredient.ingred_id}>
+                      <option value={ingredient.ingred_id}>
+                        {/* <option key={ingredient.ingred_id} value={ingredient.ingred_id}> */}
                         {ingredient.ingred_navn}
                       </option>
                     ))}
@@ -118,6 +120,24 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                   Legg til ny ingrediens
                 </Button.Success>
               </Column>
+              <Column>
+                <Form.Input
+                  id="createIngredient"
+                  type="text"
+                  style={{ width: '210px' }}
+                  value={this.ingredient}
+                  onChange={(event) => (this.ingredient = event.currentTarget.value)}
+                  placeholder="Legg til ny ingrediens"
+                ></Form.Input>
+                <Button.Success
+                  id="createIngredientFunc"
+                  onClick={() => {
+                    this.createIngredientFunc(this.ingredient);
+                  }}
+                >
+                  Legg til
+                </Button.Success>
+              </Column>
             </Row>
             {/* renderer alle ingrediensene som er linket til oppskriften, her kan man også endre på hvor mye det er av hver ingrediens og måleenheten */}
             <br />
@@ -126,10 +146,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                 {this.recipeContent.map((rc, i) => (
                   <Row key={i}>
                     <p style={{ width: '215px' }}>
-                      {
-                        this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0]
-                          .ingred_navn
-                      }
+                      {this.ingredients.find((ing) => ing.ingred_id == rc.ingred_id)?.ingred_navn}
                     </p>
                     <input
                       className="form-control"
@@ -174,15 +191,26 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
       </>
     );
   }
+  createIngredientFunc(string: string) {
+    if (string.length > 0 && string != '') {
+      service
+        .createIngredient(string)
+        .then(() => {
+          this.getAllIngredients();
+        })
+        .catch((error) => Alert.danger('Error creating the new ingredient: ' + error.message));
+    }
+  }
   search(searchterm: string) {
     this.selectedIngredients = this.ingredients.filter((ingredient) =>
       ingredient.ingred_navn.toLowerCase().includes(searchterm.toLowerCase())
     );
-    //@ts-ignore
-
+    //hvis det ikke finnes noen ingredienser i listen så skal den legge til en tom ingrediens
     if (this.selectedIngredients.length === 0) {
       this.selectedIngredient = { ingred_id: 0, ingred_navn: '' };
-    } else {
+    }
+    //ellers så skal den sette den første ingrediensen i listen som valgt som vil være nærmest søkeordet
+    else {
       document.getElementById('selectIngredientNewRecipe').value =
         this.selectedIngredients[0].ingred_id;
       //@ts-ignore
@@ -203,7 +231,6 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
     });
     //map throug recipeContent and update elements inn addIngredientToRecipe if ingredient already exists
     //than splice the elemnt from recipeContent
-    //takk:)
     this.addIngredientToRecipe.map((element, i) => {
       this.recipeContent.map((rc, j) => {
         if (element.ingred_id == rc.ingred_id) {
@@ -241,7 +268,8 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
     this.recipeContent.splice(index, 1);
     this.iDsDeletedIngredient.push({ ingred_id: ingred_id, recipe_id: this.recipe.oppskrift_id });
   }
-  mounted() {
+
+  getAllIngredients() {
     service
       .getAllIngredient()
       .then(
@@ -263,7 +291,9 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
       .catch((error) => {
         Alert.danger('Error getting ingredients: ' + error.message);
       });
-
+  }
+  mounted() {
+    this.getAllIngredients();
     service
       .getRecipeContent(this.props.match.params.id)
       .then((recipeContent) => (this.recipeContent = recipeContent))

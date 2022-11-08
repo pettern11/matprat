@@ -145,7 +145,8 @@ describe('NewRecipe tests', () => {
       });
     });
   });
-  test('Try create recipe and fail because name, description, etc..', (done) => {
+
+  test.skip('Try create recipe and fail because name, description, etc..', (done) => {
     const wrapper = shallow(<NewRecipe />);
     const wrapperAlert = shallow(<Alert />);
     let divId = 'ingreditentList';
