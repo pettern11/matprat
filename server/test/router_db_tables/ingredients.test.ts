@@ -1,7 +1,7 @@
 import axios from 'axios';
 import pool from '../../src/mysql-pool';
 import app from '../../src/app';
-import {service, Ingredient} from '../../src/services';
+import {ingrediensService, Ingredient} from '../../src/service/ingrediens-services';
 
 const ingredients: Ingredient[] = [
     {ingred_id: 1, ingred_navn: 'pølse' },
@@ -24,10 +24,10 @@ beforeEach((done) => {
     if (error) return done(error);
 
     // Create testTasks sequentially in order to set correct id, and call done() when finished
-    service
+    ingrediensService
       .createIngredient(ingredients[0].ingred_navn)
-      .then(() => service.createIngredient(ingredients[1].ingred_navn)) 
-      .then(() => service.createIngredient(ingredients[2].ingred_navn)) 
+      .then(() => ingrediensService.createIngredient(ingredients[1].ingred_navn)) 
+      .then(() => ingrediensService.createIngredient(ingredients[2].ingred_navn)) 
       .then(() => done()); // Call done() after ingredients[2] has been created
   });
 });

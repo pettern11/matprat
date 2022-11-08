@@ -1,7 +1,7 @@
 import axios from 'axios';
 import pool from '../../src/mysql-pool';
 import app from '../../src/app';
-import {service, IngredientToShoppinglist} from '../../src/services';
+import {shoppingListService, IngredientToShoppinglist} from '../../src/service/shoppingList-services';
 
 const handleliste: IngredientToShoppinglist[] = [
     {ingred_id: 1, mengde: "1", maleenhet: 'stk' },
@@ -24,10 +24,10 @@ beforeEach((done) => {
     if (error) return done(error);
 
     // Create testTasks sequentially in order to set correct id, and call done() when finished
-    service
+    shoppingListService
       .addIngredientShoppinglist(handleliste[0])
-      .then(() => service.addIngredientShoppinglist(handleliste[1])) // Create testTask[1] after testTask[0] has been created
-      .then(() => service.addIngredientShoppinglist(handleliste[2])) // Create testTask[2] after testTask[1] has been created
+      .then(() => shoppingListService.addIngredientShoppinglist(handleliste[1])) // Create testTask[1] after testTask[0] has been created
+      .then(() => shoppingListService.addIngredientShoppinglist(handleliste[2])) // Create testTask[2] after testTask[1] has been created
       .then(() => done()); // Call done() after testTask[2] has been created
   });
 });
@@ -135,7 +135,7 @@ describe('Update ingredient in shoppinglist (PUT)', () => {
       done();
     });
   });
-});
+}); 
 
 
 
