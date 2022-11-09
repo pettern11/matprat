@@ -100,7 +100,7 @@ class Service {
       .delete<IceboxIngredient>('/deleteiceboxingredient/' + ingred_id)
       .then((response) => response.data);
   }
-  createIngredient(name: string) {
+  createIngredient(name: string) {console.log(name);
     return axios.post<{}>('/newingredient', { name: name }).then((response) => response.data);
   }
 

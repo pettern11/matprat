@@ -460,7 +460,7 @@ export class Alert extends Component {
   deleteMessage(i) {
     setTimeout(() => {
       this.alerts.splice(i, 1);
-    }, 1000);
+    }, 4000);
   }
 
   /**

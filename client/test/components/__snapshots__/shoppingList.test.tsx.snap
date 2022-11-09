@@ -29,7 +29,7 @@ exports[`Rending Should render after snapshot 1`] = `
             Chicken
              
           </p>
-          <input
+          <FormInput
             className="form-control"
             onBlur={[Function]}
             onChange={[Function]}
@@ -112,7 +112,7 @@ exports[`Rending Should render after snapshot 1`] = `
             Salmon
              
           </p>
-          <input
+          <FormInput
             className="form-control"
             onBlur={[Function]}
             onChange={[Function]}
@@ -196,6 +196,7 @@ exports[`Rending Should render after snapshot 1`] = `
         id="shoppinglistsearch"
         onChange={[Function]}
         type="text"
+        value=""
       />
       <select
         className="form-select"
