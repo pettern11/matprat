@@ -341,6 +341,9 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
       +
     </ButtonSuccess>
   </Card>
+  <a
+    href="mailto:?subject=God Oppskrift&body="
+  />
   <ButtonSuccess
     onClick={[Function]}
   >
@@ -722,6 +725,9 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
       +
     </ButtonSuccess>
   </Card>
+  <a
+    href="mailto:?subject=God Oppskrift&body="
+  />
   <ButtonSuccess
     onClick={[Function]}
   >
@@ -1103,6 +1109,9 @@ exports[`ShowRecipe tests Number increment works 1`] = `
       +
     </ButtonSuccess>
   </Card>
+  <a
+    href="mailto:?subject=God Oppskrift&body="
+  />
   <ButtonSuccess
     onClick={[Function]}
   >
@@ -1484,6 +1493,9 @@ exports[`ShowRecipe tests Number of likes 1`] = `
       +
     </ButtonSuccess>
   </Card>
+  <a
+    href="mailto:?subject=God Oppskrift&body="
+  />
   <ButtonSuccess
     onClick={[Function]}
   >

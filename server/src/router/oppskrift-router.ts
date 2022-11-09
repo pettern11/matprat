@@ -61,7 +61,7 @@ router.put('/recipelike/:oppskrift_id', (req, res) => {
     .updateLiked(Number(req.params.oppskrift_id), req.body.liked)
     .then((_result) => res.send())
     .catch((error) => res.status(500).send(error));
-});
+}); 
 
 router.delete('/deleterecipe/:id', (request, response) => {
   oppskriftService
