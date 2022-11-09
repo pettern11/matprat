@@ -1,6 +1,16 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Alert, Card, Row, Column, Form, Button, RecipeView, Cards } from '.././widgets';
+import {
+  Alert,
+  Card,
+  Row,
+  Column,
+  Form,
+  Button,
+  RecipeView,
+  Cards,
+  IceboxsCard,
+} from '.././widgets';
 import { NavLink } from 'react-router-dom';
 import service, { Ingredient, Recipe, Recipe_Content, List } from '.././service';
 
@@ -22,59 +32,63 @@ export class Icebox extends Component {
   render() {
     return (
       <>
-        <div className="margintop">
-          <Card title="Dine ingredienser:">
-            <Column>
-              <h6>Søk</h6>
-              <Form.Input
-                id="iceboxlistsearch"
-                type="text"
-                value={this.searchterm}
-                onChange={(event) => {
-                  this.search(event.currentTarget.value);
-                  this.searchterm = event.currentTarget.value;
-                }}
-              />
-              <select
-                className="form-select"
-                id="selectExistingIngredient"
-                onChange={(event) => {
-                  let id = Number(event.target.value);
-                  //find name of ingredient
-                  let name =
-                    this.selectedIngredients.find((e) => e.ingred_id == id)?.ingred_navn || '';
-                  this.addIngredientToIcebox(id, name);
-                }}
-              >
-                {this.selectedIngredients.map((ingredient, idx) => (
-                  <option key={idx} value={ingredient.ingred_id}>
-                    {ingredient.ingred_navn}
-                  </option>
+        <Column width={1}>
+          <div className="margintop">
+            <Card title="Dine ingredienser:">
+              <Column>
+                <h6>Søk</h6>
+                <Form.Input
+                  id="iceboxlistsearch"
+                  type="text"
+                  value={this.searchterm}
+                  onChange={(event) => {
+                    this.search(event.currentTarget.value);
+                    this.searchterm = event.currentTarget.value;
+                  }}
+                />
+                <select
+                  className="form-select"
+                  id="selectExistingIngredient"
+                  onChange={(event) => {
+                    let id = Number(event.target.value);
+                    //find name of ingredient
+                    let name =
+                      this.selectedIngredients.find((e) => e.ingred_id == id)?.ingred_navn || '';
+                    this.addIngredientToIcebox(id, name);
+                  }}
+                >
+                  {this.selectedIngredients.map((ingredient, idx) => (
+                    <option key={idx} value={ingredient.ingred_id}>
+                      {ingredient.ingred_navn}
+                    </option>
+                  ))}
+                </select>
+              </Column>
+              <Column>
+                {this.choosenIngredient.map((ingredient, idx) => (
+                  <Row key={idx}>
+                    <p style={{ width: '150px' }}>{ingredient.ingred_navn}</p>
+                    <Column width={2}>
+                      <Button.Danger
+                        onClick={() => {
+                          this.deleteIceboxIngredient(ingredient.ingred_id);
+                        }}
+                      >
+                        X
+                      </Button.Danger>
+                    </Column>
+                  </Row>
                 ))}
-              </select>
-            </Column>
-            <Column>
-              {this.choosenIngredient.map((ingredient, idx) => (
-                <Row key={idx}>
-                  <p style={{ width: '150px' }}>{ingredient.ingred_navn}</p>
-                  <Column width={2}>
-                    <Button.Danger
-                      onClick={() => {
-                        this.deleteIceboxIngredient(ingredient.ingred_id);
-                      }}
-                    >
-                      X
-                    </Button.Danger>
-                  </Column>
-                </Row>
-              ))}
-            </Column>
-          </Card>
-          <Card title="Oppskrifter basert på dine ingredienser">
+              </Column>
+            </Card>
+          </div>
+        </Column>
+        <Card title="Oppskrifter basert på dine ingredienser">
+          <div id="icebox">
             <Row>
               <>
                 {this.filteredRecipes.map((recipe, idx) => (
-                  <Cards title="" key={idx}>
+                  <IceboxsCard title="" key={idx}>
                     <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
                       <RecipeView
                         img={recipe.bilde_adr}
@@ -82,12 +96,12 @@ export class Icebox extends Component {
                         numbOfPors={recipe.ant_pors}
                       ></RecipeView>
                     </NavLink>
-                  </Cards>
+                  </IceboxsCard>
                 ))}
               </>
             </Row>
-          </Card>
-        </div>
+          </div>
+        </Card>
       </>
     );
   }

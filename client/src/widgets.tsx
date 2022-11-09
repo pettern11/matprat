@@ -21,7 +21,18 @@ export class RecipeView extends Component<{ img: string; name: string; numbOfPor
     );
   }
 }
-
+export class IceboxsCard extends Component<{ title: ReactNode; children: ReactNode }> {
+  render() {
+    return (
+      <div className="icebox cards">
+        <div className="icebox-body">
+          <h5 className="icebox-title">{this.props.title}</h5>
+          <div className="icebox-text">{this.props.children}</div>
+        </div>
+      </div>
+    );
+  }
+}
 export class Cards extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
     return (
