@@ -4,6 +4,7 @@ import {
   Alert,
   Card,
   Row,
+  Rows,
   Column,
   Form,
   Button,
@@ -27,11 +28,11 @@ export class Icebox extends Component {
   render() {
     return (
       <>
-        <Column width={1}>
-          <div className="margintop">
+        <div className="margintop">
+          <Column width={2}>
             <Card title="Dine ingredienser:">
               <Column>
-                <h6>Søk</h6>
+                Søk:
                 <Form.Input
                   id="iceboxlistsearch"
                   type="text"
@@ -66,9 +67,10 @@ export class Icebox extends Component {
                 </Button.Success>
               </Column>
               <Column>
+                <br />
                 {this.choosenIngredient.map((ingredient, idx) => (
                   <Row key={idx}>
-                    <p style={{ width: '150px' }}>{ingredient.ingred_navn}</p>
+                    <p style={{ width: '190px' }}>{ingredient.ingred_navn}</p>
                     <Column width={2}>
                       <Button.Danger
                         onClick={() => {
@@ -82,27 +84,27 @@ export class Icebox extends Component {
                 ))}
               </Column>
             </Card>
-          </div>
-        </Column>
-        <Card title="Oppskrifter basert på dine ingredienser">
-          <div id="icebox">
-            <Row>
-              <>
-                {this.filteredRecipes.map((recipe, idx) => (
-                  <IceboxsCard title="" key={idx}>
-                    <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
-                      <RecipeView
-                        img={recipe.bilde_adr}
-                        name={recipe.oppskrift_navn}
-                        numbOfPors={recipe.ant_pors}
-                      ></RecipeView>
-                    </NavLink>
-                  </IceboxsCard>
-                ))}
-              </>
-            </Row>
-          </div>
-        </Card>
+          </Column>
+          <Card title="Oppskrifter basert på dine ingredienser:">
+            <div id="icebox">
+              <Rows>
+                <>
+                  {this.filteredRecipes.map((recipe, idx) => (
+                    <Cards title="" key={idx}>
+                      <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
+                        <RecipeView
+                          img={recipe.bilde_adr}
+                          name={recipe.oppskrift_navn}
+                          numbOfPors={recipe.ant_pors}
+                        ></RecipeView>
+                      </NavLink>
+                    </Cards>
+                  ))}
+                </>
+              </Rows>
+            </div>
+          </Card>
+        </div>
       </>
     );
   }

@@ -36,9 +36,7 @@ export class ShoppingList extends Component {
   render() {
     return (
       <>
-        <br></br>
-        <br></br>
-        <br></br>
+        <div className="margintop">
         <Card title="Handleliste">
           <Column>
             <div id="liste" className="">
@@ -170,6 +168,7 @@ export class ShoppingList extends Component {
             </Button.Success>
           </Column>
         </Card>
+        </div>
       </>
     );
   }
