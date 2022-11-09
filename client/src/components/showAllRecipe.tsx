@@ -9,6 +9,7 @@ import {
   Cards,
   Alert,
   Column,
+  Columns,
   Row,
   Rows,
   Form,
@@ -33,36 +34,44 @@ export class ShowAllRecipe extends Component {
     return (
       <>
         <div className="margintop">
-          {/* <br/> */}
-          <div>
-            {/* <br /> */}
-            {/* <Car title="Søkefelt"> */}
-            <Form.Input
-              id="indexsearch"
-              type="text"
-              placeholder="Søk etter oppskrift"
-              value={this.searchterm}
-              onChange={(event) => {
-                this.search(event.currentTarget.value);
-                this.searchterm = event.currentTarget.value;
-              }}
-            />
-            {/* </Car> */}
-
-            <select
-              id="sortBy"
-              // value={props.value}
-              onChange={(event) => this.sortRecipe(Number(event.target.value))}
-              className="form-select"
-            >
-              <option value="0">Sorter</option>
-              <option value="1">A-Z</option>
-              <option value="2">Z-A</option>
-              <option value="3">Nyeste</option>
-              <option value="4">Land</option>
-              <option value="5">Kategori</option>
-            </select>
-          </div>
+          <br />
+          <Row>
+            <center>
+              <Columns>
+                {/* <br/> */}
+                {/* <br /> */}
+                {/* <Car title="Søkefelt"> */}
+                <Form.Input
+                  id="indexsearch"
+                  style={{ width: '210px' }}
+                  type="text"
+                  placeholder="Søk etter oppskrift"
+                  value={this.searchterm}
+                  onChange={(event) => {
+                    this.search(event.currentTarget.value);
+                    this.searchterm = event.currentTarget.value;
+                  }}
+                />
+                {/* </Car> */}
+              </Columns>
+              <Columns>
+                <select
+                  id="sortBy"
+                  style={{ width: '210px' }}
+                  // value={props.value}
+                  onChange={(event) => this.sortRecipe(Number(event.target.value))}
+                  className="form-select"
+                >
+                  <option value="0">Sorter</option>
+                  <option value="1">A-Z</option>
+                  <option value="2">Z-A</option>
+                  <option value="3">Nyeste</option>
+                  <option value="4">Land</option>
+                  <option value="5">Kategori</option>
+                </select>
+              </Columns>
+            </center>
+          </Row>
           <br></br>
 
           <div className="container-fluid ">

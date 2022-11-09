@@ -125,7 +125,21 @@ export class Column extends Component<{
 }> {
   render() {
     return (
-      <div className={'col' + (this.props.width ? '-' + this.props.width : '')}>
+      <div className={'col' + (this.props.width ? '-' + this.props.width : '')} >
+        <div className={'float-' + (this.props.right ? 'end' : 'start')}>{this.props.children}</div>
+      </div>
+    );
+  }
+}
+
+export class Columns extends Component<{
+  width?: number | undefined;
+  right?: boolean | undefined;
+  children: ReactNode;
+}> {
+  render() {
+    return (
+      <div className="col-4">
         <div className={'float-' + (this.props.right ? 'end' : 'start')}>{this.props.children}</div>
       </div>
     );
