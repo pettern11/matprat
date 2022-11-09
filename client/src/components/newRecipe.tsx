@@ -337,6 +337,8 @@ export class NewRecipe extends Component {
     this.recipe_content.splice(index, 1);
   }
   search(searchterm: string) {
+    let createdSelect =
+      document.getElementById('selectIngredientNewRecipe') || document.createElement('select');
     this.selectedIngredients = this.ingredients.filter((ingredient) =>
       ingredient.ingred_navn.toLowerCase().includes(searchterm.toLowerCase())
     );
@@ -345,8 +347,8 @@ export class NewRecipe extends Component {
     if (this.selectedIngredients.length === 0) {
       this.selectedIngredient = { ingred_id: 0, ingred_navn: '' };
     } else {
-      document.getElementById('selectIngredientNewRecipe').value =
-        this.selectedIngredients[0].ingred_id;
+      //@ts-ignore
+      createdSelect.value = this.selectedIngredients[0].ingred_id;
       //@ts-ignore
       this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
     }
@@ -419,6 +421,9 @@ export class NewRecipe extends Component {
         service
           .getAllCategory()
           .then((categories) => (this.categories = categories))
+          .then(() => {
+            return;
+          })
           .catch((error) => Alert.danger('Error : ' + error.message))
       );
     }
@@ -444,6 +449,9 @@ export class NewRecipe extends Component {
         service
           .getAllCountry()
           .then((countries) => (this.countries = countries))
+          .then(() => {
+            return;
+          })
           .catch((error) => Alert.danger('Error : ' + error.message))
       );
     }
