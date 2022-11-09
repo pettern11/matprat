@@ -35,6 +35,7 @@ export class Menu extends Component {
           <NavBar.Link to="/newrecipe">Ny oppskrift</NavBar.Link>
           <NavBar.Link to="/shoppinglist">Handleliste</NavBar.Link>
           <NavBar.Link to="/liked">Liked</NavBar.Link>
+          <NavBar.Link to="/icebox">Kjoleskap</NavBar.Link>
         </NavBar>
       </>
     );

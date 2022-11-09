@@ -1,6 +1,16 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Alert, Card, Row, Column, Form, Button, RecipeView, Cards } from '.././widgets';
+import {
+  Alert,
+  Card,
+  Row,
+  Column,
+  Form,
+  Button,
+  RecipeView,
+  Cards,
+  IceboxsCard,
+} from '.././widgets';
 import { NavLink, Redirect } from 'react-router-dom';
 import service, {
   Country,
@@ -60,80 +70,84 @@ export class Icebox extends Component {
   render() {
     return (
       <>
-        <Card title="Dine ingredienser:">
-          <Column>
-            <h6>Søk</h6>
-            <Form.Input
-              id="shoppinglistsearch"
-              type="text"
-              value={this.searchterm}
-              onChange={(event) => {
-                this.search(event.currentTarget.value);
-                this.searchterm = event.currentTarget.value;
-              }}
-            />
-            <select
-              id="selectExistingIngredient"
-              onChange={(event) => {
-                this.selectedIceboxIngredient.ingred_id = Number(event.currentTarget.value);
+        <Column width={1}>
+          <Card title="Dine ingredienser:">
+            <Column>
+              <h6>Søk</h6>
+              <Form.Input
+                id="shoppinglistsearch"
+                type="text"
+                value={this.searchterm}
+                onChange={(event) => {
+                  this.search(event.currentTarget.value);
+                  this.searchterm = event.currentTarget.value;
+                }}
+              />
+              <select
+                id="selectExistingIngredient"
+                onChange={(event) => {
+                  this.selectedIceboxIngredient.ingred_id = Number(event.currentTarget.value);
 
-                this.selectedIceboxIngredient.ingred_navn = this.ingredients.filter(
-                  (e) => e.ingred_id == this.selectedIceboxIngredient.ingred_id
-                )[0].ingred_navn;
+                  this.selectedIceboxIngredient.ingred_navn = this.ingredients.filter(
+                    (e) => e.ingred_id == this.selectedIceboxIngredient.ingred_id
+                  )[0].ingred_navn;
 
-                this.addIngredientToIcebox();
-              }}
-            >
-              {this.selectedIngredients.map((ingredient, idx) => (
-                <option key={idx} value={ingredient.ingred_id}>
-                  {ingredient.ingred_navn}
-                </option>
+                  this.addIngredientToIcebox();
+                }}
+              >
+                {this.selectedIngredients.map((ingredient, idx) => (
+                  <option key={idx} value={ingredient.ingred_id}>
+                    {ingredient.ingred_navn}
+                  </option>
+                ))}
+              </select>
+            </Column>
+            <Column>
+              {this.iceboxIngredients.map((ingredient, idx) => (
+                <Row key={idx}>
+                  <Column width={3}>{ingredient.ingred_navn}</Column>
+                  <Column width={2}>
+                    <Button.Success
+                      onClick={() => {
+                        this.deleteIceboxIngredient(ingredient.ingred_id);
+                      }}
+                    >
+                      X
+                    </Button.Success>
+                  </Column>
+                </Row>
               ))}
-            </select>
-          </Column>
-          <Column>
-            {this.iceboxIngredients.map((ingredient, idx) => (
-              <Row key={idx}>
-                <Column width={3}>{ingredient.ingred_navn}</Column>
-                <Column width={2}>
-                  <Button.Success
-                    onClick={() => {
-                      this.deleteIceboxIngredient(ingredient.ingred_id);
-                    }}
-                  >
-                    X
-                  </Button.Success>
-                </Column>
-              </Row>
-            ))}
-          </Column>
-        </Card>
+            </Column>
+          </Card>
+        </Column>
         <Card title="Oppskrifter basert på dine ingredienser">
-          <Row>
-            <>
-              {console.log(this.uniqueRecipeId)}
-              {this.recipes
-                .filter((recipe) => this.uniqueRecipeId.some((e) => e == recipe.oppskrift_id))
+          <div id="icebox">
+            <Row>
+              <>
+                {console.log(this.uniqueRecipeId)}
+                {this.recipes
+                  .filter((recipe) => this.uniqueRecipeId.some((e) => e == recipe.oppskrift_id))
 
-                /*              .filter((recipe) => {
+                  /*              .filter((recipe) => {
                 this.recipeContent.map(
                   (rc) =>
                     this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn
                 );
               })*/
-                .map((recipe, idx) => (
-                  <Cards title="" key={idx}>
-                    <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
-                      <RecipeView
-                        img={recipe.bilde_adr}
-                        name={recipe.oppskrift_navn}
-                        numbOfPors={recipe.ant_pors}
-                      ></RecipeView>
-                    </NavLink>
-                  </Cards>
-                ))}
-            </>
-          </Row>
+                  .map((recipe, idx) => (
+                    <IceboxsCard title="" key={idx}>
+                      <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
+                        <RecipeView
+                          img={recipe.bilde_adr}
+                          name={recipe.oppskrift_navn}
+                          numbOfPors={recipe.ant_pors}
+                        ></RecipeView>
+                      </NavLink>
+                    </IceboxsCard>
+                  ))}
+              </>
+            </Row>
+          </div>
         </Card>
       </>
     );
@@ -192,7 +206,7 @@ export class Icebox extends Component {
             return false;
           });
 
-        console.log(this.uniqueRecipeId);
+        //console.log(this.uniqueRecipeId);
       })
       .catch((error: { message: string }) =>
         Alert.danger('Error getting recipe content: ' + error.message)
