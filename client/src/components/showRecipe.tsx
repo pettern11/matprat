@@ -45,7 +45,6 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
                 ?.kategori_navn
             }
           </p>
-         
           <input
             type="checkbox"
             id="checkbox"
@@ -112,14 +111,15 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
           {this.recipeContent.map((rc, i) => (
             <Row key={i}>
               <p style={{ width: '250px' }}>
-                {i + 1}. {/* find name of ingridient */}
+                {/* {i + 1}.  */}
+                {/* find name of ingridient */}
                 {this.ingredients.find((ing) => ing.ingred_id == rc.ingred_id)?.ingred_navn}
                 {/* {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}{' '} */}
               </p>
-              <p style={{ width: '75px' }}>
+              <p style={{ width: 'auto', paddingRight: '2px' }}>
                 {((Number(rc.mengde) * this.portions) / this.recipe.ant_pors).toFixed(1)}
               </p>
-              <p style={{ width: '130px' }}>{rc.maleenhet}</p>
+              <p style={{ width: '130px', paddingLeft: '2px' }}>{rc.maleenhet}</p>
             </Row>
           ))}
           Porsjoner:{' '}
@@ -131,7 +131,11 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
             +
           </Button.Success>
         </Card>
-        <a href={`mailto:?subject=${this.recipe.oppskrift_navn}&body= ${window.location.href} %0d%0a ${this.recipe.oppskrift_beskrivelse}`}>Heidu</a>
+        <a
+          href={`mailto:?subject=${this.recipe.oppskrift_navn}&body= ${window.location.href} %0d%0a ${this.recipe.oppskrift_beskrivelse}`}
+        >
+          {/* Heidu */}
+        </a>
         <Button.Success onClick={() => history.push('/recipe/edit/' + this.props.match.params.id)}>
           Endre oppskrift
         </Button.Success>
@@ -146,20 +150,23 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
           Send ingredienser til handleliste
         </Button.Success>
         {/* Recomend 5 recipes based on the category */}
-        <h3>Andre oppskrifter i samme kategori:</h3>
-        <Rows>
-          {this.recommendedRecipes.map((recipe) => (
-            <Cards title="" key={recipe.oppskrift_id}>
-              <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
-                <RecipeView
-                  img={recipe.bilde_adr}
-                  name={recipe.oppskrift_navn}
-                  numbOfPors={recipe.ant_pors}
-                ></RecipeView>
-              </NavLink>
-            </Cards>
-          ))}
-        </Rows>
+        <Card>
+          {/* <br /> */}
+          <h3>Andre oppskrifter i samme kategori:</h3>
+          <Row>
+            {this.recommendedRecipes.map((recipe) => (
+              <Cards title="" key={recipe.oppskrift_id}>
+                <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
+                  <RecipeView
+                    img={recipe.bilde_adr}
+                    name={recipe.oppskrift_navn}
+                    numbOfPors={recipe.ant_pors}
+                  ></RecipeView>
+                </NavLink>
+              </Cards>
+            ))}
+          </Row>
+        </Card>
       </div>
     );
   }
@@ -227,9 +234,9 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
         mengde: (Number(rc.mengde) * this.portions) / this.recipe.ant_pors,
         maleenhet: rc.maleenhet,
       };
-      service.addIngredient(ingredient)
-      .then(() => {history.push('/shoppinglist');})
+      service.addIngredient(ingredient).then(() => {
+        history.push('/shoppinglist');
+      });
     });
-    
   }
 }
