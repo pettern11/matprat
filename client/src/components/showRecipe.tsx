@@ -45,21 +45,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
                 ?.kategori_navn
             }
           </p>
-          {/* <Form.Checkbox
-            checked={this.recipe.liked}
-            id="checkbox"
-            onChange={() => {
-              service.likeRecipe(this.recipe.oppskrift_id, !this.recipe.liked).then(() => {
-                ShowRecipe.instance()?.mounted();
-              });
-            }}
-          />
-          <label htmlFor="checkbox" id="heart">
-            <img
-              width={'50px'}
-              src="https://static5.depositphotos.com/1001759/463/i/600/depositphotos_4634746-stock-photo-red-heart-isolated-white-background.jpg"
-            ></img>
-          </label> */}
+         
           <input
             type="checkbox"
             id="checkbox"
@@ -240,8 +226,9 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
         mengde: (Number(rc.mengde) * this.portions) / this.recipe.ant_pors,
         maleenhet: rc.maleenhet,
       };
-      service.addIngredient(ingredient);
+      service.addIngredient(ingredient)
+      .then(() => {history.push('/shoppinglist');})
     });
-    history.push('/shoppinglist');
+    
   }
 }

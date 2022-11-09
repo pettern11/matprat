@@ -18,8 +18,8 @@ router.post('/addingredient', (request, response) => {
   const data = request.body.ingredient;
   console.log(data);
   if(data.ingred_id == '' || data.ingred_id == null
-  || data.mengde == '' || data.mengde == null
-  || data.maleenhet == '' || data.maleenhet == null){
+   || data.mengde == null
+   || data.maleenhet == null){
     response.status(400).send('Missing crutial information, fill in all the fields');
   } else {
     shoppingListService

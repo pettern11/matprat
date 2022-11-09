@@ -18,11 +18,11 @@ class Service {
   }
 
   createIngredient(name: string) {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => { 
       pool.query(
         'INSERT INTO ingrediens SET ingred_navn=?',
         [name],
-        (error, results: ResultSetHeader) => {
+        (error, results: ResultSetHeader) => {console.log(error)
           if (error){ return reject(error)};
 
           resolve();
