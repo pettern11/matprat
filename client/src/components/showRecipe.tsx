@@ -205,7 +205,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
       .getAllRepice()
       .then((recipes) => {
         this.allRecipes = recipes;
-        this.findRecommendedRecipes(recipes.length);
+        this.allRecipes.length == recipes.length ? this.findRecommendedRecipes(recipes.length) : '';
       })
       .catch((error) => Alert.danger('Error getting recipes: ' + error.message));
   }
@@ -213,14 +213,14 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
   downloadPage() {
     let pageHTML = document.querySelector('.download1').outerHTML;
     pageHTML += document.querySelector('.download2').outerHTML;
-
-    console.log(pageHTML);
-    const blob = new Blob([pageHTML], { type: 'text/html' });
+    let css =
+      '<style> pre { white-space: pre-wrap; font-size:16px}  p {display: inline-block} body {background-color: coral; text-align:center}   </style>';
+    const blob = new Blob([pageHTML, css], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const tempEl = document.createElement('a');
     document.body.appendChild(tempEl);
     tempEl.href = url;
-    tempEl.download = 'thispage.html';
+    tempEl.download = this.recipe.oppskrift_navn + '.html';
     tempEl.click();
     setTimeout(() => {
       URL.revokeObjectURL(url);
@@ -228,13 +228,9 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
     }, 2000);
   }
   findRecommendedRecipes(lengtCheck: number) {
-    if (this.allRecipes.length == lengtCheck && this.recipe.kategori_id != 0) {
-      this.recommendedRecipes = this.allRecipes
-        .filter((recipe) => recipe.kategori_id == this.recipe.kategori_id)
-        .slice(0, 5);
-    } else {
-      this.findRecommendedRecipes(lengtCheck);
-    }
+    this.recommendedRecipes = this.allRecipes
+      .filter((recipe) => recipe.kategori_id == this.recipe.kategori_id)
+      .slice(0, 5);
   }
   incrementPortions() {
     this.portions++;
