@@ -210,6 +210,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
   downloadPage() {
     let pageHTML = document.querySelector('.download1').outerHTML;
     pageHTML += document.querySelector('.download2').outerHTML;
+
     console.log(pageHTML);
     const blob = new Blob([pageHTML], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
