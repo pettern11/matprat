@@ -45,6 +45,12 @@ exports[`Icebox tests Snapshot Icebox draws correctly 1`] = `
               pizzadeig
             </option>
           </select>
+          <ButtonSuccess
+            id="btnIngredAdd"
+            onClick={[Function]}
+          >
+            Legg til ingrediens
+          </ButtonSuccess>
         </Column>
         <Column>
           <Row

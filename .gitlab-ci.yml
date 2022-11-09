@@ -1,0 +1,60 @@
+image: node:latest # Use a docker image from https://hub.docker.com with latest Node.js already installed
+
+variables:
+  # Configure server/src/mysql-pool.ts
+  MYSQL_HOST: localhost
+  MYSQL_USER: test
+  MYSQL_PASSWORD: test
+  MYSQL_DATABASE: test
+
+stages:
+  - build # Jobs placed in build stage will run first
+  - test # Jobs placed in test stage will run after build-jobs
+
+install:
+  stage: build
+  script:
+    - cd server
+    - npm install --legacy-peer-deps --force
+    - cd ../client
+    - npm install --legacy-peer-deps --force
+  artifacts: # Keep node_modules folder for the following stages
+    paths:
+      - server/node_modules
+      - client/node_modules
+
+test:
+  stage: test
+  script:
+    - apt-get update
+    - apt-get -y upgrade
+    - apt-get -y install default-mysql-server
+    - service mariadb start
+    # Create database
+    - mysqladmin create $MYSQL_DATABASE
+    # Create database tables
+    - >
+      echo "CREATE TABLE oppskrift(oppskrift_id INT NOT NULL AUTO_INCREMENT, oppskrift_navn VARCHAR(255) NOT NULL, oppskrift_beskrivelse LONGTEXT NOT NULL, oppskrift_steg LONGTEXT NOT NULL, ant_pors INT NOT NULL, bilde_adr VARCHAR(255), kategori_id INT NOT NULL, land_id INT NOT NULL, ant_like INT NOT NULL DEFAULT 0, liked BOOLEAN NOT NULL DEFAULT 0, PRIMARY KEY (oppskrift_id));" | mysql $MYSQL_DATABASE
+    
+      echo "CREATE TABLE ingrediens(ingred_id INT NOT NULL AUTO_INCREMENT, ingred_navn VARCHAR(255) NOT NULL, PRIMARY KEY(ingred_id));" | mysql $MYSQL_DATABASE
+    
+      echo "CREATE TABLE land(land_id INT NOT NULL AUTO_INCREMENT, land_navn VARCHAR(255) NOT NULL, PRIMARY KEY(land_id));" | mysql $MYSQL_DATABASE
+    
+      echo "CREATE TABLE kategori(kategori_id INT NOT NULL AUTO_INCREMENT, kategori_navn VARCHAR(255) NOT NULL, PRIMARY KEY(kategori_id));" | mysql $MYSQL_DATABASE
+    
+      echo "CREATE TABLE oppskrift_innhold(oppskrift_id INT NOT NULL, ingred_id INT NOT NULL,mengde VARCHAR(255) NOT NULL, maleenhet VARCHAR(255) NOT NULL, PRIMARY KEY(oppskrift_id, ingred_id));" | mysql $MYSQL_DATABASE
+    
+      echo "CREATE TABLE handleliste(id INT NOT NULL AUTO_INCREMENT, ingred_id INT NOT NULL, mengde VARCHAR(255) NOT NULL, maleenhet VARCHAR(255) NOT NULL, PRIMARY KEY(id));" | mysql $MYSQL_DATABASE
+    
+      echo "CREATE TABLE icebox (ingred_id int NOT NULL, ingred_navn varchar(255) NOT NULL, PRIMARY KEY(ingred_id));" | mysql $MYSQL_DATABASE
+    # Add test user and grant access
+    - >
+      echo "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD'; GRANT ALL PRIVILEGES ON
+      $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%'; FLUSH PRIVILEGES;" | mysql
+    # Workaround for mysql2
+    - export MYSQL_HOST=127.0.0.1
+    - cd server
+    - echo "" > test/config.ts # Create empty config.ts to avoid error on npm test
+    - npm test
+    - cd ../client
+    - npm test

@@ -23,12 +23,7 @@ export class Icebox extends Component {
   choosenIngredient: Ingredient[] = [];
 
   searchterm: string = '';
-  selectedIngredient: List = {
-    id: 0,
-    ingred_id: 1,
-    mengde: '',
-    maleenhet: '',
-  };
+  selectedIngredient: Ingredient = { ingred_id: 0, ingred_navn: ' ' };
   render() {
     return (
       <>
@@ -50,11 +45,9 @@ export class Icebox extends Component {
                   className="form-select"
                   id="selectExistingIngredient"
                   onChange={(event) => {
-                    let id = Number(event.target.value);
-                    //find name of ingredient
-                    let name =
-                      this.selectedIngredients.find((e) => e.ingred_id == id)?.ingred_navn || '';
-                    this.addIngredientToIcebox(id, name);
+                    this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
+                    this.selectedIngredient.ingred_navn =
+                      event.currentTarget.selectedOptions[0].text;
                   }}
                 >
                   {this.selectedIngredients.map((ingredient, idx) => (
@@ -63,6 +56,14 @@ export class Icebox extends Component {
                     </option>
                   ))}
                 </select>
+                <Button.Success
+                  id="btnIngredAdd"
+                  onClick={() => {
+                    this.chooseIngredientFunc();
+                  }}
+                >
+                  Legg til ingrediens
+                </Button.Success>
               </Column>
               <Column>
                 {this.choosenIngredient.map((ingredient, idx) => (
@@ -105,14 +106,19 @@ export class Icebox extends Component {
       </>
     );
   }
+  chooseIngredientFunc() {
+    let id = document.getElementById('selectExistingIngredient')?.value;
+    //find name of ingredient with id
+    let name = this.selectedIngredients.find((ingredient) => ingredient.ingred_id == Number(id));
 
-  addIngredientToIcebox(id: number, name: string) {
-    let add = { ingred_id: id, ingred_navn: name };
+    let add = { ingred_id: id, ingred_navn: name?.ingred_navn || '' };
+    console.log(add);
     service
       .addIngredientToIcebox(add)
       .then(() => (this.choosenIngredient.push(add), this.filterRecipes()))
       .catch((error) => Alert.danger('Error, ingredient already added: ' + error.message));
   }
+
   deleteIceboxIngredient(id: number) {
     service
       .deleteIceboxIngredient(id)
@@ -178,14 +184,11 @@ export class Icebox extends Component {
     service
       .getAllRecipeContent()
       .then((recipeContent) => (this.recipeContent = recipeContent))
-      //when this.recipeContent.lengt == recipeContent.length, run filterRecipes
-      //else try again
-      .then(() => {
-        if (this.recipeContent.length == this.recipes.length) {
-          this.filterRecipes();
-        } else {
-          this.mounted();
-        }
+      .then((recipeContent) => {
+        (this.recipeContent = recipeContent),
+          setTimeout(() => {
+            this.filterRecipes();
+          });
       })
       .catch((error) => Alert.danger('Error getting recipe content: ' + error.message));
 
