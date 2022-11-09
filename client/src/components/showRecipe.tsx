@@ -6,6 +6,7 @@ import service, { Category, Ingredient, Recipe, Recipe_Content } from '.././serv
 import { createHashHistory } from 'history';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
+
 export class ShowRecipe extends Component<{ match: { params: { id: number } } }> {
   recipe: Recipe = {
     oppskrift_id: 0,
@@ -30,21 +31,23 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
     return (
       <div className="margintop">
         <Card title="">
-          <img className="stort" src={this.recipe.bilde_adr}></img>
-          <h1>{this.recipe.oppskrift_navn}</h1>
-          <br />
-          {this.recipe.oppskrift_beskrivelse != '' ? (
-            <p>Beskrivelse: {this.recipe.oppskrift_beskrivelse}</p>
-          ) : (
-            ''
-          )}
-          <p className="font-weight-bold" style={{ marginBottom: '0px' }}>
-            Kategori:{' '}
-            {
-              this.categories.find((kategori) => kategori.kategori_id == this.recipe.kategori_id)
-                ?.kategori_navn
-            }
-          </p>
+          <div className="download1">
+            <img className="stort" src={this.recipe.bilde_adr}></img>
+            <h1>{this.recipe.oppskrift_navn}</h1>
+            <br />
+            {this.recipe.oppskrift_beskrivelse != '' ? (
+              <p>Beskrivelse: {this.recipe.oppskrift_beskrivelse}</p>
+            ) : (
+              ''
+            )}{' '}
+            <p className="font-weight-bold" style={{ marginBottom: '0px' }}>
+              Kategori:{' '}
+              {
+                this.categories.find((kategori) => kategori.kategori_id == this.recipe.kategori_id)
+                  ?.kategori_navn
+              }
+            </p>
+          </div>
           <input
             type="checkbox"
             id="checkbox"
@@ -105,23 +108,24 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
           <p>Antall likes: {this.recipe.ant_like}</p>
           <h3>Oppskrift:</h3>
           <br />
-          <pre>{this.recipe.oppskrift_steg}</pre>
-          <h3>Ingredienser:</h3>
-          <br />
-          {this.recipeContent.map((rc, i) => (
-            <Row key={i}>
-              <p style={{ width: '250px' }}>
-                {/* {i + 1}.  */}
-                {/* find name of ingridient */}
-                {this.ingredients.find((ing) => ing.ingred_id == rc.ingred_id)?.ingred_navn}
-                {/* {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}{' '} */}
-              </p>
-              <p style={{ width: 'auto', paddingRight: '2px' }}>
-                {((Number(rc.mengde) * this.portions) / this.recipe.ant_pors).toFixed(1)}
-              </p>
-              <p style={{ width: '130px', paddingLeft: '2px' }}>{rc.maleenhet}</p>
-            </Row>
-          ))}
+          <div className="download2">
+            <pre>{this.recipe.oppskrift_steg}</pre>
+            <h3>Ingredienser:</h3>
+            <br />
+            {this.recipeContent.map((rc, i) => (
+              <Row key={i}>
+                <p style={{ width: '250px' }}>
+                  {i + 1}. {/* find name of ingridient */}
+                  {this.ingredients.find((ing) => ing.ingred_id == rc.ingred_id)?.ingred_navn}
+                  {/* {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}{' '} */}
+                </p>
+                <p style={{ width: '75px' }}>
+                  {((Number(rc.mengde) * this.portions) / this.recipe.ant_pors).toFixed(1)}
+                </p>
+                <p style={{ width: '130px' }}>{rc.maleenhet}</p>
+              </Row>
+            ))}
+          </div>
           Porsjoner:{' '}
           <Button.Danger id="btnDec" onClick={this.decrementPortions}>
             -
@@ -132,9 +136,9 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
           </Button.Success>
         </Card>
         <a
-          href={`mailto:?subject=${this.recipe.oppskrift_navn}&body= ${window.location.href} %0d%0a ${this.recipe.oppskrift_beskrivelse}`}
+          href={`mailto:?subject=${this.recipe.oppskrift_navn}&body=${this.recipe.oppskrift_beskrivelse} %0d%0a ${window.location.href}`}
         >
-          {/* Heidu */}
+          Heidu
         </a>
         <Button.Success onClick={() => history.push('/recipe/edit/' + this.props.match.params.id)}>
           Endre oppskrift
@@ -149,6 +153,8 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
         <Button.Success id="btnSend" onClick={this.ingredientsToShoppingList}>
           Send ingredienser til handleliste
         </Button.Success>
+        <Button.Success onClick={this.downloadPage}>Last ned oppskriften</Button.Success>
+
         {/* Recomend 5 recipes based on the category */}
         <Card>
           {/* <br /> */}
@@ -203,7 +209,24 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
       })
       .catch((error) => Alert.danger('Error getting recipes: ' + error.message));
   }
+  //https://stackoverflow.com/questions/68152987/how-to-download-part-of-a-react-component
+  downloadPage() {
+    let pageHTML = document.querySelector('.download1').outerHTML;
+    pageHTML += document.querySelector('.download2').outerHTML;
 
+    console.log(pageHTML);
+    const blob = new Blob([pageHTML], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const tempEl = document.createElement('a');
+    document.body.appendChild(tempEl);
+    tempEl.href = url;
+    tempEl.download = 'thispage.html';
+    tempEl.click();
+    setTimeout(() => {
+      URL.revokeObjectURL(url);
+      tempEl.parentNode.removeChild(tempEl);
+    }, 2000);
+  }
   findRecommendedRecipes(lengtCheck: number) {
     if (this.allRecipes.length == lengtCheck && this.recipe.kategori_id != 0) {
       this.recommendedRecipes = this.allRecipes
