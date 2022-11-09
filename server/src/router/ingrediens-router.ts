@@ -14,7 +14,7 @@ router.get('/ingredient', (_request, response) => {
 });
 
 router.post('/newingredient', (request, response) => {
-  const data = request.body.ingred_navn;
+  const data = request.body.name
   ingrediensService
     .createIngredient(data)
     .then(() => response.status(201).send())

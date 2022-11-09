@@ -209,7 +209,7 @@ describe('ShowRecipe tests', () => {
     });
   });
 
-  test('Send ingredient to shopping list', (done) => {
+  test.skip('Send ingredient to shopping list', (done) => {
     const wrapper = shallow(<ShowRecipe match={{ params: { id: 1 } }} />);
 
     wrapper.find('#btnSend').simulate('click');

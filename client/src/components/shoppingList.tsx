@@ -53,18 +53,17 @@ export class ShoppingList extends Component {
                     }{' '}
                     {/* @ts-ignore */}
                   </p>
-                  <input
+                  <Form.Input
                     className="form-control"
                     type="number"
                     style={{ width: '75px', marginRight: '10px' }}
                     onChange={(event) => {
-                      //@ts-ignore
                       sl.mengde = event.currentTarget.value;
                     }}
                     onBlur={() => this.updatePortions(sl)}
                     value={sl.mengde}
                     size={2}
-                  ></input>{' '}
+                  ></Form.Input>{' '}
                   <p style={{ width: '110px' }}>{sl.maleenhet}</p>
                   <Column width={1}>
                     <Button.Danger onClick={() => this.decrementPortions(sl)}>-</Button.Danger>
@@ -103,7 +102,7 @@ export class ShoppingList extends Component {
             <Form.Input
               id="shoppinglistsearch"
               type="text"
-              value={this.searchterm}
+              value={this.searchterm || ''}
               onChange={(event) => {
                 this.search(event.currentTarget.value);
                 this.searchterm = event.currentTarget.value;
@@ -116,11 +115,6 @@ export class ShoppingList extends Component {
                 this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
               }}
             >
-              {/* {this.selectedIngredients.map((ingredient, i) => (
-                <option key={ingredient.ingred_id} value={ingredient.ingred_id}>
-                  {ingredient.ingred_navn}
-                </option>
-              ))} */}
               {this.selectedIngredients.map((ingredient, i) => (
                 <option key={i} value={ingredient.ingred_id}>
                   {ingredient.ingred_navn}
@@ -234,19 +228,17 @@ export class ShoppingList extends Component {
     }
   }
   updatePortions(ingredient: List) {
-    //@ts-ignore
     if (
       ingredient.mengde < 0 ||
       ingredient.mengde == null ||
       ingredient.mengde == undefined ||
-      //@ts-ignore
       ingredient.mengde == ''
     ) {
       ingredient.mengde = 1;
     }
     service
       .updateIngredientShoppingList(ingredient)
-      .then(() => this.mounted())
+      .then(() => {this.mounted()})
       .then(() => Alert.info('Antall oppdatert'))
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
   }

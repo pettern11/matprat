@@ -273,7 +273,7 @@ export class NewRecipe extends Component {
               </Column>
             </Row>
           </Card>
-          <Card>
+          <Card title ="">
             {/* velg hvor mye av hver inngrediense */}
             <Column>
               <div id="outprintIngredient" className="scroll">

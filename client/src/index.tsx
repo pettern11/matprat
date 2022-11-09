@@ -105,8 +105,8 @@ export class Home extends Component {
                   <br />
                   <Rows>
                     {this.recipes.length != 0
-                      ? this.suggestedRecipeList.map((likedRecipe) => (
-                          <Cards key={likedRecipe.oppskrift_id + 'card'}>
+                      ? this.suggestedRecipeList.map((likedRecipe, i) => (
+                          <Cards key={(likedRecipe.oppskrift_id + i) + 'card'}>
                             <NavLink
                               key={likedRecipe.oppskrift_id + 'navlink2'}
                               className="black"
