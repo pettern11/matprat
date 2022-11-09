@@ -54,7 +54,7 @@ describe('Fetch ingredients (GET)', () => {
 
 describe('Create ingredient (POST)', () => {
   test('Create ingredient (201 Created)', (done) => {
-    const ingredient = {ingred_navn: 'ost'};
+    const ingredient = {name :{ingred_navn: 'ost'}};
 
     axios.post('/newingredient', ingredient).then((response) => {
       expect(response.status).toEqual(201);

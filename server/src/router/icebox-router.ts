@@ -35,6 +35,6 @@ router.delete('/deleteiceboxingredient/:ingred_id', (request, response) => {
       response.status(400).send('Ingredient not in icebox');
     } else {
       response.status(500).send(error)}});
-});
+}); 
 
 export default router;

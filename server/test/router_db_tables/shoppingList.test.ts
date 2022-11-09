@@ -66,6 +66,13 @@ describe('Add ingredient to shoppinglist (POST)', () => {
       done();
     });
   });
+  test('Add ingredient to shoppinglist invalid id', (done) => {
+    axios.post('/addingredient', {ingredient: {ingred_id: "pølse", mengde: "5", maleenhet: 'pølser' }}).catch((error) => {
+      
+      expect(error.response.status).toEqual(500);
+      done();
+    });
+  });
 
   test('Missing maleenhet (400 Bad Request)', (done) => {
     axios.post('/addingredient', {ingredient: {ingred_id: 4, mengde: "5"}}).catch((error) => {
@@ -87,6 +94,13 @@ describe('Delete from shoppinglist (DELETE)', () => {
       done();
     });
   });
+
+    test('Delete ingredient from shoppinglist invalid id', (done) => {
+      axios.delete('/deleteingredientshoppinglist/heid').catch((error) => {
+        expect(error.response.status).toEqual(500);
+        done();
+      });
+    });
 
   //delete ingredient from shoppinglist with wrong id /deleteingredientshoppinglist/:id
   test('Delete non-existing ingredient from shoppinglist (500 Not Found)', (done) => {
