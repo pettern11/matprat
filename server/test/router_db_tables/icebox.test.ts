@@ -95,10 +95,9 @@ describe('Delete icebox item (DELETE)', () => {
       done();
     });
   });
-
-  test('Delete icebox item with missing id', (done) => {
-    axios.delete('/deleteiceboxingredient').catch((error) => {
-      expect(error.response.status).toEqual(404);
+  test('Delete invalid icebox item', (done) => {
+    axios.delete('/deleteiceboxingredient/hei',).catch((error) => {
+      expect(error.response.status).toEqual(500);
       done();
     });
   });
