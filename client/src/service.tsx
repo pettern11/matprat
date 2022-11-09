@@ -18,7 +18,7 @@ export type Recipe = {
 export type Recipe_Content = {
   oppskrift_id: number;
   ingred_id: number;
-  mengde: number;
+  mengde: string;
   maleenhet: string;
 };
 
@@ -48,7 +48,7 @@ export type Ingredient = {
 export type List = {
   id: number;
   ingred_id: number;
-  mengde: number;
+  mengde: string;
   maleenhet: string;
 };
 export type IceboxIngredient = {
@@ -150,9 +150,12 @@ class Service {
     return axios.delete<{}>('/deleteallshoppinglist').then((response) => response.data);
   }
   updateRecipe(recipe: Recipe) {
-    return axios.put('/update_recipe', { recipe: recipe }).then((response) => response.data);
+    return axios
+      .put('/update_recipe/' + recipe.oppskrift_id, { recipe: recipe })
+      .then((response) => response.data);
   }
   deleteIngredient(recipe_id: number, ingred_id: number) {
+    console.log('her er det', recipe_id, ingred_id);
     return axios
       .delete<Recipe_Content>('/deleteingredient/' + recipe_id + '/' + ingred_id)
       .then((response) => response.data);

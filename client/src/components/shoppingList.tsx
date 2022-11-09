@@ -1,6 +1,7 @@
+// @ts-nocheck
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Alert, Card, Row, Column, Form, Button, RecipeView } from '.././widgets';
+import { Alert, Card, Row, Column, Form, Button, RecipeView, Car } from '.././widgets';
 import { NavLink, Redirect } from 'react-router-dom';
 import service, {
   Country,
@@ -15,6 +16,7 @@ import { createHashHistory } from 'history';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 export class ShoppingList extends Component {
+  newIngredient: string = '';
   shoppingList: List[] = [];
   ingredients: Ingredient[] = [];
   selectedIngredients: Ingredient[] = [];
@@ -31,97 +33,73 @@ export class ShoppingList extends Component {
     mengde: 0,
     maleenhet: '',
   };
-
   render() {
     return (
       <>
+        <br></br>
+        <br></br>
+        <br></br>
         <Card title="Handleliste">
           <Column>
-            {this.shoppingList.map((sl, i) => (
-              <p key={i}>
-                {i + 1}.{' '}
-                {
-                  this.ingredients.find((ingredient) => ingredient.ingred_id == sl.ingred_id)
-                    ?.ingred_navn
-                }{' '}
-                <input
-                  type="string"
-                  onChange={(event) => {
-                    //@ts-ignore
-                    sl.mengde = event.currentTarget.value;
-                    console.log(sl.mengde);
-                  }}
-                  onBlur={() => this.updatePortions(sl)}
+            <div id="liste" className="">
+              {this.shoppingList.map((sl, i) => (
+                <Row key={sl.ingred_id + 'a' + i}>
+                  {/* <Row> */}
+                  <p style={{ width: '190px' }}>
+                    {i + 1}.{' '}
+                    {
+                      this.ingredients.find((ingredient) => ingredient.ingred_id == sl.ingred_id)
+                        ?.ingred_navn
+                    }{' '}
+                    {/* @ts-ignore */}
+                  </p>
+                  <input
+                    className="form-control"
+                    type="number"
+                    style={{ width: '75px', marginRight: '10px' }}
+                    onChange={(event) => {
+                      //@ts-ignore
+                      sl.mengde = event.currentTarget.value;
+                    }}
+                    onBlur={() => this.updatePortions(sl)}
+                    value={sl.mengde}
+                    size={2}
+                  ></input>{' '}
+                  <p style={{ width: '110px' }}>{sl.maleenhet}</p>
+                  <Column width={1}>
+                    <Button.Danger onClick={() => this.decrementPortions(sl)}>-</Button.Danger>
+                  </Column>
+                  <Column width={1}>
+                    <Button.Success onClick={() => this.incrementPortions(sl)}>+</Button.Success>
+                  </Column>
+                  <Column width={1}>
+                    <Button.Danger onClick={() => this.deleteIngredient(sl.id)}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        className="bi bi-trash"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                        <path
+                          fillRule="evenodd"
+                          d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                        />
+                      </svg>
+                    </Button.Danger>
+                  </Column>
+                </Row>
+              ))}
+              <Button.Danger onClick={() => this.deleteAll()}>Slett alle</Button.Danger>
+            </div>
+          </Column>
+        </Card>
 
-                  value={sl.mengde}
-                  size={2}
-                ></input>{' '}
-                {sl.maleenhet}
-                
-                <Button.Danger onClick={() => this.decrementPortions(sl)}>-</Button.Danger>
-                <Button.Success onClick={() => this.incrementPortions(sl)}>+</Button.Success>
-                <Button.Danger onClick={() => this.deleteIngredient(sl.id)}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    className="bi bi-trash"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                    <path
-                      fillRule="evenodd"
-                      d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-                    />
-                  </svg>
-                </Button.Danger>
-                </p>
-            ))}
-            <Button.Danger onClick={() => this.deleteAll()}>Slett alle</Button.Danger>
-          </Column>
-        </Card>
-        <Card title="Legg til ingredienser">
+        <Card title="Legg til varer i kurven din">
           <Column>
-            <p key={1}>
-              Navn:{' '}
-              <input
-                id="navn"
-                type="text"
-                onChange={(event) => {
-                  this.elementHandleliste.ingred_navn = event.currentTarget.value;
-                }}
-                value={this.elementHandleliste.ingred_navn}
-              ></input>
-              Antall:{' '}
-              <input
-                id="mengde"
-                type="number"
-                onChange={(event) => {
-                  //@ts-ignore
-                  this.elementHandleliste.mengde = event.currentTarget.value;
-                }}
-                value={this.elementHandleliste.mengde}
-              ></input>
-              Måleenhet:{' '}
-              <input
-                id="maleenhet"
-                type="text"
-                onChange={(event) => {
-                  this.elementHandleliste.maleenhet = event.currentTarget.value;
-                }}
-                value={this.elementHandleliste.maleenhet}
-              ></input>
-              <Button.Success onClick={() => this.addItem(this.elementHandleliste)}>
-                Legg til
-              </Button.Success>
-            </p>
-          </Column>
-        </Card>
-        <Card title="Add existing ingredients">
-          
-          <Column>
-            <h6>Søk</h6>
+            Søk:
             <Form.Input
               id="shoppinglistsearch"
               type="text"
@@ -132,30 +110,33 @@ export class ShoppingList extends Component {
               }}
             />
             <select
+              className="form-select"
               id="selectExistingIngredient"
               onChange={(event) => {
                 this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
               }}
             >
-              {this.selectedIngredients.map((ingredient) => (
+              {/* {this.selectedIngredients.map((ingredient, i) => (
                 <option key={ingredient.ingred_id} value={ingredient.ingred_id}>
+                  {ingredient.ingred_navn}
+                </option>
+              ))} */}
+              {this.selectedIngredients.map((ingredient, i) => (
+                <option key={i} value={ingredient.ingred_id}>
                   {ingredient.ingred_navn}
                 </option>
               ))}
             </select>
-            </Column>
-            <Column>
             Antall:{' '}
             <Form.Input
               id="exisitingmengde"
               type="number"
               value={this.selectedIngredient.mengde}
-              onChange={(event) => {//@ts-ignore
+              onChange={(event) => {
+                //@ts-ignore
                 this.selectedIngredient.mengde = event.currentTarget.value;
-              }}   
+              }}
             />
-            </Column>
-            <Column>
             Måleenhet:{' '}
             <Form.Input
               id="exisitingmaleenhet"
@@ -163,58 +144,78 @@ export class ShoppingList extends Component {
               value={this.selectedIngredient.maleenhet}
               onChange={(event) => {
                 this.selectedIngredient.maleenhet = event.currentTarget.value;
-                console.log(this.selectedIngredient);
               }}
             />
-            </Column>
-            <Column>
-            <Button.Success onClick={() => this.addExistingItem(this.selectedIngredient)}>
+            <Button.Success
+              onClick={() =>
+                // console.log(this.selectedIngredient)}>
+                this.addExistingItem(this.selectedIngredient)
+              }
+            >
               Legg til
             </Button.Success>
-            </Column>
-          
+          </Column>
+        </Card>
+        <Card title="Legg til ny vare">
+          <Column>
+            <Form.Input
+              id="createIngredient"
+              type="text"
+              style={{ width: '210px' }}
+              value={this.newIngredient}
+              onChange={(event) => (this.newIngredient = event.currentTarget.value)}
+              placeholder="Legg til ny ingrediens"
+            ></Form.Input>
+            <Button.Success
+              id="createIngredientFunc"
+              onClick={() => {
+                this.addIngredient(this.newIngredient);
+              }}
+            >
+              Legg til
+            </Button.Success>
+          </Column>
         </Card>
       </>
     );
   }
 
-  mounted() {
-    this.elementHandleliste.ingred_id = 0;
-    this.elementHandleliste.ingred_navn = '';
-    this.elementHandleliste.mengde = 0;
-    this.elementHandleliste.maleenhet = '';
-
-    this.searchterm = '';
+  mounted(search: string, jk: boolean) {
+    this.searchterm = search;
     this.selectedIngredient.mengde = 0;
     this.selectedIngredient.maleenhet = '';
 
+    service
+      .getAllIngredient()
+      .then(
+        (ingredients) => (
+          (this.ingredients = ingredients.sort((a, b) =>
+            a.ingred_navn.localeCompare(b.ingred_navn)
+          )),
+          (this.selectedIngredients = ingredients)
+        )
+      )
+      .then(() => (jk ? this.search(search) : ''))
+
+      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
     service
       .getShoppingList()
       .then((shoppingList: List[]) => (this.shoppingList = shoppingList))
       .catch((error: { message: string }) =>
         Alert.danger('Error getting shoppingList: ' + error.message)
       );
-
-    service
-      .getAllIngredient()
-      .then(
-        (ingredients) => (
-          (this.ingredients = ingredients),
-          (this.selectedIngredients = ingredients),
-          (this.selectedIngredient.ingred_id = document.getElementById('selectExistingIngredient')
-            //@ts-ignore
-            ? document.getElementById('selectExistingIngredient').value
-            : '')
-        )
-      )
-      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
   }
+
   search(searchterm: string) {
     this.selectedIngredients = this.ingredients.filter((ingredient) =>
       ingredient.ingred_navn.toLowerCase().includes(searchterm.toLowerCase())
     );
-    this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
-    console.log(this.selectedIngredients);
+    if (this.selectedIngredients.length > 0) {
+      this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
+    } else {
+      this.selectedIngredient.ingred_id = 0;
+      Alert.danger('Ingen ingredienser funnet');
+    }
   }
   incrementPortions(ingredient: List) {
     ingredient.mengde++;
@@ -264,44 +265,29 @@ export class ShoppingList extends Component {
       .catch((error) => Alert.danger('Error deleting shopping list: ' + error.message));
   }
 
-  addItem(item: ElementShoppingList) {
-    console.log(this.ingredients.length);
-    console.log(this.ingredients);
-    item.ingred_id = this.ingredients[this.ingredients.length - 1].ingred_id + 1;
-    if (item.ingred_navn == null || item.ingred_navn == undefined || item.ingred_navn == '') {
+  addIngredient(item: string) {
+    if (item == null || item == undefined || item == '') {
       Alert.danger('Du må fylle inn navn på ingrediensen');
     } else if (
-      this.ingredients.some(
-        (ing) => ing.ingred_navn.toLowerCase() == item.ingred_navn.toLowerCase()
-      ) == true
+      this.ingredients.some((ing) => ing.ingred_navn.toLowerCase() == item.toLowerCase()) == true
     ) {
       Alert.danger('Ingrediensen eksisterer allerede');
-    } else if (
-      item.mengde == null ||
-      item.mengde == undefined ||
-      //@ts-ignore
-      item.mengde == '' ||
-      item.mengde < 0 ||
-      item.mengde == 0
-    ) {
-      item.mengde = 1;
-      Alert.danger('Du må fylle inn antall av ingrediensen, dette må være heltall større enn 0');
-    } else if (item.maleenhet == null || item.maleenhet == undefined || item.maleenhet == '') {
-      Alert.danger('Du må fylle inn måleenhet');
     } else {
+      this.newIngredient = '';
       service
-        .createIngredient(item.ingred_navn)
+        .createIngredient(item)
+        //sender parametere inn i mounted for å søke på ingrediensen når mounted er ferdig
+        //dette virker mest praktisk fordi componentDidMount og componentDidUpdate ikke fungerte
         .then(() => {
-          service
-            .addIngredient(item)
-            .then(() => this.mounted())
-            .catch((error) => Alert.danger('Error adding item to shopping list: ' + error.message));
+          this.mounted(item, true);
         })
+
         .catch((error) => Alert.danger('Error creating new ingredient: ' + error.message));
     }
   }
 
   addExistingItem(item: List) {
+    item.ingred_id = document.getElementById('selectExistingIngredient')?.value; //@ts-ignore
     if (
       item.mengde == null ||
       item.mengde == undefined ||

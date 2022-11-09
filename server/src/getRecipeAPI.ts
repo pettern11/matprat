@@ -18,13 +18,15 @@ const pool = mysql.createPool({
   typeCast: (field, next) =>
     field.type == 'TINY' && field.length == 1 ? field.string() == '1' : next(),
 });
+let doneVariable = false;
 
+let interval = 0;
 let recipe = [];
 let country = [];
 let category = [];
 let ingredient = [];
 let recipe_ingredient = [];
-
+let totLength = 0;
 class API_Calls {
   alfabeth1 = ['a', 'b', 'c'];
   alfabeth2 = ['d', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
@@ -33,7 +35,7 @@ class API_Calls {
     this.alfabeth1.forEach((letter) => {
       fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
         .then((res) => res.json())
-        .then((data) => Recipe(data.meals))
+        .then((data) => (Recipe(data.meals), (totLength += data.meals.length)))
         .catch((err) => console.log('error getting recipe A-C', err));
     });
   }
@@ -41,7 +43,7 @@ class API_Calls {
     this.alfabeth2.forEach((letter) => {
       fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
         .then((res) => res.json())
-        .then((data) => Recipe(data.meals))
+        .then((data) => (Recipe(data.meals), (totLength += data.meals.length)))
         .catch((err) => console.log('error getting recipe D-M', err));
     });
   }
@@ -49,7 +51,7 @@ class API_Calls {
     this.alfabeth3.forEach((letter) => {
       fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=' + letter)
         .then((res) => res.json())
-        .then((data) => Recipe(data.meals))
+        .then((data) => (Recipe(data.meals), (totLength += data.meals.length)))
         .catch((err) => console.log('Error getting recipe N-Y', err));
     });
   }
@@ -80,13 +82,6 @@ apiCalls.getCountry();
 apiCalls.getRecipeA_C();
 apiCalls.getRecipeD_M();
 apiCalls.getRecipeN_Y();
-
-setTimeout(() => {
-  pushRecipe();
-}, 13000);
-// setTimeout(() => {
-//   matchRecipeIngredient();
-// }, 10000);
 
 //funskjon som først får land fra api, og legger det til i arrayet country
 //deretter pushet det opp til databasen slik at det får en id fordi landene har ikke en id fra TheMealDB
@@ -156,27 +151,39 @@ function stringToNumber(string) {
   let numsStr = string.replace(/[^0-9/]/g, '');
   let firstNumber = parseInt(numsStr);
   let restOfString = numsStr.replace(firstNumber, '');
-  if (restOfString.includes('/')) {
-    let newString = restOfString.replace('/', '');
-    let secondNumber = parseInt(newString);
-    number = firstNumber / secondNumber;
-  } else {
-    number = firstNumber;
-  }
+  // if (restOfString.includes('/')) {
+  //   let newString = restOfString.replace('/', '');
+  //   let secondNumber = parseInt(newString);
+  //   number = firstNumber / secondNumber;
+  // } else {
+  number = firstNumber;
+  // }
   return number;
 }
 //fjerner alle tallene fra ingrediens måleenheten og returnerer bare bokstavene
 function removeNumber(string) {
-  let numberFree = string.replace(/[0-9/']/g, '');
-  return numberFree;
+  //okey tore, nå skal du bli satt på sporet
+  //du skal lage en regex som beholder alle boksavene i string du får inn som parameter
+  //men du skal også fjerne oz hvis det er mellomrom før oz og etter oz
+  //så skal du returnere stringen uten tallene og oz
+  //men du skal beholde mellomromene
+  //
+
+  let newString = string.replace(/[^a-zA-Z ]/g, '');
+  if (newString.includes('oz')) {
+    newString = newString.replace('oz', '');
+  }
+  return newString;
 }
 
 function Recipe(array) {
   setTimeout(() => {
     array.forEach((element) => {
       if (!recipe.includes(element.idMeal)) {
+        //finner index til land og category og lagrer det i variabler
         const indexCountry = country.map((e) => e.land_navn).indexOf(element.strArea);
         const indexCategory = category.map((e) => e.kategori_navn).indexOf(element.strCategory);
+        //siden databasen vi henter fra er lagt opp dårlig må vi liste alle variablene og så loope gjennom dem
         const ingredient_list = [
           element.strIngredient1,
           element.strIngredient2,
@@ -224,25 +231,30 @@ function Recipe(array) {
         let ingred = [];
         let measure = [];
         for (let i = 0; i < 20; i++) {
+          //finner ingrediens indexen i arrayet ingredient
           let indexIngred = ingredient
             .map((e) => e.name.toLowerCase())
             .indexOf(ingredient_list[i] ? ingredient_list[i].toLowerCase() : '');
 
+          //legger til ingrediens id i ingred arrayet
           if (ingredient[indexIngred]) {
             ingred.push(ingredient[indexIngred].id);
           }
-
+          //hvis ingredient_measure[i] ikke er null eller undefined vil den bli lagt til i arrayet measure
           if (ingredient_measure[i]) {
-            measure.push({
-              number:
-                stringToNumber(ingredient_measure[i]) == NaN
-                  ? '1'
-                  : stringToNumber(ingredient_measure[i]),
-              type: removeNumber(ingredient_measure[i]),
-            });
+            let a = stringToNumber(ingredient_measure[i]);
+            let b = removeNumber(ingredient_measure[i]);
+
+            // sjekker om antall er null og om type er '', hvis det er det får det ikke bli puishet opp i arrayet
+            if (!isNaN(a) || b != '') {
+              measure.push({
+                number: a,
+                type: b,
+              });
+            }
           }
         }
-
+        //legger til oppskriften i recipe arrayet
         recipe.push({
           id: element.idMeal,
           name: element.strMeal,
@@ -251,8 +263,9 @@ function Recipe(array) {
           country: country[indexCountry].land_id,
           category: category[indexCategory].kategori_id,
         });
-
+        //legger til link mellom oppskrfiten og ingredienser i recipe_ingredient arrayet
         for (let i = 0; i < 20; i++) {
+          //sjekker om det det er null eller undefined eller NaN og breaker hvis det er det
           if (
             measure[i] == undefined ||
             (isNaN(measure[i].number) && measure[i].type == '') ||
@@ -260,17 +273,20 @@ function Recipe(array) {
           ) {
             break;
           }
-
-          recipe_ingredient.push({
-            recipe_id: element.idMeal,
-            ingred_id: ingred[i],
-            number: measure[i].number,
-            type: measure[i].type,
-          });
+          //legger det til i recipe_ingredient arrayet
+          else {
+            recipe_ingredient.push({
+              recipe_id: element.idMeal,
+              ingred_id: ingred[i],
+              number: measure[i].number,
+              type: measure[i].type,
+            });
+          }
         }
       }
     });
-  }, 2000);
+    totLength == recipe.length ? pushRecipe() : '';
+  }, 5000);
 }
 //pusher opp alle oppskriftene til databasen
 function pushRecipe() {
@@ -297,11 +313,10 @@ function pushRecipe() {
   //når alle oppskriftene er pushet opp kjører funksjonen matchRecipeIngredient
   matchRecipeIngredient();
 }
-
 //pusher opp koblingen mellom oppskrifter og ingredienter
 function matchRecipeIngredient() {
-  recipe_ingredient.forEach((element) => {
-    //hvis det er en ingrediens uten megde setter vi mengden til 1
+  recipe_ingredient.forEach((element, i) => {
+    //hvis det er en ingrediens uten megde setter vi mengden til 1 fordi mengde kan ikke være null
     let number;
     if (isNaN(element.number)) {
       number = 1;
@@ -319,4 +334,19 @@ function matchRecipeIngredient() {
       }
     );
   });
+  interval = setInterval(() => {
+    pool.query('SELECT id FROM oppskrift_innhold', (error, results: RowDataPacket[]) => {
+      if (error) return reject(error);
+      if (results.length <= recipe_ingredient.length) {
+        done();
+      }
+    });
+  }, 1000);
+}
+function done() {
+  if (!doneVariable) {
+    console.log('Scriptet er ferdig og du kan trykke ctrl + c to gangerfor å avslutte scriptet');
+    clearInterval(interval);
+    doneVariable = true;
+  }
 }

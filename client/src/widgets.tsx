@@ -36,8 +36,8 @@ export class IceboxsCard extends Component<{ title: ReactNode; children: ReactNo
 export class Cards extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
     return (
-      <div className="card cards">
-        <div className="card-body">
+      <div className="card cards cards-white">
+        <div className="card-body cards-body">
           <h5 className="card-title">{this.props.title}</h5>
           <div className="card-text">{this.props.children}</div>
         </div>
@@ -88,7 +88,7 @@ export class Mat extends Component<{ title: ReactNode; children: ReactNode }> {
 export class Car extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
     return (
-      <div className="card car">
+      <div className="card car car-white">
         <div className="card-body">
           <h5 className="card-title">{this.props.title}</h5>
           <div className="card-text">{this.props.children}</div>
@@ -104,6 +104,12 @@ export class Car extends Component<{ title: ReactNode; children: ReactNode }> {
 export class Row extends Component<{ children: ReactNode }> {
   render() {
     return <div className="row">{this.props.children}</div>;
+  }
+}
+
+export class Rows extends Component<{ children: ReactNode }> {
+  render() {
+    return <div className="row rows">{this.props.children}</div>;
   }
 }
 
@@ -258,7 +264,17 @@ export class Button {
 class NavBarLink extends Component<{ to: string; children: ReactNode }> {
   render() {
     return (
-      <NavLink className="nav-link" activeClassName="active" to={this.props.to}>
+      <NavLink className="nav-link nav-link-white" activeClassName="active" to={this.props.to}>
+        {this.props.children}
+      </NavLink>
+    );
+  }
+}
+
+class NavBarLinks extends Component<{ to: string; children: ReactNode }> {
+  render() {
+    return (
+      <NavLink className="nav-link nav-links nav-links-white" activeClassName="active" to={this.props.to}>
         {this.props.children}
       </NavLink>
     );
@@ -272,12 +288,13 @@ class NavBarLink extends Component<{ to: string; children: ReactNode }> {
  */
 export class NavBar extends Component<{ brand: ReactNode; children: ReactNode }> {
   static Link = NavBarLink;
+  static Links = NavBarLinks;
 
   render() {
     return (
       <nav className="navbar navbar-expand-sm navbar-light bg-light">
         <div className="container-fluid justify-content-start">
-          <NavLink className="navbar-brand" activeClassName="active" exact to="/">
+          <NavLink className="navbar-brand navbar-brand-white" activeClassName="active" exact to="/">
             {this.props.brand}
           </NavLink>
           <div className="navbar-nav">{this.props.children}</div>
@@ -413,10 +430,12 @@ export class Form {
 export class Alert extends Component {
   alerts: { id: number; text: ReactNode; type: string }[] = [];
   nextId: number = 0;
+  
+
 
   render() {
     return (
-      <div id="alerts">
+      <div id="alerts" className="alerts">
         {this.alerts.map((alert, i) => (
           <div
             key={alert.id}
@@ -430,6 +449,7 @@ export class Alert extends Component {
               type="button"
               className="btn-close btn-sm"
               onClick={() => this.alerts.splice(i, 1)}
+              
             />
           </div>
         ))}
@@ -440,7 +460,7 @@ export class Alert extends Component {
   deleteMessage(i) {
     setTimeout(() => {
       this.alerts.splice(i, 1);
-    }, 1500);
+    }, 1000);
   }
 
   /**

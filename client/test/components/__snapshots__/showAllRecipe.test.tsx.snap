@@ -2,85 +2,91 @@
 
 exports[`ShowAllRecipe tests Snapshot showAllRecipe draws correctly 1`] = `
 <Fragment>
-  <Car
-    title="Søkefelt"
-  >
-    <FormInput
-      id="indexsearch"
-      onChange={[Function]}
-      type="text"
-      value=""
-    />
-  </Car>
   <div
-    className="container"
+    className="margintop"
   >
-    <Row>
-      <Oppskrifter
-        title="Oppskrifter"
+    <div>
+      <FormInput
+        id="indexsearch"
+        onChange={[Function]}
+        placeholder="Søk etter oppskrift"
+        type="text"
+        value=""
+      />
+      <select
+        className="form-select"
+        id="sortBy"
+        onChange={[Function]}
       >
-        <select
-          id="sortBy"
-          onChange={[Function]}
+        <option
+          value="0"
         >
-          <option>
-            Sorter
-          </option>
-          <option
-            value="0"
-          >
-            A-Z
-          </option>
-          <option
-            value="1"
-          >
-            Z-A
-          </option>
-          <option
-            value="2"
-          >
-            Nyeste
-          </option>
-        </select>
-        <br />
-        <div
-          className="container"
+          Sorter
+        </option>
+        <option
+          value="1"
         >
-          <Row>
-            <Cards
-              key="1"
-              title=""
-            >
-              <NavLink
-                className="black"
-                to="/recipe/1"
-              >
-                <RecipeView
-                  img="pizza.jpg"
-                  name="Pizza"
-                  numbOfPors={4}
-                />
-              </NavLink>
-            </Cards>
-            <Cards
-              key="2"
-              title=""
-            >
-              <NavLink
-                className="black"
-                to="/recipe/2"
-              >
-                <RecipeView
-                  img="kjøttboller.jpg"
-                  name="Kjøttboller i brunsaus"
-                  numbOfPors={4}
-                />
-              </NavLink>
-            </Cards>
-          </Row>
-        </div>
-      </Oppskrifter>
-    </Row>
+          A-Z
+        </option>
+        <option
+          value="2"
+        >
+          Z-A
+        </option>
+        <option
+          value="3"
+        >
+          Nyeste
+        </option>
+        <option
+          value="4"
+        >
+          Land
+        </option>
+        <option
+          value="5"
+        >
+          Kategori
+        </option>
+      </select>
+    </div>
+    <br />
+    <div
+      className="container-fluid "
+    >
+      <Rows>
+        <Cards
+          key="1"
+          title=""
+        >
+          <NavLink
+            className="black"
+            to="/recipe/1"
+          >
+            <RecipeView
+              img="pizza.jpg"
+              name="Pizza"
+              numbOfPors={4}
+            />
+          </NavLink>
+        </Cards>
+        <Cards
+          key="2"
+          title=""
+        >
+          <NavLink
+            className="black"
+            to="/recipe/2"
+          >
+            <RecipeView
+              img="kjøttboller.jpg"
+              name="Kjøttboller i brunsaus"
+              numbOfPors={4}
+            />
+          </NavLink>
+        </Cards>
+      </Rows>
+    </div>
   </div>
 </Fragment>
 `;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Alert, Cards, Oppskrifter, Row, RecipeView } from '.././widgets';
+import { Alert, Cards, Oppskrifter, Row, Rows, RecipeView } from '.././widgets';
 import { NavLink } from 'react-router-dom';
 import service, { Recipe, List } from '.././service';
 import { createHashHistory } from 'history';
@@ -12,9 +12,9 @@ export class LikedRecipes extends Component {
 
   render() {
     return (
-      <Oppskrifter title="Likede oppskrifter">
-        <div className="container">
-          <Row>
+      <div className="margintop">
+        <div className="container-fluid">
+          <Rows>
             {this.recipes
               .filter((recipe) => recipe.liked == true)
               .map((likedRecipe) => (
@@ -28,9 +28,9 @@ export class LikedRecipes extends Component {
                   </NavLink>
                 </Cards>
               ))}
-          </Row>
+          </Rows>
         </div>
-      </Oppskrifter>
+      </div>
     );
   }
 

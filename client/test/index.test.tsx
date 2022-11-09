@@ -19,6 +19,7 @@ jest.mock('../src/service', () => {
           kategori_id: 1,
           land_id: 1,
           ant_ike: 0,
+          liked: true,
         },
         {
           oppskrift_id: 2,
@@ -30,6 +31,7 @@ jest.mock('../src/service', () => {
           kategori_id: 1,
           land_id: 1,
           ant_ike: 0,
+          liked: true,
         },
       ]);
     }
@@ -45,11 +47,12 @@ describe('Index test', () => {
     setTimeout(() => {
       expect(
         wrapper.containsMatchingElement(
-          <NavBar brand="MatForum">
-            <NavBar.Link to="/newrecipe">Ny oppskrift</NavBar.Link>
-            <NavBar.Link to="/shoppinglist">Handleliste</NavBar.Link>
-            <NavBar.Link to="/liked">Liked</NavBar.Link>
+          <NavBar brand="Hjem">
             <NavBar.Link to="/showallrecipe">Alle oppskrifter</NavBar.Link>
+            <NavBar.Link to="/newrecipe">Ny oppskrift</NavBar.Link>
+            <NavBar.Link to="/liked">Liked</NavBar.Link>
+            <NavBar.Link to="/shoppinglist">Handleliste</NavBar.Link>
+            <NavBar.Link to="/icebox">Kjøleskap</NavBar.Link>
           </NavBar>
         )
       ).toEqual(true);
