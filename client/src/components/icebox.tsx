@@ -129,15 +129,17 @@ export class Icebox extends Component {
   }
 
   filterRecipes() {
-    //filter recipes based on choosen ingredients
-    //the recipe will be added to filteredRecipes if one of the ingredients in the recipe is in choosenIngredient
+    //filter the recipes based on the ingredients in the icebox
+    //if the recipe contains one of the ingreient it will be added, if the recipe allready exists it will not be added
     this.filteredRecipes = [];
     this.recipes.forEach((recipe) => {
-      this.recipeContent.forEach((recipeContent) => {
-        if (recipe.oppskrift_id == recipeContent.oppskrift_id) {
+      this.recipeContent.forEach((content) => {
+        if (recipe.oppskrift_id == content.oppskrift_id) {
           this.choosenIngredient.forEach((ingredient) => {
-            if (ingredient.ingred_id == recipeContent.ingred_id) {
-              this.filteredRecipes.push(recipe);
+            if (content.ingred_id == ingredient.ingred_id) {
+              if (!this.filteredRecipes.includes(recipe)) {
+                this.filteredRecipes.push(recipe);
+              }
             }
           });
         }
@@ -176,6 +178,15 @@ export class Icebox extends Component {
     service
       .getAllRecipeContent()
       .then((recipeContent) => (this.recipeContent = recipeContent))
+      //when this.recipeContent.lengt == recipeContent.length, run filterRecipes
+      //else try again
+      .then(() => {
+        if (this.recipeContent.length == this.recipes.length) {
+          this.filterRecipes();
+        } else {
+          this.mounted();
+        }
+      })
       .catch((error) => Alert.danger('Error getting recipe content: ' + error.message));
 
     //service that gets all ingredients in icebox
