@@ -239,6 +239,7 @@ export class NewRecipe extends Component {
               </Column>
               {/* legg til ingredienser */}
               <Column>
+                <br />
                 <Form.Input
                   id="createIngredient"
                   type="text"
@@ -273,7 +274,7 @@ export class NewRecipe extends Component {
               </Column>
             </Row>
           </Card>
-          <Card title ="">
+          <Card title="">
             {/* velg hvor mye av hver inngrediense */}
             <Column>
               <div id="outprintIngredient" className="scroll">
