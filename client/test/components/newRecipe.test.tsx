@@ -94,13 +94,16 @@ jest.mock('../../src/service', () => {
       return Promise.resolve();
     }
     createRecipe() {
-      return Promise.resolve(1);
+      return Promise.resolve(3);
     }
     createCountry(country: string) {
       return Promise.resolve(1);
     }
     createCategory(category: string) {
       return Promise.resolve(1);
+    }
+    createRecipeIngredient(recipe_content: any) {
+      return Promise.resolve();
     }
   }
   return new Service();
@@ -250,7 +253,7 @@ describe('NewRecipe tests', () => {
       wrapper.find('#addRecipeBtn').simulate('click');
       setTimeout(() => {
         //expect path to be id of recipe
-        expect(window.location.href).toEqual('http://localhost/#/');
+        expect(window.location.href).toEqual('http://localhost/#/recipe/3');
         done();
       });
     });
