@@ -55,6 +55,8 @@ test:
     - export MYSQL_HOST=127.0.0.1
     - cd server
     - echo "" > test/config.ts # Create empty config.ts to avoid error on npm test
+    - npm test -- -u
     - npm test
     - cd ../client
+    - npm test -- -u
     - npm test

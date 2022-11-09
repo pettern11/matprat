@@ -34,6 +34,7 @@ export class Icebox extends Component {
               <Column>
                 Søk:
                 <Form.Input
+                  placeholder="Søk etter ingrediens"  
                   id="iceboxlistsearch"
                   type="text"
                   value={this.searchterm}

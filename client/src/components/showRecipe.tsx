@@ -156,20 +156,23 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
         <Button.Success onClick={this.downloadPage}>Last ned oppskriften</Button.Success>
 
         {/* Recomend 5 recipes based on the category */}
-        <h3>Andre oppskrifter i samme kategori:</h3>
-        <Rows>
-          {this.recommendedRecipes.map((recipe) => (
-            <Cards title="" key={recipe.oppskrift_id}>
-              <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
-                <RecipeView
-                  img={recipe.bilde_adr}
-                  name={recipe.oppskrift_navn}
-                  numbOfPors={recipe.ant_pors}
-                ></RecipeView>
-              </NavLink>
-            </Cards>
-          ))}
-        </Rows>
+        <Card>
+          {/* <br /> */}
+          <h3>Andre oppskrifter i samme kategori:</h3>
+          <Row>
+            {this.recommendedRecipes.map((recipe) => (
+              <Cards title="" key={recipe.oppskrift_id}>
+                <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
+                  <RecipeView
+                    img={recipe.bilde_adr}
+                    name={recipe.oppskrift_navn}
+                    numbOfPors={recipe.ant_pors}
+                  ></RecipeView>
+                </NavLink>
+              </Cards>
+            ))}
+          </Row>
+        </Card>
       </div>
     );
   }

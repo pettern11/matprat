@@ -62,7 +62,7 @@ export class NewRecipe extends Component {
               {/* input beksrivelse */}
               <Column>
                 <Column width={2}>
-                  <Form.Label>Description:</Form.Label>
+                  <Form.Label>Beskrivelse:</Form.Label>
                 </Column>
                 <Column>
                   <Form.Textarea
@@ -100,6 +100,13 @@ export class NewRecipe extends Component {
                   <Form.Label>Land:</Form.Label>
                 </Column>
                 <Column>
+                  <Form.Input
+                    id="addCountry"
+                    type="text"
+                    value={this.country_name}
+                    onChange={(event) => (this.country_name = event.currentTarget.value)}
+                    placeholder="Skriv inn landet retten kommer fra"
+                  ></Form.Input>
                   <select
                     className="form-select"
                     key={'choseCountry'}
@@ -117,13 +124,7 @@ export class NewRecipe extends Component {
                       </option>
                     ))}
                   </select>
-                  <Form.Input
-                    id="addCountry"
-                    type="text"
-                    value={this.country_name}
-                    onChange={(event) => (this.country_name = event.currentTarget.value)}
-                    placeholder="Skriv inn landet retten kommer fra"
-                  ></Form.Input>
+
                   <Button.Success
                     id="addCountryBtn"
                     onClick={() => {
@@ -141,6 +142,13 @@ export class NewRecipe extends Component {
                   <Form.Label>Kategori:</Form.Label>
                 </Column>
                 <Column>
+                  <Form.Input
+                    id="addCategory"
+                    type="text"
+                    value={this.category_name}
+                    onChange={(event) => (this.category_name = event.currentTarget.value)}
+                    placeholder="Skriv inn kategorien retten tilhører"
+                  ></Form.Input>
                   <select
                     className="form-select"
                     key={'choseCategory'}
@@ -158,13 +166,7 @@ export class NewRecipe extends Component {
                       </option>
                     ))}
                   </select>
-                  <Form.Input
-                    id="addCategory"
-                    type="text"
-                    value={this.category_name}
-                    onChange={(event) => (this.category_name = event.currentTarget.value)}
-                    placeholder="Skriv inn kattegorien retten tilhører"
-                  ></Form.Input>
+
                   <Button.Success
                     id="addCategoryBtn"
                     onClick={() => {
@@ -246,7 +248,7 @@ export class NewRecipe extends Component {
                   style={{ width: '210px' }}
                   value={this.ingredient}
                   onChange={(event) => (this.ingredient = event.currentTarget.value)}
-                  placeholder="Legg til ny ingrediens"
+                  placeholder="Skriv inn ny ingrediens"
                 ></Form.Input>
                 <Button.Success
                   id="createIngredientFunc"
