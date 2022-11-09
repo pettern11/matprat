@@ -50,7 +50,7 @@ jest.mock('../../src/service', () => {
         },
       ]);
     }
-    getAllRecipeContent(id: number) {
+    getAllRecipeContent() {
       return Promise.resolve([
         {
           oppskrift_id: 1,
