@@ -93,7 +93,7 @@ class Service {
     });
   }
 
-  updateLiked(oppskrift_id: number, liked: boolean) {
+  updateLiked(oppskrift_id: number, liked: boolean) { 
     return new Promise<void>((resolve, reject) => {
       let likeIncrementsAntLike =
         liked == true
