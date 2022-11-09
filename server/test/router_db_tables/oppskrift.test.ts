@@ -152,13 +152,6 @@ describe('Delete recipe (DELETE)', () => {
 });
 
 describe('Update recipe (PUT)', () => {
-  //Dårlig test, sjekker egentlig bare at det ikke eksisterer feil path
-  test('Update recipe without oppskrift_id', (done) => {
-    axios.put('/update_recipe', {recipe:{oppskrift_navn: 'Chicken Ricese', oppskrift_beskrivelse: 'Good chicken dish', oppskrift_steg: 'Cook rice and chicken', ant_pors: 4, bilde_adr: 'https://www.picture.com'}}).catch((error) => {
-    expect(error.response.status).toEqual(404);
-      done();
-    });
-  });
 
   test('Update recipe', (done) => {
     axios.put('/update_recipe/1', {recipe:{ oppskrift_navn: 'Chicken Rices', oppskrift_beskrivelse: 'Good chicken dish', oppskrift_steg: 'Cook rice and chicken', bilde_adr: 'www.vg.no/pic2', ant_pors: 4, oppskrift_id: 1}}).then((response) => {
@@ -167,7 +160,7 @@ describe('Update recipe (PUT)', () => {
     });
   });
 
-
+  
 
   //disse to er like, de funker ikke fordi den blir reslova fordi vi ikke har feilsjekker som sjekker at recipe har riktige felter, derfor vil kun den med then fungere, ikke catch
   test('Update recipe with missing fields', (done) => {
@@ -175,7 +168,7 @@ describe('Update recipe (PUT)', () => {
       expect(error.response.status).toEqual(500);
       done();
     });
-  });
+  }); 
 
   test('Update liked', (done) => {
     axios.put('/recipelike/1', {liked: true}).then((response) => {
@@ -183,7 +176,9 @@ describe('Update recipe (PUT)', () => {
       done();
     });
   });
-  test('Update liked invalid oppskrift_id', (done) => {
+
+  //denne gir 5% på test, men funker ikke alltid, vet ikke hvorfor
+  test('Update liked with non-existing oppskrift_id', (done) => {
     axios.put('/recipelike/100', {liked: true}).catch((error) => {
       expect(error.response.status).toEqual(500);
       done();
