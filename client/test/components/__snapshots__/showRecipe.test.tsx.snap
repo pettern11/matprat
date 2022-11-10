@@ -377,26 +377,28 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
   >
     Last ned oppskriften
   </ButtonSuccess>
-  <h3>
-    Andre oppskrifter i samme kategori:
-  </h3>
-  <Rows>
-    <Cards
-      key="1"
-      title=""
-    >
-      <NavLink
-        className="black"
-        to="/recipe/1"
+  <Card>
+    <h3>
+      Andre oppskrifter i samme kategori:
+    </h3>
+    <Row>
+      <Cards
+        key="1"
+        title=""
       >
-        <RecipeView
-          img="pizza.jpg"
-          name="Pizza"
-          numbOfPors={4}
-        />
-      </NavLink>
-    </Cards>
-  </Rows>
+        <NavLink
+          className="black"
+          to="/recipe/1"
+        >
+          <RecipeView
+            img="pizza.jpg"
+            name="Pizza"
+            numbOfPors={4}
+          />
+        </NavLink>
+      </Cards>
+    </Row>
+  </Card>
 </div>
 `;
 
@@ -777,26 +779,28 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
   >
     Last ned oppskriften
   </ButtonSuccess>
-  <h3>
-    Andre oppskrifter i samme kategori:
-  </h3>
-  <Rows>
-    <Cards
-      key="1"
-      title=""
-    >
-      <NavLink
-        className="black"
-        to="/recipe/1"
+  <Card>
+    <h3>
+      Andre oppskrifter i samme kategori:
+    </h3>
+    <Row>
+      <Cards
+        key="1"
+        title=""
       >
-        <RecipeView
-          img="pizza.jpg"
-          name="Pizza"
-          numbOfPors={4}
-        />
-      </NavLink>
-    </Cards>
-  </Rows>
+        <NavLink
+          className="black"
+          to="/recipe/1"
+        >
+          <RecipeView
+            img="pizza.jpg"
+            name="Pizza"
+            numbOfPors={4}
+          />
+        </NavLink>
+      </Cards>
+    </Row>
+  </Card>
 </div>
 `;
 
@@ -1177,26 +1181,28 @@ exports[`ShowRecipe tests Number increment works 1`] = `
   >
     Last ned oppskriften
   </ButtonSuccess>
-  <h3>
-    Andre oppskrifter i samme kategori:
-  </h3>
-  <Rows>
-    <Cards
-      key="1"
-      title=""
-    >
-      <NavLink
-        className="black"
-        to="/recipe/1"
+  <Card>
+    <h3>
+      Andre oppskrifter i samme kategori:
+    </h3>
+    <Row>
+      <Cards
+        key="1"
+        title=""
       >
-        <RecipeView
-          img="pizza.jpg"
-          name="Pizza"
-          numbOfPors={4}
-        />
-      </NavLink>
-    </Cards>
-  </Rows>
+        <NavLink
+          className="black"
+          to="/recipe/1"
+        >
+          <RecipeView
+            img="pizza.jpg"
+            name="Pizza"
+            numbOfPors={4}
+          />
+        </NavLink>
+      </Cards>
+    </Row>
+  </Card>
 </div>
 `;
 
@@ -1577,25 +1583,27 @@ exports[`ShowRecipe tests Number of likes 1`] = `
   >
     Last ned oppskriften
   </ButtonSuccess>
-  <h3>
-    Andre oppskrifter i samme kategori:
-  </h3>
-  <Rows>
-    <Cards
-      key="1"
-      title=""
-    >
-      <NavLink
-        className="black"
-        to="/recipe/1"
+  <Card>
+    <h3>
+      Andre oppskrifter i samme kategori:
+    </h3>
+    <Row>
+      <Cards
+        key="1"
+        title=""
       >
-        <RecipeView
-          img="pizza.jpg"
-          name="Pizza"
-          numbOfPors={4}
-        />
-      </NavLink>
-    </Cards>
-  </Rows>
+        <NavLink
+          className="black"
+          to="/recipe/1"
+        >
+          <RecipeView
+            img="pizza.jpg"
+            name="Pizza"
+            numbOfPors={4}
+          />
+        </NavLink>
+      </Cards>
+    </Row>
+  </Card>
 </div>
 `;

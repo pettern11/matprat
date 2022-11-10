@@ -228,9 +228,11 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
     }, 2000);
   }
   findRecommendedRecipes(lengtCheck: number) {
-    this.recommendedRecipes = this.allRecipes
-      .filter((recipe) => recipe.kategori_id == this.recipe.kategori_id)
-      .slice(0, 5);
+    this.recommendedRecipes = this.allRecipes.filter(
+      (recipe) => recipe.kategori_id == this.recipe.kategori_id
+    );
+    //chose 5 random recipes
+    this.recommendedRecipes = this.recommendedRecipes.sort(() => Math.random() - 0.5).slice(0, 5);
   }
   incrementPortions() {
     this.portions++;

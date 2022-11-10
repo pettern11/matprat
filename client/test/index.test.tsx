@@ -50,7 +50,7 @@ describe('Index test', () => {
           <NavBar brand="Hjem">
             <NavBar.Link to="/showallrecipe">Alle oppskrifter</NavBar.Link>
             <NavBar.Link to="/newrecipe">Ny oppskrift</NavBar.Link>
-            <NavBar.Link to="/liked">Liked</NavBar.Link>
+            <NavBar.Link to="/liked">Likte</NavBar.Link>
             <NavBar.Link to="/shoppinglist">Handleliste</NavBar.Link>
             <NavBar.Link to="/icebox">Kjøleskap</NavBar.Link>
           </NavBar>
