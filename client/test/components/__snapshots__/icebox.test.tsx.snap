@@ -2,22 +2,21 @@
 
 exports[`Icebox tests Snapshot Icebox draws correctly 1`] = `
 <Fragment>
-  <Column
-    width={1}
+  <div
+    className="margintop"
   >
-    <div
-      className="margintop"
+    <Column
+      width={2}
     >
       <Card
         title="Dine ingredienser:"
       >
         <Column>
-          <h6>
-            Søk
-          </h6>
+          Søk:
           <FormInput
             id="iceboxlistsearch"
             onChange={[Function]}
+            placeholder="Søk etter ingrediens"
             type="text"
             value=""
           />
@@ -53,13 +52,14 @@ exports[`Icebox tests Snapshot Icebox draws correctly 1`] = `
           </ButtonSuccess>
         </Column>
         <Column>
+          <br />
           <Row
             key="0"
           >
             <p
               style={
                 {
-                  "width": "150px",
+                  "width": "190px",
                 }
               }
             >
@@ -77,32 +77,32 @@ exports[`Icebox tests Snapshot Icebox draws correctly 1`] = `
           </Row>
         </Column>
       </Card>
-    </div>
-  </Column>
-  <Card
-    title="Oppskrifter basert på dine ingredienser"
-  >
-    <div
-      id="icebox"
+    </Column>
+    <Card
+      title="Oppskrifter basert på dine ingredienser:"
     >
-      <Row>
-        <IceboxsCard
-          key="0"
-          title=""
-        >
-          <NavLink
-            className="black"
-            to="/recipe/2"
+      <div
+        id="icebox"
+      >
+        <Rows>
+          <Cards
+            key="0"
+            title=""
           >
-            <RecipeView
-              img="kjøttboller.jpg"
-              name="Kjøttboller i brunsaus"
-              numbOfPors={4}
-            />
-          </NavLink>
-        </IceboxsCard>
-      </Row>
-    </div>
-  </Card>
+            <NavLink
+              className="black"
+              to="/recipe/2"
+            >
+              <RecipeView
+                img="kjøttboller.jpg"
+                name="Kjøttboller i brunsaus"
+                numbOfPors={4}
+              />
+            </NavLink>
+          </Cards>
+        </Rows>
+      </div>
+    </Card>
+  </div>
 </Fragment>
 `;

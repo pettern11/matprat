@@ -1,7 +1,8 @@
 import * as React from 'react';
 
 import { shallow, mount, render } from 'enzyme';
-import { Alert, Card, Row, Column, Form, Button, RecipeView } from '../../src/widgets';
+import { NavLink } from 'react-router-dom';
+import { Alert, Card, Row, Column, Form, Button, RecipeView, Cards, Rows } from '../../src/widgets';
 import { ShowAllRecipe } from '../../src/components/showAllRecipe';
 import userEvent from '@testing-library/user-event';
 
@@ -82,29 +83,88 @@ describe('ShowAllRecipe tests', () => {
       done();
     });
   });
-  test('Select Nyeste at sort', (done) => {
+  test('Select A-Z at sort', (done) => {
     const wrapper = shallow(<ShowAllRecipe />);
-    wrapper.find('#sortBy').simulate('change', { target: { value: 3, name: 'Nyeste' } });
-
-    //find select sortBy and simulate change and choose target value 1 and name Z-A
+    //find select sortBy and simulate change and choose target value 1 and name A-Z
+    wrapper.find('#sortBy').simulate('change', { target: { value: 1, name: 'A-Z' } });
     setTimeout(() => {
-      //siden shallow ikke ser så dypt får vi ikke igjen hele objektet men bare et tomt objekt. Derfor tester
-      //jeg om det er et tomt objekt som returneres. det denne testen viser er at hvis knappen blir trykket på
-      //så vil det hvertfall bli returnert et objekt.
       expect(
-        wrapper.find('#sortBy').simulate('change', { target: { value: 3, name: 'Nyeste' } })
+        wrapper.find('#sortBy').simulate('change', { target: { value: 1, name: 'A-Z' } })
       ).toEqual({});
+      expect(
+        wrapper.containsMatchingElement([
+          <Rows>
+            <Cards title="">
+              <NavLink className="black" to="/recipe/2">
+                <RecipeView img="kjøttboller.jpg" name="Kjøttboller i brunsaus" numbOfPors={4} />
+              </NavLink>
+            </Cards>
+            <Cards title="">
+              <NavLink className="black" to="/recipe/1">
+                <RecipeView img="pizza.jpg" name="Pizza" numbOfPors={4} />
+              </NavLink>
+            </Cards>
+          </Rows>,
+        ])
+      ).toEqual(true);
+
       done();
     });
   });
   test('Select Z-A at sort', (done) => {
     const wrapper = shallow(<ShowAllRecipe />);
-    //find select sortBy and simulate change and choose target value 1 and name Z-A
-    wrapper.find('#sortBy').simulate('change', { target: { value: 1, name: 'A-Z' } });
+    //find select sortBy and simulate change and choose target value 2 and name Z-A
+    wrapper.find('#sortBy').simulate('change', { target: { value: 2, name: 'Z-A' } });
 
     setTimeout(() => {
       expect(
         wrapper.find('#sortBy').simulate('change', { target: { value: 2, name: 'Z-A' } })
+      ).toEqual({});
+      expect(
+        wrapper.containsMatchingElement([
+          <Rows>
+            <Cards title="">
+              <NavLink className="black" to="/recipe/1">
+                <RecipeView img="pizza.jpg" name="Pizza" numbOfPors={4} />
+              </NavLink>
+            </Cards>
+            <Cards title="">
+              <NavLink className="black" to="/recipe/2">
+                <RecipeView img="kjøttboller.jpg" name="Kjøttboller i brunsaus" numbOfPors={4} />
+              </NavLink>
+            </Cards>
+          </Rows>,
+        ])
+      ).toEqual(true);
+      done();
+    });
+  });
+  test('Select Nyeste at sort', (done) => {
+    const wrapper = shallow(<ShowAllRecipe />);
+    wrapper.find('#sortBy').simulate('change', { target: { value: 3, name: 'Nyeste' } });
+
+    //find select sortBy and simulate change and choose target value 3 and name Nyeste
+    setTimeout(() => {
+      //expect the frist card to be kjøttboller and the second card to be pizza since the newest is kjøttboller
+      //it sorts the newest based on the id
+      expect(
+        wrapper.containsMatchingElement([
+          <Rows>
+            <Cards title="">
+              <NavLink className="black" to="/recipe/2">
+                <RecipeView img="kjøttboller.jpg" name="Kjøttboller i brunsaus" numbOfPors={4} />
+              </NavLink>
+            </Cards>
+            <Cards title="">
+              <NavLink className="black" to="/recipe/1">
+                <RecipeView img="pizza.jpg" name="Pizza" numbOfPors={4} />
+              </NavLink>
+            </Cards>
+          </Rows>,
+        ])
+      ).toEqual(true);
+      expect(
+        wrapper.find('#sortBy').simulate('change', { target: { value: 3, name: 'Nyeste' } })
       ).toEqual({});
       done();
     });
@@ -117,19 +177,23 @@ describe('ShowAllRecipe tests', () => {
       expect(
         wrapper.find('#sortBy').simulate('change', { target: { value: 4, name: 'Land' } })
       ).toEqual({});
+
       done();
     });
   });
-  test('Select A-Z at sort', (done) => {
+  test('Select Kategori at sort', (done) => {
     const wrapper = shallow(<ShowAllRecipe />);
-    //find select sortBy and simulate change and choose target value 1 and name Z-A
-    wrapper.find('#sortBy').simulate('change', { target: { value: 1, name: 'A-Z' } });
+    //find select sortBy and simulate change and choose target value 5 and name kategori
     setTimeout(() => {
-      expect(
-        wrapper.find('#sortBy').simulate('change', { target: { value: 1, name: 'A-Z' } })
-      ).toEqual({});
+      wrapper.find('#sortBy').simulate('change', { target: { value: 5, name: 'Kategori' } });
+      setTimeout(() => {
+        expect(
+          wrapper.find('#sortBy').simulate('change', { target: { value: 5, name: 'Kategori' } })
+        ).toEqual({});
+        //update the wrapper
 
-      done();
+        done();
+      });
     });
   });
 });

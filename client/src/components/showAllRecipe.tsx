@@ -94,24 +94,41 @@ export class ShowAllRecipe extends Component {
     );
   }
   sortRecipe(value: number) {
+    console.log(value);
+    //@ts-ignore
+    //or create element input with id indexsearch
+    let aaa = document.getElementById('indexsearch') || document.createElement('input');
+    aaa.setAttribute('id', 'indexsearch');
     if (value == 1) {
+      //@ts-ignore
+      aaa.placeholder = 'Søk etter oppskrift';
       this.recipes.sort(function (a, b) {
         const x = a.oppskrift_navn.toLowerCase();
         const y = b.oppskrift_navn.toLowerCase();
         return x < y ? -1 : x > y ? 1 : 0;
       });
     } else if (value == 2) {
+      //@ts-ignore
+      aaa.placeholder = 'Søk etter oppskrift';
       this.recipes.sort(function (b, a) {
         const x = a.oppskrift_navn.toLowerCase();
         const y = b.oppskrift_navn.toLowerCase();
         return x < y ? -1 : x > y ? 1 : 0;
       });
     } else if (value == 3) {
+      //@ts-ignore
+      aaa.placeholder = 'Søk etter oppskrift';
       this.recipes.sort(function (b, a) {
         const x = a.oppskrift_id;
         const y = b.oppskrift_id;
         return x < y ? -1 : x > y ? 1 : 0;
       });
+    } else if (value == 4) {
+      //@ts-ignore
+      aaa.placeholder = 'Søk etter land';
+    } else if (value == 5) {
+      //@ts-ignore
+      aaa.placeholder = 'Søk etter kategori';
     }
   }
   mounted() {
