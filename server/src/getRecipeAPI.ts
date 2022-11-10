@@ -335,7 +335,7 @@ function matchRecipeIngredient() {
     );
   });
   interval = setInterval(() => {
-    pool.query('SELECT id FROM oppskrift_innhold', (error, results: RowDataPacket[]) => {
+    pool.query('SELECT * FROM oppskrift_innhold', (error, results: RowDataPacket[]) => {
       if (error) return reject(error);
       if (results.length <= recipe_ingredient.length) {
         done();
