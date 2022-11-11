@@ -31,47 +31,44 @@ export class Icebox extends Component {
         <div className="margintop">
           <Column width={2}>
             <Card title="Dine ingredienser:">
-              <Column>
-                Søk:
-                <Form.Input
-                  placeholder="Søk etter ingrediens"  
-                  id="iceboxlistsearch"
-                  type="text"
-                  value={this.searchterm}
-                  onChange={(event) => {
-                    this.search(event.currentTarget.value);
-                    this.searchterm = event.currentTarget.value;
-                  }}
-                />
-                <select
-                  className="form-select"
-                  id="selectExistingIngredient"
-                  onChange={(event) => {
-                    this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
-                    this.selectedIngredient.ingred_navn =
-                      event.currentTarget.selectedOptions[0].text;
-                  }}
-                >
-                  {this.selectedIngredients.map((ingredient, idx) => (
-                    <option key={idx} value={ingredient.ingred_id}>
-                      {ingredient.ingred_navn}
-                    </option>
-                  ))}
-                </select>
-                <Button.Success
-                  id="btnIngredAdd"
-                  onClick={() => {
-                    this.chooseIngredientFunc();
-                  }}
-                >
-                  Legg til ingrediens
-                </Button.Success>
-              </Column>
+              &nbsp;Søk:
+              <Form.Input
+                placeholder="Søk etter ingrediens"
+                id="iceboxlistsearch"
+                type="text"
+                value={this.searchterm}
+                onChange={(event) => {
+                  this.search(event.currentTarget.value);
+                  this.searchterm = event.currentTarget.value;
+                }}
+              />
+              <select
+                className="form-select"
+                id="selectExistingIngredient"
+                onChange={(event) => {
+                  this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
+                  this.selectedIngredient.ingred_navn = event.currentTarget.selectedOptions[0].text;
+                }}
+              >
+                {this.selectedIngredients.map((ingredient, idx) => (
+                  <option key={idx} value={ingredient.ingred_id}>
+                    {ingredient.ingred_navn}
+                  </option>
+                ))}
+              </select>
+              <Button.Success
+                id="btnIngredAdd"
+                onClick={() => {
+                  this.chooseIngredientFunc();
+                }}
+              >
+                Legg til
+              </Button.Success>
               <Column>
                 <br />
                 {this.choosenIngredient.map((ingredient, idx) => (
                   <Row key={idx}>
-                    <p style={{ width: '190px' }}>{ingredient.ingred_navn}</p>
+                    <p style={{ width: '199px' }}>{ingredient.ingred_navn}</p>
                     <Column width={2}>
                       <Button.Danger
                         onClick={() => {
@@ -120,6 +117,8 @@ export class Icebox extends Component {
       .addIngredientToIcebox(add)
       .then(() => (this.choosenIngredient.push(add), this.filterRecipes()))
       .catch((error) => Alert.danger('Error, ingredient already added: ' + error.message));
+
+    this.searchterm = '';
   }
 
   deleteIceboxIngredient(id: number) {
