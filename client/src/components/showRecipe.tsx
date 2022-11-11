@@ -4,7 +4,6 @@ import { Alert, Card, Row, Button, Cards, Rows, RecipeView } from '.././widgets'
 import { NavLink } from 'react-router-dom';
 import service, { Category, Ingredient, Recipe, Recipe_Content } from '.././service';
 import { createHashHistory } from 'history';
-
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
 export class ShowRecipe extends Component<{ match: { params: { id: number } } }> {
@@ -211,21 +210,30 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
   }
   //https://stackoverflow.com/questions/68152987/how-to-download-part-of-a-react-component
   downloadPage() {
-    let pageHTML = document.querySelector('.download1').outerHTML;
-    pageHTML += document.querySelector('.download2').outerHTML;
-    let css =
-      '<style> pre { white-space: pre-wrap; font-size:16px}  p {display: inline-block} body {background-color: coral; text-align:center}   </style>';
-    const blob = new Blob([pageHTML, css], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    const tempEl = document.createElement('a');
-    document.body.appendChild(tempEl);
-    tempEl.href = url;
-    tempEl.download = this.recipe.oppskrift_navn + '.html';
-    tempEl.click();
-    setTimeout(() => {
-      URL.revokeObjectURL(url);
-      tempEl.parentNode.removeChild(tempEl);
-    }, 2000);
+    // let pageHTML = document.querySelector('.download1').outerHTML;
+    // pageHTML += document.querySelector('.download2').outerHTML;
+    // let css =
+    //   '<style> pre { white-space: pre-wrap; font-size:16px}  p {display: inline-block} body {background-color: coral; text-align:center}   </style>';
+    // const blob = new Blob([pageHTML, css], { type: 'text/html' });
+    // const url = URL.createObjectURL(blob);
+    // const tempEl = document.createElement('a');
+    // document.body.appendChild(tempEl);
+    // tempEl.href = url;
+    // tempEl.download = this.recipe.oppskrift_navn + '.html';
+    // tempEl.click();
+    // setTimeout(() => {
+    //   URL.revokeObjectURL(url);
+    //   tempEl.parentNode.removeChild(tempEl);
+    // }, 2000);
+
+    html2canvas(document.querySelector('#download1')).then((canvas) => {
+      document.body.appendChild(canvas); // if you want see your screenshot in body.
+      const imgData = canvas.toDataURL('image/png');
+      console.log(imgData);
+      const pdf = new jsPDF();
+      pdf.addImage(imgData, 'PNG', 0, 0);
+      pdf.save('download.pdf');
+    });
   }
   findRecommendedRecipes(lengtCheck: number) {
     this.recommendedRecipes = this.allRecipes.filter(
