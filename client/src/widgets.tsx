@@ -59,6 +59,19 @@ export class Card extends Component<{ title: ReactNode; children: ReactNode }> {
   }
 }
 
+// export class CardFull extends Component<{ title: ReactNode; children: ReactNode }> {
+//   render() {
+//     return (
+//       <div className="card w-100 hundred">
+//         <div className="card-body">
+//           <h5 className="card-title">{this.props.title}</h5>
+//           <div className="card-text">{this.props.children}</div>
+//         </div>
+//       </div>
+//     );
+//   }
+// }
+
 export class Oppskrifter extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
     return (
@@ -140,6 +153,20 @@ export class Columns extends Component<{
   render() {
     return (
       <div className="col-4">
+        <div className={'float-' + (this.props.right ? 'end' : 'start')}>{this.props.children}</div>
+      </div>
+    );
+  }
+}
+
+export class Colum extends Component<{
+  width?: number | undefined;
+  right?: boolean | undefined;
+  children: ReactNode;
+}> {
+  render() {
+    return (
+      <div className="col-6">
         <div className={'float-' + (this.props.right ? 'end' : 'start')}>{this.props.children}</div>
       </div>
     );

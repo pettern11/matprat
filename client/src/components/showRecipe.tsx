@@ -137,7 +137,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
         <a
           href={`mailto:?subject=${this.recipe.oppskrift_navn}&body=${this.recipe.oppskrift_beskrivelse} %0d%0a ${window.location.href}`}
         >
-          Heidu
+          {/* Heidu */}
         </a>
         <Button.Success onClick={() => history.push('/recipe/edit/' + this.props.match.params.id)}>
           Endre oppskrift

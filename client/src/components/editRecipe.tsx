@@ -81,6 +81,16 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                   <Column width={2}>
                     <Form.Label>Søk:</Form.Label>
                   </Column>
+                  <Form.Input
+                    id="newRecipeSearch"
+                    placeholder="Søk etter ingrediens"
+                    type="text"
+                    value={this.searchterm}
+                    onChange={(event) => {
+                      this.search(event.currentTarget.value);
+                      this.searchterm = event.currentTarget.value;
+                    }}
+                  />
                   <select
                     className="form-select"
                     id="selectIngredientNewRecipe"
@@ -98,15 +108,6 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                       </option>
                     ))}
                   </select>
-                  <Form.Input
-                    id="newRecipeSearch"
-                    type="text"
-                    value={this.searchterm}
-                    onChange={(event) => {
-                      this.search(event.currentTarget.value);
-                      this.searchterm = event.currentTarget.value;
-                    }}
-                  />
                 </Column>
                 <Button.Success
                   id="btnIngredAdd"
@@ -117,17 +118,20 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                     );
                   }}
                 >
-                  Legg til ny ingrediens
+                  Legg til 
                 </Button.Success>
               </Column>
+              </Row>
+            <Row>
               <Column>
+              <br/>
                 <Form.Input
                   id="createIngredient"
                   type="text"
                   style={{ width: '210px' }}
                   value={this.ingredient}
                   onChange={(event) => (this.ingredient = event.currentTarget.value)}
-                  placeholder="Legg til ny ingrediens"
+                  placeholder="Skriv inn ny ingrediens"
                 ></Form.Input>
                 <Button.Success
                   id="createIngredientFunc"
@@ -185,7 +189,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
             id="cancelEdit"
             onClick={() => history.push('/recipe/' + this.props.match.params.id)}
           >
-            Cancel
+            Avbryt
           </Button.Danger>
         </div>
       </>
