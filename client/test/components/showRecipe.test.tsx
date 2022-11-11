@@ -6,7 +6,6 @@ import { ShowRecipe } from '../../src/components/showRecipe';
 
 import { createHashHistory } from 'history';
 
-const history = createHashHistory();
 jest.mock('../../src/service', () => {
   class Service {
     getAllCountry() {
@@ -122,6 +121,9 @@ jest.mock('../../src/service', () => {
     createIngredient() {
       return Promise.resolve();
     }
+    addIngredient(ingredient: any) {
+      return Promise.resolve();
+    }
     createRecipe() {
       return Promise.resolve(1);
     }
@@ -133,15 +135,50 @@ jest.mock('../../src/service', () => {
 });
 
 describe('ShowRecipe tests', () => {
+  test('Send ingredient to shopping list', (done) => {
+    const history = createHashHistory();
+    const wrapper = shallow(<ShowRecipe match={{ params: { id: 1 } }} />);
+
+    wrapper.find('#btnSend').simulate('click');
+
+    setTimeout(() => {
+      //ved å sjekke om history length er 2 så vet vi at vi har navigert til en annen side enn den orginale
+      // expect(history.location.pathname).toBe('/shoppinglist');
+      expect(window.location.href).toEqual('http://localhost/#/shoppinglist');
+
+      done();
+    });
+  });
   test('Delete recipe button works', (done) => {
     const wrapper = shallow(<ShowRecipe match={{ params: { id: 2 } }} />);
     setTimeout(() => {
       wrapper.find('#deleteRecipe').simulate('click');
-      expect(window.location.href).toEqual('http://localhost/#/');
-      done();
+      setTimeout(() => {
+        expect(window.location.href).toEqual('http://localhost/#/');
+        done();
+      });
     });
   });
-
+  //test if downlaad button works, this test gives an error because it is not possible to test the download function and more but i tried my best
+  test('Download button works', (done) => {
+    window.URL.createObjectURL = function () {};
+    window.URL.revokeObjectURL = function () {};
+    const wrapper = shallow(<ShowRecipe match={{ params: { id: 1 } }} />);
+    const wrapperAlert = shallow(<Alert />);
+    setTimeout(() => {
+      wrapper.find('#downloadPageBtn').simulate('click');
+      setTimeout(() => {
+        expect(
+          wrapperAlert.containsMatchingElement(
+            <div>
+              Oppskriten ble lastet ned<button></button>
+            </div>
+          )
+        ).toEqual(true);
+        done();
+      });
+    });
+  });
   test('Edit recipe button works', (done) => {
     const wrapper = shallow(<ShowRecipe match={{ params: { id: 1 } }} />);
     setTimeout(() => {
@@ -205,17 +242,6 @@ describe('ShowRecipe tests', () => {
           <p> 3. kjøttboller 300.0 g</p>,
         ])
       ).toBe(true);
-      done();
-    });
-  });
-
-  test.skip('Send ingredient to shopping list', (done) => {
-    const wrapper = shallow(<ShowRecipe match={{ params: { id: 1 } }} />);
-
-    wrapper.find('#btnSend').simulate('click');
-
-    setTimeout(() => {
-      expect(window.location.href).toEqual('http://localhost/#/shoppinglist');
       done();
     });
   });

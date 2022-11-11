@@ -152,7 +152,9 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
         <Button.Success id="btnSend" onClick={this.ingredientsToShoppingList}>
           Send ingredienser til handleliste
         </Button.Success>
-        <Button.Success onClick={this.downloadPage}>Last ned oppskriften</Button.Success>
+        <Button.Success id="downloadPageBtn" onClick={this.downloadPage}>
+          Last ned oppskriften
+        </Button.Success>
 
         {/* Recomend 5 recipes based on the category */}
         <Card>
@@ -210,8 +212,10 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
   }
   //https://stackoverflow.com/questions/68152987/how-to-download-part-of-a-react-component
   downloadPage() {
-    let pageHTML = document.querySelector('.download1').outerHTML;
-    pageHTML += document.querySelector('.download2').outerHTML;
+    let element1 = document.querySelector('.download1') || document.createElement('div');
+    let element2 = document.querySelector('.download2') || document.createElement('div');
+    let pageHTML = element1.outerHTML;
+    pageHTML += element2.outerHTML;
     let css =
       '<style> pre { white-space: pre-wrap; font-size:16px}  p {display: inline-block} body {background-color: coral; text-align:center}   </style>';
     const blob = new Blob([pageHTML, css], { type: 'text/html' });
@@ -221,6 +225,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
     tempEl.href = url;
     tempEl.download = this.recipe.oppskrift_navn + '.html';
     tempEl.click();
+    Alert.info('Oppskriten ble lastet ned');
     setTimeout(() => {
       URL.revokeObjectURL(url);
       tempEl.parentNode.removeChild(tempEl);
@@ -248,6 +253,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
       .catch((error) => Alert.danger('Error deleting recipe: ' + error.message));
   }
   ingredientsToShoppingList() {
+    let i = 0;
     this.recipeContent.forEach((rc) => {
       const ingredient = {
         ingred_id: rc.ingred_id,
@@ -255,8 +261,10 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
         maleenhet: rc.maleenhet,
       };
       service.addIngredient(ingredient).then(() => {
-        history.push('/shoppinglist');
+        i++;
       });
     });
+    i == this.recipeContent.length ? history.push('/shoppinglist') : '';
+    //sjeker om alle ingredienser er lagt til før den endrer siden til shoppinglist
   }
 }
