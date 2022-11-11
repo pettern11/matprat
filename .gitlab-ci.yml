@@ -25,7 +25,7 @@ install:
       - client/node_modules
 
 prettier:
-  stage: test # The prettier job will run in parallel with the typescript and test jobs
+  stage: prettier # The prettier job will run in parallel with the typescript and test jobs
   script:
     - npm install --global prettier
     - prettier --check .
