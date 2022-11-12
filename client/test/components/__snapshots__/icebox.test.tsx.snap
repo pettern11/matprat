@@ -11,46 +11,44 @@ exports[`Icebox tests Snapshot Icebox draws correctly 1`] = `
       <Card
         title="Dine ingredienser:"
       >
-        <Column>
-          Søk:
-          <FormInput
-            id="iceboxlistsearch"
-            onChange={[Function]}
-            placeholder="Søk etter ingrediens"
-            type="text"
-            value=""
-          />
-          <select
-            className="form-select"
-            id="selectExistingIngredient"
-            onChange={[Function]}
+         Søk:
+        <FormInput
+          id="iceboxlistsearch"
+          onChange={[Function]}
+          placeholder="Søk etter ingrediens"
+          type="text"
+          value=""
+        />
+        <select
+          className="form-select"
+          id="selectExistingIngredient"
+          onChange={[Function]}
+        >
+          <option
+            key="0"
+            value={3}
           >
-            <option
-              key="0"
-              value={3}
-            >
-              kjøttboller
-            </option>
-            <option
-              key="1"
-              value={2}
-            >
-              pizza fyll
-            </option>
-            <option
-              key="2"
-              value={1}
-            >
-              pizzadeig
-            </option>
-          </select>
-          <ButtonSuccess
-            id="btnIngredAdd"
-            onClick={[Function]}
+            kjøttboller
+          </option>
+          <option
+            key="1"
+            value={2}
           >
-            Legg til ingrediens
-          </ButtonSuccess>
-        </Column>
+            pizza fyll
+          </option>
+          <option
+            key="2"
+            value={1}
+          >
+            pizzadeig
+          </option>
+        </select>
+        <ButtonSuccess
+          id="btnIngredAdd"
+          onClick={[Function]}
+        >
+          Legg til
+        </ButtonSuccess>
         <Column>
           <br />
           <Row
@@ -59,7 +57,7 @@ exports[`Icebox tests Snapshot Icebox draws correctly 1`] = `
             <p
               style={
                 {
-                  "width": "190px",
+                  "width": "199px",
                 }
               }
             >

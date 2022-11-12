@@ -352,9 +352,7 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
   </Card>
   <a
     href="mailto:?subject=Pizza&body=Pizza er god og enkel %0d%0a http://localhost/#/recipe/edit/1"
-  >
-    Heidu
-  </a>
+  />
   <ButtonSuccess
     onClick={[Function]}
   >
@@ -755,9 +753,7 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
   </Card>
   <a
     href="mailto:?subject=Pizza&body=Pizza er god og enkel %0d%0a http://localhost/#/recipe/edit/1"
-  >
-    Heidu
-  </a>
+  />
   <ButtonSuccess
     onClick={[Function]}
   >
@@ -1158,9 +1154,7 @@ exports[`ShowRecipe tests Number increment works 1`] = `
   </Card>
   <a
     href="mailto:?subject=Pizza&body=Pizza er god og enkel %0d%0a http://localhost/#/recipe/edit/1"
-  >
-    Heidu
-  </a>
+  />
   <ButtonSuccess
     onClick={[Function]}
   >
@@ -1561,9 +1555,7 @@ exports[`ShowRecipe tests Number of likes 1`] = `
   </Card>
   <a
     href="mailto:?subject=Pizza&body=Pizza er god og enkel %0d%0a http://localhost/#/recipe/edit/1"
-  >
-    Heidu
-  </a>
+  />
   <ButtonSuccess
     onClick={[Function]}
   >

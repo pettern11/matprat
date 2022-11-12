@@ -116,7 +116,9 @@ export class Icebox extends Component {
     service
       .addIngredientToIcebox(add)
       .then(() => (this.choosenIngredient.push(add), this.filterRecipes()))
-      .catch((error) => Alert.danger('Error, ingredient already added: ' + error.message));
+      .catch((error) => {
+        console.log(error), Alert.danger('Error, ingredient already added: ' + error.message);
+      });
 
     this.searchterm = '';
   }
