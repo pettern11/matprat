@@ -9,18 +9,48 @@ exports[`ShowAllRecipe tests Snapshot showAllRecipe draws correctly 1`] = `
     <Row>
       <center>
         <Columns>
-          <FormInput
-            id="indexsearch"
-            onChange={[Function]}
-            placeholder="Søk etter oppskrift"
-            style={
-              {
-                "width": "210px",
+          <div>
+            <FormInput
+              id="indexsearch"
+              onChange={[Function]}
+              placeholder="Søk etter oppskrift"
+              style={
+                {
+                  "display": "inline",
+                  "width": "210px",
+                }
               }
-            }
-            type="text"
-            value=""
-          />
+              type="text"
+              value=""
+            />
+            <div
+              style={
+                {
+                  "display": "none ",
+                }
+              }
+            >
+              <ForwardRef
+                onChange={[Function]}
+                options={
+                  [
+                    {
+                      "label": "Søk på kategori",
+                      "value": 0,
+                    },
+                    {
+                      "label": "Ikea mat",
+                      "value": 1,
+                    },
+                    {
+                      "label": "enkelt",
+                      "value": 2,
+                    },
+                  ]
+                }
+              />
+            </div>
+          </div>
         </Columns>
         <Columns>
           <select
@@ -33,11 +63,6 @@ exports[`ShowAllRecipe tests Snapshot showAllRecipe draws correctly 1`] = `
               }
             }
           >
-            <option
-              value="0"
-            >
-              Sorter
-            </option>
             <option
               value="1"
             >

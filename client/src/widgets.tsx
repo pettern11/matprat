@@ -138,7 +138,7 @@ export class Column extends Component<{
 }> {
   render() {
     return (
-      <div className={'col' + (this.props.width ? '-' + this.props.width : '')} >
+      <div className={'col' + (this.props.width ? '-' + this.props.width : '')}>
         <div className={'float-' + (this.props.right ? 'end' : 'start')}>{this.props.children}</div>
       </div>
     );
@@ -315,7 +315,11 @@ class NavBarLink extends Component<{ to: string; children: ReactNode }> {
 class NavBarLinks extends Component<{ to: string; children: ReactNode }> {
   render() {
     return (
-      <NavLink className="nav-link nav-links nav-links-white" activeClassName="active" to={this.props.to}>
+      <NavLink
+        className="nav-link nav-links nav-links-white"
+        activeClassName="active"
+        to={this.props.to}
+      >
         {this.props.children}
       </NavLink>
     );
@@ -335,7 +339,12 @@ export class NavBar extends Component<{ brand: ReactNode; children: ReactNode }>
     return (
       <nav className="navbar navbar-expand-sm navbar-light bg-light">
         <div className="container-fluid justify-content-start">
-          <NavLink className="navbar-brand navbar-brand-white" activeClassName="active" exact to="/">
+          <NavLink
+            className="navbar-brand navbar-brand-white"
+            activeClassName="active"
+            exact
+            to="/"
+          >
             {this.props.brand}
           </NavLink>
           <div className="navbar-nav">{this.props.children}</div>
@@ -433,7 +442,7 @@ class FormCheckbox extends Component<{
 }
 
 /**
- * Renders a form select using Bootstrap styles.
+ * Renders a form inline using Bootstrap styles.
  */
 class FormSelect extends Component<{
   value: string | number;
@@ -445,7 +454,7 @@ class FormSelect extends Component<{
     // For further information, see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
     const { value, onChange, children, ...rest } = this.props;
     return (
-      <select {...rest} className="custom-select" value={value} onChange={onChange}>
+      <select style={{ width: '200px' }} {...rest} value={value} onChange={onChange}>
         {children}
       </select>
     );
@@ -471,8 +480,6 @@ export class Form {
 export class Alert extends Component {
   alerts: { id: number; text: ReactNode; type: string }[] = [];
   nextId: number = 0;
-  
-
 
   render() {
     return (
@@ -490,7 +497,6 @@ export class Alert extends Component {
               type="button"
               className="btn-close btn-sm"
               onClick={() => this.alerts.splice(i, 1)}
-              
             />
           </div>
         ))}
