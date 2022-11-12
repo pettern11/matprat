@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import service, { Category, Ingredient, Recipe, Recipe_Content } from '.././service';
 import { createHashHistory } from 'history';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
+import Select from 'react-select';
 
 export class ShowRecipe extends Component<{ match: { params: { id: number } } }> {
   recipe: Recipe = {

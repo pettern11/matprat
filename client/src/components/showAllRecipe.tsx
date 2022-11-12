@@ -20,16 +20,17 @@ import {
 } from '../widgets';
 
 import service, { Recipe, Category, Country } from '../service';
-import { createHashHistory } from 'history';
-import { check } from 'prettier';
+import Select from 'react-select';
 
 export class ShowAllRecipe extends Component {
-  countries: Country[] = [];
-  categories: Category[] = [];
+  countries: [{ value: number; label: string }] = [{ value: 0, label: 'Søk på land' }];
+  categories: [{ value: number; label: string }] = [{ value: 0, label: 'Søk på kategori' }];
   originalrecipes: Recipe[] = [];
   recipes: Recipe[] = [];
   searchterm: string = '';
-  api: [] = [];
+  sortByArray: number = 1;
+  hideInput: string = 'inline';
+  hideSelect: string = 'none ';
   render() {
     return (
       <>
@@ -41,28 +42,39 @@ export class ShowAllRecipe extends Component {
                 {/* <br/> */}
                 {/* <br /> */}
                 {/* <Car title="Søkefelt"> */}
-                <Form.Input
-                  id="indexsearch"
-                  style={{ width: '210px' }}
-                  type="text"
-                  placeholder="Søk etter oppskrift"
-                  value={this.searchterm}
-                  onChange={(event) => {
-                    this.search(event.currentTarget.value);
-                    this.searchterm = event.currentTarget.value;
-                  }}
-                />
+                <div>
+                  <Form.Input
+                    id="indexsearch"
+                    style={{ width: '210px', display: this.hideInput }}
+                    type="text"
+                    placeholder="Søk etter oppskrift"
+                    value={this.searchterm}
+                    onChange={(event) => {
+                      this.search(event.currentTarget.value);
+                      this.searchterm = event.currentTarget.value;
+                    }}
+                  />
+                  <div style={{ display: this.hideSelect }}>
+                    <Select
+                      options={this.sortByArray == 4 ? this.countries : this.categories}
+                      //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
+                      //men det fungerer ikke https://react-select.com/styles
+                      onChange={(event) => {
+                        this.search(event?.label);
+                        this.searchterm = event?.label || '';
+                      }}
+                    />
+                  </div>
+                </div>
                 {/* </Car> */}
               </Columns>
               <Columns>
                 <select
                   id="sortBy"
                   style={{ width: '210px' }}
-                  // value={props.value}
                   onChange={(event) => this.sortRecipe(Number(event.target.value))}
                   className="form-select"
                 >
-                  <option value="0">Sorter</option>
                   <option value="1">A-Z</option>
                   <option value="2">Z-A</option>
                   <option value="3">Nyeste</option>
@@ -94,12 +106,18 @@ export class ShowAllRecipe extends Component {
     );
   }
   sortRecipe(value: number) {
-    console.log(value);
+    this.sortByArray = value;
+    console.log(this.sortByArray);
     //@ts-ignore
     //or create element input with id indexsearch
     let aaa = document.getElementById('indexsearch') || document.createElement('input');
-    aaa.setAttribute('id', 'indexsearch');
+    if (value == 0) {
+      this.hideInput = 'none ';
+      this.hideSelect = 'none ';
+    }
     if (value == 1) {
+      this.hideInput = 'inline';
+      this.hideSelect = 'none ';
       //@ts-ignore
       aaa.placeholder = 'Søk etter oppskrift';
       this.recipes.sort(function (a, b) {
@@ -108,6 +126,8 @@ export class ShowAllRecipe extends Component {
         return x < y ? -1 : x > y ? 1 : 0;
       });
     } else if (value == 2) {
+      this.hideInput = 'inline';
+      this.hideSelect = 'none ';
       //@ts-ignore
       aaa.placeholder = 'Søk etter oppskrift';
       this.recipes.sort(function (b, a) {
@@ -116,6 +136,8 @@ export class ShowAllRecipe extends Component {
         return x < y ? -1 : x > y ? 1 : 0;
       });
     } else if (value == 3) {
+      this.hideInput = 'inline';
+      this.hideSelect = 'none ';
       //@ts-ignore
       aaa.placeholder = 'Søk etter oppskrift';
       this.recipes.sort(function (b, a) {
@@ -124,9 +146,13 @@ export class ShowAllRecipe extends Component {
         return x < y ? -1 : x > y ? 1 : 0;
       });
     } else if (value == 4) {
+      this.hideInput = 'none ';
+      this.hideSelect = 'inline';
       //@ts-ignore
       aaa.placeholder = 'Søk etter land';
     } else if (value == 5) {
+      this.hideInput = 'none ';
+      this.hideSelect = 'inline';
       //@ts-ignore
       aaa.placeholder = 'Søk etter kategori';
     }
@@ -141,14 +167,25 @@ export class ShowAllRecipe extends Component {
       .catch((error) => Alert.danger('Error getting recipes: ' + error.message));
     service
       .getAllCountry()
-      .then((countries) => (this.countries = countries))
+      .then((countries) => {
+        countries.forEach((element) => {
+          this.countries.push({ value: element.land_id, label: element.land_navn });
+        });
+      })
       .catch((error) => Alert.danger('Error getting countries: ' + error.message));
     service
       .getAllCategory()
-      .then((categories) => (this.categories = categories))
+      .then((categories) =>
+        categories.forEach((element) => {
+          this.categories.push({ value: element.kategori_id, label: element.kategori_navn });
+        })
+      )
       .catch((error) => Alert.danger('Error getting categories: ' + error.message));
   }
-  search(searchterm: string) {
+
+  search(searchterm: any) {
+    console.log('her er dens', searchterm.toString());
+    // let searchFilter = { value: 4 };
     let searchFilter = document.getElementById('sortBy') || document.createElement('select');
     //find searchFilter value
 
@@ -167,17 +204,17 @@ export class ShowAllRecipe extends Component {
     //if searchFilter is 4 then sort by country
     else if (Number(searchFilter.value) == 4) {
       let countryId = this.countries.find((country) =>
-        country.land_navn.toLowerCase().includes(searchterm.toLowerCase())
+        country.label.toLowerCase().includes(searchterm.toLowerCase())
       );
-      this.recipes = this.originalrecipes.filter((recipe) => recipe.land_id == countryId?.land_id);
+      this.recipes = this.originalrecipes.filter((recipe) => recipe.land_id == countryId?.value);
     }
     //if searchFilter is 5 then sort by category
     else {
       let categoryId = this.categories.find((category) =>
-        category.kategori_navn.toLowerCase().includes(searchterm.toLowerCase())
+        category.label.toLowerCase().includes(searchterm.toLowerCase())
       );
       this.recipes = this.originalrecipes.filter(
-        (recipe) => recipe.kategori_id == categoryId?.kategori_id
+        (recipe) => recipe.kategori_id == categoryId?.value
       );
     }
   }

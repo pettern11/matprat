@@ -14,56 +14,32 @@ import {
 } from '.././widgets';
 import { NavLink } from 'react-router-dom';
 import service, { Ingredient, Recipe, Recipe_Content, List } from '.././service';
+import Select from 'react-select';
 
 export class Icebox extends Component {
-  ingredients: Ingredient[] = [];
+  ingredients: [{ value: number; label: string }] = [{ value: 0, label: 'Søk på ingredienser' }];
   selectedIngredients: Ingredient[] = [];
   recipes: Recipe[] = [];
   filteredRecipes: Recipe[] = [];
   recipeContent: Recipe_Content[] = [];
   choosenIngredient: Ingredient[] = [];
 
-  searchterm: string = '';
-  selectedIngredient: Ingredient = { ingred_id: 0, ingred_navn: ' ' };
   render() {
     return (
       <>
         <div className="margintop">
           <Column width={2}>
             <Card title="Dine ingredienser:">
-              &nbsp;Søk:
-              <Form.Input
-                placeholder="Søk etter ingrediens"
-                id="iceboxlistsearch"
-                type="text"
-                value={this.searchterm}
+              &nbsp;Søk:¨
+              <Select
+                id="choseIngredient"
+                options={this.ingredients}
+                //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
+                //men det fungerer ikke https://react-select.com/styles
                 onChange={(event) => {
-                  this.search(event.currentTarget.value);
-                  this.searchterm = event.currentTarget.value;
+                  this.chooseIngredientFunc(event);
                 }}
               />
-              <select
-                className="form-select"
-                id="selectExistingIngredient"
-                onChange={(event) => {
-                  this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
-                  this.selectedIngredient.ingred_navn = event.currentTarget.selectedOptions[0].text;
-                }}
-              >
-                {this.selectedIngredients.map((ingredient, idx) => (
-                  <option key={idx} value={ingredient.ingred_id}>
-                    {ingredient.ingred_navn}
-                  </option>
-                ))}
-              </select>
-              <Button.Success
-                id="btnIngredAdd"
-                onClick={() => {
-                  this.chooseIngredientFunc();
-                }}
-              >
-                Legg til
-              </Button.Success>
               <Column>
                 <br />
                 {this.choosenIngredient.map((ingredient, idx) => (
@@ -89,13 +65,18 @@ export class Icebox extends Component {
                 <>
                   {this.filteredRecipes.map((recipe, idx) => (
                     <Cards title="" key={idx}>
-                      <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
+                      {/* her må jeg bruke a tag med href link for at testing skal gå gjennom
+                      får feilmedlingen  console.error "The above error occurred in the <Router.Consumer> component"
+                      når jeg bruker navlink men testen går gjennom med a href og har ikke noe å si på funksjonaliteten til siden */}
+                      <a className="black" href={'#/recipe/' + recipe.oppskrift_id}>
+                        {/* <NavLink to={'/recipe/' + recipe.oppskrift_id}> */}
                         <RecipeView
                           img={recipe.bilde_adr}
                           name={recipe.oppskrift_navn}
                           numbOfPors={recipe.ant_pors}
                         ></RecipeView>
-                      </NavLink>
+                        {/* </NavLink> */}
+                      </a>
                     </Cards>
                   ))}
                 </>
@@ -106,19 +87,23 @@ export class Icebox extends Component {
       </>
     );
   }
-  chooseIngredientFunc() {
-    let id = document.getElementById('selectExistingIngredient')?.value;
-    //find name of ingredient with id
-    let name = this.selectedIngredients.find((ingredient) => ingredient.ingred_id == Number(id));
-
-    let add = { ingred_id: id, ingred_navn: name?.ingred_navn || '' };
+  chooseIngredientFunc(event: { value: number; label: string }) {
+    let add = {
+      ingred_id: event.value,
+      ingred_navn: event.label,
+    };
     console.log(add);
     service
       .addIngredientToIcebox(add)
-      .then(() => (this.choosenIngredient.push(add), this.filterRecipes()))
-      .catch((error) => Alert.danger('Error, ingredient already added: ' + error.message));
-
-    this.searchterm = '';
+      .then(() => {
+        this.choosenIngredient.push(add);
+        setTimeout(() => {
+          this.filterRecipes();
+        });
+      })
+      .catch((error) => {
+        console.log(error), Alert.danger('Error, ingredient already added: ' + error.message);
+      });
   }
 
   deleteIceboxIngredient(id: number) {
@@ -140,11 +125,12 @@ export class Icebox extends Component {
     //filter the recipes based on the ingredients in the icebox
     //if the recipe contains one of the ingreient it will be added, if the recipe allready exists it will not be added
     this.filteredRecipes = [];
+    console.log(this.recipes, this.recipeContent, this.choosenIngredient);
     this.recipes.forEach((recipe) => {
-      this.recipeContent.forEach((content) => {
-        if (recipe.oppskrift_id == content.oppskrift_id) {
+      this.recipeContent.forEach((recipeContent) => {
+        if (recipe.oppskrift_id == recipeContent.oppskrift_id) {
           this.choosenIngredient.forEach((ingredient) => {
-            if (content.ingred_id == ingredient.ingred_id) {
+            if (recipeContent.ingred_id == ingredient.ingred_id) {
               if (!this.filteredRecipes.includes(recipe)) {
                 this.filteredRecipes.push(recipe);
               }
@@ -154,28 +140,15 @@ export class Icebox extends Component {
       });
     });
   }
-  search(searchterm: string) {
-    this.selectedIngredients = this.ingredients.filter((ingredient) =>
-      ingredient.ingred_navn.toLowerCase().includes(searchterm.toLowerCase())
-    );
-    this.selectedIngredient.ingred_id = this.selectedIngredients[0]?.ingred_id || 0;
-    return;
-  }
 
   mounted() {
     service
       .getAllIngredient()
-      .then(
-        (ingredients) => (
-          (this.ingredients = ingredients.sort((a, b) =>
-            a.ingred_navn.localeCompare(b.ingred_navn)
-          )),
-          (this.selectedIngredients = ingredients.sort((a, b) =>
-            a.ingred_navn.localeCompare(b.ingred_navn)
-          ))
-        )
-      )
-
+      .then((ingredients) => {
+        ingredients.forEach((element) => {
+          this.ingredients.push({ value: element.ingred_id, label: element.ingred_navn });
+        });
+      })
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
 
     service
@@ -202,7 +175,6 @@ export class Icebox extends Component {
           //waits for all ingredients to be added to choosenIngredient before filtering recipes
           this.choosenIngredient.length == ingredients.length ? this.filterRecipes() : '';
       })
-      // .then(() => this.filterRecipes())
       .catch((error) => Alert.danger('Error getting icebox ingredients: ' + error.message));
   }
 }

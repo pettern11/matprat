@@ -63,6 +63,13 @@ exports[`editRecipe test page renders correct with snapshot 1`] = `
                 Søk:
               </FormLabel>
             </Column>
+            <FormInput
+              id="newRecipeSearch"
+              onChange={[Function]}
+              placeholder="Søk etter ingrediens"
+              type="text"
+              value=""
+            />
             <select
               className="form-select"
               id="selectIngredientNewRecipe"
@@ -89,25 +96,22 @@ exports[`editRecipe test page renders correct with snapshot 1`] = `
                 pizzadeig
               </option>
             </select>
-            <FormInput
-              id="newRecipeSearch"
-              onChange={[Function]}
-              type="text"
-              value=""
-            />
           </Column>
           <ButtonSuccess
             id="btnIngredAdd"
             onClick={[Function]}
           >
-            Legg til ny ingrediens
+            Legg til
           </ButtonSuccess>
         </Column>
+      </Row>
+      <Row>
         <Column>
+          <br />
           <FormInput
             id="createIngredient"
             onChange={[Function]}
-            placeholder="Legg til ny ingrediens"
+            placeholder="Skriv inn ny ingrediens"
             style={
               {
                 "width": "210px",
@@ -236,7 +240,7 @@ exports[`editRecipe test page renders correct with snapshot 1`] = `
       id="cancelEdit"
       onClick={[Function]}
     >
-      Cancel
+      Avbryt
     </ButtonDanger>
   </div>
 </Fragment>
