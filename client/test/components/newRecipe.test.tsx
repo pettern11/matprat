@@ -1,13 +1,10 @@
 import * as React from 'react';
 
-import { shallow, mount } from 'enzyme';
+import { shallow, mount, render } from 'enzyme';
 import { Alert, Card, Row, Column, Form, Button, RecipeView } from '../../src/widgets';
 import { NavLink } from 'react-router-dom';
 import { NewRecipe } from '../../src/components/newRecipe';
-import { EditRecipe } from '../../src/components/editRecipe';
-import { ShowRecipe } from '../../src/components/showRecipe';
-import { LikedRecipes } from '../../src/components/liked';
-import { ShoppingList } from '../../src/components/shoppingList';
+
 const mock_addCountry = document.createElement('input');
 jest.mock('../../src/service', () => {
   class Service {
@@ -98,49 +95,77 @@ jest.mock('../../src/service', () => {
 
 describe('NewRecipe tests', () => {
   test('Create recipe and push to new site', (done) => {
-    const wrapper = shallow(<NewRecipe />);
+    const wrapper = mount(<NewRecipe />);
+
     setTimeout(() => {
-      wrapper.find('#recipe_name_input').simulate('change', { currentTarget: { value: 'pizza' } });
+      wrapper
+        .find('#recipe_name_input')
+        .at(0)
+        .simulate('change', { currentTarget: { value: 'pizza' } });
       wrapper
         .find('#recipe_description_input')
+        .at(0)
         .simulate('change', { currentTarget: { value: 'Digg og enkel mat' } });
-      wrapper.find('#recipe_steps_input').simulate('change', {
-        currentTarget: { value: 'Lag pizza deig og ta på fyll, stek i ovnen' },
-      });
-      wrapper.find('#recipe_portions_input').simulate('change', {
-        currentTarget: { value: 'Lag pizza deig og ta på fyll, stek i ovnen' },
-      });
-      wrapper.find('#recipe_picture_url_input').simulate('change', {
-        currentTarget: { value: 'Lag pizza deig og ta på fyll, stek i ovnen' },
-      });
       wrapper
-        .find('#choseCountry')
+        .find('#recipe_steps_input')
         .at(0)
         .simulate('change', {
-          target: { value: 1, name: 'Sverige' },
+          currentTarget: { value: 'Lag pizza deig og ta på fyll, stek i ovnen' },
         });
       wrapper
-        .find('#choseCategory')
+        .find('#recipe_portions_input')
         .at(0)
         .simulate('change', {
-          target: { value: 2, name: 'enkelt' },
+          currentTarget: { value: '4' },
         });
       wrapper
-        .find('#selectIngredientNewRecipe')
-        .simulate('onchange', { target: { value: 'kjøttboller' } });
-      wrapper.find('#btnIngredAdd').simulate('click');
-      wrapper.find('#ingredNumber0').simulate('change', {
-        currentTarget: { value: '1' },
-      });
-      wrapper.find('#ingredType0').simulate('change', {
-        currentTarget: { value: 'stk' },
-      });
+        .find('#recipe_picture_url_input')
+        .at(0)
+        .simulate('change', {
+          currentTarget: { value: '' },
+        });
 
-      wrapper.find('#addRecipeBtn').simulate('click');
+      //chose country, først trykke ned en gang på selceted, da vil verdien være velg land, så
+      wrapper.find('#choseCountry').at(0).simulate('keyDown', { key: 'ArrowDown', keyCode: 40 });
+      //trykker vi ned en gang til og da vil verdien være Sverige
+      wrapper.find('#choseCountry').at(0).simulate('keyDown', { key: 'ArrowDown', keyCode: 40 });
+      //så trykker vi enter og da vil verdien bli satt til å være Sverige, samme for de andre
+      wrapper.find('#choseCountry').at(0).simulate('keyDown', { key: 'Enter', keyCode: 13 });
+
+      //chose category
+      wrapper.find('#choseCategory').at(0).simulate('keyDown', { key: 'ArrowDown', keyCode: 40 });
+      wrapper.find('#choseCategory').at(0).simulate('keyDown', { key: 'ArrowDown', keyCode: 40 });
+      wrapper.find('#choseCategory').at(0).simulate('keyDown', { key: 'Enter', keyCode: 13 });
+
+      // chose ingredient
+      wrapper.find('#choseIngredient').at(0).simulate('keyDown', { key: 'ArrowDown', keyCode: 40 });
+      wrapper.find('#choseIngredient').at(0).simulate('keyDown', { key: 'ArrowDown', keyCode: 40 });
+      wrapper.find('#choseIngredient').at(0).simulate('keyDown', { key: 'Enter', keyCode: 13 });
+
       setTimeout(() => {
-        //expect path to be id of recipe
-        expect(window.location.href).toEqual('http://localhost/#/recipe/3');
-        done();
+        expect(wrapper.find('#choseCountry').at(0).first().text()).toEqual('Sverige');
+        expect(wrapper.find('#choseCategory').at(0).first().text()).toEqual('Ikea mat');
+        expect(wrapper.find('#choseIngredient').at(0).first().text()).toEqual('pizzadeig');
+
+        wrapper
+          .find('#ingredNumber0')
+          .at(0)
+          .simulate('change', {
+            currentTarget: { value: '1' },
+          });
+        wrapper
+          .find('#ingredType0')
+          .at(0)
+          .simulate('change', {
+            currentTarget: { value: 'stk' },
+          });
+
+        wrapper.find('#addRecipeBtn').at(0).simulate('click');
+        setTimeout(() => {
+          //expect path to be id of recipe
+          expect(window.location.href).toEqual('http://localhost/#/recipe/3');
+          done();
+        });
       });
     });
   });
@@ -187,7 +212,7 @@ describe('NewRecipe tests', () => {
       });
     });
   });
-  test('Create ingredient and delete it', (done) => {
+  test('Create ingredient', (done) => {
     const wrapper = shallow(<NewRecipe />);
     setTimeout(() => {
       wrapper.find('#createIngredient').simulate('change', {
@@ -248,23 +273,30 @@ describe('NewRecipe tests', () => {
     });
   });
   //delete ingredient
-  test('Delete ingredient after choosing', (done) => {
-    const wrapper = shallow(<NewRecipe />);
+  test('Delete ingredient after choosing it', (done) => {
+    const wrapper = mount(<NewRecipe />);
     setTimeout(() => {
-      wrapper.find('#newRecipeSearch').simulate('change', {
-        currentTarget: { value: 'kjøttboller' },
-      });
-      wrapper.find('#btnIngredAdd').simulate('click');
+      wrapper.find('#choseIngredient').at(0).simulate('keyDown', { key: 'ArrowDown', keyCode: 40 });
+      wrapper.find('#choseIngredient').at(0).simulate('keyDown', { key: 'ArrowDown', keyCode: 40 });
+      wrapper.find('#choseIngredient').at(0).simulate('keyDown', { key: 'Enter', keyCode: 13 });
+
       setTimeout(() => {
         //expect there to be kjøttboller in ingredient list
+        console.log(wrapper.debug());
         expect(
-          wrapper.find('#outprintIngredient').containsMatchingElement([<p>kjøttboller</p>])
+          wrapper
+            .find('#outprintIngredient')
+            .at(0)
+            .containsMatchingElement([<p>pizzadeig</p>])
         ).toEqual(true);
         //remove kjøttboller
         wrapper.find(Button.Danger).at(0).simulate('click');
         //no kjøttbolle in list
         expect(
-          wrapper.find('#outprintIngredient').containsMatchingElement([<p>Kjøttboller</p>])
+          wrapper
+            .find('#outprintIngredient')
+            .at(0)
+            .containsMatchingElement([<p>pizzadeig</p>])
         ).toEqual(false);
         done();
       });

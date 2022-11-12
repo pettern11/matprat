@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { findDOMNode } from 'react-dom';
-import { shallow, mount } from 'enzyme';
+import { shallow, mount, render } from 'enzyme';
 import { Alert, Card, Row, Column, Form, Button, RecipeView } from '../../src/widgets';
 import { Icebox } from '../../src/components/icebox';
+import { NavLink } from 'react-router-dom';
 
 jest.mock('../../src/service', () => {
   class Service {
@@ -91,38 +92,24 @@ jest.mock('../../src/service', () => {
 });
 
 describe('Icebox tests', () => {
+  test('Use select to filter recipes', (done) => {
+    const wrapper = mount(<Icebox />);
+    setTimeout(() => {
+      wrapper.find('#choseIngredient').at(0).simulate('keyDown', { key: 'ArrowDown', keyCode: 40 });
+      wrapper.find('#choseIngredient').at(0).simulate('keyDown', { key: 'ArrowDown', keyCode: 40 });
+      wrapper.find('#choseIngredient').at(0).simulate('keyDown', { key: 'Enter', keyCode: 13 });
+      setTimeout(() => {
+        expect(wrapper.find('#choseIngredient').at(0).first().text()).toEqual('pizzadeig');
+
+        done();
+      });
+    });
+  });
   //her er det viktig å sjekke at snapshotet ser ut som det skal
   test('Snapshot Icebox draws correctly', (done) => {
     const wrapper = shallow(<Icebox />);
     setTimeout(() => {
       expect(wrapper).toMatchSnapshot();
-      done();
-    });
-  });
-  test('Icebox draws correctly', (done) => {
-    const wrapper = shallow(<Icebox />);
-    setTimeout(() => {
-      expect(
-        wrapper.containsMatchingElement([
-          <select>
-            <option>kjøttboller</option>
-            <option>pizza fyll</option>
-            <option>pizzadeig</option>
-          </select>,
-        ])
-      ).toBe(true);
-
-      done();
-    });
-  });
-
-  test('Use select to filter recipes', (done) => {
-    const wrapper = shallow(<Icebox />);
-    setTimeout(() => {
-      wrapper
-        .find('#selectExistingIngredient')
-        .simulate('onchange', { target: { value: 'kjøttboller' } });
-      expect(wrapper.find(RecipeView).length).toBe(1);
       done();
     });
   });
@@ -132,19 +119,6 @@ describe('Icebox tests', () => {
 
     setTimeout(() => {
       expect(wrapper.find(Button.Danger).at(0).simulate('click')).toReturn;
-      done();
-    });
-  });
-
-  test('Search ingredient works ', (done) => {
-    const wrapper = mount(<Icebox />);
-
-    const input = wrapper.find('#iceboxlistsearch').at(0);
-
-    input.getDOMNode().setAttribute('value', 'kjøttboller');
-    input.simulate('change', { currentTarget: input });
-    setTimeout(() => {
-      console.log(wrapper.debug());
       done();
     });
   });

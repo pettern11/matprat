@@ -11,44 +11,31 @@ exports[`Icebox tests Snapshot Icebox draws correctly 1`] = `
       <Card
         title="Dine ingredienser:"
       >
-         Søk:
-        <FormInput
-          id="iceboxlistsearch"
+         Søk:¨
+        <ForwardRef
+          id="choseIngredient"
           onChange={[Function]}
-          placeholder="Søk etter ingrediens"
-          type="text"
-          value=""
+          options={
+            [
+              {
+                "label": "Søk på ingredienser",
+                "value": 0,
+              },
+              {
+                "label": "pizzadeig",
+                "value": 1,
+              },
+              {
+                "label": "pizza fyll",
+                "value": 2,
+              },
+              {
+                "label": "kjøttboller",
+                "value": 3,
+              },
+            ]
+          }
         />
-        <select
-          className="form-select"
-          id="selectExistingIngredient"
-          onChange={[Function]}
-        >
-          <option
-            key="0"
-            value={3}
-          >
-            kjøttboller
-          </option>
-          <option
-            key="1"
-            value={2}
-          >
-            pizza fyll
-          </option>
-          <option
-            key="2"
-            value={1}
-          >
-            pizzadeig
-          </option>
-        </select>
-        <ButtonSuccess
-          id="btnIngredAdd"
-          onClick={[Function]}
-        >
-          Legg til
-        </ButtonSuccess>
         <Column>
           <br />
           <Row
@@ -87,16 +74,16 @@ exports[`Icebox tests Snapshot Icebox draws correctly 1`] = `
             key="0"
             title=""
           >
-            <NavLink
+            <a
               className="black"
-              to="/recipe/2"
+              href="#/recipe/2"
             >
               <RecipeView
                 img="kjøttboller.jpg"
                 name="Kjøttboller i brunsaus"
                 numbOfPors={4}
               />
-            </NavLink>
+            </a>
           </Cards>
         </Rows>
       </div>

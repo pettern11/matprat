@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Alert, Card, Row, Column, Form, Button, RecipeView } from '.././widgets';
 import { NavLink, Redirect } from 'react-router-dom';
+import Select from 'react-select';
 import service, {
   Country,
   Category,
@@ -15,12 +16,11 @@ import { createHashHistory } from 'history';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 export class NewRecipe extends Component {
-  countries: Country[] = [];
-  categories: Category[] = [];
-  ingredients: Ingredient[] = [];
+  countries: [{ value: number; label: string }] = [{ value: 0, label: 'Søk på land' }];
+  categories: [{ value: number; label: string }] = [{ value: 0, label: 'Søk på kategori' }];
+  ingredients: [{ value: number; label: string }] = [{ value: 0, label: 'Søk på ingredienser' }];
   recipe_content: Recipe_Content[] = [];
   ingredient: string = '';
-  selectedIngredients: Ingredient[] = [];
   selectedIngredient: Ingredient = {
     ingred_id: 1,
     ingred_navn: '',
@@ -35,7 +35,6 @@ export class NewRecipe extends Component {
   category_name: string = '';
   country_id: number = 0;
   country_name: string = '';
-  searchterm: string = '';
 
   render() {
     return (
@@ -100,23 +99,16 @@ export class NewRecipe extends Component {
                   <Form.Label>Land:</Form.Label>
                 </Column>
                 <Column>
-                  <select
-                    className="form-select"
-                    key={'choseCountry'}
+                  <Select
                     id="choseCountry"
-                    onChange={() => {
-                      this.checkCountry(event?.target.value);
+                    options={this.countries}
+                    //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
+                    //men det fungerer ikke https://react-select.com/styles
+                    onChange={(event) => {
+                      this.checkCountry(event?.value);
                     }}
-                  >
-                    <option selected disabled>
-                      Velg land
-                    </option>
-                    {this.countries.map((country: Country, i: number) => (
-                      <option key={country.land_id} value={country.land_id}>
-                        {country.land_navn}
-                      </option>
-                    ))}
-                  </select>
+                  />
+
                   <Form.Input
                     id="addCountry"
                     type="text"
@@ -142,23 +134,16 @@ export class NewRecipe extends Component {
                   <Form.Label>Kategori:</Form.Label>
                 </Column>
                 <Column>
-                  <select
-                    className="form-select"
-                    key={'choseCategory'}
+                  <Select
                     id="choseCategory"
-                    onChange={() => {
-                      this.checkCategory(event?.target.value);
+                    options={this.categories}
+                    //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
+                    //men det fungerer ikke https://react-select.com/styles
+                    onChange={(event) => {
+                      this.checkCategory(event?.value);
                     }}
-                  >
-                    <option selected disabled>
-                      Velg kategori
-                    </option>
-                    {this.categories.map((category: Category) => (
-                      <option key={category.kategori_id.toString()} value={category.kategori_id}>
-                        {category.kategori_navn}
-                      </option>
-                    ))}
-                  </select>
+                  />
+
                   <Form.Input
                     id="addCategory"
                     type="text"
@@ -203,42 +188,17 @@ export class NewRecipe extends Component {
                   <Column width={2}>
                     <Form.Label>Søk:</Form.Label>
                   </Column>
-
-                  <select
-                    className="form-select"
-                    id="selectIngredientNewRecipe"
+                  <Select
+                    id="choseIngredient"
+                    options={this.ingredients}
+                    //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
+                    //men det fungerer ikke https://react-select.com/styles
                     onChange={(event) => {
-                      this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
-                      this.selectedIngredient.ingred_navn =
-                        event.currentTarget.selectedOptions[0].text;
-                    }}
-                    style={{ width: '210px' }}
-                  >
-                    {this.selectedIngredients.map((ingredient, i) => (
-                      <option key={ingredient.ingred_id} value={ingredient.ingred_id}>
-                        {ingredient.ingred_navn}
-                      </option>
-                    ))}
-                  </select>
-                  <Form.Input
-                    id="newRecipeSearch"
-                    placeholder="Søk etter ingrediens"
-                    type="text"
-                    value={this.searchterm}
-                    onChange={(event) => {
-                      this.search(event.currentTarget.value);
-                      this.searchterm = event.currentTarget.value;
+                      console.log(event);
+                      this.chooseIngredientFunc(event?.value);
                     }}
                   />
                 </Column>
-                <Button.Success
-                  id="btnIngredAdd"
-                  onClick={() => {
-                    this.chooseIngredientFunc(this.selectedIngredient.ingred_id);
-                  }}
-                >
-                  Legg til
-                </Button.Success>
               </Column>
               {/* legg til ingredienser */}
               <Column>
@@ -287,10 +247,7 @@ export class NewRecipe extends Component {
                 {this.recipe_content.map((rc, i) => (
                   <Row key={i}>
                     <p style={{ width: '215px' }}>
-                      {
-                        this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0]
-                          .ingred_navn
-                      }
+                      {this.ingredients.filter((ing) => rc.ingred_id == ing.value)[0].label}
                     </p>
                     <input
                       className="form-control"
@@ -343,23 +300,7 @@ export class NewRecipe extends Component {
     //splice this index from recipeContent
     this.recipe_content.splice(index, 1);
   }
-  search(searchterm: string) {
-    let createdSelect =
-      document.getElementById('selectIngredientNewRecipe') || document.createElement('select');
-    this.selectedIngredients = this.ingredients.filter((ingredient) =>
-      ingredient.ingred_navn.toLowerCase().includes(searchterm.toLowerCase())
-    );
-    //@ts-ignore
 
-    if (this.selectedIngredients.length === 0) {
-      this.selectedIngredient = { ingred_id: 0, ingred_navn: '' };
-    } else {
-      //@ts-ignore
-      createdSelect.value = this.selectedIngredients[0].ingred_id;
-      //@ts-ignore
-      this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
-    }
-  }
   addRecipe() {
     let recipe: Recipe = {
       oppskrift_id: 0,
@@ -400,21 +341,19 @@ export class NewRecipe extends Component {
       /* id må være any for å kunne bruke variablen i setattribute. Den forventer to strings så 
     hvis vi hadde deklarert den som number hadde setAttribute blitt sint*/
       // lager en const som legges til i objectet recipe_content
-      const add = { oppskrift_id: 0, ingred_id: id, mengde: 0, maleenhet: '' };
+      const add = { oppskrift_id: 0, ingred_id: id, mengde: '0', maleenhet: '' };
 
       this.recipe_content.push(add);
 
       // finner index til dette elemetet i objektet, skal brukes senere til å mappe
       // hver enkelt inputfelt til et obejct sin menge eller måleenhet
     }
-    this.searchterm = '';
-    this.search(this.searchterm);
   }
   addCategoryFunc() {
     // sjekker om kategorien allerede finnes i arrayen med kategorier, hvis ikke legger den til landet i databasen
     // hentet fra databasen
     let isFound = this.categories.some((category) => {
-      if (category.kategori_navn.toLowerCase() == this.category_name.toLowerCase()) {
+      if (category.label.toLowerCase() == this.category_name.toLowerCase()) {
         return true;
       }
       return false;
@@ -427,7 +366,11 @@ export class NewRecipe extends Component {
       service.createCategory(this.category_name).then(() =>
         service
           .getAllCategory()
-          .then((categories) => (this.categories = categories))
+          .then((categories) => {
+            categories.forEach((element) => {
+              this.categories.push({ value: element.kategori_id, label: element.kategori_navn });
+            });
+          })
           .then(() => {
             return;
           })
@@ -442,7 +385,7 @@ export class NewRecipe extends Component {
     // hentet fra databasen
 
     let isFound = this.countries.some((country) => {
-      if (country.land_navn.toLowerCase() == this.country_name.toLowerCase()) {
+      if (country.label.toLowerCase() == this.country_name.toLowerCase()) {
         return true;
       }
       return false;
@@ -455,7 +398,11 @@ export class NewRecipe extends Component {
       service.createCountry(this.country_name).then(() =>
         service
           .getAllCountry()
-          .then((countries) => (this.countries = countries))
+          .then((countries) => {
+            countries.forEach((element) => {
+              this.countries.push({ value: element.land_id, label: element.land_navn });
+            });
+          })
           .then(() => {
             return;
           })
@@ -468,7 +415,7 @@ export class NewRecipe extends Component {
     // sjekker om ingrediensen allerede finnes i arrayen med ingredienser
     // hentet fra databasen
     let isFound = this.ingredients.some((ingredient) => {
-      if (ingredient.ingred_navn.toLowerCase() == this.ingredient.toLowerCase()) {
+      if (ingredient.label.toLowerCase() == this.ingredient.toLowerCase()) {
         return true;
       }
       return false;
@@ -480,13 +427,10 @@ export class NewRecipe extends Component {
         .then(() =>
           service
             .getAllIngredient()
-            .then(
-              (ingredients) => (
-                (this.ingredients = ingredients),
-                (this.selectedIngredients = ingredients),
-                this.chooseIngredientFunc(ingredients[ingredients.length - 1].ingred_id),
-                this.search(this.searchterm)
-              )
+            .then((ingredients) =>
+              ingredients.forEach((element) => {
+                this.ingredients.push({ value: element.ingred_id, label: element.ingred_navn });
+              })
             )
             .catch((error) => Alert.danger('Error : ' + error.message))
         )
@@ -510,32 +454,32 @@ export class NewRecipe extends Component {
 
     service
       .getAllCountry()
-      .then((countries) => (this.countries = countries))
+      .then((countries) => {
+        countries.forEach((element) => {
+          this.countries.push({ value: element.land_id, label: element.land_navn });
+        });
+      })
       .catch((error) => Alert.danger('Error getting countries: ' + error.message));
     service
       .getAllCategory()
-      .then((categories) => (this.categories = categories))
+      .then((categories) => {
+        categories.forEach((element) => {
+          this.categories.push({ value: element.kategori_id, label: element.kategori_navn });
+        });
+      })
       .catch((error) => Alert.danger('Error getting categories: ' + error.message));
     service
       .getAllIngredient()
       .then(
         (ingredients) => (
-          (this.ingredients = ingredients),
-          (this.selectedIngredients = ingredients),
+          ingredients.forEach((element) => {
+            this.ingredients.push({ value: element.ingred_id, label: element.ingred_navn });
+          }),
           (this.selectedIngredient.ingred_navn = ingredients[0].ingred_navn),
           (this.selectedIngredient.ingred_id = ingredients[0].ingred_id)
         )
       )
-      .then(
-        () => (
-          (this.ingredients = this.ingredients.sort((a, b) =>
-            a.ingred_navn.localeCompare(b.ingred_navn)
-          )),
-          (this.selectedIngredients = this.selectedIngredients.sort((a, b) =>
-            a.ingred_navn.localeCompare(b.ingred_navn)
-          ))
-        )
-      )
+
       .catch((error) => Alert.danger('Error getting categories: ' + error.message));
   }
 }

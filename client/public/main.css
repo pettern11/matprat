@@ -8,7 +8,12 @@
 body {
   /* font-family: arial; */
 }
-
+.css-b62m3t-container {
+  position: relative;
+  box-sizing: border-box;
+  width: 210px;
+  text-align: left;
+}
 /* ::-webkit-scrollbar {
   width: 1em;
 }
