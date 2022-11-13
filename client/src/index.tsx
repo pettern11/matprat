@@ -136,10 +136,12 @@ export class Home extends Component {
     );
   }
   mounted() {
+    //henter alle oppskrifter
     service
       .getAllRepice()
       .then((recipes) => {
         this.recipes = recipes;
+        //Hvis man ikke har likt noen oppskrifter så vises 5 tilfeldige oppskrifter
         if (this.recipes.filter((recipe) => recipe.liked == true).length <= 0) {
           //loop five times to get five random recipes
           for (let i = 0; i < 5; i++) {
@@ -148,6 +150,7 @@ export class Home extends Component {
             );
           }
         } else {
+          //Først finner man alle land og kategorier som er likt basert på oppskrifter som er likt
           this.recipes
             .filter((recipe) => recipe.liked == true)
             .map(
@@ -159,6 +162,7 @@ export class Home extends Component {
               )
             );
 
+            //Filtrerer og velger de som har likt land og kategori og ikke er likt, disse pushes til en egen array
           this.recipes.map((element) => {
             //@ts-ignore
             if (
@@ -172,6 +176,7 @@ export class Home extends Component {
             }
           });
 
+          
           for (let i = 0; i < this.recipes.length; i++) {
             //@ts-ignore
             if (this.likedFromCategory.includes(this.recipes[i].kategori_id)) {
@@ -180,6 +185,8 @@ export class Home extends Component {
             }
           }
 
+
+          //Finner de 5 tilfeldige oppskriftene som skal vises
           for (let i = 0; i < 5; i++) {
             //random number from suggestedRecipe
             let random = Math.floor(Math.random() * this.suggestedRecipe.length);

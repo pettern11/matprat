@@ -160,9 +160,6 @@ describe('Update recipe (PUT)', () => {
     });
   });
 
-  
-
-  //disse to er like, de funker ikke fordi den blir reslova fordi vi ikke har feilsjekker som sjekker at recipe har riktige felter, derfor vil kun den med then fungere, ikke catch
   test('Update recipe with missing fields', (done) => {
     axios.put('/update_recipe/1', {recipe:{ oppskrift_navn: 'Chicken Rice', oppskrift_beskrivelse: 'Good chicken dish', oppskrift_steg: 'Cook rice and chicken', ant_pors: 4}}).catch((error) => {
       expect(error.response.status).toEqual(500);

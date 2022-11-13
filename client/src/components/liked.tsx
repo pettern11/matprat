@@ -7,14 +7,13 @@ import { createHashHistory } from 'history';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 export class LikedRecipes extends Component {
-  originalrecipes: Recipe[] = [];
   recipes: Recipe[] = [];
 
   render() {
     return (
       <div className="margintop">
         <div className="container-fluid">
-          <Rows>
+          <Rows>{/* Filtrerer recipes etter hvilke som er likt og viser de med et card som linker til oppskriften */}
             {this.recipes
               .filter((recipe) => recipe.liked == true)
               .map((likedRecipe) => (
@@ -35,10 +34,10 @@ export class LikedRecipes extends Component {
   }
 
   mounted() {
+    /* Henter alle oppskrftene */
     service
       .getAllRepice()
       .then((recipes) => {
-        this.originalrecipes = recipes;
         this.recipes = recipes;
       })
       .catch((error) => Alert.danger('Error getting tasks: ' + error.message));

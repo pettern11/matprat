@@ -11,7 +11,7 @@ exports[`Icebox tests Snapshot Icebox draws correctly 1`] = `
       <Card
         title="Dine ingredienser:"
       >
-         Søk:¨
+        Søk:
         <ForwardRef
           id="choseIngredient"
           onChange={[Function]}

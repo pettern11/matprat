@@ -35,14 +35,13 @@ export class Icebox extends Component {
               <Select
                 id="choseIngredient"
                 options={this.ingredients}
-                //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
-                //men det fungerer ikke https://react-select.com/styles
                 onChange={(event) => {
+                  /* @ts-ignore */
                   this.chooseIngredientFunc(event);
                 }}
               />
               <Column>
-                <br />
+                <br />{/* Viser listen med valgte ingredienser */}
                 {this.choosenIngredient.map((ingredient, idx) => (
                   <Row key={idx}>
                     <p style={{ width: '199px' }}>{ingredient.ingred_navn}</p>
@@ -63,7 +62,7 @@ export class Icebox extends Component {
           <Card title="Oppskrifter basert på dine ingredienser:">
             <div id="icebox">
               <Rows>
-                <>
+                <>{/* Viser oppskrifter som inneholder minst en av de valgte ingrediensene. Dette skjer i funksjonen filterRecipes */}
                   {this.noDuplicates.map((recipe, idx) => (
                     <Cards title="" key={idx}>
                       {/* her må jeg bruke a tag med href link for at testing skal gå gjennom
@@ -88,6 +87,7 @@ export class Icebox extends Component {
       </>
     );
   }
+  /* Legger til valgt ingrediens til databasen, etter at alle er lagt til og hentet tilbake til siden blir oppskriftene filtert */
   chooseIngredientFunc(event: { value: number; label: string }) {
     let add = {
       ingred_id: event.value,
@@ -107,13 +107,17 @@ export class Icebox extends Component {
       });
   }
 
+  /* Sletter ingrediensen man trykker på fra kjøleskapet. */
   deleteIceboxIngredient(id: number) {
     service
       .deleteIceboxIngredient(id)
       .then(
         () => (
           (this.choosenIngredient = this.choosenIngredient.filter((e) => e.ingred_id != id)),
-          this.filterRecipes()
+          setTimeout(() => {
+            this.noDuplicates = [];
+            this.filterRecipes();
+          })
         )
       )
       .then(() => {
@@ -121,6 +125,7 @@ export class Icebox extends Component {
       })
       .catch((error) => Alert.danger('Error deleting icebox ingredient: ' + error.message));
   }
+
 
   filterRecipes() {
     //filter the recipes based on the ingredients in the icebox
@@ -148,6 +153,7 @@ export class Icebox extends Component {
   }
 
   mounted() {
+    /* Henter alle ingrediensene som eksisterer i databasen */
     service
       .getAllIngredient()
       .then((ingredients) => {
@@ -157,11 +163,13 @@ export class Icebox extends Component {
       })
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
 
+    /* Henter alle oppskriftene som eksisterer i databasen */
     service
       .getAllRepice()
       .then((recipes) => (this.recipes = recipes))
       .catch((error) => Alert.danger('Error getting recipes: ' + error.message));
 
+      /* Henter innholdet i alle oppskriftene i databasen, når alt er hentet blir oppskriftene som skal vises filtrert, slik at kun de riktige oppskriftene vises */
     service
       .getAllRecipeContent()
       .then((recipeContent) => (this.recipeContent = recipeContent))
@@ -173,7 +181,7 @@ export class Icebox extends Component {
       })
       .catch((error) => Alert.danger('Error getting recipe content: ' + error.message));
 
-    //service that gets all ingredients in icebox
+    /* Henter alle ingrediensene som er lagt til i kjøleskapet */
     service
       .getAllIceboxIngredients()
       .then((ingredients) => {
