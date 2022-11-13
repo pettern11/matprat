@@ -35,6 +35,7 @@ describe('Form tests', () => {
   });
   test('Form Select', (done) => {
     const wrapper = render(
+      /* @ts-ignore */
       <Form.Select valule={'select'} onChange={() => console.log('selected')}>
         <option>Valg 1</option>
         <option>Valg 2</option>
