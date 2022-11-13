@@ -101,6 +101,7 @@ export class ShoppingList extends Component {
               </Card>
               {/* </div > */}
             </div>
+           
             <div className="col" style={{ width: '50%', height: '100%', padding: '0px' }}>
               <Card title="Handleliste">
                 <Column>
@@ -163,7 +164,7 @@ export class ShoppingList extends Component {
                 </Column>
               </Card>
             </div>
-          </Row>
+            </Row>
         </div>
       </>
     );

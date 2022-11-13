@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { shallow, mount} from 'enzyme';
-import { Alert, Button} from '../../src/widgets';
+import { shallow, mount } from 'enzyme';
+import { Alert, Button } from '../../src/widgets';
 import { NewRecipe } from '../../src/components/newRecipe';
 
 const mock_addCountry = document.createElement('input');
@@ -260,12 +260,13 @@ describe('NewRecipe tests', () => {
     setTimeout(() => {
       wrapper.find('#createIngredientFunc').simulate('click');
       setTimeout(() => {
+        console.log(wrapperAlert.debug());
         expect(
-          wrapperAlert.containsMatchingElement(
+          wrapperAlert.containsAllMatchingElements([
             <div>
-              Ingrediensen finnes allerede eller du har ikke skrevet noe<button></button>
-            </div>
-          )
+              Ingrediensen finnes allerede eller så har du ikke skrevet noe<button></button>
+            </div>,
+          ])
         ).toEqual(true);
         done();
       });
@@ -280,22 +281,20 @@ describe('NewRecipe tests', () => {
       wrapper.find('#choseIngredient').at(0).simulate('keyDown', { key: 'Enter', keyCode: 13 });
 
       setTimeout(() => {
-        //expect there to be kjøttboller in ingredient list
-        console.log(wrapper.debug());
         expect(
           wrapper
             .find('#outprintIngredient')
             .at(0)
-            .containsMatchingElement([<p>pizzadeig</p>])
+            .containsAllMatchingElements([<p>pizzadeig</p>])
         ).toEqual(true);
-        //remove kjøttboller
+        //remove pizzadeig
         wrapper.find(Button.Danger).at(0).simulate('click');
-        //no kjøttbolle in list
+        //no pizzadeig in list
         expect(
           wrapper
             .find('#outprintIngredient')
             .at(0)
-            .containsMatchingElement([<p>pizzadeig</p>])
+            .containsAllMatchingElements([<p>pizzadeig</p>])
         ).toEqual(false);
         done();
       });

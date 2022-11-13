@@ -35,241 +35,270 @@ export class NewRecipe extends Component {
     return (
       <>
         <div className="margintop">
-          <Card title="Registrer en ny oppskrift">
-            {/* input navn */}
-            <Row>
-              <Column>
-                <Column width={2}>
-                  <Form.Label>Name:</Form.Label>
-                </Column>
+          {/* <Card title="Registrer en ny oppskrift"> */}
+          {/* input navn */}
+          <Row>
+            <div className="col" style={{ width: '50%', paddingRight: '0px' }}>
+              <Card title="Registrer en ny oppskrift">
                 <Column>
-                  <Form.Textarea
-                    id="recipe_name_input"
-                    type="text"
-                    value={this.name}
-                    onChange={(event) => (this.name = event.currentTarget.value)}
-                    rows={3}
-                    style={{ width: '210px' }}
-                  />
-                </Column>
-              </Column>
-              {/* input beksrivelse */}
-              <Column>
-                <Column width={2}>
-                  <Form.Label>Beskrivelse:</Form.Label>
-                </Column>
-                <Column>
-                  <Form.Textarea
-                    id="recipe_description_input"
-                    type="text"
-                    value={this.description}
-                    onChange={(event) => (this.description = event.currentTarget.value)}
-                    rows={3}
-                    style={{ width: '210px' }}
-                  />
-                </Column>
-              </Column>
-              {/* input steg */}
-              <Column>
-                <Column width={2}>
-                  <Form.Label>Steg:</Form.Label>
-                </Column>
-                <Column>
-                  <Form.Textarea
-                    id="recipe_steps_input"
-                    type="text"
-                    value={this.steps}
-                    onChange={(event) => (this.steps = event.currentTarget.value)}
-                    rows={3}
-                    style={{ width: '210px' }}
-                  />
-                </Column>
-              </Column>
-            </Row>
-            <br />
-            <Row>
-              {/* velg land retten kommer fra */}
-              <Column>
-                <Column width={2}>
-                  <Form.Label>Land:</Form.Label>
-                </Column>
-                <Column>
-                  <Select
-                    id="choseCountry"
-                    options={this.countries}
-                    onChange={(event) => {
-                      this.checkCountry(event?.value);
-                    }}
-                  />
-
-                  <Form.Input
-                    id="addCountry"
-                    type="text"
-                    value={this.country_name}
-                    onChange={(event) => (this.country_name = event.currentTarget.value)}
-                    placeholder="Skriv inn nytt land"
-                  ></Form.Input>
-
-                  <Button.Success
-                    id="addCountryBtn"
-                    onClick={() => {
-                      this.addCountryFunc();
-                    }}
-                  >
-                    Legg til
-                  </Button.Success>
-                  {/* må lage select og options som cars */}
-                </Column>
-              </Column>
-              {/* velg retten sin kategori */}
-              <Column>
-                <Column width={2}>
-                  <Form.Label>Kategori:</Form.Label>
-                </Column>
-                <Column>
-                  <Select
-                    id="choseCategory"
-                    options={this.categories}
-                    onChange={(event) => {
-                      this.checkCategory(event?.value);
-                    }}
-                  />
-
-                  <Form.Input
-                    id="addCategory"
-                    type="text"
-                    value={this.category_name}
-                    onChange={(event) => (this.category_name = event.currentTarget.value)}
-                    placeholder="Skriv inn ny kategori"
-                  ></Form.Input>
-
-                  <Button.Success
-                    id="addCategoryBtn"
-                    onClick={() => {
-                      this.addCategoryFunc();
-                    }}
-                  >
-                    Legg til
-                  </Button.Success>
-                  {/* må lage select og options som cars */}
-                </Column>
-              </Column>
-              {/* input bilde url */}
-              <Column>
-                <Column width={2}>
-                  <Form.Label>Bildeurl:</Form.Label>
-                </Column>
-                <Column>
-                  <Form.Input
-                    id="recipe_picture_url_input"
-                    type="text"
-                    value={this.picture_adr}
-                    onChange={(event) => (this.picture_adr = event.currentTarget.value)}
-                  />
-                </Column>
-              </Column>
-            </Row>
-            <br />
-            <Row>
-              {/* print ut alle ingrediense som allerede er i databasen */}
-              {/* vidre ideer her er at vi setter en viss lengde og bredde på diven og så hvis den overflower så må man bare skulle 
-          nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
-              <Column>
-                <Column>
-                  <Column width={2}>
-                    <Form.Label>Søk:</Form.Label>
-                  </Column>
-                  <Select
-                    id="choseIngredient"
-                    options={this.ingredients}
-                    onChange={(event) => {
-                      console.log(event);
-                      this.chooseIngredientFunc(event?.value);
-                    }}
-                  />
-                </Column>
-              </Column>
-              {/* legg til ingredienser */}
-              <Column>
-                {/* <br /> */}
-                <Column width={5}>
-                  <Form.Label>Legg til ny:</Form.Label>
-                </Column>
-                <Form.Input
-                  id="createIngredient"
-                  type="text"
-                  style={{ width: '210px' }}
-                  value={this.ingredient}
-                  onChange={(event) => (this.ingredient = event.currentTarget.value)}
-                  placeholder="Skriv inn ny ingrediens"
-                ></Form.Input>
-                <Button.Success
-                  id="createIngredientFunc"
-                  onClick={() => {
-                    this.addIngredientFunc();
-                  }}
-                >
-                  Legg til
-                </Button.Success>
-              </Column>
-              {/* input antall porsjoner */}
-              <Column>
-                <Column width={2}>
-                  <Form.Label>Porsjoner:</Form.Label>
-                </Column>
-                <Column>
-                  <Form.Input
-                    id="recipe_portions_input"
-                    type="number"
-                    value={this.portions}
-                    //@ts-ignore
-                    onChange={(event) => (this.portions = event.currentTarget.value)}
-                  />
-                </Column>
-              </Column>
-            </Row>
-          </Card>
-          <Card title="">
-            {/* velg hvor mye av hver inngrediense */}
-            <Column>
-              <div id="outprintIngredient" className="scroll">
-                {this.recipe_content.map((rc, i) => (
-                  <Row key={i}>
-                    <p style={{ width: '215px' }}>
-                      {this.ingredients.filter((ing) => rc.ingred_id == ing.value)[0].label}
-                    </p>
-                    <input
-                      className="form-control"
-                      id={'ingredNumber' + i.toString()}
-                      style={{ width: '75px', marginRight: '0px' }}
-                      type="number"
-                      value={rc.mengde}
-                      onChange={(event) =>
+                  <Row>
+                    <div className="col" style={{ width: '' }}>
+                      <p>Name:</p>
+                    </div>
+                    <div className="col" style={{ width: '' }}>
+                      <Form.Input
+                        id="recipe_name_input"
+                        type="text"
+                        value={this.name}
+                        onChange={(event) => (this.name = event.currentTarget.value)}
+                        rows={1}
+                        style={{ width: '' }}
+                      />
+                    </div>
+                  </Row>
+                  <br />
+                  {/* input beksrivelse */}
+                  <Row>
+                    <div className="col" style={{ width: '' }}>
+                      <p>Beskrivelse:</p>
+                    </div>
+                    <div className="col" style={{ width: '' }}>
+                      <Form.Textarea
+                        id="recipe_description_input"
+                        type="text"
+                        value={this.description}
+                        onChange={(event) => (this.description = event.currentTarget.value)}
+                        rows={3}
+                        style={{ width: '' }}
+                      />
+                    </div>
+                  </Row>
+                  <br />
+                  {/* input bilde url */}
+                  <Row>
+                    <div className="col" style={{ width: '' }}>
+                      <p>Url:</p>
+                    </div>
+                    <div className="col" style={{ width: '' }}>
+                      <Form.Input
+                        id="recipe_picture_url_input"
+                        type="text"
+                        value={this.picture_adr}
+                        onChange={(event) => (this.picture_adr = event.currentTarget.value)}
+                      />
+                    </div>
+                  </Row>
+                  <br />
+                  {/* input antall porsjoner */}
+                  <Row>
+                    <div className="col" style={{ width: '200px' }}>
+                      <p>Porsjoner:</p>
+                    </div>
+                    <div className="col" style={{ width: '' }}>
+                      <Form.Input
+                        id="recipe_portions_input"
+                        type="number"
+                        value={this.portions}
                         //@ts-ignore
-                        (rc.mengde = event.currentTarget.value)
-                      }
-                    />
-                    <input
-                      className="form-control"
-                      style={{ width: '120px' }}
-                      id={'ingredType' + i.toString()}
-                      type="text"
-                      value={rc.maleenhet}
-                      onChange={(event) =>
-                        //@ts-ignore
-                        (rc.maleenhet = event.currentTarget.value)
-                      }
-                    />
-                    <Column width={2}>
-                      <Button.Danger onClick={() => this.deleteIngredient(rc.ingred_id)}>
-                        x
-                      </Button.Danger>
+                        onChange={(event) => (this.portions = event.currentTarget.value)}
+                      />
+                    </div>
+                  </Row>
+                  <br />
+                  {/* velg retten sin kategori */}
+                  <Row>
+                    <div className="col" style={{ width: '' }}>
+                      <p>Kategori:</p>
+                    </div>
+                    <Column>
+                      <Select
+                        id="choseCategory"
+                        options={this.categories}
+                        //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
+                        //men det fungerer ikke https://react-select.com/styles
+                        onChange={(event) => {
+                          this.checkCategory(event?.value);
+                        }}
+                      />
+                      <Form.Input
+                        id="addCategory"
+                        type="text"
+                        value={this.category_name}
+                        onChange={(event) => (this.category_name = event.currentTarget.value)}
+                        placeholder="Skriv inn ny kategori"
+                      ></Form.Input>
+                      <Button.Success
+                        id="addCategoryBtn"
+                        onClick={() => {
+                          this.addCategoryFunc();
+                        }}
+                      >
+                        Legg til
+                      </Button.Success>
                     </Column>
                   </Row>
-                ))}
-              </div>
-            </Column>
-          </Card>
+                  <br />
+                  {/* velg land retten kommer fra */}
+                  <Row>
+                    <div className="col" style={{ width: '' }}>
+                      <p>Land:</p>
+                    </div>
+                    <Column>
+                      <Select
+                        id="choseCountry"
+                        options={this.countries}
+                        //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
+                        //men det fungerer ikke https://react-select.com/styles
+                        onChange={(event) => {
+                          this.checkCountry(event?.value);
+                        }}
+                      />
+
+                      <Form.Input
+                        id="addCountry"
+                        type="text"
+                        value={this.country_name}
+                        onChange={(event) => (this.country_name = event.currentTarget.value)}
+                        placeholder="Skriv inn nytt land"
+                      ></Form.Input>
+
+                      <Button.Success
+                        id="addCountryBtn"
+                        onClick={() => {
+                          this.addCountryFunc();
+                        }}
+                      >
+                        Legg til
+                      </Button.Success>
+                      {/* må lage select og options som cars */}
+                    </Column>
+                  </Row>
+                  <br />
+                  {/* print ut alle ingrediense som allerede er i databasen */}
+                  {/* vidre ideer her er at vi setter en viss lengde og bredde på diven og så hvis den overflower så må man bare skulle 
+          nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
+
+                  <Row>
+                    <div className="col" style={{ width: '' }}>
+                      <p>Ingredienser:</p>
+                    </div>
+                    <div className="col">
+                      <Select
+                        id="choseIngredient"
+                        options={this.ingredients}
+                        //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
+                        //men det fungerer ikke https://react-select.com/styles
+                        onChange={(event) => {
+                          console.log(event);
+                          this.chooseIngredientFunc(event?.value);
+                        }}
+                      />
+                    </div>
+                  </Row>
+                  <br />
+                  {/* legg til ingredienser */}
+
+                  {/* <br /> */}
+                  <Row>
+                    <div className="col" style={{ width: '' }}>
+                      <p>Legg til ny:</p>
+                    </div>
+                    <Column>
+                      <Form.Input
+                        id="createIngredient"
+                        type="text"
+                        style={{ width: '210px' }}
+                        value={this.ingredient}
+                        onChange={(event) => (this.ingredient = event.currentTarget.value)}
+                        placeholder="Skriv inn ny ingrediens"
+                      ></Form.Input>
+                      <Button.Success
+                        id="createIngredientFunc"
+                        onClick={() => {
+                          this.addIngredientFunc();
+                        }}
+                      >
+                        Legg til
+                      </Button.Success>
+                    </Column>
+                  </Row>
+                </Column>
+              </Card>
+            </div>
+            <div
+              className="col"
+              style={{ width: '50%', height: '100%', paddingLeft: '0px', paddingRight: '0px' }}
+            >
+              <Card>
+                {/* input steg */}
+                <Column>
+                  <Row>
+                    <div className="col" style={{ width: '' }}>
+                      <p>Porsjoner:</p>
+                    </div>
+                    <div className="col" style={{ width: '' }}>
+                      <Form.Textarea
+                        id="recipe_steps_input"
+                        type="text"
+                        value={this.steps}
+                        onChange={(event) => (this.steps = event.currentTarget.value)}
+                        rows={7}
+                        style={{ width: '510px' }}
+                      />
+                    </div>
+                  </Row>
+                  <br />
+                  {/* velg hvor mye av hver inngrediense */}
+                  <Row>
+                    <div id="outprintIngredient" className="scroll">
+                      <div className="col" style={{ width: '30' }}>
+                        <p>Ingredienser:</p>
+                      </div>
+                      {/* <Card> */}
+                      <div className="col" style={{ width: '' }}>
+                        {this.recipe_content.map((rc, i) => (
+                          <Row key={i}>
+                            <p style={{ width: '215px' }}>
+                              {this.ingredients.filter((ing) => rc.ingred_id == ing.value)[0].label}
+                            </p>
+                            <input
+                              className="form-control"
+                              id={'ingredNumber' + i.toString()}
+                              style={{ width: '75px', marginRight: '0px' }}
+                              type="number"
+                              value={rc.mengde}
+                              onChange={(event) =>
+                                //@ts-ignore
+                                (rc.mengde = event.currentTarget.value)
+                              }
+                            />
+                            <input
+                              className="form-control"
+                              style={{ width: '120px' }}
+                              id={'ingredType' + i.toString()}
+                              type="text"
+                              value={rc.maleenhet}
+                              onChange={(event) =>
+                                //@ts-ignore
+                                (rc.maleenhet = event.currentTarget.value)
+                              }
+                            />
+                            <Column width={2}>
+                              <Button.Danger onClick={() => this.deleteIngredient(rc.ingred_id)}>
+                                x
+                              </Button.Danger>
+                            </Column>
+                          </Row>
+                        ))}
+                      </div>
+                      {/* </Card> */}
+                    </div>
+                  </Row>
+                </Column>
+              </Card>
+            </div>
+          </Row>
+          {/* </Card> */}
 
           <Button.Success
             id="addRecipeBtn"
@@ -291,7 +320,7 @@ export class NewRecipe extends Component {
     this.recipe_content.splice(index, 1);
   }
 
-      /* Legge til oppskrift i databasen */
+  /* Legge til oppskrift i databasen */
   addRecipe() {
     let recipe: Recipe = {
       oppskrift_id: 0,
@@ -314,7 +343,7 @@ export class NewRecipe extends Component {
         .catch((error) => Alert.danger('Creating new recipe: ' + error.message));
   }
 
-    /* Legge til ingredienser i databasen */
+  /* Legge til ingredienser i databasen */
   addRecipeIngredient(id: number) {
     this.recipe_content.forEach((element) => {
       element.oppskrift_id = id;
@@ -452,7 +481,6 @@ export class NewRecipe extends Component {
   checkCategory(value: number) {
     this.category_id = value;
   }
-
 
   mounted() {
     this.selectedIngredient.ingred_id = 0;
