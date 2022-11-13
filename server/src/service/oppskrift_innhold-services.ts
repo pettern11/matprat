@@ -67,7 +67,6 @@ class Service {
 
   deleteIngredient(recipe_id: number, ingred_id: number) {
     return new Promise<void>((resolve, reject) => {
-      console.log(recipe_id, ingred_id);
       pool.query(
         'DELETE FROM oppskrift_innhold WHERE oppskrift_id = ? AND ingred_id = ?',
         [recipe_id, ingred_id],

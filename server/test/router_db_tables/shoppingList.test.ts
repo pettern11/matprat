@@ -76,7 +76,6 @@ describe('Add ingredient to shoppinglist (POST)', () => {
 
   test('Missing maleenhet (400 Bad Request)', (done) => {
     axios.post('/addingredient', {ingredient: {ingred_id: 4, mengde: "5"}}).catch((error) => {
-      console.log(error.message);
       expect(error.response.data).toEqual('Missing crutial information, fill in all the fields');
       expect(error.response.status).toEqual(400);
       //expect(response.statusText).toEqual('Bad Request');

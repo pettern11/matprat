@@ -40,7 +40,7 @@ afterAll((done) => {
 
 describe('Fetch countries (GET)', () => {
   test('Fetch all countries (200 OK)', (done) => {
-    axios.get('/country').then((response) => { console.log(response.data);
+    axios.get('/country').then((response) => {
       expect(response.status).toEqual(200);
       expect(response.data).toEqual(land);
       done();

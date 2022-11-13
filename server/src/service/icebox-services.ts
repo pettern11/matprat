@@ -34,11 +34,10 @@ addIngredientToIcebox(selectedIceboxIngredient: IceboxIngredient) {
 
 deleteIceboxIngredient(ingred_id: number) {
   return new Promise<void>((resolve, reject) => {
-    console.log(ingred_id);
     pool.query(
       'DELETE FROM icebox WHERE ingred_id = ?',
       [ingred_id],
-      (error, results: ResultSetHeader) => {console.log(results)
+      (error, results: ResultSetHeader) => {
         if (error) return reject(error);
         if (results.affectedRows == 0) return reject(results);
 
