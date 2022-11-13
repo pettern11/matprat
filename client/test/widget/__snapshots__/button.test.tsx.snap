@@ -27,3 +27,34 @@ exports[`Button tests Button Success render 1`] = `
   Test button success
 </button>
 `;
+
+exports[`Button tests Small Button Danger render 1`] = `
+<button
+  class="btn btn-danger"
+  style="padding:5px 5px;font-size:16px;line-height:0.7"
+  type="button"
+>
+  Test button danger
+</button>
+`;
+
+exports[`Button tests Small Button Light render 1`] = `
+<button
+  class="btn btn-light"
+  id="1"
+  style="padding:5px 5px;font-size:16px;line-height:0.7"
+  type="button"
+>
+  Test button light
+</button>
+`;
+
+exports[`Button tests Small Button Success render 1`] = `
+<button
+  class="btn btn-success"
+  style="padding:5px 5px;font-size:16px;line-height:0.7;width:200px"
+  type="button"
+>
+  Test button success
+</button>
+`;

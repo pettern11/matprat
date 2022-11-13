@@ -1,5 +1,47 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Card tests Draw Mat card 1`] = `
+<div
+  class="card mat"
+>
+  <div
+    class="card-body"
+  >
+    <h5
+      class="card-title"
+    >
+      overskrift
+    </h5>
+    <div
+      class="card-text"
+    >
+      test
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Card tests Draw Oppskrifter card 1`] = `
+<div
+  class="card oppskrifter"
+>
+  <div
+    class="card-body"
+  >
+    <h5
+      class="card-title"
+    >
+      overskrift
+    </h5>
+    <div
+      class="card-text"
+    >
+      test
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Card tests Draw card 1`] = `
 <div
   class="card"
@@ -14,6 +56,27 @@ exports[`Card tests Draw card 1`] = `
     </h5>
     <div
       class="card-text"
+    >
+      test
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Card tests Draw iceboxscard 1`] = `
+<div
+  class="icebox cards"
+>
+  <div
+    class="icebox-body"
+  >
+    <h5
+      class="icebox-title"
+    >
+      overskrift
+    </h5>
+    <div
+      class="icebox-text"
     >
       test
     </div>

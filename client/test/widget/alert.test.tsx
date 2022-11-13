@@ -130,3 +130,97 @@ describe('Alert tests', () => {
     });
   });
 });
+
+  describe('Alert timeout tests', () => {
+
+  //har set timeout på 4.5 sekunder for å vente på at alert meldingen skal forsvinne, jeg tester at den faktisk forsvinner
+  test('Show 1 alert and wait until it is closed', (done) => {
+    const wrapper = shallow(<Alert />);
+
+    Alert.danger('test');
+
+    setTimeout(() => {
+      expect(
+        wrapper.matchesElement(
+          <div>
+            <div>
+              test
+              <button />
+            </div>
+          </div>
+        )
+      ).toEqual(true);
+
+      setTimeout(() => {
+        expect(wrapper.matchesElement(<div></div>)).toEqual(true);
+
+        done();
+      }, 4500);
+    });
+  });
+
+  //har set timeout på 4.5 sekunder for å vente på at alert meldingen skal forsvinne, jeg tester at den faktisk forsvinner
+  test('Show 1 danger alert and wait until it is closed', (done) => {
+    const wrapper = shallow(<Alert />);
+
+    Alert.warning('test');
+
+    setTimeout(() => {
+      expect(
+        wrapper.matchesElement(
+          <div>
+            <div>
+              test
+              <button />
+            </div>
+          </div>
+        )
+      ).toEqual(true);
+
+      setTimeout(() => {
+        expect(wrapper.matchesElement(<div></div>)).toEqual(true);
+
+        done();
+      }, 4500);
+    });
+  });
+
+  //har set timeout på 4.5 sekunder for å vente på at alert meldingen skal forsvinne, jeg tester at den faktisk forsvinner
+  test('Show 3 alert and wait until it is closed', (done) => {
+    const wrapper = shallow(<Alert />);
+
+    Alert.success('test1');
+    Alert.success('test2');
+    Alert.success('test3');
+
+    setTimeout(() => {
+      expect(
+        wrapper.matchesElement(
+          <div>
+            <div>
+              test1
+              <button />
+            </div>
+            <div>
+              test2
+              <button />
+            </div>
+            <div>
+              test3
+              <button />
+            </div>
+          </div>
+        )
+      ).toEqual(true);
+
+      setTimeout(() => {
+        expect(wrapper.matchesElement(<div></div>)).toEqual(true);
+
+        done();
+      }, 4500);
+    });
+  });
+
+ 
+
+});

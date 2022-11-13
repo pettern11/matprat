@@ -1,13 +1,65 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Collumn tests Collumn 1`] = `
+exports[`Column tests Column 1`] = `
 <div
   class="col"
+>
+  <div
+    class="float-end"
+  >
+    test
+  </div>
+</div>
+`;
+
+exports[`Column tests test Colum 1`] = `
+<div
+  class="col-6"
 >
   <div
     class="float-start"
   >
     test
+  </div>
+</div>
+`;
+
+exports[`Column tests test Colum with right 1`] = `
+<div
+  class="col-6"
+>
+  <div
+    class="float-end"
+  >
+    test
+  </div>
+</div>
+`;
+
+exports[`Column tests test Columns 1`] = `
+<div
+  class="col-4"
+>
+  <div
+    class="float-start"
+  >
+    <p>
+      test
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Column tests test Columns 2`] = `
+<div
+  class="col-4"
+>
+  <div
+    class="float-end"
+  >
+    <p>
+      test
+    </p>
   </div>
 </div>
 `;
