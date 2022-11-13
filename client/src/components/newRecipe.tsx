@@ -2,11 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Alert, Card, Row, Column, Form, Button } from '.././widgets';
 import Select from 'react-select';
-import service, {
-  Ingredient,
-  Recipe,
-  Recipe_Content,
-} from '.././service';
+import service, { Ingredient, Recipe, Recipe_Content } from '.././service';
 import { createHashHistory } from 'history';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -117,6 +113,7 @@ export class NewRecipe extends Component {
                         //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
                         //men det fungerer ikke https://react-select.com/styles
                         onChange={(event) => {
+                          //@ts-ignore
                           this.checkCategory(event?.value);
                         }}
                       />
@@ -150,6 +147,7 @@ export class NewRecipe extends Component {
                         //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
                         //men det fungerer ikke https://react-select.com/styles
                         onChange={(event) => {
+                          //@ts-ignore
                           this.checkCountry(event?.value);
                         }}
                       />
@@ -189,6 +187,7 @@ export class NewRecipe extends Component {
                         //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
                         //men det fungerer ikke https://react-select.com/styles
                         onChange={(event) => {
+                          //@ts-ignore
                           this.chooseIngredientFunc(event?.value);
                         }}
                       />
@@ -228,7 +227,7 @@ export class NewRecipe extends Component {
               className="col"
               style={{ width: '50%', height: '100%', paddingLeft: '0px', paddingRight: '0px' }}
             >
-              <Card>
+              <Card title="">
                 {/* input steg */}
                 <Column>
                   <Row>

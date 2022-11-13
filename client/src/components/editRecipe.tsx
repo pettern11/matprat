@@ -209,7 +209,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
     );
     //hvis ingrediensen ikke finnes i oppskriften vil den bli lagt til
     if (!ifExist.includes(true)) {
-      const add = { oppskrift_id: recipe_id, ingred_id: ingred_id, mengde: 0, maleenhet: '' };
+      const add = { oppskrift_id: recipe_id, ingred_id: ingred_id, mengde: '0', maleenhet: '' };
       this.recipeContent.push(add);
       this.addIngredientToRecipe.push(add);
     } else {
