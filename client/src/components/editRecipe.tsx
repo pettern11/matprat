@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Alert, Card, Row, Column, Form, Button } from '.././widgets';
-import service, { Ingredient, Recipe, Recipe_Content } from '.././service';
+import service, { Recipe, Recipe_Content } from '.././service';
 import { createHashHistory } from 'history';
 import Select from 'react-select';
 
