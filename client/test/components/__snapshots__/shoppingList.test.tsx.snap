@@ -21,37 +21,30 @@ exports[`Rending Should render after snapshot 1`] = `
         >
           <Column>
             Søk:
-            <FormInput
-              id="shoppinglistsearch"
+            <ForwardRef
+              id="choseIngredient"
               onChange={[Function]}
-              placeholder="Søk etter vare"
-              type="text"
-              value=""
+              options={
+                [
+                  {
+                    "label": "Søk på ingredienser",
+                    "value": 0,
+                  },
+                  {
+                    "label": "Chicken",
+                    "value": 1,
+                  },
+                  {
+                    "label": "Salmon",
+                    "value": 2,
+                  },
+                  {
+                    "label": "Beef",
+                    "value": 3,
+                  },
+                ]
+              }
             />
-            <select
-              className="form-select"
-              id="selectExistingIngredient"
-              onChange={[Function]}
-            >
-              <option
-                key="0"
-                value={3}
-              >
-                Beef
-              </option>
-              <option
-                key="1"
-                value={1}
-              >
-                Chicken
-              </option>
-              <option
-                key="2"
-                value={2}
-              >
-                Salmon
-              </option>
-            </select>
             Antall:
              
             <FormInput

@@ -1,18 +1,7 @@
 // @ts-nocheck
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import {
-  Alert,
-  Card,
-  Row,
-  Column,
-  Colum,
-  Form,
-  Button,
-  RecipeView,
-  Car,
-} from '.././widgets';
-import { NavLink, Redirect } from 'react-router-dom';
+import { Alert, Card, Row, Column, Colum, Form, Button, RecipeView, Car } from '.././widgets';
 import service, {
   Country,
   Category,
@@ -23,24 +12,25 @@ import service, {
   ElementShoppingList,
 } from '.././service';
 import { createHashHistory } from 'history';
+import Select from 'react-select';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 export class ShoppingList extends Component {
   newIngredient: string = '';
   shoppingList: List[] = [];
-  ingredients: Ingredient[] = [];
+  ingredients: [{ value: number; label: string }] = [{ value: 0, label: 'Søk på ingredienser' }];
   selectedIngredients: Ingredient[] = [];
   searchterm: string = '';
   elementHandleliste: ElementShoppingList = {
     ingred_id: 0,
     ingred_navn: '',
-    mengde: 0,
+    mengde: '',
     maleenhet: '',
   };
   selectedIngredient: List = {
     id: 0,
     ingred_id: 1,
-    mengde: 0,
+    mengde: '',
     maleenhet: '',
   };
   render() {
@@ -48,87 +38,74 @@ export class ShoppingList extends Component {
       <>
         <div className="margintop">
           <Row>
-            <div className="col" style={{ width: '50%', height: '100%', paddingRight: '0px'}}>
-                <Card title="Legg til varer i kurven din">
-                  <Column>
-                    Søk:
-                    <Form.Input
-                      placeholder="Søk etter vare"
-                      id="shoppinglistsearch"
-                      type="text"
-                      value={this.searchterm || ''}
-                      onChange={(event) => {
-                        this.search(event.currentTarget.value);
-                        this.searchterm = event.currentTarget.value;
-                      }}
-                    />
-                    <select
-                      className="form-select"
-                      id="selectExistingIngredient"
-                      onChange={(event) => {
-                        this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
-                      }}
-                    >
-                      {this.selectedIngredients.map((ingredient, i) => (
-                        <option key={i} value={ingredient.ingred_id}>
-                          {ingredient.ingred_navn}
-                        </option>
-                      ))}
-                    </select>
-                    Antall:{' '}
-                    <Form.Input
-                      id="exisitingmengde"
-                      type="number"
-                      value={this.selectedIngredient.mengde}
-                      onChange={(event) => {
-                        //@ts-ignore
-                        this.selectedIngredient.mengde = event.currentTarget.value;
-                      }}
-                    />
-                    Måleenhet:{' '}
-                    <Form.Input
-                      placeholder="Skriv inn måleenhet"
-                      id="exisitingmaleenhet"
-                      type="text"
-                      value={this.selectedIngredient.maleenhet}
-                      onChange={(event) => {
-                        this.selectedIngredient.maleenhet = event.currentTarget.value;
-                      }}
-                    />
-                    <Button.Success
-                      onClick={() =>
-                        // console.log(this.selectedIngredient)}>
-                        this.addExistingItem(this.selectedIngredient)
-                      }
-                    >
-                      Legg til
-                    </Button.Success>
-                  </Column>
-                </Card>
-                <Card title="Legg til ny vare">
-                  <Column>
-                    <Form.Input
-                      id="createIngredient"
-                      type="text"
-                      style={{ width: '280px' }}
-                      value={this.newIngredient}
-                      onChange={(event) => (this.newIngredient = event.currentTarget.value)}
-                      placeholder="Skriv inn ny vare"
-                    ></Form.Input>
-                    <Button.Success
-                      id="createIngredientFunc"
-                      onClick={() => {
-                        this.addIngredient(this.newIngredient);
-                      }}
-                    >
-                      Legg til
-                    </Button.Success>
-                    {/* <div style={{ width: '690px' }}></div> */}
-                  </Column>
-                </Card>
-                {/* </div > */}
+            <div className="col" style={{ width: '50%', height: '100%', paddingRight: '0px' }}>
+              <Card title="Legg til varer i kurven din">
+                <Column>
+                  Søk:
+                  <Select
+                    id="choseIngredient"
+                    options={this.ingredients}
+                    //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
+                    //men det fungerer ikke https://react-select.com/styles
+                    onChange={(event) => {
+                      console.log(event.value);
+                      this.selectedIngredient.ingred_id = Number(event.value);
+                    }}
+                  />
+                  Antall:{' '}
+                  <Form.Input
+                    id="exisitingmengde"
+                    type="number"
+                    value={this.selectedIngredient.mengde}
+                    onChange={(event) => {
+                      //@ts-ignore
+                      this.selectedIngredient.mengde = event.currentTarget.value;
+                    }}
+                  />
+                  Måleenhet:{' '}
+                  <Form.Input
+                    placeholder="Skriv inn måleenhet"
+                    id="exisitingmaleenhet"
+                    type="text"
+                    value={this.selectedIngredient.maleenhet}
+                    onChange={(event) => {
+                      this.selectedIngredient.maleenhet = event.currentTarget.value;
+                    }}
+                  />
+                  <Button.Success
+                    onClick={() => {
+                      console.log(this.selectedIngredient),
+                        this.addExistingItem(this.selectedIngredient);
+                    }}
+                  >
+                    Legg til
+                  </Button.Success>
+                </Column>
+              </Card>
+              <Card title="Legg til ny vare">
+                <Column>
+                  <Form.Input
+                    id="createIngredient"
+                    type="text"
+                    style={{ width: '280px' }}
+                    value={this.newIngredient}
+                    onChange={(event) => (this.newIngredient = event.currentTarget.value)}
+                    placeholder="Skriv inn ny vare"
+                  ></Form.Input>
+                  <Button.Success
+                    id="createIngredientFunc"
+                    onClick={() => {
+                      this.addIngredient(this.newIngredient);
+                    }}
+                  >
+                    Legg til
+                  </Button.Success>
+                  {/* <div style={{ width: '690px' }}></div> */}
+                </Column>
+              </Card>
+              {/* </div > */}
             </div>
-            <div className="col" style={{ width: '50%', height: '100%', padding: '0px'}}>
+            <div className="col" style={{ width: '50%', height: '100%', padding: '0px' }}>
               <Card title="Handleliste">
                 <Column>
                   <div id="liste" className="">
@@ -138,9 +115,8 @@ export class ShoppingList extends Component {
                         <p style={{ width: '190px' }}>
                           {i + 1}.{' '}
                           {
-                            this.ingredients.find(
-                              (ingredient) => ingredient.ingred_id == sl.ingred_id
-                            )?.ingred_navn
+                            this.ingredients.find((ingredient) => ingredient.value == sl.ingred_id)
+                              ?.label
                           }{' '}
                           {/* @ts-ignore */}
                         </p>
@@ -204,15 +180,11 @@ export class ShoppingList extends Component {
 
     service
       .getAllIngredient()
-      .then(
-        (ingredients) => (
-          (this.ingredients = ingredients.sort((a, b) =>
-            a.ingred_navn.localeCompare(b.ingred_navn)
-          )),
-          (this.selectedIngredients = ingredients)
-        )
+      .then((ingredients) =>
+        ingredients.forEach((element) => {
+          this.ingredients.push({ value: element.ingred_id, label: element.ingred_navn });
+        })
       )
-      .then(() => (jk ? this.search(search) : ''))
 
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
     service
@@ -223,17 +195,6 @@ export class ShoppingList extends Component {
       );
   }
 
-  search(searchterm: string) {
-    this.selectedIngredients = this.ingredients.filter((ingredient) =>
-      ingredient.ingred_navn.toLowerCase().includes(searchterm.toLowerCase())
-    );
-    if (this.selectedIngredients.length > 0) {
-      this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
-    } else {
-      this.selectedIngredient.ingred_id = 0;
-      Alert.danger('Ingen ingredienser funnet');
-    }
-  }
   incrementPortions(ingredient: List) {
     ingredient.mengde++;
     service
@@ -286,7 +247,7 @@ export class ShoppingList extends Component {
     if (item == null || item == undefined || item == '') {
       Alert.danger('Du må fylle inn navn på ingrediensen');
     } else if (
-      this.ingredients.some((ing) => ing.ingred_navn.toLowerCase() == item.toLowerCase()) == true
+      this.ingredients.some((ing) => ing.label.toLowerCase() == item.toLowerCase()) == true
     ) {
       Alert.danger('Ingrediensen eksisterer allerede');
     } else {
@@ -304,7 +265,6 @@ export class ShoppingList extends Component {
   }
 
   addExistingItem(item: List) {
-    item.ingred_id = document.getElementById('selectExistingIngredient')?.value; //@ts-ignore
     if (
       item.mengde == null ||
       item.mengde == undefined ||
@@ -315,7 +275,7 @@ export class ShoppingList extends Component {
       item.mengde = 1;
       Alert.danger('Du må fylle inn antall av ingrediensen, dette må være heltall større enn 0');
     } else if (item.maleenhet == null || item.maleenhet == undefined || item.maleenhet == '') {
-      item.maleenhet = 'stk';
+      // item.maleenhet = 'stk';
       Alert.danger('Du må fylle inn måleenhet');
     } else if (
       item.ingred_id == 0 ||
