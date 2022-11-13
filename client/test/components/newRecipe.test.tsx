@@ -1,8 +1,7 @@
 import * as React from 'react';
 
-import { shallow, mount, render } from 'enzyme';
-import { Alert, Card, Row, Column, Form, Button, RecipeView } from '../../src/widgets';
-import { NavLink } from 'react-router-dom';
+import { shallow, mount} from 'enzyme';
+import { Alert, Button} from '../../src/widgets';
 import { NewRecipe } from '../../src/components/newRecipe';
 
 const mock_addCountry = document.createElement('input');

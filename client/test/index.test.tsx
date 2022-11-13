@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { NewRecipe } from '../src/components';
 import { Home, Menu } from '../src/index';
 import { shallow } from 'enzyme';
 import { Alert, Card, Row, Column, Form, Button, RecipeView, NavBar } from '../src/widgets';
@@ -68,6 +67,7 @@ describe('Index test', () => {
       expect(
         wrapper.containsAllMatchingElements([
           <Card title="Søkefelt">
+          {/* @ts-ignore */}
             <Form.Input></Form.Input>
           </Card>,
           <Row>

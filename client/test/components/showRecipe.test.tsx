@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { shallow, mount } from 'enzyme';
-import { Alert, Card, Row, Column, Form, Button, RecipeView } from '../../src/widgets';
+import { shallow} from 'enzyme';
+import { Alert, Button} from '../../src/widgets';
 import { ShowRecipe } from '../../src/components/showRecipe';
 
 import { createHashHistory } from 'history';
@@ -161,6 +161,7 @@ describe('ShowRecipe tests', () => {
   });
   //test if downlaad button works, this test gives an error because it is not possible to test the download function and more but i tried my best
   test('Download button works', (done) => {
+    //@ts-ignore
     window.URL.createObjectURL = function () {};
     window.URL.revokeObjectURL = function () {};
     const wrapper = shallow(<ShowRecipe match={{ params: { id: 1 } }} />);

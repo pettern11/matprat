@@ -1,10 +1,9 @@
 import * as React from 'react';
 
-import { shallow, mount, render } from 'enzyme';
+import { shallow} from 'enzyme';
 import { NavLink } from 'react-router-dom';
-import { Alert, Card, Row, Column, Form, Button, RecipeView, Cards, Rows } from '../../src/widgets';
+import { RecipeView, Cards, Rows } from '../../src/widgets';
 import { ShowAllRecipe } from '../../src/components/showAllRecipe';
-import userEvent from '@testing-library/user-event';
 
 jest.mock('../../src/service', () => {
   class Service {

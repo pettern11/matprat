@@ -1,10 +1,9 @@
 import * as React from 'react';
 
 import { shallow, mount } from 'enzyme';
-import { Alert, Card, Row, Column, Form, Button, RecipeView } from '../../src/widgets';
-import { NavLink } from 'react-router-dom';
+import { Alert, Form, Button} from '../../src/widgets';
 import { ShoppingList } from '../../src/components/shoppingList';
-import service, { List } from '../../src/service';
+import { List } from '../../src/service';
 
 import { createHashHistory } from 'history';
 

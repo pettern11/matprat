@@ -1,8 +1,7 @@
 import * as React from 'react';
 
 import { shallow, mount } from 'enzyme';
-import { Alert, Card, Row, Column, Form, Button, RecipeView, Car } from '../../src/widgets';
-import { NavLink } from 'react-router-dom';
+import { Alert, Card, Button} from '../../src/widgets';
 import { EditRecipe } from '../../src/components/editRecipe';
 import service from '../../src/service';
 
