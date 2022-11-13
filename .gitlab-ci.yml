@@ -10,6 +10,7 @@ variables:
 stages:
   - build # Jobs placed in build stage will run first
   - prettier
+  - ts
   - test # Jobs placed in test stage will run after build-jobs
 
 install:
@@ -31,6 +32,18 @@ prettier:
     - npx prettier --write .
     - prettier --check .
 
+typescript_client:
+  stage: ts # The typescript job will run in parallel with the prettier and test jobs
+  script:
+    - cd client
+    - node_modules/.bin/tsc --noEmit -skipLibCheck
+
+
+typescript_server:
+  stage: ts # The typescript job will run in parallel with the prettier and test jobs
+  script:
+    - cd server
+    - node_modules/.bin/tsc --noEmit -skipLibCheck
 test:
   stage: test
   script:
