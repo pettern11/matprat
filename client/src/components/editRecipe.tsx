@@ -203,7 +203,6 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
       .catch((error) => Alert.danger('Error updating recipe content: ' + error.message));
   }
   addIngredientFunc(ingred_id: number, recipe_id: number) {
-    console.log(ingred_id);
     //sjekker om ingrediensen allerede finnes i oppskriften
     const ifExist = this.recipeContent.map((element) =>
       element.ingred_id == ingred_id ? true : false

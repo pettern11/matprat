@@ -148,7 +148,6 @@ describe('Functionality input', () => {
       wrapper.find(Button.Success).at(1).simulate('click');
 
       setTimeout(() => {
-        console.log(wrapperAlert.debug());
         done();
       });
     });
@@ -175,7 +174,6 @@ describe('Functionality buttons', () => {
       wrapper.find(Button.Success).at(0).simulate('click');
 
       setTimeout(() => {
-        console.log(wrapperAlert.debug());
         expect(
           wrapperAlert.containsMatchingElement([
             <div>

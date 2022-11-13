@@ -196,7 +196,6 @@ describe('editRecipe test', () => {
       wrapper.find('#createIngredientFunc').simulate('click');
       setTimeout(() => {
         expect(wrapper.find('#createIngredient').prop('value')).toBe('');
-        console.log(wrapperAlert.debug());
         done();
       });
       // wrapper.find(Button.Success).at(0).simulate('click');
@@ -211,8 +210,6 @@ describe.skip('skip', () => {
     setTimeout(() => {
       wrapper.find(Button.Success).at(1).simulate('click');
       setTimeout(() => {
-        console.log(wrapperAlert.debug());
-        // expect(wrapper.find(Alert).length).toBe(1);
         done();
       });
     });

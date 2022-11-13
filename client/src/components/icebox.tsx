@@ -90,7 +90,6 @@ export class Icebox extends Component {
       ingred_id: event.value,
       ingred_navn: event.label,
     };
-    console.log(add);
     service
       .addIngredientToIcebox(add)
       .then(() => {
@@ -100,7 +99,7 @@ export class Icebox extends Component {
         });
       })
       .catch((error) => {
-        console.log(error), Alert.danger('Ingredient already added');
+      Alert.danger('Ingredient already added');
       });
   }
 
@@ -128,7 +127,6 @@ export class Icebox extends Component {
     //filter the recipes based on the ingredients in the icebox
     //if the recipe contains one of the ingreient it will be added, if the recipe allready exists it will not be added
     this.filteredRecipes = [];
-    //console.log(this.recipes, this.recipeContent, this.choosenIngredient);
     this.recipes.forEach((recipe) => {
       this.recipeContent.forEach((recipeContent) => {
         if (recipe.oppskrift_id == recipeContent.oppskrift_id) {
@@ -145,8 +143,7 @@ export class Icebox extends Component {
           });
         }
       });
-    }); console.log('nodupli', this.noDuplicates);
-    console.log('Filtered', this.filteredRecipes)
+    });
   }
 
   mounted() {
