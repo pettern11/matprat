@@ -2,15 +2,7 @@ import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import {
-  NavBar,
-  Car,
-  Card,
-  Cards,
-  Alert,
-  Rows,
-  RecipeView,
-} from './widgets';
+import { NavBar, Car, Card, Cards, Alert, Rows, RecipeView } from './widgets';
 import { NewRecipe } from './components/newRecipe';
 import { EditRecipe } from './components/editRecipe';
 import { ShowRecipe } from './components/showRecipe';
@@ -59,8 +51,10 @@ export class Home extends Component {
             <div className="frontpage">
               <h1>Anbefalt oppskrift:</h1>
               <br></br>
+              {/* @ts-ignore */}
+
               <center>
-                <Car>
+                <Car title="">
                   <div className={'recipeToDay'}>
                     {this.recipes.length != 0
                       ? this.recipes
@@ -89,6 +83,7 @@ export class Home extends Component {
                       : ''}
                   </div>
                 </Car>
+                {/* @ts-ignore */}
               </center>
               <br />
               <br />
@@ -99,7 +94,7 @@ export class Home extends Component {
                   <Rows>
                     {this.recipes.length != 0
                       ? this.suggestedRecipeList.map((likedRecipe, i) => (
-                          <Cards key={(likedRecipe.oppskrift_id + i) + 'card'}>
+                          <Cards title="" key={likedRecipe.oppskrift_id + i + 'card'}>
                             <NavLink
                               key={likedRecipe.oppskrift_id + 'navlink2'}
                               className="black"
@@ -117,6 +112,7 @@ export class Home extends Component {
                       : ''}
                   </Rows>
                   <br />
+                  {/* @ts-ignore */}
                   <NavBar.Links to={'/showallrecipe'} style={{ width: '130px' }}>
                     Alle oppskrifter
                   </NavBar.Links>
@@ -155,7 +151,7 @@ export class Home extends Component {
               )
             );
 
-            //Filtrerer og velger de som har likt land og kategori og ikke er likt, disse pushes til en egen array
+          //Filtrerer og velger de som har likt land og kategori og ikke er likt, disse pushes til en egen array
           this.recipes.map((element) => {
             //@ts-ignore
             if (
@@ -169,7 +165,6 @@ export class Home extends Component {
             }
           });
 
-          
           for (let i = 0; i < this.recipes.length; i++) {
             //@ts-ignore
             if (this.likedFromCategory.includes(this.recipes[i].kategori_id)) {
@@ -177,7 +172,6 @@ export class Home extends Component {
             } else {
             }
           }
-
 
           //Finner de 5 tilfeldige oppskriftene som skal vises
           for (let i = 0; i < 5; i++) {
