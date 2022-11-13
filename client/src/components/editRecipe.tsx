@@ -4,6 +4,7 @@ import { Alert, Card, Row, Column, Form, Button, RecipeView } from '.././widgets
 import { NavLink, Redirect } from 'react-router-dom';
 import service, { Ingredient, Recipe, Recipe_Content } from '.././service';
 import { createHashHistory } from 'history';
+import Select from 'react-select';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 export class EditRecipe extends Component<{ match: { params: { id: number } } }> {
@@ -23,13 +24,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
   addIngredientToRecipe: Recipe_Content[] = [];
   iDsDeletedIngredient: any = [];
   recipeContent: Recipe_Content[] = [];
-  ingredients: Ingredient[] = [];
-  selectedIngredients: Ingredient[] = [];
-  selectedIngredient: Ingredient = {
-    ingred_id: 1,
-    ingred_navn: '',
-  };
-  searchterm: string = '';
+  ingredients: [{ value: number; label: string }] = [{ value: 0, label: 'Søk på ingredienser' }];
 
   render() {
     return (
@@ -81,50 +76,20 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                   <Column width={2}>
                     <Form.Label>Søk:</Form.Label>
                   </Column>
-                  <Form.Input
-                    id="newRecipeSearch"
-                    placeholder="Søk etter ingrediens"
-                    type="text"
-                    value={this.searchterm}
+                  <Select
+                    id="choseIngredient"
+                    options={this.ingredients}
                     onChange={(event) => {
-                      this.search(event.currentTarget.value);
-                      this.searchterm = event.currentTarget.value;
+                      // @ts-ignore
+                      this.addIngredientFunc(event?.value, this.props.match.params.id);
                     }}
                   />
-                  <select
-                    className="form-select"
-                    id="selectIngredientNewRecipe"
-                    onChange={(event) => {
-                      this.selectedIngredient.ingred_id = Number(event.currentTarget.value);
-                      this.selectedIngredient.ingred_navn =
-                        event.currentTarget.selectedOptions[0].text;
-                    }}
-                    style={{ width: '210px' }}
-                  >
-                    {this.selectedIngredients.map((ingredient, i) => (
-                      <option value={ingredient.ingred_id}>
-                        {/* <option key={ingredient.ingred_id} value={ingredient.ingred_id}> */}
-                        {ingredient.ingred_navn}
-                      </option>
-                    ))}
-                  </select>
                 </Column>
-                <Button.Success
-                  id="btnIngredAdd"
-                  onClick={() => {
-                    this.addIngredientFunc(
-                      this.selectedIngredient.ingred_id,
-                      this.props.match.params.id
-                    );
-                  }}
-                >
-                  Legg til 
-                </Button.Success>
               </Column>
-              </Row>
+            </Row>
             <Row>
               <Column>
-              <br/>
+                <br />
                 <Form.Input
                   id="createIngredient"
                   type="text"
@@ -150,7 +115,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                 {this.recipeContent.map((rc, i) => (
                   <Row key={i}>
                     <p style={{ width: '215px' }}>
-                      {this.ingredients.find((ing) => ing.ingred_id == rc.ingred_id)?.ingred_navn}
+                      {this.ingredients.find((ing) => ing.value == rc.ingred_id)?.label}
                     </p>
                     <input
                       className="form-control"
@@ -201,26 +166,13 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
         .createIngredient(string)
         .then(() => {
           this.getAllIngredients();
+          Alert.info('Ingrediens lagt til');
+          this.ingredient = '';
         })
         .catch((error) => Alert.danger('Error creating the new ingredient: ' + error.message));
     }
   }
-  search(searchterm: string) {
-    this.selectedIngredients = this.ingredients.filter((ingredient) =>
-      ingredient.ingred_navn.toLowerCase().includes(searchterm.toLowerCase())
-    );
-    //hvis det ikke finnes noen ingredienser i listen så skal den legge til en tom ingrediens
-    if (this.selectedIngredients.length === 0) {
-      this.selectedIngredient = { ingred_id: 0, ingred_navn: '' };
-    }
-    //ellers så skal den sette den første ingrediensen i listen som valgt som vil være nærmest søkeordet
-    else {
-      document.getElementById('selectIngredientNewRecipe').value =
-        this.selectedIngredients[0].ingred_id;
-      //@ts-ignore
-      this.selectedIngredient.ingred_id = this.selectedIngredients[0].ingred_id;
-    }
-  }
+
   //legger til nye ingredienser, sjekker først om de finnes, så legger den til i databasen og så blir det hentet ned igjen
 
   pushNewChanges() {
@@ -252,6 +204,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
       .catch((error) => Alert.danger('Error updating recipe content: ' + error.message));
   }
   addIngredientFunc(ingred_id: number, recipe_id: number) {
+    console.log(ingred_id);
     //sjekker om ingrediensen allerede finnes i oppskriften
     const ifExist = this.recipeContent.map((element) =>
       element.ingred_id == ingred_id ? true : false
@@ -276,21 +229,10 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
   getAllIngredients() {
     service
       .getAllIngredient()
-      .then(
-        (ingredients) => (
-          (this.ingredients = ingredients), (this.selectedIngredients = ingredients)
-        )
-      )
-      //sort the ingredients and selectedingredients alphabetically by name
-      .then(
-        () => (
-          (this.ingredients = this.ingredients.sort((a, b) =>
-            a.ingred_navn.localeCompare(b.ingred_navn)
-          )),
-          (this.selectedIngredients = this.selectedIngredients.sort((a, b) =>
-            a.ingred_navn.localeCompare(b.ingred_navn)
-          ))
-        )
+      .then((ingredients) =>
+        ingredients.forEach((element) => {
+          this.ingredients.push({ value: element.ingred_id, label: element.ingred_navn });
+        })
       )
       .catch((error) => {
         Alert.danger('Error getting ingredients: ' + error.message);
