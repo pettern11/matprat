@@ -21,6 +21,7 @@ export class Icebox extends Component {
   selectedIngredients: Ingredient[] = [];
   recipes: Recipe[] = [];
   filteredRecipes: Recipe[] = [];
+  noDuplicates: Recipe[] = [];
   recipeContent: Recipe_Content[] = [];
   choosenIngredient: Ingredient[] = [];
 
@@ -30,7 +31,7 @@ export class Icebox extends Component {
         <div className="margintop">
           <Column width={2}>
             <Card title="Dine ingredienser:">
-              &nbsp;Søk:¨
+             Søk:
               <Select
                 id="choseIngredient"
                 options={this.ingredients}
@@ -63,7 +64,7 @@ export class Icebox extends Component {
             <div id="icebox">
               <Rows>
                 <>
-                  {this.filteredRecipes.map((recipe, idx) => (
+                  {this.noDuplicates.map((recipe, idx) => (
                     <Cards title="" key={idx}>
                       {/* her må jeg bruke a tag med href link for at testing skal gå gjennom
                       får feilmedlingen  console.error "The above error occurred in the <Router.Consumer> component"
@@ -125,7 +126,7 @@ export class Icebox extends Component {
     //filter the recipes based on the ingredients in the icebox
     //if the recipe contains one of the ingreient it will be added, if the recipe allready exists it will not be added
     this.filteredRecipes = [];
-    console.log(this.recipes, this.recipeContent, this.choosenIngredient);
+    //console.log(this.recipes, this.recipeContent, this.choosenIngredient);
     this.recipes.forEach((recipe) => {
       this.recipeContent.forEach((recipeContent) => {
         if (recipe.oppskrift_id == recipeContent.oppskrift_id) {
@@ -133,12 +134,17 @@ export class Icebox extends Component {
             if (recipeContent.ingred_id == ingredient.ingred_id) {
               if (!this.filteredRecipes.includes(recipe)) {
                 this.filteredRecipes.push(recipe);
+
+                this.noDuplicates = [...new Set(this.filteredRecipes)];
+                
+
               }
             }
           });
         }
       });
-    });
+    }); console.log('nodupli', this.noDuplicates);
+    console.log('Filtered', this.filteredRecipes)
   }
 
   mounted() {
