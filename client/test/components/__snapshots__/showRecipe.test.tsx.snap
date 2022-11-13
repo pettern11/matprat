@@ -42,6 +42,7 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
       onChange={[Function]}
       type="checkbox"
     />
+     
     <label
       htmlFor="checkbox"
     >
@@ -350,9 +351,6 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
       +
     </ButtonSuccess>
   </Card>
-  <a
-    href="mailto:?subject=Pizza&body=Pizza er god og enkel %0d%0a http://localhost/#/recipe/edit/1"
-  />
   <ButtonSuccess
     onClick={[Function]}
   >
@@ -429,6 +427,7 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
       onChange={[Function]}
       type="checkbox"
     />
+     
     <label
       htmlFor="checkbox"
     >
@@ -737,9 +736,6 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
       +
     </ButtonSuccess>
   </Card>
-  <a
-    href="mailto:?subject=Pizza&body=Pizza er god og enkel %0d%0a http://localhost/#/recipe/edit/1"
-  />
   <ButtonSuccess
     onClick={[Function]}
   >
@@ -816,6 +812,7 @@ exports[`ShowRecipe tests Number increment works 1`] = `
       onChange={[Function]}
       type="checkbox"
     />
+     
     <label
       htmlFor="checkbox"
     >
@@ -1124,9 +1121,6 @@ exports[`ShowRecipe tests Number increment works 1`] = `
       +
     </ButtonSuccess>
   </Card>
-  <a
-    href="mailto:?subject=Pizza&body=Pizza er god og enkel %0d%0a http://localhost/#/recipe/edit/1"
-  />
   <ButtonSuccess
     onClick={[Function]}
   >
@@ -1203,6 +1197,7 @@ exports[`ShowRecipe tests Number of likes 1`] = `
       onChange={[Function]}
       type="checkbox"
     />
+     
     <label
       htmlFor="checkbox"
     >
@@ -1511,9 +1506,6 @@ exports[`ShowRecipe tests Number of likes 1`] = `
       +
     </ButtonSuccess>
   </Card>
-  <a
-    href="mailto:?subject=Pizza&body=Pizza er god og enkel %0d%0a http://localhost/#/recipe/edit/1"
-  />
   <ButtonSuccess
     onClick={[Function]}
   >
