@@ -93,7 +93,7 @@ describe('Functionality input', () => {
       done();
     });
   });
-  test('Add new item to shopping list', (done) => {
+  test('Add new ingredient to shopping list', (done) => {
     const wrapper = mount(<ShoppingList />);
     setTimeout(() => {
       wrapper.find('#choseIngredient').at(0).simulate('keyDown', { key: 'ArrowDown', keyCode: 40 });
@@ -117,13 +117,14 @@ describe('Functionality input', () => {
         expect(wrapper.find('#choseIngredient').at(0).first().text()).toEqual('Chicken');
         expect(wrapper.find('#exisitingmengde').at(0).prop('value')).toBe('0');
         expect(wrapper.find('#exisitingmaleenhet').at(0).prop('value')).toBe('');
-
+        //expect wrapper to mount
+        expect(wrapper.find(Button.Success).at(0).simulate('click')).toBeTruthy();
         done();
       });
     });
   });
 
-  test('Trigger onBlur on input field', (done) => {
+  test.skip('Trigger onBlur on input field', (done) => {
     const wrapper = shallow(<ShoppingList />);
     setTimeout(() => {
       wrapper
@@ -140,6 +141,19 @@ describe('Functionality input', () => {
       done();
     });
   });
+  test('No ingredient in inputfield when creating new ingredient', (done) => {
+    const wrapper = shallow(<ShoppingList />);
+    const wrapperAlert = shallow(<ShoppingList />);
+    setTimeout(() => {
+      wrapper.find('#createIngredient').simulate('change', { currentTarget: { value: '' } });
+      wrapper.find(Button.Success).at(1).simulate('click');
+
+      setTimeout(() => {
+        console.log(wrapperAlert.debug());
+        done();
+      });
+    });
+  });
 });
 
 describe('Functionality buttons', () => {
@@ -154,20 +168,56 @@ describe('Functionality buttons', () => {
       });
     });
   });
+  test('No ingredient, click add button get error', (done) => {
+    const wrapper = shallow(<ShoppingList />);
+    const wrapperAlert = shallow(<Alert />);
+    setTimeout(() => {
+      wrapper.find('#exisitingmengde').simulate('change', { currentTarget: { value: 2 } });
+      wrapper.find(Button.Success).at(0).simulate('click');
 
-  test('Add existing item', (done) => {
+      setTimeout(() => {
+        console.log(wrapperAlert.debug());
+        expect(
+          wrapperAlert.containsMatchingElement([
+            <div>
+              Du må fylle inn måleenhet<button></button>
+            </div>,
+          ])
+        );
+        // expect(wrapper.find(Button.Success).at(1)).toEqual({});
+        done();
+      });
+    });
+  });
+  test('Create a new existing ingridient', (done) => {
     const wrapper = shallow(<ShoppingList />);
     const wrapperAlert = shallow(<Alert />);
     setTimeout(() => {
       wrapper.find('#createIngredient').simulate('change', { currentTarget: { value: 'Chicken' } });
       wrapper.find(Button.Success).at(1).simulate('click');
 
-      done();
+      setTimeout(() => {
+        expect(
+          wrapperAlert.containsMatchingElement([
+            <div>
+              Ingrediensen eksisterer allerede<button></button>
+            </div>,
+          ])
+        );
+
+        done();
+      });
+    });
+  });
+  test('Create a new ingredient', (done) => {
+    const wrapper = shallow(<ShoppingList />);
+    setTimeout(() => {
+      wrapper.find('#createIngredient').simulate('change', { currentTarget: { value: 'Melk' } });
+      wrapper.find(Button.Success).at(1).simulate('click');
     });
 
     setTimeout(() => {
-      console.log(wrapperAlert.debug());
-      // expect(wrapper.find(Button.Success).at(3)).toEqual({});
+      expect(wrapper.find(Button.Success).at(1)).toEqual({});
 
       done();
     });

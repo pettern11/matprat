@@ -29,7 +29,7 @@ export class ShoppingList extends Component {
   };
   selectedIngredient: List = {
     id: 0,
-    ingred_id: 1,
+    ingred_id: 0,
     mengde: '',
     maleenhet: '',
   };
@@ -244,6 +244,7 @@ export class ShoppingList extends Component {
   }
 
   addIngredient(item: string) {
+    console.log(item);
     if (item == null || item == undefined || item == '') {
       Alert.danger('Du må fylle inn navn på ingrediensen');
     } else if (
@@ -277,12 +278,7 @@ export class ShoppingList extends Component {
     } else if (item.maleenhet == null || item.maleenhet == undefined || item.maleenhet == '') {
       // item.maleenhet = 'stk';
       Alert.danger('Du må fylle inn måleenhet');
-    } else if (
-      item.ingred_id == 0 ||
-      item.ingred_id < 0 ||
-      item.ingred_id == null ||
-      item.ingred_id == undefined
-    ) {
+    } else if (item.ingred_id == 0 || item.ingred_id == undefined) {
       Alert.danger('Du må velge en ingrediens');
     } else {
       service
