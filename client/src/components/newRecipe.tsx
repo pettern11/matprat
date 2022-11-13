@@ -1,16 +1,11 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Alert, Card, Row, Column, Form, Button, RecipeView } from '.././widgets';
-import { NavLink, Redirect } from 'react-router-dom';
+import { Alert, Card, Row, Column, Form, Button } from '.././widgets';
 import Select from 'react-select';
 import service, {
-  Country,
-  Category,
   Ingredient,
   Recipe,
   Recipe_Content,
-  List,
-  ElementShoppingList,
 } from '.././service';
 import { createHashHistory } from 'history';
 

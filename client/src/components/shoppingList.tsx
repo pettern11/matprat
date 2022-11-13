@@ -1,13 +1,9 @@
 // @ts-nocheck
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Alert, Card, Row, Column, Colum, Form, Button, RecipeView, Car } from '.././widgets';
+import { Alert, Card, Row, Column, Form, Button } from '.././widgets';
 import service, {
-  Country,
-  Category,
   Ingredient,
-  Recipe,
-  Recipe_Content,
   List,
   ElementShoppingList,
 } from '.././service';

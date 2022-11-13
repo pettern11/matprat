@@ -8,14 +8,8 @@ import {
   Card,
   Cards,
   Alert,
-  Column,
-  Row,
   Rows,
-  Form,
-  Button,
   RecipeView,
-  Oppskrifter,
-  Mat,
 } from './widgets';
 import { NewRecipe } from './components/newRecipe';
 import { EditRecipe } from './components/editRecipe';
@@ -26,7 +20,6 @@ import { Icebox } from './components/icebox';
 import { ShowAllRecipe } from './components/showAllRecipe';
 
 import service, { Recipe } from './service';
-import { createHashHistory } from 'history';
 
 export class Menu extends Component {
   render() {

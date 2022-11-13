@@ -490,6 +490,7 @@ export class Alert extends Component {
             id={'test'}
             className={'alert alert-dismissible alert-' + alert.type}
             role="alert"
+            // @ts-ignore
             onClick={this.deleteMessage(i)}
           >
             {alert.text}
@@ -504,7 +505,7 @@ export class Alert extends Component {
     );
   }
 
-  deleteMessage(i) {
+  deleteMessage(i: number) {
     setTimeout(() => {
       this.alerts.splice(i, 1);
     }, 4000);

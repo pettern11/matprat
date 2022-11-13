@@ -1,22 +1,15 @@
 import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { NavLink, HashRouter, Route } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {
-  NavBar,
-  Car,
-  Card,
   Cards,
   Alert,
-  Column,
   Columns,
   Row,
   Rows,
   Form,
-  Button,
   RecipeView,
-  Oppskrifter,
-  Mat,
 } from '../widgets';
 
 import service, { Recipe, Category, Country } from '../service';
