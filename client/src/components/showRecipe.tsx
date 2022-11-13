@@ -57,7 +57,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
                 ShowRecipe.instance()?.mounted();
               });
             }}
-          />
+          /> {/* Like knapp */}
           <label htmlFor="checkbox">
             <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
               <g id="Group" fill="none" fillRule="evenodd" transform="translate(467 392)">
@@ -112,6 +112,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
             <pre>{this.recipe.oppskrift_steg}</pre>
             <h3>Ingredienser:</h3>
             <br />
+            {/* Viser ingrediensene */}
             {this.recipeContent.map((rc, i) => (
               <Row key={i}>
                 <p style={{ width: '250px' }}>
@@ -135,11 +136,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
             +
           </Button.Success>
         </Card>
-        <a
-          href={`mailto:?subject=${this.recipe.oppskrift_navn}&body=${this.recipe.oppskrift_beskrivelse} %0d%0a ${window.location.href}`}
-        >
-          {/* Heidu */}
-        </a>
+       
         <Button.Success onClick={() => history.push('/recipe/edit/' + this.props.match.params.id)}>
           Endre oppskrift
         </Button.Success>
@@ -180,6 +177,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
   }
 
   mounted() {
+    /* Hent info om oppskrift */
     service
       .getRecipe(this.props.match.params.id)
       .then((recipe) => {
@@ -188,21 +186,25 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
       })
       .catch((error) => Alert.danger('Error getting recipe: ' + error.message));
 
+    /* Hent alle ingredienser */
     service
       .getAllIngredient()
       .then((ingredients) => (this.ingredients = ingredients))
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
 
+    /* Hent ingredienser til oppskrift */
     service
       .getRecipeContent(this.props.match.params.id)
       .then((recipeContent) => (this.recipeContent = recipeContent))
       .catch((error) => Alert.danger('Error getting recipe content: ' + error.message));
 
+    /* Hent alle kategorier */
     service
       .getAllCategory()
       .then((categories) => (this.categories = categories))
       .catch((error) => Alert.danger('Error getting categories: ' + error.message));
 
+    /* Hent alle oppskrifter */
     service
       .getAllRepice()
       .then((recipes) => {
@@ -214,13 +216,14 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
       .catch((error) => Alert.danger('Error getting recipes: ' + error.message));
   }
   //https://stackoverflow.com/questions/68152987/how-to-download-part-of-a-react-component
+  //Gjør siden nedlastbar, slik at den lett kan deles med andre
   downloadPage() {
     let element1 = document.querySelector('.download1') || document.createElement('div');
     let element2 = document.querySelector('.download2') || document.createElement('div');
     let pageHTML = element1.outerHTML;
     pageHTML += element2.outerHTML;
     let css =
-      '<style> pre { white-space: pre-wrap; font-size:16px}  p {display: inline-block} body {background-color: coral; text-align:center}   </style>';
+      '<style> pre { white-space: pre-wrap; font-size:16px}  p {display: inline-block} body {text-align:center}   </style>';
     const blob = new Blob([pageHTML, css], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const tempEl = document.createElement('a');
@@ -234,6 +237,8 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
       tempEl.parentNode.removeChild(tempEl);
     }, 2000);
   }
+
+  //Finner 5 tilfeldige oppskrifter i samme kategori som den valgte oppskriften
   findRecommendedRecipes(lengtCheck: number) {
     this.recommendedRecipes = this.allRecipes.filter(
       (recipe) => recipe.kategori_id == this.recipe.kategori_id
@@ -241,20 +246,28 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
     //chose 5 random recipes
     this.recommendedRecipes = this.recommendedRecipes.sort(() => Math.random() - 0.5).slice(0, 5);
   }
+
+  //Gir mulighet til å øke antall porsjoner
   incrementPortions() {
     this.portions++;
   }
+
+  //Gir mulighet til å minke antall porsjoner
   decrementPortions() {
     if (this.portions > 1) {
       this.portions--;
     }
   }
+
+  //Slette oppskrift
   deleteRecipe(id: number) {
     service
       .deleteRecipe(id)
       .then(() => history.push('/'))
       .catch((error) => Alert.danger('Error deleting recipe: ' + error.message));
   }
+  
+  //Legger til ingredienser til handleliste
   ingredientsToShoppingList() {
     let i = 0;
     this.recipeContent.forEach((rc) => {

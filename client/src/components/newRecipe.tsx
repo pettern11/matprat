@@ -102,8 +102,6 @@ export class NewRecipe extends Component {
                   <Select
                     id="choseCountry"
                     options={this.countries}
-                    //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
-                    //men det fungerer ikke https://react-select.com/styles
                     onChange={(event) => {
                       this.checkCountry(event?.value);
                     }}
@@ -137,8 +135,6 @@ export class NewRecipe extends Component {
                   <Select
                     id="choseCategory"
                     options={this.categories}
-                    //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
-                    //men det fungerer ikke https://react-select.com/styles
                     onChange={(event) => {
                       this.checkCategory(event?.value);
                     }}
@@ -191,8 +187,6 @@ export class NewRecipe extends Component {
                   <Select
                     id="choseIngredient"
                     options={this.ingredients}
-                    //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
-                    //men det fungerer ikke https://react-select.com/styles
                     onChange={(event) => {
                       console.log(event);
                       this.chooseIngredientFunc(event?.value);
@@ -294,6 +288,7 @@ export class NewRecipe extends Component {
       </>
     );
   }
+  /* Fjerne ingrediens hvis man ikke vil ha den med i oppskriften */
   deleteIngredient(ingred_id: number) {
     //find index of ingred_id in recipeContent
     const index = this.recipe_content.findIndex((element) => element.ingred_id == ingred_id);
@@ -301,6 +296,7 @@ export class NewRecipe extends Component {
     this.recipe_content.splice(index, 1);
   }
 
+      /* Legge til oppskrift i databasen */
   addRecipe() {
     let recipe: Recipe = {
       oppskrift_id: 0,
@@ -322,6 +318,8 @@ export class NewRecipe extends Component {
         .then((id) => this.addRecipeIngredient(id))
         .catch((error) => Alert.danger('Creating new recipe: ' + error.message));
   }
+
+    /* Legge til ingredienser i databasen */
   addRecipeIngredient(id: number) {
     this.recipe_content.forEach((element) => {
       element.oppskrift_id = id;
@@ -332,6 +330,7 @@ export class NewRecipe extends Component {
       .catch((error) => Alert.danger('Creating new recipe: ' + error.message));
   }
 
+  /* Legge til ingredienser i arrayen med ingredienser slik at de ligger klare til å pushes til db */
   chooseIngredientFunc(id: number) {
     if (id === 0 || id === undefined || id === null || id === NaN) {
       Alert.info('Du må velge en ingrediens');
@@ -349,6 +348,8 @@ export class NewRecipe extends Component {
       // hver enkelt inputfelt til et obejct sin menge eller måleenhet
     }
   }
+
+  /* Legge til ny kategori hvis ønsket kategori ikke eksisterer */
   addCategoryFunc() {
     // sjekker om kategorien allerede finnes i arrayen med kategorier, hvis ikke legger den til landet i databasen
     // hentet fra databasen
@@ -359,6 +360,7 @@ export class NewRecipe extends Component {
       return false;
     });
 
+    // hvis kategorien ikke finnes i arrayen med kategorier, legger den til i databasen og oppdaterer arrayen
     const result =
       this.category_name.charAt(0).toUpperCase() + this.category_name.slice(1).toLowerCase();
     this.category_name = result;
@@ -380,6 +382,8 @@ export class NewRecipe extends Component {
 
     this.category_name = '';
   }
+
+  /* Legge til nytt land hvis ønsket land ikke eksisterer */
   addCountryFunc() {
     // sjekker om landet allerede finnes i arrayen med land, hvis ikke legger den til landet i databasen
     // hentet fra databasen
@@ -391,6 +395,7 @@ export class NewRecipe extends Component {
       return false;
     });
 
+    // hvis landet ikke finnes i arrayen med land, legger den til i databasen og oppdaterer arrayen
     const result =
       this.country_name.charAt(0).toUpperCase() + this.country_name.slice(1).toLowerCase();
     this.country_name = result;
@@ -411,6 +416,8 @@ export class NewRecipe extends Component {
     }
     this.country_name = '';
   }
+
+  /* Legge til ny ingrediens hvis ønsket ingrediens ikke eksisterer */
   addIngredientFunc() {
     // sjekker om ingrediensen allerede finnes i arrayen med ingredienser
     // hentet fra databasen
@@ -436,22 +443,27 @@ export class NewRecipe extends Component {
         )
         .catch((error) => Alert.danger('Error : ' + error.message));
       this.ingredient = '';
-    } else Alert.info('Ingrediensen finnes allerede eller du har ikke skrevet noe');
+    } else Alert.info('Ingrediensen finnes allerede eller så har du ikke skrevet noe');
 
     this.country_name = '';
   }
 
+  /* Setter id-en til landet */
   checkCountry(value: number) {
     this.country_id = value;
   }
 
+  /* Setter id-en til kategorien */
   checkCategory(value: number) {
     this.category_id = value;
   }
+
+
   mounted() {
     this.selectedIngredient.ingred_id = 0;
     this.selectedIngredient.ingred_navn = '';
 
+    /* Henter alle landene i databasen og legger de i arrayen */
     service
       .getAllCountry()
       .then((countries) => {
@@ -460,6 +472,8 @@ export class NewRecipe extends Component {
         });
       })
       .catch((error) => Alert.danger('Error getting countries: ' + error.message));
+
+    /* Henter alle kategoriene i databasen og legger de i arrayen */
     service
       .getAllCategory()
       .then((categories) => {
@@ -468,6 +482,8 @@ export class NewRecipe extends Component {
         });
       })
       .catch((error) => Alert.danger('Error getting categories: ' + error.message));
+
+    /* Henter alle ingrediensene i databasen og legger de i arrayen */
     service
       .getAllIngredient()
       .then(

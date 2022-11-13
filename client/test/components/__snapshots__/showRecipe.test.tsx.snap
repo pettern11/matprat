@@ -376,27 +376,13 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
   >
     Last ned oppskriften
   </ButtonSuccess>
-  <Card>
+  <Card
+    title=""
+  >
     <h3>
       Andre oppskrifter i samme kategori:
     </h3>
-    <Row>
-      <Cards
-        key="1"
-        title=""
-      >
-        <NavLink
-          className="black"
-          to="/recipe/1"
-        >
-          <RecipeView
-            img="pizza.jpg"
-            name="Pizza"
-            numbOfPors={4}
-          />
-        </NavLink>
-      </Cards>
-    </Row>
+    <Row />
   </Card>
 </div>
 `;
@@ -777,27 +763,13 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
   >
     Last ned oppskriften
   </ButtonSuccess>
-  <Card>
+  <Card
+    title=""
+  >
     <h3>
       Andre oppskrifter i samme kategori:
     </h3>
-    <Row>
-      <Cards
-        key="1"
-        title=""
-      >
-        <NavLink
-          className="black"
-          to="/recipe/1"
-        >
-          <RecipeView
-            img="pizza.jpg"
-            name="Pizza"
-            numbOfPors={4}
-          />
-        </NavLink>
-      </Cards>
-    </Row>
+    <Row />
   </Card>
 </div>
 `;
@@ -1178,27 +1150,13 @@ exports[`ShowRecipe tests Number increment works 1`] = `
   >
     Last ned oppskriften
   </ButtonSuccess>
-  <Card>
+  <Card
+    title=""
+  >
     <h3>
       Andre oppskrifter i samme kategori:
     </h3>
-    <Row>
-      <Cards
-        key="1"
-        title=""
-      >
-        <NavLink
-          className="black"
-          to="/recipe/1"
-        >
-          <RecipeView
-            img="pizza.jpg"
-            name="Pizza"
-            numbOfPors={4}
-          />
-        </NavLink>
-      </Cards>
-    </Row>
+    <Row />
   </Card>
 </div>
 `;
@@ -1579,27 +1537,13 @@ exports[`ShowRecipe tests Number of likes 1`] = `
   >
     Last ned oppskriften
   </ButtonSuccess>
-  <Card>
+  <Card
+    title=""
+  >
     <h3>
       Andre oppskrifter i samme kategori:
     </h3>
-    <Row>
-      <Cards
-        key="1"
-        title=""
-      >
-        <NavLink
-          className="black"
-          to="/recipe/1"
-        >
-          <RecipeView
-            img="pizza.jpg"
-            name="Pizza"
-            numbOfPors={4}
-          />
-        </NavLink>
-      </Cards>
-    </Row>
+    <Row />
   </Card>
 </div>
 `;
