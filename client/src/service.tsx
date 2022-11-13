@@ -100,7 +100,7 @@ class Service {
       .delete<IceboxIngredient>('/deleteiceboxingredient/' + ingred_id)
       .then((response) => response.data);
   }
-  createIngredient(name: string) {console.log(name);
+  createIngredient(name: string) {
     return axios.post<{}>('/newingredient', { name: name }).then((response) => response.data);
   }
 
@@ -112,7 +112,6 @@ class Service {
   }
 
   createRecipe(recipe: Recipe) {
-    console.log(recipe);
     return axios
       .post<{ id: number }>('/createrecipe', { recipe: recipe })
       .then((response) => response.data.id);
@@ -125,13 +124,11 @@ class Service {
   }
 
   createRecipeIngredient(recipe_content: Recipe_Content[]) {
-    console.log('egentlig andre console lgo', recipe_content);
     return axios
       .post<Recipe_Content>('/create_recipe_ingredient', { recipe_content: recipe_content })
       .then((response) => response.data);
   }
   updateRecipeIngredient(recipeContent: Recipe_Content[]) {
-    console.log('her motas dets', recipeContent);
     return axios
       .put('/update_recipe_ingredient', { recipeContent: recipeContent })
       .then((response) => response.data);
@@ -155,7 +152,6 @@ class Service {
       .then((response) => response.data);
   }
   deleteIngredient(recipe_id: number, ingred_id: number) {
-    console.log('her er det', recipe_id, ingred_id);
     return axios
       .delete<Recipe_Content>('/deleteingredient/' + recipe_id + '/' + ingred_id)
       .then((response) => response.data);

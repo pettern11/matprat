@@ -260,7 +260,6 @@ describe('NewRecipe tests', () => {
     setTimeout(() => {
       wrapper.find('#createIngredientFunc').simulate('click');
       setTimeout(() => {
-        console.log(wrapperAlert.debug());
         expect(
           wrapperAlert.containsAllMatchingElements([
             <div>

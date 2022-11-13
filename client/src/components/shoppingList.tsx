@@ -44,7 +44,6 @@ export class ShoppingList extends Component {
                     //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
                     //men det fungerer ikke https://react-select.com/styles
                     onChange={(event) => {
-                      console.log(event.value);
                       this.selectedIngredient.ingred_id = Number(event.value);
                     }}
                   />
@@ -70,7 +69,6 @@ export class ShoppingList extends Component {
                   />
                   <Button.Success
                     onClick={() => {
-                      console.log(this.selectedIngredient),
                         this.addExistingItem(this.selectedIngredient);
                     }}
                   >
@@ -241,7 +239,6 @@ export class ShoppingList extends Component {
   }
 
   addIngredient(item: string) {
-    console.log(item);
     if (item == null || item == undefined || item == '') {
       Alert.danger('Du må fylle inn navn på ingrediensen');
     } else if (

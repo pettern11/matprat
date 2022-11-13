@@ -99,7 +99,6 @@ export class ShowAllRecipe extends Component {
   /* Sorterer ingredienene etter det som blir valgt i selecten */
   sortRecipe(value: number) {
     this.sortByArray = value;
-    console.log(this.sortByArray);
     //@ts-ignore
     //or create element input with id indexsearch
     let aaa = document.getElementById('indexsearch') || document.createElement('input');
@@ -188,12 +187,10 @@ export class ShowAllRecipe extends Component {
 
   /* Søk etter oppskrift, hvis man velger land eller kategori vil man kunne velge land eller kategori*/
   search(searchterm: any) {
-    console.log('her er dens', searchterm.toString());
     // let searchFilter = { value: 4 };
     let searchFilter = document.getElementById('sortBy') || document.createElement('select');
     //find searchFilter value
 
-    console.log(Number(searchFilter.value));
     //if searchFilter is 0,1,2,3 then sort by name
     if (
       Number(searchFilter.value) == 0 ||

@@ -13,7 +13,7 @@ CREATE TABLE oppskrift(
   oppskrift_beskrivelse LONGTEXT NOT NULL,
   oppskrift_steg LONGTEXT NOT NULL,
   ant_pors INT NOT NULL,
-  bilde_adr VARCHAR(255),
+  bilde_adr VARCHAR(255) DEFAULT 'https://miro.medium.com/max/1000/1*5DnGR_PQnMR7CkZhvNuMYQ.png',
   kategori_id INT NOT NULL,
   land_id INT NOT NULL,
   ant_like INT NOT NULL DEFAULT 0,

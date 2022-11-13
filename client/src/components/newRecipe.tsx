@@ -189,7 +189,6 @@ export class NewRecipe extends Component {
                         //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
                         //men det fungerer ikke https://react-select.com/styles
                         onChange={(event) => {
-                          console.log(event);
                           this.chooseIngredientFunc(event?.value);
                         }}
                       />
@@ -234,7 +233,7 @@ export class NewRecipe extends Component {
                 <Column>
                   <Row>
                     <div className="col" style={{ width: '' }}>
-                      <p>Porsjoner:</p>
+                      <p>Steg:</p>
                     </div>
                     <div className="col" style={{ width: '' }}>
                       <Form.Textarea
@@ -340,7 +339,7 @@ export class NewRecipe extends Component {
       service
         .createRecipe(recipe)
         .then((id) => this.addRecipeIngredient(id))
-        .catch((error) => Alert.danger('Creating new recipe: ' + error.message));
+        .catch((error) => Alert.danger('Du mangler å fylle ut noe i oppskriften'));
   }
 
   /* Legge til ingredienser i databasen */

@@ -278,9 +278,14 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
       };
       service.addIngredient(ingredient).then(() => {
         i++;
+
+        //sjeker om alle ingredienser er lagt til før den endrer siden til shoppinglist
+        if (i == this.recipeContent.length) {
+          history.push('/shoppinglist')
+        }
       });
     });
-    i == this.recipeContent.length ? history.push('/shoppinglist') : '';
-    //sjeker om alle ingredienser er lagt til før den endrer siden til shoppinglist
   }
+
+  
 }
