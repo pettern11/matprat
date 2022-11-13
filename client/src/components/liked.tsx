@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Alert, Cards, Oppskrifter, Row, Rows, RecipeView } from '.././widgets';
+import { Alert, Cards, Rows, RecipeView } from '.././widgets';
 import { NavLink } from 'react-router-dom';
-import service, { Recipe, List } from '.././service';
+import service, { Recipe } from '.././service';
 import { createHashHistory } from 'history';
 
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student

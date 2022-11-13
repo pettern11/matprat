@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Alert, Card, Row, Button, Cards, Rows, RecipeView } from '.././widgets';
+import { Alert, Card, Row, Button, Cards, RecipeView } from '.././widgets';
 import { NavLink } from 'react-router-dom';
 import service, { Category, Ingredient, Recipe, Recipe_Content } from '.././service';
 import { createHashHistory } from 'history';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
-import Select from 'react-select';
 
 export class ShowRecipe extends Component<{ match: { params: { id: number } } }> {
   recipe: Recipe = {
@@ -234,6 +233,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
     Alert.info('Oppskriten ble lastet ned');
     setTimeout(() => {
       URL.revokeObjectURL(url);
+      /* @ts-ignore */
       tempEl.parentNode.removeChild(tempEl);
     }, 2000);
   }
@@ -266,7 +266,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
       .then(() => history.push('/'))
       .catch((error) => Alert.danger('Error deleting recipe: ' + error.message));
   }
-  
+
   //Legger til ingredienser til handleliste
   ingredientsToShoppingList() {
     let i = 0;

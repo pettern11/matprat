@@ -6,14 +6,11 @@ import {
   Row,
   Rows,
   Column,
-  Form,
   Button,
   RecipeView,
   Cards,
-  IceboxsCard,
 } from '.././widgets';
-import { NavLink } from 'react-router-dom';
-import service, { Ingredient, Recipe, Recipe_Content, List } from '.././service';
+import service, { Ingredient, Recipe, Recipe_Content } from '.././service';
 import Select from 'react-select';
 
 export class Icebox extends Component {
