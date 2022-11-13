@@ -1,4 +1,3 @@
-import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
@@ -12,7 +11,7 @@ import {
   RecipeView,
 } from '../widgets';
 
-import service, { Recipe, Category, Country } from '../service';
+import service, { Recipe} from '../service';
 import Select from 'react-select';
 
 export class ShowAllRecipe extends Component {
@@ -119,9 +118,8 @@ export class ShowAllRecipe extends Component {
         const y = b.oppskrift_navn.toLowerCase();
         return x < y ? -1 : x > y ? 1 : 0;
       });
-    } 
-    /* Sorter Z-A */
-    else if (value == 2) {
+    } else if (value == 2) {
+      /* Sorter Z-A */
       this.hideInput = 'inline';
       this.hideSelect = 'none ';
       //@ts-ignore
@@ -131,9 +129,8 @@ export class ShowAllRecipe extends Component {
         const y = b.oppskrift_navn.toLowerCase();
         return x < y ? -1 : x > y ? 1 : 0;
       });
-    } 
-    /* Sorter etter nyeste */
-    else if (value == 3) {
+    }else if (value == 3) {
+      /* Sorter etter nyeste */
       this.hideInput = 'inline';
       this.hideSelect = 'none ';
       //@ts-ignore
@@ -143,16 +140,15 @@ export class ShowAllRecipe extends Component {
         const y = b.oppskrift_id;
         return x < y ? -1 : x > y ? 1 : 0;
       });
-    }
-    /* Sorter etter Land */
-    else if (value == 4) {
+    }else if (value == 4) {
+          /* Sorter etter Land */
+
       this.hideInput = 'none ';
       this.hideSelect = 'inline';
       //@ts-ignore
       aaa.placeholder = 'Søk etter land';
-    } 
+    }else if (value == 5) {
     /* Sorter etter Kategori */
-    else if (value == 5) {
       this.hideInput = 'none ';
       this.hideSelect = 'inline';
       //@ts-ignore
