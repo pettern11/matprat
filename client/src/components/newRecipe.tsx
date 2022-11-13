@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Alert, Card, Row, Column, Form, Button } from '.././widgets';
+import { Alert, Card, CardFull, Row, Column, Form, Button } from '.././widgets';
 import Select from 'react-select';
 import service, { Ingredient, Recipe, Recipe_Content } from '.././service';
 import { createHashHistory } from 'history';
@@ -34,79 +34,81 @@ export class NewRecipe extends Component {
           {/* <Card title="Registrer en ny oppskrift"> */}
           {/* input navn */}
           <Row>
-            <div className="col" style={{ width: '50%', paddingRight: '0px' }}>
-              <Card title="Registrer en ny oppskrift">
-                <Column>
+            <div className="col-4" style={{ paddingRight: '0px' }}>
+              <CardFull title="Registrer en ny oppskrift">
+                <div className="col">
                   <Row>
-                    <div className="col" style={{ width: '' }}>
-                      <p>Name:</p>
+                    <div className="col-4">
+                      <p>Navn:</p>
                     </div>
-                    <div className="col" style={{ width: '' }}>
+                    <div className="col-8">
                       <Form.Input
                         id="recipe_name_input"
                         type="text"
                         value={this.name}
                         onChange={(event) => (this.name = event.currentTarget.value)}
                         rows={1}
-                        style={{ width: '' }}
+                        style={{ width: '220px' }}
                       />
                     </div>
                   </Row>
                   <br />
                   {/* input beksrivelse */}
                   <Row>
-                    <div className="col" style={{ width: '' }}>
+                    <div className="col-4">
                       <p>Beskrivelse:</p>
                     </div>
-                    <div className="col" style={{ width: '' }}>
+                    <div className="col-8">
                       <Form.Textarea
                         id="recipe_description_input"
                         type="text"
                         value={this.description}
                         onChange={(event) => (this.description = event.currentTarget.value)}
                         rows={3}
-                        style={{ width: '' }}
+                        style={{ width: '220px' }}
                       />
                     </div>
                   </Row>
                   <br />
                   {/* input bilde url */}
                   <Row>
-                    <div className="col" style={{ width: '' }}>
+                    <div className="col-4">
                       <p>Url:</p>
                     </div>
-                    <div className="col" style={{ width: '' }}>
+                    <div className="col-8">
                       <Form.Input
                         id="recipe_picture_url_input"
                         type="text"
                         value={this.picture_adr}
                         onChange={(event) => (this.picture_adr = event.currentTarget.value)}
+                        style={{ width: '220px' }}
                       />
                     </div>
                   </Row>
                   <br />
                   {/* input antall porsjoner */}
                   <Row>
-                    <div className="col" style={{ width: '200px' }}>
+                    <div className="col-4">
                       <p>Porsjoner:</p>
                     </div>
-                    <div className="col" style={{ width: '' }}>
+                    <div className="col-8">
                       <Form.Input
                         id="recipe_portions_input"
                         type="number"
                         value={this.portions}
                         //@ts-ignore
                         onChange={(event) => (this.portions = event.currentTarget.value)}
+                        style={{ width: '220px' }}
                       />
                     </div>
                   </Row>
                   <br />
                   {/* velg retten sin kategori */}
                   <Row>
-                    <div className="col" style={{ width: '' }}>
+                    <div className="col-4">
                       <p>Kategori:</p>
                     </div>
-                    <Column>
+                    <div className="col-8">
                       <Select
                         id="choseCategory"
                         options={this.categories}
@@ -123,6 +125,7 @@ export class NewRecipe extends Component {
                         value={this.category_name}
                         onChange={(event) => (this.category_name = event.currentTarget.value)}
                         placeholder="Skriv inn ny kategori"
+                        style={{ width: '220px', marginRight: '0px' }}
                       ></Form.Input>
                       <Button.Success
                         id="addCategoryBtn"
@@ -132,15 +135,15 @@ export class NewRecipe extends Component {
                       >
                         Legg til
                       </Button.Success>
-                    </Column>
+                    </div>
                   </Row>
                   <br />
                   {/* velg land retten kommer fra */}
                   <Row>
-                    <div className="col" style={{ width: '' }}>
+                    <div className="col-4">
                       <p>Land:</p>
                     </div>
-                    <Column>
+                    <div className="col-8">
                       <Select
                         id="choseCountry"
                         options={this.countries}
@@ -158,6 +161,7 @@ export class NewRecipe extends Component {
                         value={this.country_name}
                         onChange={(event) => (this.country_name = event.currentTarget.value)}
                         placeholder="Skriv inn nytt land"
+                        style={{ width: '220px' }}
                       ></Form.Input>
 
                       <Button.Success
@@ -169,7 +173,7 @@ export class NewRecipe extends Component {
                         Legg til
                       </Button.Success>
                       {/* må lage select og options som cars */}
-                    </Column>
+                    </div>
                   </Row>
                   <br />
                   {/* print ut alle ingrediense som allerede er i databasen */}
@@ -177,10 +181,10 @@ export class NewRecipe extends Component {
           nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
 
                   <Row>
-                    <div className="col" style={{ width: '' }}>
+                    <div className="col-4">
                       <p>Ingredienser:</p>
                     </div>
-                    <div className="col">
+                    <div className="col-8">
                       <Select
                         id="choseIngredient"
                         options={this.ingredients}
@@ -198,14 +202,14 @@ export class NewRecipe extends Component {
 
                   {/* <br /> */}
                   <Row>
-                    <div className="col" style={{ width: '' }}>
+                    <div className="col-4">
                       <p>Legg til ny:</p>
                     </div>
-                    <Column>
+                    <div className="col-8">
                       <Form.Input
                         id="createIngredient"
                         type="text"
-                        style={{ width: '210px' }}
+                        style={{ width: '220px' }}
                         value={this.ingredient}
                         onChange={(event) => (this.ingredient = event.currentTarget.value)}
                         placeholder="Skriv inn ny ingrediens"
@@ -218,21 +222,18 @@ export class NewRecipe extends Component {
                       >
                         Legg til
                       </Button.Success>
-                    </Column>
+                    </div>
                   </Row>
-                </Column>
-              </Card>
+                </div>
+              </CardFull>
             </div>
-            <div
-              className="col"
-              style={{ width: '50%', height: '100%', paddingLeft: '0px', paddingRight: '0px' }}
-            >
-              <Card title="">
+            <div className="col-8" style={{ paddingRight: '0px', paddingLeft: '0px' }}>
+              <CardFull>
                 {/* input steg */}
-                <Column>
+                <div className="col">
                   <Row>
-                    <div className="col" style={{ width: '' }}>
-                      <p>Steg:</p>
+                    <div className="col" style={{ width: '120px' }}>
+                      <p>Oppskrift:</p>
                     </div>
                     <div className="col" style={{ width: '' }}>
                       <Form.Textarea
@@ -240,11 +241,12 @@ export class NewRecipe extends Component {
                         type="text"
                         value={this.steps}
                         onChange={(event) => (this.steps = event.currentTarget.value)}
-                        rows={7}
+                        rows={10}
                         style={{ width: '510px' }}
                       />
                     </div>
                   </Row>
+
                   <br />
                   {/* velg hvor mye av hver inngrediense */}
                   <Row>
@@ -292,8 +294,8 @@ export class NewRecipe extends Component {
                       {/* </Card> */}
                     </div>
                   </Row>
-                </Column>
-              </Card>
+                </div>
+              </CardFull>
             </div>
           </Row>
           {/* </Card> */}

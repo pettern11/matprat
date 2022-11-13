@@ -30,7 +30,7 @@ export class ShowAllRecipe extends Component {
                 <div>
                   <Form.Input
                     id="indexsearch"
-                    style={{ width: '210px', display: this.hideInput }}
+                    style={{ width: '220px', display: this.hideInput }}
                     type="text"
                     placeholder="Søk etter oppskrift"
                     value={this.searchterm}
@@ -54,7 +54,7 @@ export class ShowAllRecipe extends Component {
               <Columns>
                 <select
                   id="sortBy"
-                  style={{ width: '210px' }}
+                  style={{ width: '220px' }}
                   onChange={(event) => this.sortRecipe(Number(event.target.value))}
                   className="form-select"
                 >

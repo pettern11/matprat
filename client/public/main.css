@@ -11,17 +11,21 @@ body {
 .css-b62m3t-container {
   position: relative;
   box-sizing: border-box;
-  width: 210px;
+  width: 220px;
   text-align: left;
-}
-/* ::-webkit-scrollbar {
-  width: 1em;
+  /* margin-right: 10%;
+  margin-left: 10%;
+  padding-left: 0px; */
 }
 
-::-webkit-scrollbar-thumb {
-  background: red;
-  border-radius: 10px;
-} */
+.selecting {
+  width: 205px;
+  padding-left: 0px;
+}
+
+.bredde {
+  width: 220px;
+}
 
 pre {
   white-space: pre-wrap;
@@ -31,7 +35,7 @@ pre {
   line-height: 2.5;
 }
 
-.alerts { 
+.alerts {
   width: 100%;
   z-index: 3 !important;
   position: fixed;
@@ -298,8 +302,8 @@ select.form-control {
 }
 
 .stort {
-  width: 400px;
-  height: 400px;
+  width: 500px;
+  height: 500px;
   object-fit: cover;
   object-position: 0% 0;
   border-radius: 10px;
@@ -392,9 +396,9 @@ select.form-control {
   width: 12px;
 }
 
-/* .hundred {
-  width: 100%;
-} */
+.hundred {
+  height: 100%;
+}
 
 #heart-svg {
   cursor: pointer;
