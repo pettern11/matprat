@@ -158,12 +158,12 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
         </Button.Success>
 
         {/* Recomend 5 recipes based on the category */}
-        <Card>
+        <Card title="">
           {/* <br /> */}
           <h3>Andre oppskrifter i samme kategori:</h3>
           <Row>
-            {this.recommendedRecipes.map((recipe) => (
-              <Cards title="" key={recipe.oppskrift_id}>
+            {this.recommendedRecipes.map((recipe,i) => (
+              <Cards title="" key={i}>
                 <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
                   <RecipeView
                     img={recipe.bilde_adr}
@@ -207,7 +207,9 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
       .getAllRepice()
       .then((recipes) => {
         this.allRecipes = recipes;
-        this.allRecipes.length == recipes.length ? this.findRecommendedRecipes(recipes.length) : '';
+        setTimeout(() => {
+          this.findRecommendedRecipes(recipes.length)
+        });
       })
       .catch((error) => Alert.danger('Error getting recipes: ' + error.message));
   }
