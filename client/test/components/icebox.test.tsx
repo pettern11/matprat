@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { findDOMNode } from 'react-dom';
-import { shallow, mount, render } from 'enzyme';
-import { Alert, Card, Row, Column, Form, Button, RecipeView } from '../../src/widgets';
+import { shallow, mount} from 'enzyme';
+import { Button} from '../../src/widgets';
 import { Icebox } from '../../src/components/icebox';
-import { NavLink } from 'react-router-dom';
 
 jest.mock('../../src/service', () => {
   class Service {

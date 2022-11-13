@@ -1,7 +1,6 @@
 import * as React from 'react';
 
-import { shallow, mount } from 'enzyme';
-import { Alert, Card, Row, Column, Form, Button, RecipeView } from '../../src/widgets';
+import { shallow} from 'enzyme';
 import { LikedRecipes } from '../../src/components/liked';
 
 jest.mock('../../src/service', () => {
