@@ -16,7 +16,6 @@ router.get('/shoppinglist', (_request, response) => {
 
 router.post('/addingredient', (request, response) => {
   const data = request.body.ingredient;
-  console.log(data);
   if(data.ingred_id == '' || data.ingred_id == null
    || data.mengde == null
    || data.maleenhet == null){
@@ -30,8 +29,6 @@ router.post('/addingredient', (request, response) => {
 
 router.put('/updateingredient', (request, response) => {
   const data = request.body.ingredient;
-  console.log(data)
-
   shoppingListService
   .updateIngredientShoppinglist(data)
     .then(() => response.send())

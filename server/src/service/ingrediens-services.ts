@@ -22,7 +22,7 @@ class Service {
       pool.query(
         'INSERT INTO ingrediens SET ingred_navn=?',
         [name],
-        (error, results: ResultSetHeader) => {console.log(error)
+        (error, results: ResultSetHeader) => {
           if (error){ return reject(error)};
 
           resolve();

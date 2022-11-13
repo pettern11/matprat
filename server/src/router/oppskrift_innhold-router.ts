@@ -46,7 +46,7 @@ router.put('/update_recipe_ingredient', (request, response) => {
 router.delete('/deleteingredient/:recipeid/:ingredid', (request, response) => {
   oppskrift_innholdService
     .deleteIngredient(Number(request.params.recipeid), Number(request.params.ingredid))
-    .then((_result) =>{console.log(_result); response.status(203).send('Oppskrift innhold slettet.')})
+    .then((_result) =>{response.status(203).send('Oppskrift innhold slettet.')})
     .catch((error) => response.status(500).send(error));
 });
 

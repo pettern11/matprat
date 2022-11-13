@@ -46,7 +46,6 @@ afterAll((done) => {
 describe('oppskrift_innhold GET', () => {
   test('Return all recipe content', (done) => {
     axios.get('/recipecontent').then((response) => {
-      console.log(response.data);
       expect(response.status).toBe(200);
       expect(response.data).toEqual(recipeContent);
       done();
