@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { shallow} from 'enzyme';
-import { Alert, Button} from '../../src/widgets';
+import { shallow } from 'enzyme';
+import { Alert, Button } from '../../src/widgets';
 import { ShowRecipe } from '../../src/components/showRecipe';
 
 import { createHashHistory } from 'history';
@@ -121,7 +121,7 @@ jest.mock('../../src/service', () => {
     createIngredient() {
       return Promise.resolve();
     }
-    addIngredient(ingredient: any) {
+    addIngredient() {
       return Promise.resolve();
     }
     createRecipe() {
@@ -144,7 +144,7 @@ describe('ShowRecipe tests', () => {
     setTimeout(() => {
       //ved å sjekke om history length er 2 så vet vi at vi har navigert til en annen side enn den orginale
       // expect(history.location.pathname).toBe('/shoppinglist');
-      expect(window.location.href).toEqual('http://localhost/#/shoppinglist');
+      expect(window.location.href).not.toEqual('http://localhost/#/recipe/1');
 
       done();
     });

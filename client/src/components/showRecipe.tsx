@@ -56,7 +56,8 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
                 ShowRecipe.instance()?.mounted();
               });
             }}
-          /> {/* Like knapp */}
+          />{' '}
+          {/* Like knapp */}
           <label htmlFor="checkbox">
             <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
               <g id="Group" fill="none" fillRule="evenodd" transform="translate(467 392)">
@@ -135,7 +136,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
             +
           </Button.Success>
         </Card>
-       
+
         <Button.Success onClick={() => history.push('/recipe/edit/' + this.props.match.params.id)}>
           Endre oppskrift
         </Button.Success>
@@ -158,7 +159,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
           {/* <br /> */}
           <h3>Andre oppskrifter i samme kategori:</h3>
           <Row>
-            {this.recommendedRecipes.map((recipe,i) => (
+            {this.recommendedRecipes.map((recipe, i) => (
               <Cards title="" key={i}>
                 <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
                   <RecipeView
@@ -209,7 +210,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
       .then((recipes) => {
         this.allRecipes = recipes;
         setTimeout(() => {
-          this.findRecommendedRecipes(recipes.length)
+          this.findRecommendedRecipes(recipes.length);
         });
       })
       .catch((error) => Alert.danger('Error getting recipes: ' + error.message));
@@ -277,15 +278,8 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
         maleenhet: rc.maleenhet,
       };
       service.addIngredient(ingredient).then(() => {
-        i++;
-
-        //sjeker om alle ingredienser er lagt til før den endrer siden til shoppinglist
-        if (i == this.recipeContent.length) {
-          history.push('/shoppinglist')
-        }
+        history.push('/shoppinglist');
       });
     });
   }
-
-  
 }
