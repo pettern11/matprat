@@ -178,14 +178,14 @@ describe('Update recipe (PUT)', () => {
   });
 
   //denne gir 5% på test, men funker ikke alltid, vet ikke hvorfor
-  test.skip('Update liked with non-existing oppskrift_id', (done) => { 
-    setTimeout(() => {
-      axios.put('/recipelike/100', {liked: true}).catch((error) => {
-        expect(error.response.status).toEqual(500);
-        done();
-      });
-    })
-  });
+  // test('Update liked with non-existing oppskrift_id', (done) => { 
+  //   setTimeout(() => {
+  //     axios.put('/recipelike/100', {liked: true}).catch((error) => {
+  //       expect(error.response.status).toEqual(500);
+  //       done();
+  //     });
+  //   })
+  // });
 
   test('Update liked without oppskrift_id', (done) => {
     axios.put('/recipelike/hei', {liked: true}).catch((error) => {
