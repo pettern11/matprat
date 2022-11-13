@@ -63,46 +63,31 @@ exports[`editRecipe test page renders correct with snapshot 1`] = `
                 Søk:
               </FormLabel>
             </Column>
-            <FormInput
-              id="newRecipeSearch"
+            <ForwardRef
+              id="choseIngredient"
               onChange={[Function]}
-              placeholder="Søk etter ingrediens"
-              type="text"
-              value=""
-            />
-            <select
-              className="form-select"
-              id="selectIngredientNewRecipe"
-              onChange={[Function]}
-              style={
-                {
-                  "width": "210px",
-                }
+              options={
+                [
+                  {
+                    "label": "Søk på ingredienser",
+                    "value": 0,
+                  },
+                  {
+                    "label": "pizzadeig",
+                    "value": 1,
+                  },
+                  {
+                    "label": "pizza fyll",
+                    "value": 2,
+                  },
+                  {
+                    "label": "kjottboller",
+                    "value": 3,
+                  },
+                ]
               }
-            >
-              <option
-                value={3}
-              >
-                kjottboller
-              </option>
-              <option
-                value={2}
-              >
-                pizza fyll
-              </option>
-              <option
-                value={1}
-              >
-                pizzadeig
-              </option>
-            </select>
+            />
           </Column>
-          <ButtonSuccess
-            id="btnIngredAdd"
-            onClick={[Function]}
-          >
-            Legg til
-          </ButtonSuccess>
         </Column>
       </Row>
       <Row>

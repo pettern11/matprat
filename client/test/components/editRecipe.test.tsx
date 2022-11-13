@@ -166,7 +166,7 @@ describe('editRecipe test', () => {
       setTimeout(() => {
         expect(wrapper.find('#ingredNumber0').prop('value')).toBe('2');
         expect(wrapper.find('#ingredType0').prop('value')).toBe('bryst');
-        wrapper.find(Button.Success).at(2).simulate('click');
+        wrapper.find(Button.Success).at(1).simulate('click');
         //expect updateRecipeIngredient to be called as a spy function
         expect(spy).toHaveBeenCalled();
         done();
@@ -174,37 +174,38 @@ describe('editRecipe test', () => {
     });
   });
 
-  //vet denne ikke fungerer men gir masse prosent
   test('add ingredeient to recipe', (done) => {
-    const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
-    wrapper
-      .find('#newRecipeSearch')
-      .simulate('change', { currentTarget: { value: 'kjottboller' } });
-    setTimeout(() => {
-      //expect search to be called
-      expect(wrapper.find('#newRecipeSearch').prop('value')).toBe('kjottboller');
-      wrapper.find(Button.Success).at(0).simulate('click');
-
-      done();
-    });
-  });
-});
-
-describe.skip('skip', () => {
-  test.skip('add ingredent sucessfully', (done) => {
     const wrapper = mount(<EditRecipe match={{ params: { id: 1 } }} />);
     setTimeout(() => {
-      wrapper.find('#selectIngredientNewRecipe').simulate('change', {
-        currentTarget: { value: 3, name: 'kjottboller' },
-      });
+      wrapper.find('#choseIngredient').at(0).simulate('keyDown', { key: 'ArrowDown', keyCode: 40 });
+      wrapper.find('#choseIngredient').at(0).simulate('keyDown', { key: 'ArrowDown', keyCode: 40 });
+      wrapper.find('#choseIngredient').at(0).simulate('keyDown', { key: 'ArrowDown', keyCode: 40 });
+      wrapper.find('#choseIngredient').at(0).simulate('keyDown', { key: 'ArrowDown', keyCode: 40 });
+      wrapper.find('#choseIngredient').at(0).simulate('keyDown', { key: 'Enter', keyCode: 13 });
       setTimeout(() => {
-        expect(wrapper.find('#selectIngredientNewRecipe').prop('value')).toBe(3);
+        expect(wrapper.find('#choseIngredient').at(0).first().text()).toEqual('kjottboller');
 
+        done();
+      });
+    });
+  });
+  test('create ingredent sucessfully', (done) => {
+    const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
+    const wrapperAlert = shallow(<Alert />);
+    setTimeout(() => {
+      wrapper.find('#createIngredient').simulate('change', { currentTarget: { value: 'melk' } });
+      wrapper.find('#createIngredientFunc').simulate('click');
+      setTimeout(() => {
+        expect(wrapper.find('#createIngredient').prop('value')).toBe('');
+        console.log(wrapperAlert.debug());
         done();
       });
       // wrapper.find(Button.Success).at(0).simulate('click');
     });
   });
+});
+
+describe.skip('skip', () => {
   test('save recipe but fail and throw error', (done) => {
     const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
     const wrapperAlert = shallow(<Alert />);
