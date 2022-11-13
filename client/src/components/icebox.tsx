@@ -103,7 +103,7 @@ export class Icebox extends Component {
         });
       })
       .catch((error) => {
-        console.log(error), Alert.danger('Error, ingredient already added: ' + error.message);
+        console.log(error), Alert.danger('Ingredient already added');
       });
   }
 
