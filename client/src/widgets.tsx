@@ -59,18 +59,18 @@ export class Card extends Component<{ title: ReactNode; children: ReactNode }> {
   }
 }
 
-// export class CardFull extends Component<{ title: ReactNode; children: ReactNode }> {
-//   render() {
-//     return (
-//       <div className="card w-100 hundred">
-//         <div className="card-body">
-//           <h5 className="card-title">{this.props.title}</h5>
-//           <div className="card-text">{this.props.children}</div>
-//         </div>
-//       </div>
-//     );
-//   }
-// }
+export class CardFull extends Component<{ title: ReactNode; children: ReactNode }> {
+  render() {
+    return (
+      <div className="card hundred">
+        <div className="card-body">
+          <h5 className="card-title">{this.props.title}</h5>
+          <div className="card-text">{this.props.children}</div>
+        </div>
+      </div>
+    );
+  }
+}
 
 export class Oppskrifter extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {

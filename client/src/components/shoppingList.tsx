@@ -1,12 +1,8 @@
 // @ts-nocheck
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Alert, Card, Row, Column, Form, Button } from '.././widgets';
-import service, {
-  Ingredient,
-  List,
-  ElementShoppingList,
-} from '.././service';
+import { Alert, Card, CardFull, Row, Column, Form, Button } from '.././widgets';
+import service, { Ingredient, List, ElementShoppingList } from '.././service';
 import { createHashHistory } from 'history';
 import Select from 'react-select';
 
@@ -34,8 +30,8 @@ export class ShoppingList extends Component {
       <>
         <div className="margintop">
           <Row>
-            <div className="col" style={{ width: '50%', height: '100%', paddingRight: '0px' }}>
-              <Card title="Legg til varer i kurven din">
+            <div className="col-4" style={{ paddingRight: '0px' }}>
+              <CardFull title="Legg til varer i kurven din">
                 <Column>
                   Søk:
                   <Select
@@ -47,6 +43,7 @@ export class ShoppingList extends Component {
                       this.selectedIngredient.ingred_id = Number(event.value);
                     }}
                   />
+                  <br/>
                   Antall:{' '}
                   <Form.Input
                     id="exisitingmengde"
@@ -57,6 +54,7 @@ export class ShoppingList extends Component {
                       this.selectedIngredient.mengde = event.currentTarget.value;
                     }}
                   />
+                  <br/>
                   Måleenhet:{' '}
                   <Form.Input
                     placeholder="Skriv inn måleenhet"
@@ -74,14 +72,13 @@ export class ShoppingList extends Component {
                   >
                     Legg til
                   </Button.Success>
-                </Column>
-              </Card>
-              <Card title="Legg til ny vare">
-                <Column>
+                  <br/>
+                  <br/>
+                  Legg til ny vare:
                   <Form.Input
                     id="createIngredient"
                     type="text"
-                    style={{ width: '280px' }}
+                    style={{ width: '210px' }}
                     value={this.newIngredient}
                     onChange={(event) => (this.newIngredient = event.currentTarget.value)}
                     placeholder="Skriv inn ny vare"
@@ -96,19 +93,20 @@ export class ShoppingList extends Component {
                   </Button.Success>
                   {/* <div style={{ width: '690px' }}></div> */}
                 </Column>
-              </Card>
-              {/* </div > */}
+                {/* </div > */}
+              </CardFull>
             </div>
-           
-            <div className="col" style={{ width: '50%', height: '100%', padding: '0px' }}>
-              <Card title="Handleliste">
+
+            <div className="col-8" style={{ padding: '0px' }}>
+              <CardFull title="Handleliste">
                 <Column>
                   <div id="liste" className="">
                     {this.shoppingList.map((sl, i) => (
                       <Row key={sl.ingred_id + 'a' + i}>
                         {/* <Row> */}
                         <p style={{ width: '190px' }}>
-                          {i + 1}.{' '}
+                          {/* {i + 1}.{' '} */}
+                          {'- '}
                           {
                             this.ingredients.find((ingredient) => ingredient.value == sl.ingred_id)
                               ?.label
@@ -118,7 +116,7 @@ export class ShoppingList extends Component {
                         <Form.Input
                           className="form-control"
                           type="number"
-                          style={{ width: '75px', marginRight: '10px' }}
+                          style={{ width: '75px', marginRight: '5px', paddingRight: '0px' }}
                           onChange={(event) => {
                             sl.mengde = event.currentTarget.value;
                           }}
@@ -126,7 +124,7 @@ export class ShoppingList extends Component {
                           value={sl.mengde}
                           size={2}
                         ></Form.Input>{' '}
-                        <p style={{ width: '110px' }}>{sl.maleenhet}</p>
+                        <p style={{ width: '110px', paddingLeft: '0px' }}>{sl.maleenhet}</p>
                         <Column width={1}>
                           <Button.Danger onClick={() => this.decrementPortions(sl)}>
                             -
@@ -160,9 +158,9 @@ export class ShoppingList extends Component {
                     <Button.Danger onClick={() => this.deleteAll()}>Slett alle</Button.Danger>
                   </div>
                 </Column>
-              </Card>
+              </CardFull>
             </div>
-            </Row>
+          </Row>
         </div>
       </>
     );

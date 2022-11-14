@@ -1,17 +1,9 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
-import {
-  Cards,
-  Alert,
-  Columns,
-  Row,
-  Rows,
-  Form,
-  RecipeView,
-} from '../widgets';
+import { Cards, Alert, Columns, Row, Rows, Form, RecipeView } from '../widgets';
 
-import service, { Recipe} from '../service';
+import service, { Recipe } from '../service';
 import Select from 'react-select';
 
 export class ShowAllRecipe extends Component {
@@ -29,6 +21,7 @@ export class ShowAllRecipe extends Component {
         <div className="margintop">
           <br />
           <Row>
+            {/* @ts-ignore */}
             <center>
               <Columns>
                 {/* <br/> */}
@@ -37,7 +30,7 @@ export class ShowAllRecipe extends Component {
                 <div>
                   <Form.Input
                     id="indexsearch"
-                    style={{ width: '210px', display: this.hideInput }}
+                    style={{ width: '220px', display: this.hideInput }}
                     type="text"
                     placeholder="Søk etter oppskrift"
                     value={this.searchterm}
@@ -61,7 +54,7 @@ export class ShowAllRecipe extends Component {
               <Columns>
                 <select
                   id="sortBy"
-                  style={{ width: '210px' }}
+                  style={{ width: '220px' }}
                   onChange={(event) => this.sortRecipe(Number(event.target.value))}
                   className="form-select"
                 >
@@ -72,6 +65,7 @@ export class ShowAllRecipe extends Component {
                   <option value="5">Kategori</option>
                 </select>
               </Columns>
+              {/* @ts-ignore */}
             </center>
           </Row>
           <br></br>
@@ -128,7 +122,7 @@ export class ShowAllRecipe extends Component {
         const y = b.oppskrift_navn.toLowerCase();
         return x < y ? -1 : x > y ? 1 : 0;
       });
-    }else if (value == 3) {
+    } else if (value == 3) {
       /* Sorter etter nyeste */
       this.hideInput = 'inline';
       this.hideSelect = 'none ';
@@ -139,15 +133,15 @@ export class ShowAllRecipe extends Component {
         const y = b.oppskrift_id;
         return x < y ? -1 : x > y ? 1 : 0;
       });
-    }else if (value == 4) {
-          /* Sorter etter Land */
+    } else if (value == 4) {
+      /* Sorter etter Land */
 
       this.hideInput = 'none ';
       this.hideSelect = 'inline';
       //@ts-ignore
       aaa.placeholder = 'Søk etter land';
-    }else if (value == 5) {
-    /* Sorter etter Kategori */
+    } else if (value == 5) {
+      /* Sorter etter Kategori */
       this.hideInput = 'none ';
       this.hideSelect = 'inline';
       //@ts-ignore
@@ -193,9 +187,13 @@ export class ShowAllRecipe extends Component {
 
     //if searchFilter is 0,1,2,3 then sort by name
     if (
+      //@ts-ignore
       Number(searchFilter.value) == 0 ||
+      //@ts-ignore
       Number(searchFilter.value) == 1 ||
+      //@ts-ignore
       Number(searchFilter.value) == 2 ||
+      //@ts-ignore
       Number(searchFilter.value) == 3
     ) {
       this.recipes = this.originalrecipes.filter((recipe) =>
@@ -203,6 +201,7 @@ export class ShowAllRecipe extends Component {
       );
     }
     //if searchFilter is 4 then sort by country
+    //@ts-ignore
     else if (Number(searchFilter.value) == 4) {
       let countryId = this.countries.find((country) =>
         country.label.toLowerCase().includes(searchterm.toLowerCase())

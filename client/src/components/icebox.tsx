@@ -1,15 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import {
-  Alert,
-  Card,
-  Row,
-  Rows,
-  Column,
-  Button,
-  RecipeView,
-  Cards,
-} from '.././widgets';
+import { Alert, Card, CardFull, Row, Rows, Column, Button, RecipeView, Cards } from '.././widgets';
 import service, { Ingredient, Recipe, Recipe_Content } from '.././service';
 import Select from 'react-select';
 
@@ -26,60 +17,64 @@ export class Icebox extends Component {
     return (
       <>
         <div className="margintop">
-          <Column width={2}>
-            <Card title="Dine ingredienser:">
-             Søk:
-              <Select
-                id="choseIngredient"
-                options={this.ingredients}
-                onChange={(event) => {
-                  /* @ts-ignore */
-                  this.chooseIngredientFunc(event);
-                }}
-              />
-              <Column>
-                <br />{/* Viser listen med valgte ingredienser */}
-                {this.choosenIngredient.map((ingredient, idx) => (
-                  <Row key={idx}>
-                    <p style={{ width: '199px' }}>{ingredient.ingred_navn}</p>
-                    <Column width={2}>
-                      <Button.Danger
-                        onClick={() => {
-                          this.deleteIceboxIngredient(ingredient.ingred_id);
-                        }}
-                      >
-                        X
-                      </Button.Danger>
-                    </Column>
-                  </Row>
-                ))}
-              </Column>
-            </Card>
-          </Column>
-          <Card title="Oppskrifter basert på dine ingredienser:">
-            <div id="icebox">
-              <Rows>
-                <>{/* Viser oppskrifter som inneholder minst en av de valgte ingrediensene. Dette skjer i funksjonen filterRecipes */}
-                  {this.noDuplicates.map((recipe, idx) => (
-                    <Cards title="" key={idx}>
-                      {/* her må jeg bruke a tag med href link for at testing skal gå gjennom
+          <Row>
+            <div className="col-2" style={{ paddingRight: '0px' }}>
+              <CardFull title="Dine ingredienser">
+                Søk:
+                <Select
+                  id="choseIngredient"
+                  options={this.ingredients}
+                  onChange={(event) => {
+                    /* @ts-ignore */
+                    this.chooseIngredientFunc(event);
+                  }}
+                />
+                <Column>
+                  <br />
+                  {/* Viser listen med valgte ingredienser */}
+                  {this.choosenIngredient.map((ingredient, idx) => (
+                    <Row key={idx}>
+                      <p style={{ width: '185px' }}>{ingredient.ingred_navn}</p>
+                      <Column width={2}>
+                        <Button.Danger
+                          onClick={() => {
+                            this.deleteIceboxIngredient(ingredient.ingred_id);
+                          }}
+                        >
+                          X
+                        </Button.Danger>
+                      </Column>
+                    </Row>
+                  ))}
+                </Column>
+              </CardFull>
+            </div>
+            <div className="col-10" style={{ padding: '0px'}}>
+              <CardFull title="Oppskrifter basert på dine ingredienser">
+                <Rows>
+                  <>
+                    {/* Viser oppskrifter som inneholder minst en av de valgte ingrediensene. Dette skjer i funksjonen filterRecipes */}
+                    {this.noDuplicates.map((recipe, idx) => (
+                      <Cards title="" key={idx}>
+                        {/* her må jeg bruke a tag med href link for at testing skal gå gjennom
                       får feilmedlingen  console.error "The above error occurred in the <Router.Consumer> component"
                       når jeg bruker navlink men testen går gjennom med a href og har ikke noe å si på funksjonaliteten til siden */}
-                      <a className="black" href={'#/recipe/' + recipe.oppskrift_id}>
-                        {/* <NavLink to={'/recipe/' + recipe.oppskrift_id}> */}
-                        <RecipeView
-                          img={recipe.bilde_adr}
-                          name={recipe.oppskrift_navn}
-                          numbOfPors={recipe.ant_pors}
-                        ></RecipeView>
-                        {/* </NavLink> */}
-                      </a>
-                    </Cards>
-                  ))}
-                </>
-              </Rows>
+                        <a className="black" href={'#/recipe/' + recipe.oppskrift_id}>
+                          {/* <NavLink to={'/recipe/' + recipe.oppskrift_id}> */}
+                          <RecipeView
+                            img={recipe.bilde_adr}
+                            name={recipe.oppskrift_navn}
+                            numbOfPors={recipe.ant_pors}
+                          ></RecipeView>
+                          {/* </NavLink> */}
+                        </a>
+                      </Cards>
+                    ))}
+                  </>
+                </Rows>
+              </CardFull>
             </div>
-          </Card>
+          </Row>
         </div>
       </>
     );
@@ -122,7 +117,6 @@ export class Icebox extends Component {
       .catch((error) => Alert.danger('Error deleting icebox ingredient: ' + error.message));
   }
 
-
   filterRecipes() {
     //filter the recipes based on the ingredients in the icebox
     //if the recipe contains one of the ingreient it will be added, if the recipe allready exists it will not be added
@@ -136,8 +130,6 @@ export class Icebox extends Component {
                 this.filteredRecipes.push(recipe);
 
                 this.noDuplicates = [...new Set(this.filteredRecipes)];
-                
-
               }
             }
           });
@@ -163,7 +155,7 @@ export class Icebox extends Component {
       .then((recipes) => (this.recipes = recipes))
       .catch((error) => Alert.danger('Error getting recipes: ' + error.message));
 
-      /* Henter innholdet i alle oppskriftene i databasen, når alt er hentet blir oppskriftene som skal vises filtrert, slik at kun de riktige oppskriftene vises */
+    /* Henter innholdet i alle oppskriftene i databasen, når alt er hentet blir oppskriftene som skal vises filtrert, slik at kun de riktige oppskriftene vises */
     service
       .getAllRecipeContent()
       .then((recipeContent) => (this.recipeContent = recipeContent))

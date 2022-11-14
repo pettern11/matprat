@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Alert, Card, Row, Column, Form, Button } from '.././widgets';
+import { Alert, Card, CardFull, Row, Column, Form, Button } from '.././widgets';
 import service, { Recipe, Recipe_Content } from '.././service';
 import { createHashHistory } from 'history';
 import Select from 'react-select';
@@ -29,125 +29,135 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
     return (
       <>
         <div className="margintop">
-          <Card title={this.recipe.oppskrift_navn}>
-            {/* input navn */}
-            <Row>
-              {/* input steg */}
-              <Column>
-                <Column width={2}>
-                  <Form.Label>Steg:</Form.Label>
-                </Column>
-                <Column>
-                  <Form.Textarea
-                    id="recipe_step"
-                    style={{ width: '500px', height: '400px' }}
-                    type="text"
-                    value={this.recipe.oppskrift_steg}
-                    onChange={(event) => (this.recipe.oppskrift_steg = event.currentTarget.value)}
-                    rows={5}
-                  />
-                </Column>
-              </Column>
-            </Row>
-            <Row>
-              {/* input antall porsjoner */}
-              <Column>
-                <Column width={2}>
-                  <Form.Label>Porsjoner:</Form.Label>
-                </Column>
-                <Column>
-                  <Form.Input
-                    id="recipe_portions"
-                    type="number"
-                    value={this.recipe.ant_pors}
-                    //@ts-ignore
-                    onChange={(event) => (this.recipe.ant_pors = event.currentTarget.value)}
-                  />
-                </Column>
-              </Column>
-            </Row>
-            <Row>
-              {/* print ut alle ingrediense som allerede er i databasen */}
-              {/* vidre ideer her er at vi setter en viss lengde og bredde på diven og så hvis den overflower så må man bare skulle 
-          nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
-              <Column>
-                <Column>
-                  <Column width={2}>
-                    <Form.Label>Søk:</Form.Label>
-                  </Column>
-                  <Select
-                    id="choseIngredient"
-                    options={this.ingredients}
-                    onChange={(event) => {
-                      // @ts-ignore
-                      this.addIngredientFunc(event?.value, this.props.match.params.id);
-                    }}
-                  />
-                </Column>
-              </Column>
-            </Row>
-            <Row>
-              <Column>
+          <Row>
+            <div className="col-6" style={{ paddingRight: '0px' }}>
+              <CardFull>
+                <h3>{this.recipe.oppskrift_navn}</h3>
                 <br />
-                <Form.Input
-                  id="createIngredient"
-                  type="text"
-                  style={{ width: '210px' }}
-                  value={this.ingredient}
-                  onChange={(event) => (this.ingredient = event.currentTarget.value)}
-                  placeholder="Skriv inn ny ingrediens"
-                ></Form.Input>
-                <Button.Success
-                  id="createIngredientFunc"
-                  onClick={() => {
-                    this.createIngredientFunc(this.ingredient);
-                  }}
-                >
-                  Legg til
-                </Button.Success>
-              </Column>
-            </Row>
-            {/* renderer alle ingrediensene som er linket til oppskriften, her kan man også endre på hvor mye det er av hver ingrediens og måleenheten */}
-            <br />
-            <Column>
-              <div id="outprintIngredient" className="scroll">
-                {this.recipeContent.map((rc, i) => (
-                  <Row key={i}>
-                    <p style={{ width: '215px' }}>
-                      {this.ingredients.find((ing) => ing.value == rc.ingred_id)?.label}
-                    </p>
-                    <input
-                      className="form-control"
-                      id={'ingredNumber' + i.toString()}
-                      style={{ width: '75px', marginRight: '0px' }}
-                      type="number"
-                      value={rc.mengde}
-                      onChange={(event) =>
-                        //@ts-ignore
-                        (rc.mengde = event.currentTarget.value)
-                      }
+                <div className="col">
+                  <Row>
+                    <div id="outprintIngredient" className="scroll">
+                    {this.recipeContent.map((rc, i) => (
+                      <Row key={i}>
+                        <p style={{ width: '215px' }}>
+                          {this.ingredients.find((ing) => ing.value == rc.ingred_id)?.label}
+                        </p>
+                        <input
+                          className="form-control"
+                          id={'ingredNumber' + i.toString()}
+                          style={{ width: '75px', marginRight: '0px' }}
+                          type="number"
+                          value={rc.mengde}
+                          onChange={(event) =>
+                            //@ts-ignore
+                            (rc.mengde = event.currentTarget.value)
+                          }
+                        />
+                        <input
+                          className="form-control"
+                          style={{ width: '120px' }}
+                          id={'ingredType' + i.toString()}
+                          type="text"
+                          value={rc.maleenhet}
+                          onChange={(event) =>
+                            //@ts-ignore
+                            (rc.maleenhet = event.currentTarget.value)
+                          }
+                        />
+                        <Column width={2}>
+                          <Button.Danger onClick={() => this.deleteIngredient(rc.ingred_id)}>
+                            x
+                          </Button.Danger>
+                        </Column>
+                      </Row>
+                    ))}
+                    </div>
+                  </Row>
+                  <br />
+                  <br />
+                  <Row>
+                    {/* print ut alle ingrediense som allerede er i databasen */}
+                    {/* vidre ideer her er at vi setter en viss lengde og bredde på diven og så hvis den overflower så må man bare skulle 
+          nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
+                    <p style={{ width: '215px' }}>Ingredienser:</p>
+                    <Select
+                      id="choseIngredient"
+                      className="selecting"
+                      options={this.ingredients}
+                      onChange={(event) => {
+                        // @ts-ignore
+                        this.addIngredientFunc(event?.value, this.props.match.params.id);
+                      }}
                     />
-                    <input
-                      className="form-control"
-                      style={{ width: '120px' }}
-                      id={'ingredType' + i.toString()}
+                  </Row>
+                  <br />
+                  <Row>
+                    <p style={{ width: '215px' }}>Legg til ny:</p>
+                    <Form.Input
+                      id="createIngredient"
                       type="text"
-                      value={rc.maleenhet}
-                      onChange={(event) =>
-                        //@ts-ignore
-                        (rc.maleenhet = event.currentTarget.value)
-                      }
-                    />
-                    <Column width={2}>
-                      <Button.Danger onClick={() => this.deleteIngredient(rc.ingred_id)}>
-                        x
-                      </Button.Danger>
+                      style={{ width: '195px' }}
+                      value={this.ingredient}
+                      onChange={(event) => (this.ingredient = event.currentTarget.value)}
+                      placeholder="Skriv inn ny ingrediens"
+                    ></Form.Input>
+                  </Row>{' '}
+                  <Row>
+                    <p style={{ width: '205px' }}></p>
+                    <Column>
+                      <Button.Success
+                        id="createIngredientFunc"
+                        onClick={() => {
+                          this.createIngredientFunc(this.ingredient);
+                        }}
+                      >
+                        Legg til
+                      </Button.Success>
                     </Column>
                   </Row>
-                ))}
-              </div>
-            </Column>
-          </Card>
+                  <br />
+                  <Row>
+                    {/* input antall porsjoner */}
+                    <p style={{ width: '215px' }}>Porsjoner:</p>
+                    <Form.Input
+                      id="recipe_portions"
+                      style={{ width: '195px' }}
+                      type="number"
+                      value={this.recipe.ant_pors}
+                      //@ts-ignore
+                      onChange={(event) => (this.recipe.ant_pors = event.currentTarget.value)}
+                    />
+                  </Row>
+                </div>
+              </CardFull>
+            </div>
+            <div className="col-6" style={{ paddingRight: '0px', paddingLeft: '0px' }}>
+              <CardFull>
+                {/* input navn */}
+                <Row>
+                  {/* input steg */}
+                  <Column>
+                    <h3>Oppskrift:</h3>
+                    <br />
+                    <Column>
+                      <Form.Textarea
+                        id="recipe_step"
+                        style={{ width: '600px', height: '600px' }}
+                        type="text"
+                        value={this.recipe.oppskrift_steg}
+                        onChange={(event) =>
+                          (this.recipe.oppskrift_steg = event.currentTarget.value)
+                        }
+                        rows={5}
+                      />
+                    </Column>
+                  </Column>
+                </Row>
+
+                {/* renderer alle ingrediensene som er linket til oppskriften, her kan man også endre på hvor mye det er av hver ingrediens og måleenheten */}
+              </CardFull>
+            </div>
+          </Row>{' '}
           <Button.Success onClick={() => this.pushNewChanges()}>Endre oppskrift</Button.Success>
           <Button.Danger
             id="cancelEdit"
@@ -209,7 +219,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
     );
     //hvis ingrediensen ikke finnes i oppskriften vil den bli lagt til
     if (!ifExist.includes(true)) {
-      const add = { oppskrift_id: recipe_id, ingred_id: ingred_id, mengde: 0, maleenhet: '' };
+      const add = { oppskrift_id: recipe_id, ingred_id: ingred_id, mengde: '0', maleenhet: '' };
       this.recipeContent.push(add);
       this.addIngredientToRecipe.push(add);
     } else {
