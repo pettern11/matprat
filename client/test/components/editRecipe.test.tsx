@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { shallow, mount } from 'enzyme';
-import { Alert, Card, Button} from '../../src/widgets';
+import { Alert, Card, Button } from '../../src/widgets';
 import { EditRecipe } from '../../src/components/editRecipe';
 import service from '../../src/service';
 
@@ -113,7 +113,6 @@ describe('editRecipe test', () => {
   test('page renders correct with snapshot', (done) => {
     const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
     setTimeout(() => {
-      expect(wrapper.find(Card).length).toBe(1);
       expect(wrapper).toMatchSnapshot();
       done();
     });

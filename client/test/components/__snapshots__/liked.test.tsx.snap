@@ -7,7 +7,7 @@ exports[`LikedRecipes tests Snapshot LikedRecipes draws correctly 1`] = `
   <div
     className="container-fluid"
   >
-    <Rows>
+    <Row>
       <Cards
         key="1"
         title=""
@@ -23,7 +23,7 @@ exports[`LikedRecipes tests Snapshot LikedRecipes draws correctly 1`] = `
           />
         </NavLink>
       </Cards>
-    </Rows>
+    </Row>
   </div>
 </div>
 `;

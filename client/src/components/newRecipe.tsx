@@ -228,7 +228,7 @@ export class NewRecipe extends Component {
               </CardFull>
             </div>
             <div className="col-8" style={{ paddingRight: '0px', paddingLeft: '0px' }}>
-              <CardFull>
+              <CardFull title="">
                 {/* input steg */}
                 <div className="col">
                   <Row>

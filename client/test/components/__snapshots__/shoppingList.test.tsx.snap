@@ -7,16 +7,14 @@ exports[`Rending Should render after snapshot 1`] = `
   >
     <Row>
       <div
-        className="col"
+        className="col-4"
         style={
           {
-            "height": "100%",
             "paddingRight": "0px",
-            "width": "50%",
           }
         }
       >
-        <Card
+        <CardFull
           title="Legg til varer i kurven din"
         >
           <Column>
@@ -45,6 +43,7 @@ exports[`Rending Should render after snapshot 1`] = `
                 ]
               }
             />
+            <br />
             Antall:
              
             <FormInput
@@ -53,6 +52,7 @@ exports[`Rending Should render after snapshot 1`] = `
               type="number"
               value={0}
             />
+            <br />
             Måleenhet:
              
             <FormInput
@@ -67,19 +67,16 @@ exports[`Rending Should render after snapshot 1`] = `
             >
               Legg til
             </ButtonSuccess>
-          </Column>
-        </Card>
-        <Card
-          title="Legg til ny vare"
-        >
-          <Column>
+            <br />
+            <br />
+            Legg til ny vare:
             <FormInput
               id="createIngredient"
               onChange={[Function]}
               placeholder="Skriv inn ny vare"
               style={
                 {
-                  "width": "280px",
+                  "width": "210px",
                 }
               }
               type="text"
@@ -92,19 +89,17 @@ exports[`Rending Should render after snapshot 1`] = `
               Legg til
             </ButtonSuccess>
           </Column>
-        </Card>
+        </CardFull>
       </div>
       <div
-        className="col"
+        className="col-8"
         style={
           {
-            "height": "100%",
             "padding": "0px",
-            "width": "50%",
           }
         }
       >
-        <Card
+        <CardFull
           title="Handleliste"
         >
           <Column>
@@ -122,9 +117,7 @@ exports[`Rending Should render after snapshot 1`] = `
                     }
                   }
                 >
-                  1
-                  .
-                   
+                  - 
                   Chicken
                    
                 </p>
@@ -135,7 +128,8 @@ exports[`Rending Should render after snapshot 1`] = `
                   size={2}
                   style={
                     {
-                      "marginRight": "10px",
+                      "marginRight": "5px",
+                      "paddingRight": "0px",
                       "width": "75px",
                     }
                   }
@@ -146,6 +140,7 @@ exports[`Rending Should render after snapshot 1`] = `
                 <p
                   style={
                     {
+                      "paddingLeft": "0px",
                       "width": "110px",
                     }
                   }
@@ -205,9 +200,7 @@ exports[`Rending Should render after snapshot 1`] = `
                     }
                   }
                 >
-                  2
-                  .
-                   
+                  - 
                   Salmon
                    
                 </p>
@@ -218,7 +211,8 @@ exports[`Rending Should render after snapshot 1`] = `
                   size={2}
                   style={
                     {
-                      "marginRight": "10px",
+                      "marginRight": "5px",
+                      "paddingRight": "0px",
                       "width": "75px",
                     }
                   }
@@ -229,6 +223,7 @@ exports[`Rending Should render after snapshot 1`] = `
                 <p
                   style={
                     {
+                      "paddingLeft": "0px",
                       "width": "110px",
                     }
                   }
@@ -285,7 +280,7 @@ exports[`Rending Should render after snapshot 1`] = `
               </ButtonDanger>
             </div>
           </Column>
-        </Card>
+        </CardFull>
       </div>
     </Row>
   </div>
