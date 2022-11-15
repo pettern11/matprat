@@ -5,217 +5,267 @@ exports[`editRecipe test page renders correct with snapshot 1`] = `
   <div
     className="margintop"
   >
-    <Card
-      title="Pizza"
-    >
-      <Row>
-        <Column>
-          <Column
-            width={2}
-          >
-            <FormLabel>
-              Steg:
-            </FormLabel>
-          </Column>
-          <Column>
-            <FormTextarea
-              id="recipe_step"
-              onChange={[Function]}
-              rows={5}
-              style={
-                {
-                  "height": "400px",
-                  "width": "500px",
-                }
-              }
-              type="text"
-              value="Bland deigen og la den heve"
-            />
-          </Column>
-        </Column>
-      </Row>
-      <Row>
-        <Column>
-          <Column
-            width={2}
-          >
-            <FormLabel>
-              Porsjoner:
-            </FormLabel>
-          </Column>
-          <Column>
-            <FormInput
-              id="recipe_portions"
-              onChange={[Function]}
-              type="number"
-              value={4}
-            />
-          </Column>
-        </Column>
-      </Row>
-      <Row>
-        <Column>
-          <Column>
-            <Column
-              width={2}
-            >
-              <FormLabel>
-                Søk:
-              </FormLabel>
-            </Column>
-            <ForwardRef
-              id="choseIngredient"
-              onChange={[Function]}
-              options={
-                [
-                  {
-                    "label": "Søk på ingredienser",
-                    "value": 0,
-                  },
-                  {
-                    "label": "pizzadeig",
-                    "value": 1,
-                  },
-                  {
-                    "label": "pizza fyll",
-                    "value": 2,
-                  },
-                  {
-                    "label": "kjottboller",
-                    "value": 3,
-                  },
-                ]
-              }
-            />
-          </Column>
-        </Column>
-      </Row>
-      <Row>
-        <Column>
+    <Row>
+      <div
+        className="col-6"
+        style={
+          {
+            "paddingRight": "0px",
+          }
+        }
+      >
+        <CardFull>
+          <h3>
+            Pizza
+          </h3>
           <br />
-          <FormInput
-            id="createIngredient"
-            onChange={[Function]}
-            placeholder="Skriv inn ny ingrediens"
-            style={
-              {
-                "width": "210px",
-              }
-            }
-            type="text"
-            value=""
-          />
-          <ButtonSuccess
-            id="createIngredientFunc"
-            onClick={[Function]}
+          <div
+            className="col"
           >
-            Legg til
-          </ButtonSuccess>
-        </Column>
-      </Row>
-      <br />
-      <Column>
-        <div
-          className="scroll"
-          id="outprintIngredient"
-        >
-          <Row
-            key="0"
-          >
-            <p
-              style={
-                {
-                  "width": "215px",
-                }
-              }
-            >
-              pizzadeig
-            </p>
-            <input
-              className="form-control"
-              id="ingredNumber0"
-              onChange={[Function]}
-              style={
-                {
-                  "marginRight": "0px",
-                  "width": "75px",
-                }
-              }
-              type="number"
-              value={1}
-            />
-            <input
-              className="form-control"
-              id="ingredType0"
-              onChange={[Function]}
-              style={
-                {
-                  "width": "120px",
-                }
-              }
-              type="text"
-              value="stk"
-            />
-            <Column
-              width={2}
-            >
-              <ButtonDanger
-                onClick={[Function]}
+            <Row>
+              <div
+                className="scroll"
+                id="outprintIngredient"
               >
-                x
-              </ButtonDanger>
+                <Row
+                  key="0"
+                >
+                  <p
+                    style={
+                      {
+                        "width": "215px",
+                      }
+                    }
+                  >
+                    pizzadeig
+                  </p>
+                  <input
+                    className="form-control"
+                    id="ingredNumber0"
+                    onChange={[Function]}
+                    style={
+                      {
+                        "marginRight": "0px",
+                        "width": "75px",
+                      }
+                    }
+                    type="number"
+                    value={1}
+                  />
+                  <input
+                    className="form-control"
+                    id="ingredType0"
+                    onChange={[Function]}
+                    style={
+                      {
+                        "width": "120px",
+                      }
+                    }
+                    type="text"
+                    value="stk"
+                  />
+                  <Column
+                    width={2}
+                  >
+                    <ButtonDanger
+                      onClick={[Function]}
+                    >
+                      x
+                    </ButtonDanger>
+                  </Column>
+                </Row>
+                <Row
+                  key="1"
+                >
+                  <p
+                    style={
+                      {
+                        "width": "215px",
+                      }
+                    }
+                  >
+                    pizza fyll
+                  </p>
+                  <input
+                    className="form-control"
+                    id="ingredNumber1"
+                    onChange={[Function]}
+                    style={
+                      {
+                        "marginRight": "0px",
+                        "width": "75px",
+                      }
+                    }
+                    type="number"
+                    value={1}
+                  />
+                  <input
+                    className="form-control"
+                    id="ingredType1"
+                    onChange={[Function]}
+                    style={
+                      {
+                        "width": "120px",
+                      }
+                    }
+                    type="text"
+                    value="håndfull"
+                  />
+                  <Column
+                    width={2}
+                  >
+                    <ButtonDanger
+                      onClick={[Function]}
+                    >
+                      x
+                    </ButtonDanger>
+                  </Column>
+                </Row>
+              </div>
+            </Row>
+            <br />
+            <br />
+            <Row>
+              <p
+                style={
+                  {
+                    "width": "215px",
+                  }
+                }
+              >
+                Ingredienser:
+              </p>
+              <ForwardRef
+                className="selecting"
+                id="choseIngredient"
+                onChange={[Function]}
+                options={
+                  [
+                    {
+                      "label": "Søk på ingredienser",
+                      "value": 0,
+                    },
+                    {
+                      "label": "pizzadeig",
+                      "value": 1,
+                    },
+                    {
+                      "label": "pizza fyll",
+                      "value": 2,
+                    },
+                    {
+                      "label": "kjottboller",
+                      "value": 3,
+                    },
+                  ]
+                }
+              />
+            </Row>
+            <br />
+            <Row>
+              <p
+                style={
+                  {
+                    "width": "215px",
+                  }
+                }
+              >
+                Legg til ny:
+              </p>
+              <FormInput
+                id="createIngredient"
+                onChange={[Function]}
+                placeholder="Skriv inn ny ingrediens"
+                style={
+                  {
+                    "width": "195px",
+                  }
+                }
+                type="text"
+                value=""
+              />
+            </Row>
+             
+            <Row>
+              <p
+                style={
+                  {
+                    "width": "205px",
+                  }
+                }
+              />
+              <Column>
+                <ButtonSuccess
+                  id="createIngredientFunc"
+                  onClick={[Function]}
+                >
+                  Legg til
+                </ButtonSuccess>
+              </Column>
+            </Row>
+            <br />
+            <Row>
+              <p
+                style={
+                  {
+                    "width": "215px",
+                  }
+                }
+              >
+                Porsjoner:
+              </p>
+              <FormInput
+                id="recipe_portions"
+                onChange={[Function]}
+                style={
+                  {
+                    "width": "195px",
+                  }
+                }
+                type="number"
+                value={4}
+              />
+            </Row>
+          </div>
+        </CardFull>
+      </div>
+      <div
+        className="col-6"
+        style={
+          {
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+          }
+        }
+      >
+        <CardFull>
+          <Row>
+            <Column>
+              <h3>
+                Oppskrift:
+              </h3>
+              <br />
+              <Column>
+                <FormTextarea
+                  id="recipe_step"
+                  onChange={[Function]}
+                  rows={5}
+                  style={
+                    {
+                      "height": "600px",
+                      "width": "600px",
+                    }
+                  }
+                  type="text"
+                  value="Bland deigen og la den heve"
+                />
+              </Column>
             </Column>
           </Row>
-          <Row
-            key="1"
-          >
-            <p
-              style={
-                {
-                  "width": "215px",
-                }
-              }
-            >
-              pizza fyll
-            </p>
-            <input
-              className="form-control"
-              id="ingredNumber1"
-              onChange={[Function]}
-              style={
-                {
-                  "marginRight": "0px",
-                  "width": "75px",
-                }
-              }
-              type="number"
-              value={1}
-            />
-            <input
-              className="form-control"
-              id="ingredType1"
-              onChange={[Function]}
-              style={
-                {
-                  "width": "120px",
-                }
-              }
-              type="text"
-              value="håndfull"
-            />
-            <Column
-              width={2}
-            >
-              <ButtonDanger
-                onClick={[Function]}
-              >
-                x
-              </ButtonDanger>
-            </Column>
-          </Row>
-        </div>
-      </Column>
-    </Card>
+        </CardFull>
+      </div>
+    </Row>
+     
     <ButtonSuccess
       onClick={[Function]}
     >

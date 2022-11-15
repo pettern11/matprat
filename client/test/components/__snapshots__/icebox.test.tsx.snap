@@ -5,89 +5,101 @@ exports[`Icebox tests Snapshot Icebox draws correctly 1`] = `
   <div
     className="margintop"
   >
-    <Column
-      width={2}
-    >
-      <Card
-        title="Dine ingredienser:"
-      >
-        Søk:
-        <ForwardRef
-          id="choseIngredient"
-          onChange={[Function]}
-          options={
-            [
-              {
-                "label": "Søk på ingredienser",
-                "value": 0,
-              },
-              {
-                "label": "pizzadeig",
-                "value": 1,
-              },
-              {
-                "label": "pizza fyll",
-                "value": 2,
-              },
-              {
-                "label": "kjøttboller",
-                "value": 3,
-              },
-            ]
-          }
-        />
-        <Column>
-          <br />
-          <Row
-            key="0"
-          >
-            <p
-              style={
-                {
-                  "width": "199px",
-                }
-              }
-            >
-              kjøttboller
-            </p>
-            <Column
-              width={2}
-            >
-              <ButtonDanger
-                onClick={[Function]}
-              >
-                X
-              </ButtonDanger>
-            </Column>
-          </Row>
-        </Column>
-      </Card>
-    </Column>
-    <Card
-      title="Oppskrifter basert på dine ingredienser:"
-    >
+    <Row>
       <div
-        id="icebox"
+        className="col-2"
+        style={
+          {
+            "paddingRight": "0px",
+          }
+        }
       >
-        <Rows>
-          <Cards
-            key="0"
-            title=""
-          >
-            <a
-              className="black"
-              href="#/recipe/2"
+        <CardFull
+          title="Dine ingredienser"
+        >
+          Søk:
+          <ForwardRef
+            id="choseIngredient"
+            onChange={[Function]}
+            options={
+              [
+                {
+                  "label": "Søk på ingredienser",
+                  "value": 0,
+                },
+                {
+                  "label": "pizzadeig",
+                  "value": 1,
+                },
+                {
+                  "label": "pizza fyll",
+                  "value": 2,
+                },
+                {
+                  "label": "kjøttboller",
+                  "value": 3,
+                },
+              ]
+            }
+          />
+          <Column>
+            <br />
+            <Row
+              key="0"
             >
-              <RecipeView
-                img="kjøttboller.jpg"
-                name="Kjøttboller i brunsaus"
-                numbOfPors={4}
-              />
-            </a>
-          </Cards>
-        </Rows>
+              <p
+                style={
+                  {
+                    "width": "185px",
+                  }
+                }
+              >
+                kjøttboller
+              </p>
+              <Column
+                width={2}
+              >
+                <ButtonDanger
+                  onClick={[Function]}
+                >
+                  X
+                </ButtonDanger>
+              </Column>
+            </Row>
+          </Column>
+        </CardFull>
       </div>
-    </Card>
+      <div
+        className="col-10"
+        style={
+          {
+            "padding": "0px",
+          }
+        }
+      >
+        <CardFull
+          title="Oppskrifter basert på dine ingredienser"
+        >
+          <Rows>
+            <Cards
+              key="0"
+              title=""
+            >
+              <a
+                className="black"
+                href="#/recipe/2"
+              >
+                <RecipeView
+                  img="kjøttboller.jpg"
+                  name="Kjøttboller i brunsaus"
+                  numbOfPors={4}
+                />
+              </a>
+            </Cards>
+          </Rows>
+        </CardFull>
+      </div>
+    </Row>
   </div>
 </Fragment>
 `;

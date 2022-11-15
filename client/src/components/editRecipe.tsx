@@ -31,46 +31,46 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
         <div className="margintop">
           <Row>
             <div className="col-6" style={{ paddingRight: '0px' }}>
-              <CardFull>
+              <CardFull title="">
                 <h3>{this.recipe.oppskrift_navn}</h3>
                 <br />
                 <div className="col">
                   <Row>
                     <div id="outprintIngredient" className="scroll">
-                    {this.recipeContent.map((rc, i) => (
-                      <Row key={i}>
-                        <p style={{ width: '215px' }}>
-                          {this.ingredients.find((ing) => ing.value == rc.ingred_id)?.label}
-                        </p>
-                        <input
-                          className="form-control"
-                          id={'ingredNumber' + i.toString()}
-                          style={{ width: '75px', marginRight: '0px' }}
-                          type="number"
-                          value={rc.mengde}
-                          onChange={(event) =>
-                            //@ts-ignore
-                            (rc.mengde = event.currentTarget.value)
-                          }
-                        />
-                        <input
-                          className="form-control"
-                          style={{ width: '120px' }}
-                          id={'ingredType' + i.toString()}
-                          type="text"
-                          value={rc.maleenhet}
-                          onChange={(event) =>
-                            //@ts-ignore
-                            (rc.maleenhet = event.currentTarget.value)
-                          }
-                        />
-                        <Column width={2}>
-                          <Button.Danger onClick={() => this.deleteIngredient(rc.ingred_id)}>
-                            x
-                          </Button.Danger>
-                        </Column>
-                      </Row>
-                    ))}
+                      {this.recipeContent.map((rc, i) => (
+                        <Row key={i}>
+                          <p style={{ width: '215px' }}>
+                            {this.ingredients.find((ing) => ing.value == rc.ingred_id)?.label}
+                          </p>
+                          <input
+                            className="form-control"
+                            id={'ingredNumber' + i.toString()}
+                            style={{ width: '75px', marginRight: '0px' }}
+                            type="number"
+                            value={rc.mengde}
+                            onChange={(event) =>
+                              //@ts-ignore
+                              (rc.mengde = event.currentTarget.value)
+                            }
+                          />
+                          <input
+                            className="form-control"
+                            style={{ width: '120px' }}
+                            id={'ingredType' + i.toString()}
+                            type="text"
+                            value={rc.maleenhet}
+                            onChange={(event) =>
+                              //@ts-ignore
+                              (rc.maleenhet = event.currentTarget.value)
+                            }
+                          />
+                          <Column width={2}>
+                            <Button.Danger onClick={() => this.deleteIngredient(rc.ingred_id)}>
+                              x
+                            </Button.Danger>
+                          </Column>
+                        </Row>
+                      ))}
                     </div>
                   </Row>
                   <br />
@@ -132,7 +132,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
               </CardFull>
             </div>
             <div className="col-6" style={{ paddingRight: '0px', paddingLeft: '0px' }}>
-              <CardFull>
+              <CardFull title="">
                 {/* input navn */}
                 <Row>
                   {/* input steg */}

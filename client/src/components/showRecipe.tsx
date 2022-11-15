@@ -33,6 +33,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
           <div className="col-6" style={{ paddingRight: '0px' }}>
             <CardFull title="">
               <div className="download1">
+                {/* @ts-ignore */}
                 <center>
                   <img className="stort" src={this.recipe.bilde_adr}></img>
                   <br />
@@ -52,8 +53,10 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
                       )?.kategori_navn
                     }
                   </p>
+                  {/* @ts-ignore */}
                 </center>
               </div>
+              {/* @ts-ignore */}
               <center>
                 <input
                   type="checkbox"
@@ -121,6 +124,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
                   </svg>
                 </label>
                 <p>Likes: {this.recipe.ant_like}</p>
+                {/* @ts-ignore */}
               </center>
               <h3>Ingredienser:</h3>
               <br />
@@ -152,7 +156,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
             </CardFull>
           </div>
           <div className="col-6" style={{ paddingRight: '0px', paddingLeft: '0px' }}>
-            <CardFull>
+            <CardFull title="">
               <div className="col">
                 <Row>
                   <h3>Oppskrift:</h3>
@@ -205,43 +209,87 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
   }
 
   mounted() {
-    /* Hent info om oppskrift */
-    service
-      .getRecipe(this.props.match.params.id)
-      .then((recipe) => {
-        this.recipe = recipe[0];
-        this.portions = recipe[0].ant_pors;
-      })
-      .catch((error) => Alert.danger('Error getting recipe: ' + error.message));
+    //har alle apicallene som async funksjoner fordi forskjellige funksjoner trenger informasjon fra et eller flere apicall og hvis
+    //disse ikke kommer i riktig rekkefølge blir react unhappy og vil ikke rendre riktig
+    const apiCall1 = () => {
+      /* Hent alle kategorier */
 
-    /* Hent alle ingredienser */
-    service
-      .getAllIngredient()
-      .then((ingredients) => (this.ingredients = ingredients))
-      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+      return new Promise((resolve, reject) => {
+        service
+          .getAllCategory()
+          .then((categories) => {
+            (this.categories = categories), resolve(0);
+          })
+          .catch((error) => {
+            Alert.danger('Error getting categories: ' + error.message), reject(1);
+          });
+      });
+    };
+    const apiCall2 = () => {
+      return new Promise((resolve, reject) => {
+        //henter oppskriften
+        service
+          .getRecipe(this.props.match.params.id)
+          .then((recipe) => {
+            this.recipe = recipe[0];
+            this.portions = recipe[0].ant_pors;
+            resolve(0);
+          })
+          .catch((error) => {
+            Alert.danger('Error getting recipe: ' + error.message), reject(1);
+          });
+      });
+    };
 
-    /* Hent ingredienser til oppskrift */
-    service
-      .getRecipeContent(this.props.match.params.id)
-      .then((recipeContent) => (this.recipeContent = recipeContent))
-      .catch((error) => Alert.danger('Error getting recipe content: ' + error.message));
-
-    /* Hent alle kategorier */
-    service
-      .getAllCategory()
-      .then((categories) => (this.categories = categories))
-      .catch((error) => Alert.danger('Error getting categories: ' + error.message));
-
-    /* Hent alle oppskrifter */
-    service
-      .getAllRepice()
-      .then((recipes) => {
-        this.allRecipes = recipes;
-        setTimeout(() => {
-          this.findRecommendedRecipes(recipes.length);
-        });
-      })
-      .catch((error) => Alert.danger('Error getting recipes: ' + error.message));
+    const apiCall3 = () => {
+      return new Promise((resolve, reject) => {
+        /* Hent alle ingredienser */
+        service
+          .getAllIngredient()
+          .then((ingredients) => {
+            (this.ingredients = ingredients), resolve(0);
+          })
+          .catch((error) => {
+            Alert.danger('Error getting ingredients: ' + error.message), reject(1);
+          });
+      });
+    };
+    const apiCall4 = () => {
+      return new Promise((resolve, reject) => {
+        /* Hent ingredienser til oppskrift */
+        service
+          .getRecipeContent(this.props.match.params.id)
+          .then((recipeContent) => {
+            (this.recipeContent = recipeContent), resolve(0);
+          })
+          .catch((error) => {
+            Alert.danger('Error getting recipe content: ' + error.message), reject(1);
+          });
+      });
+    };
+    const apiCall5 = () => {
+      return new Promise((resolve, reject) => {
+        /* Hent alle oppskrifter */
+        service
+          .getAllRepice()
+          .then((recipes) => {
+            this.allRecipes = recipes;
+            resolve(0);
+          })
+          .catch((error) => {
+            Alert.danger('Error getting recipes: ' + error.message), reject(1);
+          });
+      });
+    };
+    const runApiCalls = async () => {
+      await apiCall1();
+      await apiCall2();
+      await apiCall3();
+      await apiCall4();
+      await apiCall5();
+      this.findRecommendedRecipes();
+    };
+    runApiCalls();
   }
   //https://stackoverflow.com/questions/68152987/how-to-download-part-of-a-react-component
   //Gjør siden nedlastbar, slik at den lett kan deles med andre
@@ -266,9 +314,8 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
       tempEl.parentNode.removeChild(tempEl);
     }, 2000);
   }
-
   //Finner 5 tilfeldige oppskrifter i samme kategori som den valgte oppskriften
-  findRecommendedRecipes(lengtCheck: number) {
+  findRecommendedRecipes() {
     this.recommendedRecipes = this.allRecipes.filter(
       (recipe) => recipe.kategori_id == this.recipe.kategori_id
     );

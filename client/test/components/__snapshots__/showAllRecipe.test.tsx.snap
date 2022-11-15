@@ -17,7 +17,7 @@ exports[`ShowAllRecipe tests Snapshot showAllRecipe draws correctly 1`] = `
               style={
                 {
                   "display": "inline",
-                  "width": "210px",
+                  "width": "220px",
                 }
               }
               type="text"
@@ -59,7 +59,7 @@ exports[`ShowAllRecipe tests Snapshot showAllRecipe draws correctly 1`] = `
             onChange={[Function]}
             style={
               {
-                "width": "210px",
+                "width": "220px",
               }
             }
           >
