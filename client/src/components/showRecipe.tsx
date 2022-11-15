@@ -123,10 +123,9 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
                     </g>
                   </svg>
                 </label>
-                <p>Likes: {this.recipe.ant_like}</p>
-                {/* @ts-ignore */}
+                {/* <p>Likes: {this.recipe.ant_like}</p> */}
               </center>
-              <h3>Ingredienser:</h3>
+              <h4>Ingredienser:</h4>
               <br />
               {/* Viser ingrediensene */}
               <div className="scroll">
@@ -134,7 +133,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
                   <Row key={i}>
                     <p style={{ width: '250px' }}>
                       {/* {i + 1}. find name of ingridient */}
-                      {'- '}
+                      {'• '}
                       {this.ingredients.find((ing) => ing.ingred_id == rc.ingred_id)?.ingred_navn}
                       {/* {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}{' '} */}
                     </p>
@@ -145,6 +144,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
                   </Row>
                 ))}
               </div>
+              <br/>
               Porsjoner:{' '}
               <Button.Danger id="btnDec" onClick={this.decrementPortions}>
                 -
@@ -159,7 +159,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
             <CardFull title="">
               <div className="col">
                 <Row>
-                  <h3>Oppskrift:</h3>
+                  <h4>Oppskrift:</h4>
                   <br />
                   <div className="download2">
                     <pre>{this.recipe.oppskrift_steg}</pre>
@@ -192,7 +192,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
           <h3>Andre oppskrifter i samme kategori:</h3>
           <Row>
             {this.recommendedRecipes.map((recipe, i) => (
-              <Cards title="" key={i}>
+              <Cards numbOfPors={recipe.ant_pors} title="" key={i}>
                 <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
                   <RecipeView
                     img={recipe.bilde_adr}
