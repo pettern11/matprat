@@ -35,7 +35,9 @@ export class NewRecipe extends Component {
           {/* input navn */}
           <Row>
             <div className="col-4" style={{ paddingRight: '0px' }}>
-              <CardFull title="Registrer en ny oppskrift">
+              <CardFull title="">
+                <h4>Registrer en ny oppskrift</h4>
+                <br/>
                 <div className="col">
                   <Row>
                     <div className="col-4">
@@ -73,7 +75,7 @@ export class NewRecipe extends Component {
                   {/* input bilde url */}
                   <Row>
                     <div className="col-4">
-                      <p>Url:</p>
+                      <p>Bilde-url:</p>
                     </div>
                     <div className="col-8">
                       <Form.Input
@@ -195,17 +197,7 @@ export class NewRecipe extends Component {
                           this.chooseIngredientFunc(event?.value);
                         }}
                       />
-                    </div>
-                  </Row>
-                  <br />
-                  {/* legg til ingredienser */}
-
-                  {/* <br /> */}
-                  <Row>
-                    <div className="col-4">
-                      <p>Legg til ny:</p>
-                    </div>
-                    <div className="col-8">
+                      {/* legg til ingredienser */}
                       <Form.Input
                         id="createIngredient"
                         type="text"
@@ -224,6 +216,7 @@ export class NewRecipe extends Component {
                       </Button.Success>
                     </div>
                   </Row>
+                  <br />
                 </div>
               </CardFull>
             </div>
@@ -232,28 +225,27 @@ export class NewRecipe extends Component {
                 {/* input steg */}
                 <div className="col">
                   <Row>
-                    <div className="col" style={{ width: '120px' }}>
-                      <p>Oppskrift:</p>
-                    </div>
-                    <div className="col" style={{ width: '' }}>
-                      <Form.Textarea
+                    <p>Oppskrift:</p>
+                    <textarea
+                      className="form-control round"
+                      id="recipe_steps_input"
+                      value={this.steps}
+                      onChange={(event) => (this.steps = event.currentTarget.value)}
+                    ></textarea>
+                    {/* <Form.Textarea
                         id="recipe_steps_input"
                         type="text"
                         value={this.steps}
                         onChange={(event) => (this.steps = event.currentTarget.value)}
                         rows={10}
-                        style={{ width: '510px' }}
-                      />
-                    </div>
+                        style={{ width: '910px' }}
+                      /> */}
                   </Row>
-
                   <br />
                   {/* velg hvor mye av hver inngrediense */}
                   <Row>
-                    <div id="outprintIngredient" className="scroll">
-                      <div className="col" style={{ width: '30' }}>
-                        <p>Ingredienser:</p>
-                      </div>
+                    <p>Ingredienser:</p>
+                    <div id="outprintIngredient" className="scroll round">
                       {/* <Card> */}
                       <div className="col" style={{ width: '' }}>
                         {this.recipe_content.map((rc, i) => (

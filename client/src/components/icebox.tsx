@@ -18,7 +18,7 @@ export class Icebox extends Component {
       <>
         <div className="margintop">
           <Row>
-            <div className="col-2" style={{ paddingRight: '0px' }}>
+            <div className="col-3" style={{ paddingRight: '0px' }}>
               <CardFull title="Dine ingredienser">
                 Søk:
                 <Select
@@ -49,13 +49,13 @@ export class Icebox extends Component {
                 </Column>
               </CardFull>
             </div>
-            <div className="col-10" style={{ padding: '0px'}}>
+            <div className="col-9" style={{ padding: '0px'}}>
               <CardFull title="Oppskrifter basert på dine ingredienser">
                 <Rows>
                   <>
                     {/* Viser oppskrifter som inneholder minst en av de valgte ingrediensene. Dette skjer i funksjonen filterRecipes */}
                     {this.noDuplicates.map((recipe, idx) => (
-                      <Cards title="" key={idx}>
+                      <Cards numbOfPors={recipe.ant_pors} title="" key={idx}>
                         {/* her må jeg bruke a tag med href link for at testing skal gå gjennom
                       får feilmedlingen  console.error "The above error occurred in the <Router.Consumer> component"
                       når jeg bruker navlink men testen går gjennom med a href og har ikke noe å si på funksjonaliteten til siden */}

@@ -13,11 +13,12 @@ export class LikedRecipes extends Component {
     return (
       <div className="margintop">
         <div className="container-fluid">
-          <Row>{/* Filtrerer recipes etter hvilke som er likt og viser de med et card som linker til oppskriften */}
+          <Rows>
+            {/* Filtrerer recipes etter hvilke som er likt og viser de med et card som linker til oppskriften */}
             {this.recipes
               .filter((recipe) => recipe.liked == true)
               .map((likedRecipe) => (
-                <Cards title="" key={likedRecipe.oppskrift_id}>
+                <Cards numbOfPors={likedRecipe.ant_pors} key={likedRecipe.oppskrift_id}>
                   <NavLink className="black" to={'/recipe/' + likedRecipe.oppskrift_id}>
                     <RecipeView
                       img={likedRecipe.bilde_adr}
@@ -27,7 +28,7 @@ export class LikedRecipes extends Component {
                   </NavLink>
                 </Cards>
               ))}
-          </Row>
+          </Rows>
         </div>
       </div>
     );

@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { NavBar, Car, Card, Cards, Alert, Rows, RecipeView } from './widgets';
+import { NavBar, Car, Card, Cardse, Alert, Rows, RecipeView } from './widgets';
 import { NewRecipe } from './components/newRecipe';
 import { EditRecipe } from './components/editRecipe';
 import { ShowRecipe } from './components/showRecipe';
@@ -94,7 +94,7 @@ export class Home extends Component {
                   <Rows>
                     {this.recipes.length != 0
                       ? this.suggestedRecipeList.map((likedRecipe, i) => (
-                          <Cards title="" key={likedRecipe.oppskrift_id + i + 'card'}>
+                          <Cardse title="" key={likedRecipe.oppskrift_id + i + 'card'}>
                             <NavLink
                               key={likedRecipe.oppskrift_id + 'navlink2'}
                               className="black"
@@ -107,7 +107,7 @@ export class Home extends Component {
                                 numbOfPors={likedRecipe.ant_pors}
                               ></RecipeView>
                             </NavLink>
-                          </Cards>
+                          </Cardse>
                         ))
                       : ''}
                   </Rows>

@@ -8,19 +8,6 @@ import { NavLink } from 'react-router-dom';
  *
  * Properties: title
  */
-export class RecipeView extends Component<{ img: string; name: string; numbOfPors: number }> {
-  render() {
-    return (
-      <div className="recipe-div text-center">
-        <div className="recipe-body">
-          <img className="image" src={this.props.img} alt="bilde av oppskrift" />
-          <h6 className="recipe-title">{this.props.name}</h6>
-          <div className="recipe-portions">{this.props.numbOfPors} porsjoner</div>
-        </div>
-      </div>
-    );
-  }
-}
 export class IceboxsCard extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
     return (
@@ -33,13 +20,49 @@ export class IceboxsCard extends Component<{ title: ReactNode; children: ReactNo
     );
   }
 }
-export class Cards extends Component<{ title: ReactNode; children: ReactNode }> {
+
+export class RecipeView extends Component<{ img: string; name: string; numbOfPors: number }> {
   render() {
     return (
-      <div className="card cards cards-white">
+      <div className="recipe-div text-center">
+        <div className="recipe-body">
+          <img className="image" src={this.props.img} alt="bilde av oppskrift" />
+          <h6 className="recipe-title">{this.props.name}</h6>
+        </div>
+      </div>
+    );
+  }
+}
+
+export class Cards extends Component<{
+  title: ReactNode;
+  children: ReactNode;
+  numbOfPors: number;
+}> {
+  render() {
+    return (
+      <div className="card cards cards-white text-center">
         <div className="card-body cards-body">
           <h5 className="card-title">{this.props.title}</h5>
-          <div className="card-text">{this.props.children}</div>
+          <div className="card-text pad">{this.props.children}</div>
+        </div>
+        <div className="card-footer">{this.props.numbOfPors} porsjoner</div>
+      </div>
+    );
+  }
+}
+
+export class Cardse extends Component<{
+  title: ReactNode;
+  children: ReactNode;
+  numbOfPors: number;
+}> {
+  render() {
+    return (
+      <div className="card cards cards-white text-center">
+        <div className="card-body cards-body">
+          <h5 className="card-title">{this.props.title}</h5>
+          <div className="card-text pad">{this.props.children}</div>
         </div>
       </div>
     );
@@ -50,9 +73,12 @@ export class Card extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
     return (
       <div className="card">
+        {/* <img className="image" src="images/background.jpg" alt="bilde av oppskrift" /> */}
+        {/* <div className="card-img-overlay"> */}
         <div className="card-body">
           <h5 className="card-title">{this.props.title}</h5>
           <div className="card-text">{this.props.children}</div>
+          {/* </div> */}
         </div>
       </div>
     );
@@ -63,9 +89,12 @@ export class CardFull extends Component<{ title: ReactNode; children: ReactNode 
   render() {
     return (
       <div className="card hundred">
+        {/* <img className="image" src="images/background.jpg" alt="bilde av oppskrift" /> */}
+        {/* <div className="card-img-overlay"> */}
         <div className="card-body">
           <h5 className="card-title">{this.props.title}</h5>
           <div className="card-text">{this.props.children}</div>
+          {/* </div> */}
         </div>
       </div>
     );
@@ -454,7 +483,7 @@ class FormSelect extends Component<{
     // For further information, see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
     const { value, onChange, children, ...rest } = this.props;
     return (
-      <select style={{ width: '200px' }} {...rest} value={value} onChange={onChange}>
+      <select style={{ width: '220px' }} {...rest} value={value} onChange={onChange}>
         {children}
       </select>
     );

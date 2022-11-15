@@ -43,7 +43,7 @@ export class ShoppingList extends Component {
                       this.selectedIngredient.ingred_id = Number(event.value);
                     }}
                   />
-                  <br/>
+                  <br />
                   Antall:{' '}
                   <Form.Input
                     id="exisitingmengde"
@@ -54,7 +54,7 @@ export class ShoppingList extends Component {
                       this.selectedIngredient.mengde = event.currentTarget.value;
                     }}
                   />
-                  <br/>
+                  <br />
                   Måleenhet:{' '}
                   <Form.Input
                     placeholder="Skriv inn måleenhet"
@@ -65,15 +65,16 @@ export class ShoppingList extends Component {
                       this.selectedIngredient.maleenhet = event.currentTarget.value;
                     }}
                   />
+                  <br />
                   <Button.Success
                     onClick={() => {
-                        this.addExistingItem(this.selectedIngredient);
+                      this.addExistingItem(this.selectedIngredient);
                     }}
                   >
                     Legg til
                   </Button.Success>
-                  <br/>
-                  <br/>
+                  <br />
+                  <br />
                   Legg til ny vare:
                   <Form.Input
                     id="createIngredient"
@@ -99,14 +100,14 @@ export class ShoppingList extends Component {
 
             <div className="col-8" style={{ padding: '0px' }}>
               <CardFull title="Handleliste">
-                <Column>
-                  <div id="liste" className="">
+                <div className="col">
+                  <div id="liste" className="scrollbig">
                     {this.shoppingList.map((sl, i) => (
                       <Row key={sl.ingred_id + 'a' + i}>
                         {/* <Row> */}
                         <p style={{ width: '190px' }}>
                           {/* {i + 1}.{' '} */}
-                          {'- '}
+                          {'• '}
                           {
                             this.ingredients.find((ingredient) => ingredient.value == sl.ingred_id)
                               ?.label
@@ -125,17 +126,17 @@ export class ShoppingList extends Component {
                           size={2}
                         ></Form.Input>{' '}
                         <p style={{ width: '110px', paddingLeft: '0px' }}>{sl.maleenhet}</p>
-                        <Column width={1}>
+                        <p style={{ width: '45px', marginTop: '0px', marginBottom: '0px' }}>
                           <Button.Danger onClick={() => this.decrementPortions(sl)}>
                             -
                           </Button.Danger>
-                        </Column>
-                        <Column width={1}>
+                        </p>
+                        <p style={{ width: '49px', marginTop: '0px', marginBottom: '0px' }}>
                           <Button.Success onClick={() => this.incrementPortions(sl)}>
                             +
                           </Button.Success>
-                        </Column>
-                        <Column width={1}>
+                        </p>
+                        <p style={{ width: '45px', marginTop: '0px', marginBottom: '0px' }}>
                           <Button.Danger onClick={() => this.deleteIngredient(sl.id)}>
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -152,12 +153,13 @@ export class ShoppingList extends Component {
                               />
                             </svg>
                           </Button.Danger>
-                        </Column>
+                        </p>
                       </Row>
                     ))}
-                    <Button.Danger onClick={() => this.deleteAll()}>Slett alle</Button.Danger>
                   </div>
-                </Column>
+                  <br />
+                  <Button.Danger onClick={() => this.deleteAll()}>Slett alle</Button.Danger>
+                </div>
               </CardFull>
             </div>
           </Row>

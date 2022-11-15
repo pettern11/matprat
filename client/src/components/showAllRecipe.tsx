@@ -20,65 +20,57 @@ export class ShowAllRecipe extends Component {
       <>
         <div className="margintop">
           <br />
-          <Row>
-            {/* @ts-ignore */}
-            <center>
-              <Columns>
-                {/* <br/> */}
-                {/* <br /> */}
-                {/* <Car title="Søkefelt"> */}
-                <div>
-                  <Form.Input
-                    id="indexsearch"
-                    style={{ width: '220px', display: this.hideInput }}
-                    type="text"
-                    placeholder="Søk etter oppskrift"
-                    value={this.searchterm}
-                    onChange={(event) => {
-                      this.search(event.currentTarget.value);
-                      this.searchterm = event.currentTarget.value;
-                    }}
-                  />
-                  <div style={{ display: this.hideSelect }}>
-                    <Select
-                      options={this.sortByArray == 4 ? this.countries : this.categories}
-                      onChange={(event) => {
-                        this.search(event?.label);
-                        this.searchterm = event?.label || '';
-                      }}
-                    />
-                  </div>
-                </div>
-                {/* </Car> */}
-              </Columns>
-              <Columns>
-                <select
-                  id="sortBy"
-                  style={{ width: '220px' }}
-                  onChange={(event) => this.sortRecipe(Number(event.target.value))}
-                  className="form-select"
-                >
-                  <option value="1">A-Z</option>
-                  <option value="2">Z-A</option>
-                  <option value="3">Nyeste</option>
-                  <option value="4">Land</option>
-                  <option value="5">Kategori</option>
-                </select>
-              </Columns>
+          {/* @ts-ignore */}
+          <center>
+            <Rows>
+              {/* <Car title="Søkefelt"> */}
+              <Form.Input
+                id="indexsearch"
+                style={{ width: '220px', display: this.hideInput }}
+                type="text"
+                placeholder="Søk etter oppskrift"
+                value={this.searchterm}
+                onChange={(event) => {
+                  this.search(event.currentTarget.value);
+                  this.searchterm = event.currentTarget.value;
+                }}
+              />
+              <div style={{ width: '220px', paddingLeft: '0px', display: this.hideSelect }}>
+                <Select
+                  options={this.sortByArray == 4 ? this.countries : this.categories}
+                  onChange={(event) => {
+                    this.search(event?.label);
+                    this.searchterm = event?.label || '';
+                  }}
+                />
+              </div>
+              {/* </Car> */}
+              <select
+                id="sortBy"
+                style={{ width: '220px' }}
+                onChange={(event) => this.sortRecipe(Number(event.target.value))}
+                className="form-select"
+              >
+                <option value="1">A-Z</option>
+                <option value="2">Z-A</option>
+                <option value="3">Nyeste</option>
+                <option value="4">Land</option>
+                <option value="5">Kategori</option>
+              </select>
               {/* @ts-ignore */}
-            </center>
-          </Row>
+            </Rows>
+          </center>
           <br></br>
 
           <div className="container-fluid ">
             <Rows>
               {this.recipes.map((recipe) => (
-                <Cards title="" key={recipe.oppskrift_id}>
+                <Cards numbOfPors={recipe.ant_pors} key={recipe.oppskrift_id}>
                   <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
                     <RecipeView
                       img={recipe.bilde_adr}
                       name={recipe.oppskrift_navn}
-                      numbOfPors={recipe.ant_pors}
+                      // numbOfPors={recipe.ant_pors}
                     ></RecipeView>
                   </NavLink>
                 </Cards>

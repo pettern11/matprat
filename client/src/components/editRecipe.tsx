@@ -134,25 +134,18 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
             <div className="col-6" style={{ paddingRight: '0px', paddingLeft: '0px' }}>
               <CardFull title="">
                 {/* input navn */}
-                <Row>
-                  {/* input steg */}
-                  <Column>
-                    <h3>Oppskrift:</h3>
-                    <br />
-                    <Column>
-                      <Form.Textarea
-                        id="recipe_step"
-                        style={{ width: '600px', height: '600px' }}
-                        type="text"
-                        value={this.recipe.oppskrift_steg}
-                        onChange={(event) =>
-                          (this.recipe.oppskrift_steg = event.currentTarget.value)
-                        }
-                        rows={5}
-                      />
-                    </Column>
-                  </Column>
-                </Row>
+                {/* input steg */}
+                <h4>Oppskrift:</h4>
+                <div className="col">
+                  <Row>
+                    <textarea
+                      className="form-control rounds"
+                      id="recipe_step"
+                      value={this.recipe.oppskrift_steg}
+                      onChange={(event) => (this.recipe.oppskrift_steg = event.currentTarget.value)}
+                    />
+                  </Row>
+                </div>
 
                 {/* renderer alle ingrediensene som er linket til oppskriften, her kan man også endre på hvor mye det er av hver ingrediens og måleenheten */}
               </CardFull>
