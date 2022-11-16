@@ -70,7 +70,7 @@ export class ShowAllRecipe extends Component {
             <Rows>
               {this.recipes.map((recipe) => (
                 <Cards title="" numbOfPors={recipe.ant_pors} key={recipe.oppskrift_id}>
-                  <a className="black" href={'/recipe/' + recipe.oppskrift_id}>
+                  <a className="black" href={'#/recipe/' + recipe.oppskrift_id}>
                     <RecipeView
                       img={recipe.bilde_adr}
                       name={recipe.oppskrift_navn}
