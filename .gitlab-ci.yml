@@ -15,6 +15,7 @@ stages:
 
 install:
   stage: build
+  retry: 1
   script:
     - cd server
     - npm install --legacy-peer-deps --force
@@ -27,6 +28,7 @@ install:
 
 prettier:
   stage: prettier # The prettier job will run in parallel with the typescript and test jobs
+  retry: 1
   script:
     - npm install --global prettier
     - npx prettier --write .
@@ -34,6 +36,7 @@ prettier:
 
 typescript_client:
   stage: ts # The typescript job will run in parallel with the prettier and test jobs
+  retry: 1
   script:
     - cd client
     - node_modules/.bin/tsc --noEmit -skipLibCheck
@@ -41,11 +44,13 @@ typescript_client:
 
 typescript_server:
   stage: ts # The typescript job will run in parallel with the prettier and test jobs
+  retry: 1
   script:
     - cd server
     - node_modules/.bin/tsc --noEmit -skipLibCheck
 test:
   stage: test
+  retry: 1
   script:
     - apt-get update
     - apt-get -y upgrade
