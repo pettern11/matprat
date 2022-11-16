@@ -22,7 +22,7 @@ Create two databases, one for tests and one for the application.
 
 In the database for the application, Copy the `database.sql` file and run the mysql queries.
 
-Head into the test database and copy the `testdatabase.sql` file
+Head into the test database and Copy the `testdatabase.sql` file
 located in `server/test` and run the mysql queries. 
 
 
@@ -96,5 +96,6 @@ npm start
 ### Run client tests:
 
 ```sh
+cd client
 npm test
 ```
