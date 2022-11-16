@@ -6,7 +6,7 @@ For this application to work you need node js.
 
 Node.js can be downloaded here: https://nodejs.org/en/download/ 
  
-<mark>If you already have Node.js, be sure you have the latest software</mark>
+<mark>If you already have Node.js, make sure you have the latest software</mark>
 
 
 ### Built With
