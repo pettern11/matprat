@@ -31,7 +31,6 @@ export class NewRecipe extends Component {
     return (
       <>
         <div className="margintop">
-          {/* <Card title="Registrer en ny oppskrift"> */}
           {/* input navn */}
           <Row>
             <div className="col-4" style={{ paddingRight: '0px' }}>
@@ -180,7 +179,7 @@ export class NewRecipe extends Component {
                   <br />
                   {/* print ut alle ingrediense som allerede er i databasen */}
                   {/* vidre ideer her er at vi setter en viss lengde og bredde på diven og så hvis den overflower så må man bare skulle 
-          nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
+                   nedover, her kan vi også implementere et søkefelt etterhvert for ingredienser. */}
 
                   <Row>
                     <div className="col-4">
@@ -245,8 +244,11 @@ export class NewRecipe extends Component {
                   {/* velg hvor mye av hver inngrediense */}
                   <Row>
                     <p>Ingredienser:</p>
-                    <div id="outprintIngredient" className="scroll round">
-                      {/* <Card> */}
+                    <div
+                      id="outprintIngredient"
+                      className="scroll round"
+                      style={{ backgroundColor: 'white' }}
+                    >
                       <div className="col" style={{ width: '' }}>
                         {this.recipe_content.map((rc, i) => (
                           <Row key={i}>
@@ -283,22 +285,19 @@ export class NewRecipe extends Component {
                           </Row>
                         ))}
                       </div>
-                      {/* </Card> */}
                     </div>
                   </Row>
                 </div>
               </CardFull>
             </div>
           </Row>
-          {/* </Card> */}
-
           <Button.Success
             id="addRecipeBtn"
             onClick={() => {
               this.addRecipe();
             }}
           >
-            Send oppskriften opp til the database
+            Lagre oppskrift
           </Button.Success>
         </div>
       </>
@@ -314,7 +313,7 @@ export class NewRecipe extends Component {
 
   /* Legge til oppskrift i databasen */
   addRecipe() {
-    if(this.picture_adr == ''){
+    if (this.picture_adr == '') {
       this.picture_adr = 'https://miro.medium.com/max/1000/1*5DnGR_PQnMR7CkZhvNuMYQ.png';
     }
     let recipe: Recipe = {

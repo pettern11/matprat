@@ -9,6 +9,7 @@ Class oppskrift {
     kategori_id <color:royalBlue> INT FK
     land_id <color:royalBlue>INT FK
     ant_like <color:royalBlue>INT
+    liked <color:royalBlue>INT
 
 }
 
@@ -32,10 +33,22 @@ Class oppskrift_innhold{
     mengde <color:royalBlue> INT
     maleenhet <color:royalBlue> VARCHAR
 }
+Class handleliste{
+    id <color:royalBlue> INT PK
+    ingred_id <color:royalBlue> INT FK
+    mengde <color:royalBlue> INT 
+    maleenhet <color:royalBlue> VARCHAR
+}
+Class icebox{
+    ingred_id <color:royalBlue> INT PK
+    ingred_navn <color:royalBlue> VARCHAR
+}
 
 oppskrift  "0..*" -- "1..1" land
 oppskrift  "0..*" -- "1..1" kategori
 oppskrift "1..1" -- "1..*" oppskrift_innhold
 ingrediens "1..1" -- "1..*" oppskrift_innhold
+ingrediens "1..1" -- "0..*" handleliste
+ingrediens "1..1" -- "0..*" icebox
 
 @enduml

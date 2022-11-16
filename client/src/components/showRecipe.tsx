@@ -33,8 +33,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
           <div className="col-6" style={{ paddingRight: '0px' }}>
             <CardFull title="">
               <div className="download1">
-                {/* @ts-ignore */}
-                <center>
+                <div className="text-center">
                   <img className="stort" src={this.recipe.bilde_adr}></img>
                   <br />
                   <br />
@@ -53,11 +52,9 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
                       )?.kategori_navn
                     }
                   </p>
-                  {/* @ts-ignore */}
-                </center>
+                </div>
               </div>
-              {/* @ts-ignore */}
-              <center>
+              <div className="text-center">
                 <input
                   type="checkbox"
                   id="checkbox"
@@ -123,7 +120,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
                     </g>
                   </svg>
                 </label>
-              </center>
+              </div>
               <h4>Ingredienser:</h4>
               <br />
               {/* Viser ingrediensene */}
@@ -168,22 +165,27 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
             </CardFull>
           </div>
         </Row>
-        <Button.Success onClick={() => history.push('/recipe/edit/' + this.props.match.params.id)}>
-          Endre oppskrift
-        </Button.Success>
-        <Button.Danger
-          //@ts-ignore
-          id="deleteRecipe"
-          onClick={() => this.deleteRecipe(this.props.match.params.id)}
-        >
-          Slett oppskrift
-        </Button.Danger>
         <Button.Success id="btnSend" onClick={this.ingredientsToShoppingList}>
           Send ingredienser til handleliste
         </Button.Success>
         <Button.Success id="downloadPageBtn" onClick={this.downloadPage}>
           Last ned oppskriften
         </Button.Success>
+        <div style={{ float: 'right' }}>
+          <Button.Success
+            id="btnEdit"
+            onClick={() => history.push('/recipe/edit/' + this.props.match.params.id)}
+          >
+            Endre oppskrift
+          </Button.Success>
+          <Button.Danger
+            //@ts-ignore
+            id="deleteRecipe"
+            onClick={() => this.deleteRecipe(this.props.match.params.id)}
+          >
+            Slett oppskrift
+          </Button.Danger>
+        </div>
 
         {/* Recomend 5 recipes based on the category */}
         <Card title="">

@@ -201,16 +201,3 @@ describe('editRecipe test', () => {
     });
   });
 });
-
-describe.skip('skip', () => {
-  test('save recipe but fail and throw error', (done) => {
-    const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
-    const wrapperAlert = shallow(<Alert />);
-    setTimeout(() => {
-      wrapper.find(Button.Success).at(1).simulate('click');
-      setTimeout(() => {
-        done();
-      });
-    });
-  });
-});

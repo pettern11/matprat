@@ -22,15 +22,17 @@ exports[`ShowAllRecipe tests Snapshot showAllRecipe draws correctly 1`] = `
           value=""
         />
         <div
+          id="showSelect"
           style={
             {
-              "display": "none ",
+              "display": "none",
               "paddingLeft": "0px",
               "width": "220px",
             }
           }
         >
           <ForwardRef
+            id="selectCountryCategory"
             onChange={[Function]}
             options={
               [
@@ -96,30 +98,34 @@ exports[`ShowAllRecipe tests Snapshot showAllRecipe draws correctly 1`] = `
         <Cards
           key="1"
           numbOfPors={4}
+          title=""
         >
-          <NavLink
+          <a
             className="black"
-            to="/recipe/1"
+            href="/recipe/1"
           >
             <RecipeView
               img="pizza.jpg"
               name="Pizza"
+              numbOfPors={4}
             />
-          </NavLink>
+          </a>
         </Cards>
         <Cards
           key="2"
           numbOfPors={4}
+          title=""
         >
-          <NavLink
+          <a
             className="black"
-            to="/recipe/2"
+            href="/recipe/2"
           >
             <RecipeView
               img="kjøttboller.jpg"
               name="Kjøttboller i brunsaus"
+              numbOfPors={4}
             />
-          </NavLink>
+          </a>
         </Cards>
       </Rows>
     </div>

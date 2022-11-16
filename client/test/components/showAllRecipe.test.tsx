@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { shallow} from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { NavLink } from 'react-router-dom';
 import { RecipeView, Cards, Rows } from '../../src/widgets';
 import { ShowAllRecipe } from '../../src/components/showAllRecipe';
@@ -42,7 +42,7 @@ jest.mock('../../src/service', () => {
           ant_pors: 4,
           bilde_adr: 'pizza.jpg',
           kategori_id: 2,
-          land_id: 2,
+          land_id: 1,
           ant_like: 1,
           liked: true,
         },
@@ -54,7 +54,7 @@ jest.mock('../../src/service', () => {
           ant_pors: 4,
           bilde_adr: 'kjøttboller.jpg',
           kategori_id: 1,
-          land_id: 3,
+          land_id: 2,
           ant_like: 0,
           liked: false,
         },
@@ -73,6 +73,7 @@ describe('ShowAllRecipe tests', () => {
       done();
     });
   });
+
   test('Search field input works', (done) => {
     const wrapper = shallow(<ShowAllRecipe />);
     wrapper.find('#indexsearch').simulate('change', { currentTarget: { value: 'Pizza' } });
@@ -82,6 +83,7 @@ describe('ShowAllRecipe tests', () => {
       done();
     });
   });
+
   test('Select A-Z at sort', (done) => {
     const wrapper = shallow(<ShowAllRecipe />);
     //find select sortBy and simulate change and choose target value 1 and name A-Z
@@ -110,6 +112,7 @@ describe('ShowAllRecipe tests', () => {
       done();
     });
   });
+
   test('Select Z-A at sort', (done) => {
     const wrapper = shallow(<ShowAllRecipe />);
     //find select sortBy and simulate change and choose target value 2 and name Z-A
@@ -138,6 +141,7 @@ describe('ShowAllRecipe tests', () => {
       done();
     });
   });
+
   test('Select Nyeste at sort', (done) => {
     const wrapper = shallow(<ShowAllRecipe />);
     wrapper.find('#sortBy').simulate('change', { target: { value: 3, name: 'Nyeste' } });
@@ -168,30 +172,69 @@ describe('ShowAllRecipe tests', () => {
       done();
     });
   });
-  test('Select Land at sort', (done) => {
-    const wrapper = shallow(<ShowAllRecipe />);
-    //find select sortBy and simulate change and choose target value 4 and name Land
-    wrapper.find('#sortBy').simulate('change', { target: { value: 4, name: 'Land' } });
-    setTimeout(() => {
-      expect(
-        wrapper.find('#sortBy').simulate('change', { target: { value: 4, name: 'Land' } })
-      ).toEqual({});
 
-      done();
+  test('Select Land at sort, than Sverige', (done) => {
+    const wrapper = mount(<ShowAllRecipe />);
+    //expects the select form for land not to be shown
+    expect(wrapper.find('#showSelect').prop('style')).toHaveProperty('display', 'none');
+
+    wrapper
+      .find('#sortBy')
+      .at(0)
+      .simulate('change', { target: { value: 4, name: 'Land' } });
+    setTimeout(() => {
+      //expects the select form for land to be shown
+
+      expect(wrapper.find('#showSelect').prop('style')).toHaveProperty('display', 'inline');
+
+      wrapper
+        .find('#selectCountryCategory')
+        .at(0)
+        .simulate('keyDown', { key: 'ArrowDown', keyCode: 40 });
+      wrapper
+        .find('#selectCountryCategory')
+        .at(0)
+        .simulate('keyDown', { key: 'ArrowDown', keyCode: 40 });
+      wrapper
+        .find('#selectCountryCategory')
+        .at(0)
+        .simulate('keyDown', { key: 'Enter', keyCode: 13 });
+      setTimeout(() => {
+        expect(wrapper.find('#indexsearch').at(0).prop('value')).toBe('Sverige');
+        done();
+      });
     });
   });
-  test('Select Kategori at sort', (done) => {
-    const wrapper = shallow(<ShowAllRecipe />);
+
+  test('Select Kategori at sort and than Ikea mat', (done) => {
+    const wrapper = mount(<ShowAllRecipe />);
     //find select sortBy and simulate change and choose target value 5 and name kategori
+    expect(wrapper.find('#showSelect').prop('style')).toHaveProperty('display', 'none');
+
     setTimeout(() => {
       wrapper.find('#sortBy').simulate('change', { target: { value: 5, name: 'Kategori' } });
       setTimeout(() => {
-        expect(
-          wrapper.find('#sortBy').simulate('change', { target: { value: 5, name: 'Kategori' } })
-        ).toEqual({});
-        //update the wrapper
+        //expects the select form for land to be shown
 
-        done();
+        expect(wrapper.find('#showSelect').prop('style')).toHaveProperty('display', 'inline');
+
+        wrapper
+          .find('#selectCountryCategory')
+          .at(0)
+          .simulate('keyDown', { key: 'ArrowDown', keyCode: 40 });
+        wrapper
+          .find('#selectCountryCategory')
+          .at(0)
+          .simulate('keyDown', { key: 'ArrowDown', keyCode: 40 });
+
+        wrapper
+          .find('#selectCountryCategory')
+          .at(0)
+          .simulate('keyDown', { key: 'Enter', keyCode: 13 });
+        setTimeout(() => {
+          expect(wrapper.find('#indexsearch').at(0).prop('value')).toBe('Ikea mat');
+          done();
+        });
       });
     });
   });

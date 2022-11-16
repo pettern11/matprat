@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
-import { Cards, Alert, Columns, Row, Rows, Form, RecipeView } from '../widgets';
+import { Cards, Card, Alert, Columns, Row, Rows, Form, RecipeView } from '../widgets';
 
 import service, { Recipe } from '../service';
 import Select from 'react-select';
@@ -14,16 +14,15 @@ export class ShowAllRecipe extends Component {
   searchterm: string = '';
   sortByArray: number = 1;
   hideInput: string = 'inline';
-  hideSelect: string = 'none ';
+  hideSelect: string = 'none';
   render() {
     return (
       <>
         <div className="margintop">
+          <Card>
           <br />
-          {/* @ts-ignore */}
-          <center>
+          <div className="text-center">
             <Rows>
-              {/* <Car title="Søkefelt"> */}
               <Form.Input
                 id="indexsearch"
                 style={{ width: '220px', display: this.hideInput }}
@@ -35,8 +34,12 @@ export class ShowAllRecipe extends Component {
                   this.searchterm = event.currentTarget.value;
                 }}
               />
-              <div style={{ width: '220px', paddingLeft: '0px', display: this.hideSelect }}>
+              <div
+                id="showSelect"
+                style={{ width: '220px', paddingLeft: '0px', display: this.hideSelect }}
+              >
                 <Select
+                  id="selectCountryCategory"
                   options={this.sortByArray == 4 ? this.countries : this.categories}
                   onChange={(event) => {
                     this.search(event?.label);
@@ -57,26 +60,26 @@ export class ShowAllRecipe extends Component {
                 <option value="4">Land</option>
                 <option value="5">Kategori</option>
               </select>
-              {/* @ts-ignore */}
             </Rows>
-          </center>
+          </div>
           <br></br>
 
           <div className="container-fluid ">
             <Rows>
               {this.recipes.map((recipe) => (
-                <Cards numbOfPors={recipe.ant_pors} key={recipe.oppskrift_id}>
-                  <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
+                <Cards title="" numbOfPors={recipe.ant_pors} key={recipe.oppskrift_id}>
+                  <a className="black" href={'#/recipe/' + recipe.oppskrift_id}>
                     <RecipeView
                       img={recipe.bilde_adr}
                       name={recipe.oppskrift_navn}
-                      // numbOfPors={recipe.ant_pors}
+                      numbOfPors={recipe.ant_pors}
                     ></RecipeView>
-                  </NavLink>
+                  </a>
                 </Cards>
               ))}
             </Rows>
           </div>
+          </Card>
         </div>
       </>
     );
@@ -89,13 +92,13 @@ export class ShowAllRecipe extends Component {
     //or create element input with id indexsearch
     let aaa = document.getElementById('indexsearch') || document.createElement('input');
     if (value == 0) {
-      this.hideInput = 'none ';
-      this.hideSelect = 'none ';
+      this.hideInput = 'none';
+      this.hideSelect = 'none';
     }
     /* Sorter A-Z */
     if (value == 1) {
       this.hideInput = 'inline';
-      this.hideSelect = 'none ';
+      this.hideSelect = 'none';
       //@ts-ignore
       aaa.placeholder = 'Søk etter oppskrift';
       this.recipes.sort(function (a, b) {
@@ -106,7 +109,7 @@ export class ShowAllRecipe extends Component {
     } else if (value == 2) {
       /* Sorter Z-A */
       this.hideInput = 'inline';
-      this.hideSelect = 'none ';
+      this.hideSelect = 'none';
       //@ts-ignore
       aaa.placeholder = 'Søk etter oppskrift';
       this.recipes.sort(function (b, a) {
@@ -117,7 +120,7 @@ export class ShowAllRecipe extends Component {
     } else if (value == 3) {
       /* Sorter etter nyeste */
       this.hideInput = 'inline';
-      this.hideSelect = 'none ';
+      this.hideSelect = 'none';
       //@ts-ignore
       aaa.placeholder = 'Søk etter oppskrift';
       this.recipes.sort(function (b, a) {
@@ -128,13 +131,13 @@ export class ShowAllRecipe extends Component {
     } else if (value == 4) {
       /* Sorter etter Land */
 
-      this.hideInput = 'none ';
+      this.hideInput = 'none';
       this.hideSelect = 'inline';
       //@ts-ignore
       aaa.placeholder = 'Søk etter land';
     } else if (value == 5) {
       /* Sorter etter Kategori */
-      this.hideInput = 'none ';
+      this.hideInput = 'none';
       this.hideSelect = 'inline';
       //@ts-ignore
       aaa.placeholder = 'Søk etter kategori';
@@ -144,10 +147,8 @@ export class ShowAllRecipe extends Component {
     /* Hent alle oppskrifter */
     service
       .getAllRepice()
-      .then((recipes) => {
-        this.originalrecipes = recipes;
-        this.recipes = recipes;
-      })
+      .then((recipes) => (this.originalrecipes = recipes))
+      .then((recipes) => (this.recipes = recipes))
       .catch((error) => Alert.danger('Error getting recipes: ' + error.message));
 
     /* Hent alle land */
