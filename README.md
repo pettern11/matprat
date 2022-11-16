@@ -19,7 +19,8 @@ Node.js can be downloaded here: https://nodejs.org/en/download/
 ## Create databases for tests and the application
 
 Create two databases, one for tests and one for the application. 
-Copy the `database.sql` file and run the mysql queries.
+
+In the database for the application, Copy the `database.sql` file and run the mysql queries.
 
 Head into the test database and copy the `testdatabase.sql` file
 located in `server/test` and run the mysql queries. 
