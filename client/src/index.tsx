@@ -47,12 +47,13 @@ export class Home extends Component {
     return (
       <>
         <div className="margintop">
-          <Card>
+          <Card title="">
             <div className="frontpage">
               <h1>Prøv oppskriften:</h1>
               <br></br>
               {/* @ts-ignore */}
               {/* <div className="text-center"> */}
+              {/* @ts-ignore */}
               <center>
                 <Rows>
                   <Car title="">
@@ -97,7 +98,11 @@ export class Home extends Component {
                   <Rows>
                     {this.recipes.length != 0
                       ? this.suggestedRecipeList.map((likedRecipe, i) => (
-                          <Cardse key={likedRecipe.oppskrift_id + i + 'card'}>
+                          <Cardse
+                            numbOfPors={0}
+                            title=""
+                            key={likedRecipe.oppskrift_id + i + 'card'}
+                          >
                             <NavLink
                               key={likedRecipe.oppskrift_id + 'navlink2'}
                               className="black"
