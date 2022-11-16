@@ -49,20 +49,17 @@ export class Home extends Component {
         <div className="margintop">
           <Card title="">
             <div className="frontpage">
+              {/* viser en tilfeldig oppskrift */}
               <h1>Prøv oppskriften:</h1>
               <br></br>
-              {/* @ts-ignore */}
-              {/* <div className="text-center"> */}
-              {/* @ts-ignore */}
-              <center>
                 <Rows>
-                  <Car title="">
+                  <Car>
                     <div className={'recipeToDay'}>
                       {this.recipes.length != 0
                         ? this.recipes
                             .filter((recipes, i) => i == random)
                             .map((recipe, rei) => (
-                              <div key={rei}>
+                              <div key={rei} className="centerimage">
                                 <NavLink
                                   key={rei + 'navlink'}
                                   className="black"
@@ -71,7 +68,7 @@ export class Home extends Component {
                                   <img
                                     key={rei + 'picture'}
                                     src={recipe.bilde_adr}
-                                    className="frontPicture"
+                                    className="frontpicture"
                                     alt="recipe"
                                   />
                                   <br />
@@ -86,12 +83,10 @@ export class Home extends Component {
                     </div>
                   </Car>
                 </Rows>
-                {/* @ts-ignore */}
-              </center>
-              {/* </div> */}
               <br />
               <br />
               <div>
+                {/* viser anbefalte oppskrifter */}
                 <div title="Anbefalte oppskrifter basert på dine likte:">
                   <h5>Anbefalte oppskrifter basert på det du liker:</h5>
                   <br />
@@ -120,6 +115,7 @@ export class Home extends Component {
                       : ''}
                   </Rows>
                   <br />
+                  {/* viser anbefalte oppskrifter */}
                   {/* @ts-ignore */}
                   <NavBar.Links to={'/showallrecipe'} style={{ width: '130px' }}>
                     Alle oppskrifter

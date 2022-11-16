@@ -60,13 +60,11 @@ export class Icebox extends Component {
                       får feilmedlingen  console.error "The above error occurred in the <Router.Consumer> component"
                       når jeg bruker navlink men testen går gjennom med a href og har ikke noe å si på funksjonaliteten til siden */}
                         <a className="black" href={'#/recipe/' + recipe.oppskrift_id}>
-                          {/* <NavLink to={'/recipe/' + recipe.oppskrift_id}> */}
                           <RecipeView
                             img={recipe.bilde_adr}
                             name={recipe.oppskrift_navn}
                             numbOfPors={recipe.ant_pors}
                           ></RecipeView>
-                          {/* </NavLink> */}
                         </a>
                       </Cards>
                     ))}

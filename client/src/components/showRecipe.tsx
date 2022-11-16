@@ -34,6 +34,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
             <CardFull title="">
               <div className="download1">
                 <div className="text-center">
+                  {/* informasjon om retten*/}
                   <img className="stort" src={this.recipe.bilde_adr}></img>
                   <br />
                   <br />
@@ -128,10 +129,8 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
                 {this.recipeContent.map((rc, i) => (
                   <Row key={i}>
                     <p style={{ width: '250px' }}>
-                      {/* {i + 1}. find name of ingridient */}
                       {'• '}
                       {this.ingredients.find((ing) => ing.ingred_id == rc.ingred_id)?.ingred_navn}
-                      {/* {this.ingredients.filter((ing) => rc.ingred_id == ing.ingred_id)[0].ingred_navn}{' '} */}
                     </p>
                     <p style={{ width: '75px' }}>
                       {((Number(rc.mengde) * this.portions) / this.recipe.ant_pors).toFixed(1)}
@@ -152,6 +151,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
             </CardFull>
           </div>
           <div className="col-6" style={{ paddingRight: '0px', paddingLeft: '0px' }}>
+            {/* viser oppskriften*/}
             <CardFull title="">
               <div className="col">
                 <Row>

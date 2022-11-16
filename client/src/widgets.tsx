@@ -8,6 +8,8 @@ import { NavLink } from 'react-router-dom';
  *
  * Properties: title
  */
+
+// ulike card oppsett
 export class IceboxsCard extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
     return (
@@ -27,7 +29,7 @@ export class RecipeView extends Component<{ img: string; name: string; numbOfPor
       <div className="recipe-div text-center">
         <div className="recipe-body">
           <img className="image" src={this.props.img} alt="bilde av oppskrift" />
-          <h6 className="recipe-title">{this.props.name}</h6>
+          <h6 className="recipe-title pad">{this.props.name}</h6>
         </div>
       </div>
     );
@@ -44,7 +46,7 @@ export class Cards extends Component<{
       <div className="card cards cards-white text-center">
         <div className="card-body cards-body">
           <h5 className="card-title">{this.props.title}</h5>
-          <div className="card-text pad">{this.props.children}</div>
+          <div className="card-text">{this.props.children}</div>
         </div>
         <div className="card-footer">{this.props.numbOfPors} porsjoner</div>
       </div>
@@ -62,7 +64,7 @@ export class Cardse extends Component<{
       <div className="card cards cards-white text-center">
         <div className="card-body cards-body">
           <h5 className="card-title">{this.props.title}</h5>
-          <div className="card-text pad">{this.props.children}</div>
+          <div className="card-text">{this.props.children}</div>
         </div>
       </div>
     );
@@ -73,13 +75,10 @@ export class Card extends Component<{ title?: ReactNode; children?: ReactNode }>
   render() {
     return (
       <div className="card">
-        {/* <img className="image" src="images/background.jpg" alt="bakgrunn" />
-        <div className="card-img-overlay"> */}
         <div className="card-body bak">
           <h5 className="card-title">{this.props.title}</h5>
           <div className="card-text">{this.props.children}</div>
         </div>
-        {/* </div> */}
       </div>
     );
   }
@@ -89,13 +88,10 @@ export class CardFull extends Component<{ title?: ReactNode; children?: ReactNod
   render() {
     return (
       <div className="card hundred bak">
-        {/* <img className="image" src="images/background.jpg" alt="bakgrunn" />
-        <div className="card-img-overlay"> */}
         <div className="card-body">
           <h5 className="card-title">{this.props.title}</h5>
           <div className="card-text">{this.props.children}</div>
         </div>
-        {/* </div> */}
       </div>
     );
   }
@@ -131,7 +127,7 @@ export class Car extends Component<{ title?: ReactNode; children?: ReactNode }> 
   render() {
     return (
       <div className="card car car-white">
-        <div className="card-body">
+        <div className="card-body car-body">
           <h5 className="card-title">{this.props.title}</h5>
           <div className="card-text">{this.props.children}</div>
         </div>
@@ -149,6 +145,8 @@ export class Row extends Component<{ children: ReactNode }> {
   }
 }
 
+// sentrert row
+
 export class Rows extends Component<{ children: ReactNode }> {
   render() {
     return <div className="row rows">{this.props.children}</div>;
@@ -160,6 +158,9 @@ export class Rows extends Component<{ children: ReactNode }> {
  *
  * Properties: width, right
  */
+
+// ulike colummn til ulike formål
+
 export class Column extends Component<{
   width?: number | undefined;
   right?: boolean | undefined;
@@ -202,21 +203,6 @@ export class Colum extends Component<{
   }
 }
 
-// export class Colscroll extends Component<{ width?: number; right?: boolean; children: ReactNode }> {
-//   render() {
-//     return (
-//       <div className={'col' + (this.props.width ? '-' + this.props.width : '')} >
-//         <div className={'float-' + (this.props.right ? 'end' : 'start')}>{this.props.children}</div>
-//       </div>
-//     );
-//   }
-// }
-
-/**
- * Renders a success button using Bootstrap styles.
- *
- * Properties: small, onClick
- */
 class ButtonSuccess extends Component<{
   small?: boolean | undefined;
   children: ReactNode;

@@ -35,6 +35,7 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
               <CardFull title="">
                 <h3>{this.recipe.oppskrift_navn}</h3>
                 <br />
+                {/* endre ingredienser */}
                 <div className="col">
                   <Row>
                     <div id="outprintIngredient" className="scroll">
@@ -132,10 +133,9 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
                 </div>
               </CardFull>
             </div>
+            {/* endre oppskrift */}
             <div className="col-6" style={{ paddingRight: '0px', paddingLeft: '0px' }}>
               <CardFull title="">
-                {/* input navn */}
-                {/* input steg */}
                 <h4>Oppskrift:</h4>
                 <div className="col">
                   <Row>
