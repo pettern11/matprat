@@ -123,7 +123,6 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
                     </g>
                   </svg>
                 </label>
-                {/* <p>Likes: {this.recipe.ant_like}</p> */}
               </center>
               <h4>Ingredienser:</h4>
               <br />
@@ -144,7 +143,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
                   </Row>
                 ))}
               </div>
-              <br/>
+              <br />
               Porsjoner:{' '}
               <Button.Danger id="btnDec" onClick={this.decrementPortions}>
                 -
@@ -188,20 +187,31 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
 
         {/* Recomend 5 recipes based on the category */}
         <Card title="">
-          {/* <br /> */}
           <h3>Andre oppskrifter i samme kategori:</h3>
           <Row>
-            {this.recommendedRecipes.map((recipe, i) => (
-              <Cards numbOfPors={recipe.ant_pors} title="" key={i}>
-                <NavLink className="black" to={'/recipe/' + recipe.oppskrift_id}>
-                  <RecipeView
-                    img={recipe.bilde_adr}
-                    name={recipe.oppskrift_navn}
-                    numbOfPors={recipe.ant_pors}
-                  ></RecipeView>
-                </NavLink>
-              </Cards>
-            ))}
+            {this.recommendedRecipes.length == 0 ? (
+              <p>Ingen oppskrifter i samme kategori</p>
+            ) : (
+              this.recommendedRecipes.map((recipe, i) => (
+                <Cards numbOfPors={recipe.ant_pors} title="" key={i}>
+                  {/* Av en eller annen grunn så vil ikke siden mounte på nytt etter å ha bli sendt til recipe/recipe.oppskrift_id
+                fikser dette ved å ha en onclick med this.mounted() */}
+                  <NavLink
+                    className="black"
+                    onClick={() => {
+                      this.mounted();
+                    }}
+                    to={'/recipe/' + recipe.oppskrift_id}
+                  >
+                    <RecipeView
+                      img={recipe.bilde_adr}
+                      name={recipe.oppskrift_navn}
+                      numbOfPors={recipe.ant_pors}
+                    ></RecipeView>
+                  </NavLink>
+                </Cards>
+              ))
+            )}
           </Row>
         </Card>
       </div>
@@ -211,6 +221,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
   mounted() {
     //har alle apicallene som async funksjoner fordi forskjellige funksjoner trenger informasjon fra et eller flere apicall og hvis
     //disse ikke kommer i riktig rekkefølge blir react unhappy og vil ikke rendre riktig
+    console.log('mounted');
     const apiCall1 = () => {
       /* Hent alle kategorier */
 
@@ -291,13 +302,16 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
     };
     runApiCalls();
   }
+  //Gjør siden nedlastbar, slik at den lett kan deles med andre. Kildekoden til dette er hentet fra stackoverflow
   //https://stackoverflow.com/questions/68152987/how-to-download-part-of-a-react-component
-  //Gjør siden nedlastbar, slik at den lett kan deles med andre
+
   downloadPage() {
     let element1 = document.querySelector('.download1') || document.createElement('div');
     let element2 = document.querySelector('.download2') || document.createElement('div');
+    let element3 = document.querySelector('.scroll') || document.createElement('div');
     let pageHTML = element1.outerHTML;
     pageHTML += element2.outerHTML;
+    pageHTML += element3.outerHTML;
     let css =
       '<style> pre { white-space: pre-wrap; font-size:16px}  p {display: inline-block} body {text-align:center}   </style>';
     const blob = new Blob([pageHTML, css], { type: 'text/html' });
@@ -317,7 +331,9 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
   //Finner 5 tilfeldige oppskrifter i samme kategori som den valgte oppskriften
   findRecommendedRecipes() {
     this.recommendedRecipes = this.allRecipes.filter(
-      (recipe) => recipe.kategori_id == this.recipe.kategori_id
+      (recipe) =>
+        recipe.kategori_id == this.recipe.kategori_id &&
+        recipe.oppskrift_id != this.recipe.oppskrift_id
     );
     //chose 5 random recipes
     this.recommendedRecipes = this.recommendedRecipes.sort(() => Math.random() - 0.5).slice(0, 5);

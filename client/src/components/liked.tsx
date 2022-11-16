@@ -18,7 +18,7 @@ export class LikedRecipes extends Component {
             {this.recipes
               .filter((recipe) => recipe.liked == true)
               .map((likedRecipe) => (
-                <Cards numbOfPors={likedRecipe.ant_pors} key={likedRecipe.oppskrift_id}>
+                <Cards title="" numbOfPors={likedRecipe.ant_pors} key={likedRecipe.oppskrift_id}>
                   <NavLink className="black" to={'/recipe/' + likedRecipe.oppskrift_id}>
                     <RecipeView
                       img={likedRecipe.bilde_adr}

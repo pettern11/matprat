@@ -11,6 +11,7 @@ exports[`LikedRecipes tests Snapshot LikedRecipes draws correctly 1`] = `
       <Cards
         key="1"
         numbOfPors={4}
+        title=""
       >
         <NavLink
           className="black"

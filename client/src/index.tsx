@@ -49,7 +49,7 @@ export class Home extends Component {
         <div className="margintop">
           <Card title="">
             <div className="frontpage">
-              <h1>Anbefalt oppskrift:</h1>
+              <h1>Prøv oppskriften:</h1>
               <br></br>
               {/* @ts-ignore */}
 

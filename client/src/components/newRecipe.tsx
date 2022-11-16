@@ -37,7 +37,7 @@ export class NewRecipe extends Component {
             <div className="col-4" style={{ paddingRight: '0px' }}>
               <CardFull title="">
                 <h4>Registrer en ny oppskrift</h4>
-                <br/>
+                <br />
                 <div className="col">
                   <Row>
                     <div className="col-4">
