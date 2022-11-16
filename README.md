@@ -67,7 +67,7 @@ npm start
 
 Download premade recipes to database. 
 
-<mark>The database must be empty for the script to work!</mark>
+<mark>The database must be empty for the script to work properly!</mark>
 
 
 ```sh
