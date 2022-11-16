@@ -1,4 +1,3 @@
-// @ts-nocheck
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Alert, Card, CardFull, Row, Column, Form, Button } from '.././widgets';
@@ -31,7 +30,7 @@ export class ShoppingList extends Component {
                     id="choseIngredient"
                     options={this.ingredients}
                     onChange={(event) => {
-                      this.selectedIngredient.ingred_id = Number(event.value);
+                      this.selectedIngredient.ingred_id = Number(event?.value);
                     }}
                   />
                   <br />
@@ -153,7 +152,7 @@ export class ShoppingList extends Component {
   }
 
   mounted() {
-    this.selectedIngredient.mengde = 0;
+    this.selectedIngredient.mengde = '0';
     this.selectedIngredient.maleenhet = '';
     //henter inn alle ingredientene fra databasen
     service
@@ -182,8 +181,8 @@ export class ShoppingList extends Component {
   }
   //metode for å dekremenere antall av hva du skal ha i handlelisten
   decrement(ingredient: List) {
-    if (ingredient.mengde > 1) {
-      ingredient.mengde--;
+    if (Number(ingredient.mengde) > 1) {
+      ingredient.mengde = (Number(ingredient.mengde) - 1).toString();
       service
         .updateIngredientShoppingList(ingredient)
         .catch((error) => Alert.danger('Error decrement shoppinglist count: ' + error.message));
@@ -192,12 +191,12 @@ export class ShoppingList extends Component {
   //metode for å oppdatere antall av hva du skal ha i handlelisten
   update(ingredient: List) {
     if (
-      ingredient.mengde < 0 ||
+      Number(ingredient.mengde) < 0 ||
       ingredient.mengde == null ||
       ingredient.mengde == undefined ||
       ingredient.mengde == ''
     ) {
-      ingredient.mengde = 1;
+      ingredient.mengde = '1';
     }
     service
       .updateIngredientShoppingList(ingredient)

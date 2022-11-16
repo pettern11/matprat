@@ -50,7 +50,7 @@ exports[`Rending Should render after snapshot 1`] = `
               id="exisitingmengde"
               onChange={[Function]}
               type="number"
-              value={0}
+              value="0"
             />
             <br />
             Måleenhet:

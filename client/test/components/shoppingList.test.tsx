@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import userEvent from '@testing-library/user-event';
 import { shallow, mount } from 'enzyme';
 import { Alert, Form, Button } from '../../src/widgets';
 import { ShoppingList } from '../../src/components/shoppingList';
@@ -238,7 +238,7 @@ describe('Functionality buttons', () => {
 
       wrapper.find(Button.Danger).at(0).simulate('click');
 
-      expect(wrapper.find(Form.Input).at(3).prop('value')).toBe(1);
+      expect(wrapper.find(Form.Input).at(3).prop('value')).toBe('1');
 
       expect(wrapper.find(Form.Input).at(4).prop('value')).toBe(1);
 
@@ -259,6 +259,23 @@ describe('Functionality buttons', () => {
       setTimeout(() => {
         expect(wrapper.find(Button.Danger).at(1)).toEqual({});
         done();
+      });
+    });
+  });
+  test('Onblur trigger', (done) => {
+    const wrapper = shallow(<ShoppingList />);
+    setTimeout(() => {
+      wrapper
+        .find(Form.Input)
+        .at(3)
+        .simulate('blur', { currentTarget: { value: 2 } });
+      setTimeout(() => {
+        userEvent.tab();
+
+        setTimeout(() => {
+          expect(wrapper.find(Form.Input).at(3).prop('value')).toBe(2);
+          done();
+        });
       });
     });
   });
