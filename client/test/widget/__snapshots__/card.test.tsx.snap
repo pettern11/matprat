@@ -47,7 +47,7 @@ exports[`Card tests Draw card 1`] = `
   class="card"
 >
   <div
-    class="card-body"
+    class="card-body bak"
   >
     <h5
       class="card-title"

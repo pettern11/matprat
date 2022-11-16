@@ -366,8 +366,9 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
     let i = 0;
     this.recipeContent.forEach((rc) => {
       const ingredient = {
+        id: 0,
         ingred_id: rc.ingred_id,
-        mengde: (Number(rc.mengde) * this.portions) / this.recipe.ant_pors,
+        mengde: ((Number(rc.mengde) * this.portions) / this.recipe.ant_pors).toString(),
         maleenhet: rc.maleenhet,
       };
       service.addIngredient(ingredient).then(() => {

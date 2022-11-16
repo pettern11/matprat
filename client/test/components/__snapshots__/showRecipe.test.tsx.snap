@@ -19,7 +19,9 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
         <div
           className="download1"
         >
-          <center>
+          <div
+            className="text-center"
+          >
             <img
               className="stort"
               src="pizza.jpg"
@@ -47,9 +49,11 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
                
               enkelt
             </p>
-          </center>
+          </div>
         </div>
-        <center>
+        <div
+          className="text-center"
+        >
           <input
             checked={true}
             id="checkbox"
@@ -227,7 +231,7 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
               </g>
             </svg>
           </label>
-        </center>
+        </div>
         <h4>
           Ingredienser:
         </h4>
@@ -452,7 +456,9 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
         <div
           className="download1"
         >
-          <center>
+          <div
+            className="text-center"
+          >
             <img
               className="stort"
               src="pizza.jpg"
@@ -480,9 +486,11 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
                
               enkelt
             </p>
-          </center>
+          </div>
         </div>
-        <center>
+        <div
+          className="text-center"
+        >
           <input
             checked={true}
             id="checkbox"
@@ -660,7 +668,7 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
               </g>
             </svg>
           </label>
-        </center>
+        </div>
         <h4>
           Ingredienser:
         </h4>
@@ -885,7 +893,9 @@ exports[`ShowRecipe tests Number increment works 1`] = `
         <div
           className="download1"
         >
-          <center>
+          <div
+            className="text-center"
+          >
             <img
               className="stort"
               src="pizza.jpg"
@@ -913,9 +923,11 @@ exports[`ShowRecipe tests Number increment works 1`] = `
                
               enkelt
             </p>
-          </center>
+          </div>
         </div>
-        <center>
+        <div
+          className="text-center"
+        >
           <input
             checked={true}
             id="checkbox"
@@ -1093,7 +1105,7 @@ exports[`ShowRecipe tests Number increment works 1`] = `
               </g>
             </svg>
           </label>
-        </center>
+        </div>
         <h4>
           Ingredienser:
         </h4>
@@ -1318,7 +1330,9 @@ exports[`ShowRecipe tests Number of likes 1`] = `
         <div
           className="download1"
         >
-          <center>
+          <div
+            className="text-center"
+          >
             <img
               className="stort"
               src="pizza.jpg"
@@ -1346,9 +1360,11 @@ exports[`ShowRecipe tests Number of likes 1`] = `
                
               enkelt
             </p>
-          </center>
+          </div>
         </div>
-        <center>
+        <div
+          className="text-center"
+        >
           <input
             checked={true}
             id="checkbox"
@@ -1526,7 +1542,7 @@ exports[`ShowRecipe tests Number of likes 1`] = `
               </g>
             </svg>
           </label>
-        </center>
+        </div>
         <h4>
           Ingredienser:
         </h4>

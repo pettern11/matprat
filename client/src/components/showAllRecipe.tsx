@@ -19,66 +19,66 @@ export class ShowAllRecipe extends Component {
     return (
       <>
         <div className="margintop">
-          <Card>
-          <br />
-          <div className="text-center">
-            <Rows>
-              <Form.Input
-                id="indexsearch"
-                style={{ width: '220px', display: this.hideInput }}
-                type="text"
-                placeholder="Søk etter oppskrift"
-                value={this.searchterm}
-                onChange={(event) => {
-                  this.search(event.currentTarget.value);
-                  this.searchterm = event.currentTarget.value;
-                }}
-              />
-              <div
-                id="showSelect"
-                style={{ width: '220px', paddingLeft: '0px', display: this.hideSelect }}
-              >
-                <Select
-                  id="selectCountryCategory"
-                  options={this.sortByArray == 4 ? this.countries : this.categories}
+          <Card title="">
+            <br />
+            <div className="text-center">
+              <Rows>
+                <Form.Input
+                  id="indexsearch"
+                  style={{ width: '220px', display: this.hideInput }}
+                  type="text"
+                  placeholder="Søk etter oppskrift"
+                  value={this.searchterm}
                   onChange={(event) => {
-                    this.search(event?.label);
-                    this.searchterm = event?.label || '';
+                    this.search(event.currentTarget.value);
+                    this.searchterm = event.currentTarget.value;
                   }}
                 />
-              </div>
-              {/* </Car> */}
-              <select
-                id="sortBy"
-                style={{ width: '220px' }}
-                onChange={(event) => this.sortRecipe(Number(event.target.value))}
-                className="form-select"
-              >
-                <option value="1">A-Z</option>
-                <option value="2">Z-A</option>
-                <option value="3">Nyeste</option>
-                <option value="4">Land</option>
-                <option value="5">Kategori</option>
-              </select>
-            </Rows>
-          </div>
-          <br></br>
+                <div
+                  id="showSelect"
+                  style={{ width: '220px', paddingLeft: '0px', display: this.hideSelect }}
+                >
+                  <Select
+                    id="selectCountryCategory"
+                    options={this.sortByArray == 4 ? this.countries : this.categories}
+                    onChange={(event) => {
+                      this.search(event?.label);
+                      this.searchterm = event?.label || '';
+                    }}
+                  />
+                </div>
+                {/* </Car> */}
+                <select
+                  id="sortBy"
+                  style={{ width: '220px' }}
+                  onChange={(event) => this.sortRecipe(Number(event.target.value))}
+                  className="form-select"
+                >
+                  <option value="1">A-Z</option>
+                  <option value="2">Z-A</option>
+                  <option value="3">Nyeste</option>
+                  <option value="4">Land</option>
+                  <option value="5">Kategori</option>
+                </select>
+              </Rows>
+            </div>
+            <br></br>
 
-          <div className="container-fluid ">
-            <Rows>
-              {this.recipes.map((recipe) => (
-                <Cards title="" numbOfPors={recipe.ant_pors} key={recipe.oppskrift_id}>
-                  <a className="black" href={'#/recipe/' + recipe.oppskrift_id}>
-                    <RecipeView
-                      img={recipe.bilde_adr}
-                      name={recipe.oppskrift_navn}
-                      numbOfPors={recipe.ant_pors}
-                    ></RecipeView>
-                  </a>
-                </Cards>
-              ))}
-            </Rows>
-          </div>
+            <div className="container-fluid ">
+              <Rows>
+                {this.recipes.map((recipe) => (
+                  <Cards title="" numbOfPors={recipe.ant_pors} key={recipe.oppskrift_id}>
+                    <a className="black" href={'#/recipe/' + recipe.oppskrift_id}>
+                      <RecipeView
+                        img={recipe.bilde_adr}
+                        name={recipe.oppskrift_navn}
+                        numbOfPors={recipe.ant_pors}
+                      ></RecipeView>
+                    </a>
+                  </Cards>
+                ))}
+              </Rows>
+            </div>
           </Card>
         </div>
       </>

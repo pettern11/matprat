@@ -84,7 +84,7 @@ class Service {
   /* addItemToShoppingList(item: ElementShoppingList) {
     return axios.post<{}>('/additemshoppinglist', {item: item}).then((response) => response.data);
   } */
-  addIngredient(ingredient: IngredientToShoppinglist) {
+  addIngredient(ingredient: List) {
     return axios
       .post<{}>('/addingredient', { ingredient: ingredient })
       .then((response) => response.data);
@@ -133,7 +133,7 @@ class Service {
       .put('/update_recipe_ingredient', { recipeContent: recipeContent })
       .then((response) => response.data);
   }
-  updateIngredientShoppingList(ingredient: IngredientToShoppinglist) {
+  updateIngredientShoppingList(ingredient: List) {
     return axios
       .put<{}>('/updateingredient', { ingredient: ingredient })
       .then((response) => response.data);

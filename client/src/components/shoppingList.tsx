@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Alert, Card, CardFull, Row, Column, Form, Button } from '.././widgets';
-import service, { Ingredient, List, ElementShoppingList } from '.././service';
+import service, { List } from '.././service';
 import { createHashHistory } from 'history';
 import Select from 'react-select';
 
@@ -102,6 +102,7 @@ export class ShoppingList extends Component {
                           }{' '}
                         </p>
                         <Form.Input
+                          id="mengde"
                           className="form-control"
                           type="number"
                           style={{ width: '75px', marginRight: '5px', paddingRight: '0px' }}
@@ -174,7 +175,7 @@ export class ShoppingList extends Component {
   }
   //metode for å inknrementere antall av hva du skal ha i handlelisten
   increment(ingredient: List) {
-    ingredient.mengde++;
+    ingredient.mengde = (Number(ingredient.mengde) + 1).toString();
     service
       .updateIngredientShoppingList(ingredient)
       .catch((error) => Alert.danger('Error increment shoppinlist count: ' + error.message));

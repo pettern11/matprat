@@ -508,11 +508,11 @@ export class NewRecipe extends Component {
           ingredients.forEach((element) => {
             this.ingredients.push({ value: element.ingred_id, label: element.ingred_navn });
           }),
-          (this.selectedIngredient.ingred_navn = ingredients[0].ingred_navn),
-          (this.selectedIngredient.ingred_id = ingredients[0].ingred_id)
+          (this.selectedIngredient.ingred_navn = ingredients[0] ? ingredients[0].ingred_navn : ''),
+          (this.selectedIngredient.ingred_id = ingredients[0] ? ingredients[0].ingred_id : 0)
         )
       )
 
-      .catch((error) => Alert.danger('Error getting categories: ' + error.message));
+      .catch((error) => Alert.danger('Error getting ingredient: ' + error.message));
   }
 }

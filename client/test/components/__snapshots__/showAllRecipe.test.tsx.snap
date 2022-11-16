@@ -5,130 +5,134 @@ exports[`ShowAllRecipe tests Snapshot showAllRecipe draws correctly 1`] = `
   <div
     className="margintop"
   >
-    <br />
-    <center>
-      <Rows>
-        <FormInput
-          id="indexsearch"
-          onChange={[Function]}
-          placeholder="Søk etter oppskrift"
-          style={
-            {
-              "display": "inline",
-              "width": "220px",
-            }
-          }
-          type="text"
-          value=""
-        />
-        <div
-          id="showSelect"
-          style={
-            {
-              "display": "none",
-              "paddingLeft": "0px",
-              "width": "220px",
-            }
-          }
-        >
-          <ForwardRef
-            id="selectCountryCategory"
+    <Card>
+      <br />
+      <div
+        className="text-center"
+      >
+        <Rows>
+          <FormInput
+            id="indexsearch"
             onChange={[Function]}
-            options={
-              [
-                {
-                  "label": "Søk på kategori",
-                  "value": 0,
-                },
-                {
-                  "label": "Ikea mat",
-                  "value": 1,
-                },
-                {
-                  "label": "enkelt",
-                  "value": 2,
-                },
-              ]
+            placeholder="Søk etter oppskrift"
+            style={
+              {
+                "display": "inline",
+                "width": "220px",
+              }
             }
+            type="text"
+            value=""
           />
-        </div>
-        <select
-          className="form-select"
-          id="sortBy"
-          onChange={[Function]}
-          style={
-            {
-              "width": "220px",
+          <div
+            id="showSelect"
+            style={
+              {
+                "display": "none",
+                "paddingLeft": "0px",
+                "width": "220px",
+              }
             }
-          }
-        >
-          <option
-            value="1"
           >
-            A-Z
-          </option>
-          <option
-            value="2"
-          >
-            Z-A
-          </option>
-          <option
-            value="3"
-          >
-            Nyeste
-          </option>
-          <option
-            value="4"
-          >
-            Land
-          </option>
-          <option
-            value="5"
-          >
-            Kategori
-          </option>
-        </select>
-      </Rows>
-    </center>
-    <br />
-    <div
-      className="container-fluid "
-    >
-      <Rows>
-        <Cards
-          key="1"
-          numbOfPors={4}
-          title=""
-        >
-          <a
-            className="black"
-            href="/recipe/1"
-          >
-            <RecipeView
-              img="pizza.jpg"
-              name="Pizza"
-              numbOfPors={4}
+            <ForwardRef
+              id="selectCountryCategory"
+              onChange={[Function]}
+              options={
+                [
+                  {
+                    "label": "Søk på kategori",
+                    "value": 0,
+                  },
+                  {
+                    "label": "Ikea mat",
+                    "value": 1,
+                  },
+                  {
+                    "label": "enkelt",
+                    "value": 2,
+                  },
+                ]
+              }
             />
-          </a>
-        </Cards>
-        <Cards
-          key="2"
-          numbOfPors={4}
-          title=""
-        >
-          <a
-            className="black"
-            href="/recipe/2"
+          </div>
+          <select
+            className="form-select"
+            id="sortBy"
+            onChange={[Function]}
+            style={
+              {
+                "width": "220px",
+              }
+            }
           >
-            <RecipeView
-              img="kjøttboller.jpg"
-              name="Kjøttboller i brunsaus"
-              numbOfPors={4}
-            />
-          </a>
-        </Cards>
-      </Rows>
-    </div>
+            <option
+              value="1"
+            >
+              A-Z
+            </option>
+            <option
+              value="2"
+            >
+              Z-A
+            </option>
+            <option
+              value="3"
+            >
+              Nyeste
+            </option>
+            <option
+              value="4"
+            >
+              Land
+            </option>
+            <option
+              value="5"
+            >
+              Kategori
+            </option>
+          </select>
+        </Rows>
+      </div>
+      <br />
+      <div
+        className="container-fluid "
+      >
+        <Rows>
+          <Cards
+            key="1"
+            numbOfPors={4}
+            title=""
+          >
+            <a
+              className="black"
+              href="#/recipe/1"
+            >
+              <RecipeView
+                img="pizza.jpg"
+                name="Pizza"
+                numbOfPors={4}
+              />
+            </a>
+          </Cards>
+          <Cards
+            key="2"
+            numbOfPors={4}
+            title=""
+          >
+            <a
+              className="black"
+              href="#/recipe/2"
+            >
+              <RecipeView
+                img="kjøttboller.jpg"
+                name="Kjøttboller i brunsaus"
+                numbOfPors={4}
+              />
+            </a>
+          </Cards>
+        </Rows>
+      </div>
+    </Card>
   </div>
 </Fragment>
 `;

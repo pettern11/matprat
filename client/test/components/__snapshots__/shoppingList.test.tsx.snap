@@ -170,7 +170,7 @@ exports[`Rending Should render after snapshot 1`] = `
                     {
                       "marginBottom": "0px",
                       "marginTop": "0px",
-                      "width": "49px",
+                      "width": "50px",
                     }
                   }
                 >
@@ -271,7 +271,7 @@ exports[`Rending Should render after snapshot 1`] = `
                     {
                       "marginBottom": "0px",
                       "marginTop": "0px",
-                      "width": "49px",
+                      "width": "50px",
                     }
                   }
                 >
