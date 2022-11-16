@@ -35,9 +35,9 @@ export class RecipeView extends Component<{ img: string; name: string; numbOfPor
 }
 
 export class Cards extends Component<{
-  title: ReactNode;
-  children: ReactNode;
-  numbOfPors: number;
+  title?: ReactNode;
+  children?: ReactNode;
+  numbOfPors?: number;
 }> {
   render() {
     return (
@@ -53,9 +53,9 @@ export class Cards extends Component<{
 }
 
 export class Cardse extends Component<{
-  title: ReactNode;
-  children: ReactNode;
-  numbOfPors: number;
+  title?: ReactNode;
+  children?: ReactNode;
+  numbOfPors?: number;
 }> {
   render() {
     return (
@@ -69,7 +69,7 @@ export class Cardse extends Component<{
   }
 }
 
-export class Card extends Component<{ title: ReactNode; children: ReactNode }> {
+export class Card extends Component<{ title?: ReactNode; children?: ReactNode }> {
   render() {
     return (
       <div className="card">
@@ -85,7 +85,7 @@ export class Card extends Component<{ title: ReactNode; children: ReactNode }> {
   }
 }
 
-export class CardFull extends Component<{ title: ReactNode; children: ReactNode }> {
+export class CardFull extends Component<{ title?: ReactNode; children?: ReactNode }> {
   render() {
     return (
       <div className="card hundred bak">
@@ -127,7 +127,7 @@ export class Mat extends Component<{ title: ReactNode; children: ReactNode }> {
   }
 }
 
-export class Car extends Component<{ title: ReactNode; children: ReactNode }> {
+export class Car extends Component<{ title?: ReactNode; children?: ReactNode }> {
   render() {
     return (
       <div className="card car car-white">
