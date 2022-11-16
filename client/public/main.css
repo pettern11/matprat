@@ -1,13 +1,26 @@
-:root {
-  --red: tomato;
-  --bgColor: bisque;
-}
+/* stiler for ulike elementer på siden */
 
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
 
 body {
   background-image: url(images/blur.jpg);
-  /* background-size: cover; */
+}
+
+pre {
+  white-space: pre-wrap;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 200;
+  line-height: 2.5;
+}
+
+em {
+  font-style: normal;
+}
+
+:root {
+  --red: tomato;
+  --bgColor: bisque;
 }
 
 .bak {
@@ -18,14 +31,12 @@ body {
   padding-left: 10px;
   padding-right: 10px;
 }
+
 .css-b62m3t-container {
   position: relative;
   box-sizing: border-box;
   width: 220px;
   text-align: left;
-  /* margin-right: 10%;
-  margin-left: 10%;
-  padding-left: 0px; */
 }
 
 .selecting {
@@ -35,14 +46,6 @@ body {
 
 .bredde {
   width: 220px;
-}
-
-pre {
-  white-space: pre-wrap;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 15px;
-  font-weight: 200;
-  line-height: 2.5;
 }
 
 .alerts {
@@ -56,6 +59,8 @@ pre {
 .margintop {
   margin-top: 76px;
 }
+
+/* custom scrollbar */
 
 ::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
@@ -79,16 +84,6 @@ pre {
   position: relative;
   top: -50%;
 }
-em {
-  font-style: normal;
-}
-
-/* .nav-link {
-  border: 30px;
-} */
-
-select.form-control {
-}
 
 .header {
   position: fixed;
@@ -101,6 +96,8 @@ select.form-control {
   text-align: center;
 }
 
+/* hover effect på meny og cards */
+
 .nav-link:link,
 .nav-link:visited,
 .navbar-brand:link,
@@ -108,7 +105,6 @@ select.form-control {
   padding: 15px 40px;
   width: 130px;
   margin-left: 10px;
-  /* height: 40px; */
   vertical-align: middle;
   top: 50%;
   text-align: center;
@@ -157,25 +153,14 @@ select.form-control {
 
 .nav-link:hover::after,
 .navbar-brand:hover::after {
-  /* transform: scaleX(1.4) scaleY(1.6); */
   opacity: 0;
 }
 
 .active {
   transform: translateY(-3px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  /* border-radius: 10px; */
 }
 
-/*  */
-
-.card {
-  /* width: 100%; */
-}
-
-.recipe-div {
-  /* height: 380px; */
-}
 .cards {
   display: flex;
   flex-wrap: wrap;
@@ -187,22 +172,6 @@ select.form-control {
   margin: 10px 9px;
   padding: 0px 0px 0px;
   transition: all 0.2s !important;
-}
-
-/* .grids {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-  align-self: normal;
-  margin-top: auto;
-  margin: 10px 9px;
-  padding: 0px 0px 0px;
-}  */
-
-.senter {
-  text-align: center !important;
 }
 
 .cards:hover {
@@ -230,7 +199,6 @@ select.form-control {
   top: 0;
   left: 0;
   z-index: -1;
-  /* transition: all 0.4s !important; */
 }
 
 .cards-white::after {
@@ -238,11 +206,8 @@ select.form-control {
 }
 
 .cards:hover::after {
-  /* transform: scaleX(1.4) scaleY(1.6); */
   opacity: 0;
 }
-
-/*  */
 
 .car {
   width: 550px;
@@ -279,7 +244,6 @@ select.form-control {
   top: 0;
   left: 0;
   z-index: -1;
-  /* transition: all 0.4s !important; */
 }
 
 .car-white::after {
@@ -287,28 +251,21 @@ select.form-control {
 }
 
 .car:hover::after {
-  /* transform: scaleX(1.4) scaleY(1.6); */
   opacity: 0;
 }
-
-/*  */
 
 .nav-links {
   width: 200px !important;
   margin-left: 0px !important;
-  background-color: rgb(245, 245, 245) !important;
+  background-color: rgb(255, 255, 255) !important;
 }
 
-.frontPicture {
-  /* box-shadow: -50px -50px 0 -40px var(--red), 50px 50px 0 -40px var(--red); */
-  border-radius: 10px;
-  height: 500px;
-  /* width: 50%;
-  object-fit: cover;
-  object-position: 50% 0; */
-}
 .frontpage {
   text-align: center;
+}
+
+.senter {
+  text-align: center !important;
 }
 
 .black {
@@ -318,16 +275,30 @@ select.form-control {
   font-size: 1em;
 }
 
+.frontpicture {
+  border-radius: 9px;
+  height: 500px;
+}
+
+.centerimage {
+  padding-left: 0px;
+}
+
+.car-body {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
 .image {
   width: 200px;
   height: 200px;
   object-fit: cover;
   object-position: 0% 0;
-  border-radius: 10px;
+  border-radius: 9px;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 10px;
+  margin-top: 9px;
 }
 
 .stort {
@@ -337,6 +308,8 @@ select.form-control {
   object-position: 0% 0;
   border-radius: 10px;
 }
+
+/* diver med scroll bar */
 
 .scroll {
   overflow: auto;
@@ -375,10 +348,8 @@ select.form-control {
 }
 
 .oppskrifter {
-  /* display: inline-block; */
   width: 100%;
   height: 100vh;
-  /* flex: 1 1 auto; */
   overflow: auto;
   display: flex;
   flex-wrap: wrap;
@@ -388,12 +359,10 @@ select.form-control {
 .mat {
   width: 20%;
   height: 100vh;
-  /* flex: 1 1 auto; */
   overflow: auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  /* top: 50%; */
   margin-left: auto;
   margin-right: auto;
 }
@@ -405,18 +374,6 @@ select.form-control {
   flex-flow: column;
   height: 100%;
 }
-
-.container-fluid {
-  /* width: 100%;
-    margin: 0px 0px;
-    display: flex;
-    flex-flow: column;
-    height: 100%; */
-}
-
-/* .container .row {
-  flex: 1 1 auto;
-} */
 
 .recipe-container {
   width: 100%;
@@ -433,10 +390,10 @@ select.form-control {
   margin-top: 10px;
 }
 
+/* opsett av rows og cards */
+
 .row {
   margin-right: 0px;
-  /* display: flex; */
-  /* justify-content: center; */
 }
 
 .rows {
@@ -458,6 +415,8 @@ select.form-control {
 .hundred {
   height: 100%;
 }
+
+/* like animasjon, inspirasjon fra https://blog.stackfindover.com/css-like-buttons/ */
 
 #heart-svg {
   cursor: pointer;
