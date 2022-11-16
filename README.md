@@ -11,10 +11,10 @@ Node.js can be downloaded here: https://nodejs.org/en/download/
 
 ### Built With
 
-* [![Node][Node.js]][Node-url]
-* [![React][React.js]][React-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![Typescript][Typescript.com]][Typescript-url]
+* Node
+* React
+* Bootstrap
+* Typescript
 
 ## Create databases for tests and the application
 
