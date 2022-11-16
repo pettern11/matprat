@@ -6,7 +6,7 @@ For this application to work you need node js.
 
 Node.js can be downloaded here: https://nodejs.org/en/download/ 
  
- If you already have Node.js, be sure you have the latest software
+<span style="background-color: #FFFF00">If you already have Node.js, be sure you have the latest software</span>
 
 
 ### Built With
