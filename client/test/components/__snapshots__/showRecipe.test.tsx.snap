@@ -227,14 +227,10 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
               </g>
             </svg>
           </label>
-          <p>
-            Likes: 
-            1
-          </p>
         </center>
-        <h3>
+        <h4>
           Ingredienser:
-        </h3>
+        </h4>
         <br />
         <div
           className="scroll"
@@ -249,7 +245,7 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
                 }
               }
             >
-              - 
+              • 
               pizzadeig
             </p>
             <p
@@ -281,7 +277,7 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
                 }
               }
             >
-              - 
+              • 
               pizza fyll
             </p>
             <p
@@ -313,7 +309,7 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
                 }
               }
             >
-              - 
+              • 
               kjøttboller
             </p>
             <p
@@ -336,6 +332,7 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
             </p>
           </Row>
         </div>
+        <br />
         Porsjoner:
          
         <ButtonDanger
@@ -366,14 +363,16 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
         }
       }
     >
-      <CardFull>
+      <CardFull
+        title=""
+      >
         <div
           className="col"
         >
           <Row>
-            <h3>
+            <h4>
               Oppskrift:
-            </h3>
+            </h4>
             <br />
             <div
               className="download2"
@@ -417,21 +416,9 @@ exports[`ShowRecipe tests Draws correctly 1`] = `
       Andre oppskrifter i samme kategori:
     </h3>
     <Row>
-      <Cards
-        key="0"
-        title=""
-      >
-        <NavLink
-          className="black"
-          to="/recipe/1"
-        >
-          <RecipeView
-            img="pizza.jpg"
-            name="Pizza"
-            numbOfPors={4}
-          />
-        </NavLink>
-      </Cards>
+      <p>
+        Ingen oppskrifter i samme kategori
+      </p>
     </Row>
   </Card>
 </div>
@@ -664,14 +651,10 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
               </g>
             </svg>
           </label>
-          <p>
-            Likes: 
-            1
-          </p>
         </center>
-        <h3>
+        <h4>
           Ingredienser:
-        </h3>
+        </h4>
         <br />
         <div
           className="scroll"
@@ -686,7 +669,7 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
                 }
               }
             >
-              - 
+              • 
               pizzadeig
             </p>
             <p
@@ -718,7 +701,7 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
                 }
               }
             >
-              - 
+              • 
               pizza fyll
             </p>
             <p
@@ -750,7 +733,7 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
                 }
               }
             >
-              - 
+              • 
               kjøttboller
             </p>
             <p
@@ -773,6 +756,7 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
             </p>
           </Row>
         </div>
+        <br />
         Porsjoner:
          
         <ButtonDanger
@@ -803,14 +787,16 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
         }
       }
     >
-      <CardFull>
+      <CardFull
+        title=""
+      >
         <div
           className="col"
         >
           <Row>
-            <h3>
+            <h4>
               Oppskrift:
-            </h3>
+            </h4>
             <br />
             <div
               className="download2"
@@ -854,21 +840,9 @@ exports[`ShowRecipe tests Number decrement works 1`] = `
       Andre oppskrifter i samme kategori:
     </h3>
     <Row>
-      <Cards
-        key="0"
-        title=""
-      >
-        <NavLink
-          className="black"
-          to="/recipe/1"
-        >
-          <RecipeView
-            img="pizza.jpg"
-            name="Pizza"
-            numbOfPors={4}
-          />
-        </NavLink>
-      </Cards>
+      <p>
+        Ingen oppskrifter i samme kategori
+      </p>
     </Row>
   </Card>
 </div>
@@ -1101,14 +1075,10 @@ exports[`ShowRecipe tests Number increment works 1`] = `
               </g>
             </svg>
           </label>
-          <p>
-            Likes: 
-            1
-          </p>
         </center>
-        <h3>
+        <h4>
           Ingredienser:
-        </h3>
+        </h4>
         <br />
         <div
           className="scroll"
@@ -1123,7 +1093,7 @@ exports[`ShowRecipe tests Number increment works 1`] = `
                 }
               }
             >
-              - 
+              • 
               pizzadeig
             </p>
             <p
@@ -1155,7 +1125,7 @@ exports[`ShowRecipe tests Number increment works 1`] = `
                 }
               }
             >
-              - 
+              • 
               pizza fyll
             </p>
             <p
@@ -1187,7 +1157,7 @@ exports[`ShowRecipe tests Number increment works 1`] = `
                 }
               }
             >
-              - 
+              • 
               kjøttboller
             </p>
             <p
@@ -1210,6 +1180,7 @@ exports[`ShowRecipe tests Number increment works 1`] = `
             </p>
           </Row>
         </div>
+        <br />
         Porsjoner:
          
         <ButtonDanger
@@ -1240,14 +1211,16 @@ exports[`ShowRecipe tests Number increment works 1`] = `
         }
       }
     >
-      <CardFull>
+      <CardFull
+        title=""
+      >
         <div
           className="col"
         >
           <Row>
-            <h3>
+            <h4>
               Oppskrift:
-            </h3>
+            </h4>
             <br />
             <div
               className="download2"
@@ -1291,21 +1264,9 @@ exports[`ShowRecipe tests Number increment works 1`] = `
       Andre oppskrifter i samme kategori:
     </h3>
     <Row>
-      <Cards
-        key="0"
-        title=""
-      >
-        <NavLink
-          className="black"
-          to="/recipe/1"
-        >
-          <RecipeView
-            img="pizza.jpg"
-            name="Pizza"
-            numbOfPors={4}
-          />
-        </NavLink>
-      </Cards>
+      <p>
+        Ingen oppskrifter i samme kategori
+      </p>
     </Row>
   </Card>
 </div>
@@ -1538,14 +1499,10 @@ exports[`ShowRecipe tests Number of likes 1`] = `
               </g>
             </svg>
           </label>
-          <p>
-            Likes: 
-            1
-          </p>
         </center>
-        <h3>
+        <h4>
           Ingredienser:
-        </h3>
+        </h4>
         <br />
         <div
           className="scroll"
@@ -1560,7 +1517,7 @@ exports[`ShowRecipe tests Number of likes 1`] = `
                 }
               }
             >
-              - 
+              • 
               pizzadeig
             </p>
             <p
@@ -1592,7 +1549,7 @@ exports[`ShowRecipe tests Number of likes 1`] = `
                 }
               }
             >
-              - 
+              • 
               pizza fyll
             </p>
             <p
@@ -1624,7 +1581,7 @@ exports[`ShowRecipe tests Number of likes 1`] = `
                 }
               }
             >
-              - 
+              • 
               kjøttboller
             </p>
             <p
@@ -1647,6 +1604,7 @@ exports[`ShowRecipe tests Number of likes 1`] = `
             </p>
           </Row>
         </div>
+        <br />
         Porsjoner:
          
         <ButtonDanger
@@ -1677,14 +1635,16 @@ exports[`ShowRecipe tests Number of likes 1`] = `
         }
       }
     >
-      <CardFull>
+      <CardFull
+        title=""
+      >
         <div
           className="col"
         >
           <Row>
-            <h3>
+            <h4>
               Oppskrift:
-            </h3>
+            </h4>
             <br />
             <div
               className="download2"
@@ -1728,21 +1688,9 @@ exports[`ShowRecipe tests Number of likes 1`] = `
       Andre oppskrifter i samme kategori:
     </h3>
     <Row>
-      <Cards
-        key="0"
-        title=""
-      >
-        <NavLink
-          className="black"
-          to="/recipe/1"
-        >
-          <RecipeView
-            img="pizza.jpg"
-            name="Pizza"
-            numbOfPors={4}
-          />
-        </NavLink>
-      </Cards>
+      <p>
+        Ingen oppskrifter i samme kategori
+      </p>
     </Row>
   </Card>
 </div>

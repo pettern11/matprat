@@ -11,14 +11,6 @@ export class ShoppingList extends Component {
   newIngredient: string = '';
   shoppingList: List[] = [];
   ingredients: [{ value: number; label: string }] = [{ value: 0, label: 'Søk på ingredienser' }];
-  selectedIngredients: Ingredient[] = [];
-  searchterm: string = '';
-  elementHandleliste: ElementShoppingList = {
-    ingred_id: 0,
-    ingred_navn: '',
-    mengde: '',
-    maleenhet: '',
-  };
   selectedIngredient: List = {
     id: 0,
     ingred_id: 0,
@@ -31,14 +23,13 @@ export class ShoppingList extends Component {
         <div className="margintop">
           <Row>
             <div className="col-4" style={{ paddingRight: '0px' }}>
+              {/* card hvor man kan legge til ingredienser i handlelisten */}
               <CardFull title="Legg til varer i kurven din">
                 <Column>
                   Søk:
                   <Select
                     id="choseIngredient"
                     options={this.ingredients}
-                    //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
-                    //men det fungerer ikke https://react-select.com/styles
                     onChange={(event) => {
                       this.selectedIngredient.ingred_id = Number(event.value);
                     }}
@@ -75,6 +66,7 @@ export class ShoppingList extends Component {
                   </Button.Success>
                   <br />
                   <br />
+                  {/* muligheten for å legge til nye ingredienser som ikke allerede finnes */}
                   Legg til ny vare:
                   <Form.Input
                     id="createIngredient"
@@ -92,27 +84,23 @@ export class ShoppingList extends Component {
                   >
                     Legg til
                   </Button.Success>
-                  {/* <div style={{ width: '690px' }}></div> */}
                 </Column>
-                {/* </div > */}
               </CardFull>
             </div>
 
             <div className="col-8" style={{ padding: '0px' }}>
+              {/* card hvor handlelisten vises med alle ingrediensene */}
               <CardFull title="Handleliste">
                 <div className="col">
                   <div id="liste" className="scrollbig">
                     {this.shoppingList.map((sl, i) => (
                       <Row key={sl.ingred_id + 'a' + i}>
-                        {/* <Row> */}
                         <p style={{ width: '190px' }}>
-                          {/* {i + 1}.{' '} */}
                           {'• '}
                           {
                             this.ingredients.find((ingredient) => ingredient.value == sl.ingred_id)
                               ?.label
                           }{' '}
-                          {/* @ts-ignore */}
                         </p>
                         <Form.Input
                           className="form-control"
@@ -121,20 +109,16 @@ export class ShoppingList extends Component {
                           onChange={(event) => {
                             sl.mengde = event.currentTarget.value;
                           }}
-                          onBlur={() => this.updatePortions(sl)}
+                          onBlur={() => this.update(sl)}
                           value={sl.mengde}
                           size={2}
                         ></Form.Input>{' '}
                         <p style={{ width: '110px', paddingLeft: '0px' }}>{sl.maleenhet}</p>
                         <p style={{ width: '45px', marginTop: '0px', marginBottom: '0px' }}>
-                          <Button.Danger onClick={() => this.decrementPortions(sl)}>
-                            -
-                          </Button.Danger>
+                          <Button.Danger onClick={() => this.decrement(sl)}>-</Button.Danger>
                         </p>
                         <p style={{ width: '49px', marginTop: '0px', marginBottom: '0px' }}>
-                          <Button.Success onClick={() => this.incrementPortions(sl)}>
-                            +
-                          </Button.Success>
+                          <Button.Success onClick={() => this.increment(sl)}>+</Button.Success>
                         </p>
                         <p style={{ width: '45px', marginTop: '0px', marginBottom: '0px' }}>
                           <Button.Danger onClick={() => this.deleteIngredient(sl.id)}>
@@ -168,11 +152,10 @@ export class ShoppingList extends Component {
     );
   }
 
-  mounted(search: string, jk: boolean) {
-    this.searchterm = search;
+  mounted() {
     this.selectedIngredient.mengde = 0;
     this.selectedIngredient.maleenhet = '';
-
+    //henter inn alle ingredientene fra databasen
     service
       .getAllIngredient()
       .then((ingredients) =>
@@ -180,8 +163,9 @@ export class ShoppingList extends Component {
           this.ingredients.push({ value: element.ingred_id, label: element.ingred_navn });
         })
       )
-
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+
+    //henter inn alle ingrediensene fra handlelisten
     service
       .getShoppingList()
       .then((shoppingList: List[]) => (this.shoppingList = shoppingList))
@@ -189,24 +173,24 @@ export class ShoppingList extends Component {
         Alert.danger('Error getting shoppingList: ' + error.message)
       );
   }
-
-  incrementPortions(ingredient: List) {
+  //metode for å inknrementere antall av hva du skal ha i handlelisten
+  increment(ingredient: List) {
     ingredient.mengde++;
     service
       .updateIngredientShoppingList(ingredient)
-      .then(() => this.mounted())
-      .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+      .catch((error) => Alert.danger('Error increment shoppinlist count: ' + error.message));
   }
-  decrementPortions(ingredient: List) {
+  //metode for å dekremenere antall av hva du skal ha i handlelisten
+  decrement(ingredient: List) {
     if (ingredient.mengde > 1) {
       ingredient.mengde--;
       service
         .updateIngredientShoppingList(ingredient)
-        .then(() => this.mounted())
-        .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
+        .catch((error) => Alert.danger('Error decrement shoppinglist count: ' + error.message));
     }
   }
-  updatePortions(ingredient: List) {
+  //metode for å oppdatere antall av hva du skal ha i handlelisten
+  update(ingredient: List) {
     if (
       ingredient.mengde < 0 ||
       ingredient.mengde == null ||
@@ -217,27 +201,26 @@ export class ShoppingList extends Component {
     }
     service
       .updateIngredientShoppingList(ingredient)
-      .then(() => {
-        this.mounted();
-      })
       .then(() => Alert.info('Antall oppdatert'))
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
   }
-
+  //sletter ingrediens fra handlelisten
   deleteIngredient(id: number) {
     service
       .deleteIngredientShoppingList(id)
-      .then(() => this.mounted())
+      .then(() => {
+        this.shoppingList = this.shoppingList.filter((sl) => sl.id !== id);
+      })
       .catch((error) => Alert.danger('Error getting ingredients: ' + error.message));
   }
-
+  //sletter alle ingrediense fra handlelisten
   deleteAll() {
     service
       .deleteAllShoppingList()
-      .then(() => this.mounted())
+      .then(() => (this.shoppingList = []))
       .catch((error) => Alert.danger('Error deleting shopping list: ' + error.message));
   }
-
+  //metode for å lage nye ingredienser
   addIngredient(item: string) {
     if (item == null || item == undefined || item == '') {
       Alert.danger('Du må fylle inn navn på ingrediensen');
@@ -245,38 +228,32 @@ export class ShoppingList extends Component {
       this.ingredients.some((ing) => ing.label.toLowerCase() == item.toLowerCase()) == true
     ) {
       Alert.danger('Ingrediensen eksisterer allerede');
-    } else {
+    }
+    //hvis ingrediensen ikke eksisterer fra før, er utdefinert, null eller en tom string så legges den til i databasen
+    else {
       this.newIngredient = '';
       service
         .createIngredient(item)
-        //sender parametere inn i mounted for å søke på ingrediensen når mounted er ferdig
-        //dette virker mest praktisk fordi componentDidMount og componentDidUpdate ikke fungerte
         .then(() => {
-          this.mounted(item, true);
+          service.getAllIngredient().then((ingredients) =>
+            ingredients.forEach((element) => {
+              this.ingredients.push({ value: element.ingred_id, label: element.ingred_navn });
+            })
+          );
         })
-
         .catch((error) => Alert.danger('Error creating new ingredient: ' + error.message));
     }
   }
-
+  //metode for å legge til ingredienser i handlelisten
   addExistingItem(item: List) {
-    if (
-      item.mengde == null ||
-      item.mengde == undefined ||
-      //@ts-ignore
-      item.mengde == '' ||
-      item.mengde < 0
-    ) {
-      item.mengde = 1;
-      Alert.danger('Du må fylle inn antall av ingrediensen, dette må være heltall større enn 0');
-    } else if (item.maleenhet == null || item.maleenhet == undefined || item.maleenhet == '') {
-      // item.maleenhet = 'stk';
-      Alert.danger('Du må fylle inn måleenhet');
-    } else if (item.ingred_id == 0 || item.ingred_id == undefined) {
+    if (item.ingred_id == 0 || item.ingred_id == undefined) {
       Alert.danger('Du må velge en ingrediens');
-    } else {
+    }
+    //i løsningen vår har vi bestemt oss for å ha med antall og måleenhet av hva du skal kjøpe. Du kan valgritt velge om du vil ha med dette
+    else {
       service
         .addIngredient(item)
+
         .then(() => this.mounted())
         .catch((error) => Alert.danger('Error adding item to shopping list: ' + error.message));
     }
