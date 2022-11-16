@@ -33,8 +33,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
           <div className="col-6" style={{ paddingRight: '0px' }}>
             <CardFull title="">
               <div className="download1">
-                {/* @ts-ignore */}
-                <center>
+                <div className="text-center">
                   <img className="stort" src={this.recipe.bilde_adr}></img>
                   <br />
                   <br />
@@ -53,11 +52,9 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
                       )?.kategori_navn
                     }
                   </p>
-                  {/* @ts-ignore */}
-                </center>
+                </div>
               </div>
-              {/* @ts-ignore */}
-              <center>
+              <div className="text-center">
                 <input
                   type="checkbox"
                   id="checkbox"
@@ -123,7 +120,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
                     </g>
                   </svg>
                 </label>
-              </center>
+              </div>
               <h4>Ingredienser:</h4>
               <br />
               {/* Viser ingrediensene */}

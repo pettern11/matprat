@@ -6,11 +6,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
 
 body {
-  /* font-family: arial; */
+  background-image: url(images/blur.jpg);
+  /* background-size: cover; */
 }
 
-.card {
-  background-image: url(images/blur.png);
+.bak {
+  background-image: url(images/blur.jpg);
 }
 
 .pad {
@@ -202,7 +203,7 @@ select.form-control {
 
 .senter {
   text-align: center !important;
-} 
+}
 
 .cards:hover {
   transform: translateY(-5px);

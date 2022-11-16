@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
-import { Cards, Alert, Columns, Row, Rows, Form, RecipeView } from '../widgets';
+import { Cards, Card, Alert, Columns, Row, Rows, Form, RecipeView } from '../widgets';
 
 import service, { Recipe } from '../service';
 import Select from 'react-select';
@@ -19,11 +19,10 @@ export class ShowAllRecipe extends Component {
     return (
       <>
         <div className="margintop">
+          <Card>
           <br />
-          {/* @ts-ignore */}
-          <center>
+          <div className="text-center">
             <Rows>
-              {/* <Car title="Søkefelt"> */}
               <Form.Input
                 id="indexsearch"
                 style={{ width: '220px', display: this.hideInput }}
@@ -61,9 +60,8 @@ export class ShowAllRecipe extends Component {
                 <option value="4">Land</option>
                 <option value="5">Kategori</option>
               </select>
-              {/* @ts-ignore */}
             </Rows>
-          </center>
+          </div>
           <br></br>
 
           <div className="container-fluid ">
@@ -81,6 +79,7 @@ export class ShowAllRecipe extends Component {
               ))}
             </Rows>
           </div>
+          </Card>
         </div>
       </>
     );
