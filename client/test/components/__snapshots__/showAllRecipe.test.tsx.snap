@@ -6,92 +6,88 @@ exports[`ShowAllRecipe tests Snapshot showAllRecipe draws correctly 1`] = `
     className="margintop"
   >
     <br />
-    <Row>
-      <center>
-        <Columns>
-          <div>
-            <FormInput
-              id="indexsearch"
-              onChange={[Function]}
-              placeholder="Søk etter oppskrift"
-              style={
-                {
-                  "display": "inline",
-                  "width": "220px",
-                }
-              }
-              type="text"
-              value=""
-            />
-            <div
-              style={
-                {
-                  "display": "none ",
-                }
-              }
-            >
-              <ForwardRef
-                onChange={[Function]}
-                options={
-                  [
-                    {
-                      "label": "Søk på kategori",
-                      "value": 0,
-                    },
-                    {
-                      "label": "Ikea mat",
-                      "value": 1,
-                    },
-                    {
-                      "label": "enkelt",
-                      "value": 2,
-                    },
-                  ]
-                }
-              />
-            </div>
-          </div>
-        </Columns>
-        <Columns>
-          <select
-            className="form-select"
-            id="sortBy"
-            onChange={[Function]}
-            style={
-              {
-                "width": "220px",
-              }
+    <center>
+      <Rows>
+        <FormInput
+          id="indexsearch"
+          onChange={[Function]}
+          placeholder="Søk etter oppskrift"
+          style={
+            {
+              "display": "inline",
+              "width": "220px",
             }
+          }
+          type="text"
+          value=""
+        />
+        <div
+          style={
+            {
+              "display": "none ",
+              "paddingLeft": "0px",
+              "width": "220px",
+            }
+          }
+        >
+          <ForwardRef
+            onChange={[Function]}
+            options={
+              [
+                {
+                  "label": "Søk på kategori",
+                  "value": 0,
+                },
+                {
+                  "label": "Ikea mat",
+                  "value": 1,
+                },
+                {
+                  "label": "enkelt",
+                  "value": 2,
+                },
+              ]
+            }
+          />
+        </div>
+        <select
+          className="form-select"
+          id="sortBy"
+          onChange={[Function]}
+          style={
+            {
+              "width": "220px",
+            }
+          }
+        >
+          <option
+            value="1"
           >
-            <option
-              value="1"
-            >
-              A-Z
-            </option>
-            <option
-              value="2"
-            >
-              Z-A
-            </option>
-            <option
-              value="3"
-            >
-              Nyeste
-            </option>
-            <option
-              value="4"
-            >
-              Land
-            </option>
-            <option
-              value="5"
-            >
-              Kategori
-            </option>
-          </select>
-        </Columns>
-      </center>
-    </Row>
+            A-Z
+          </option>
+          <option
+            value="2"
+          >
+            Z-A
+          </option>
+          <option
+            value="3"
+          >
+            Nyeste
+          </option>
+          <option
+            value="4"
+          >
+            Land
+          </option>
+          <option
+            value="5"
+          >
+            Kategori
+          </option>
+        </select>
+      </Rows>
+    </center>
     <br />
     <div
       className="container-fluid "
@@ -99,7 +95,7 @@ exports[`ShowAllRecipe tests Snapshot showAllRecipe draws correctly 1`] = `
       <Rows>
         <Cards
           key="1"
-          title=""
+          numbOfPors={4}
         >
           <NavLink
             className="black"
@@ -108,13 +104,12 @@ exports[`ShowAllRecipe tests Snapshot showAllRecipe draws correctly 1`] = `
             <RecipeView
               img="pizza.jpg"
               name="Pizza"
-              numbOfPors={4}
             />
           </NavLink>
         </Cards>
         <Cards
           key="2"
-          title=""
+          numbOfPors={4}
         >
           <NavLink
             className="black"
@@ -123,7 +118,6 @@ exports[`ShowAllRecipe tests Snapshot showAllRecipe draws correctly 1`] = `
             <RecipeView
               img="kjøttboller.jpg"
               name="Kjøttboller i brunsaus"
-              numbOfPors={4}
             />
           </NavLink>
         </Cards>
