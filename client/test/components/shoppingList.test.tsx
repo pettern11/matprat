@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { shallow, mount } from 'enzyme';
-import { Alert, Form, Button} from '../../src/widgets';
+import { Alert, Form, Button } from '../../src/widgets';
 import { ShoppingList } from '../../src/components/shoppingList';
 import { List } from '../../src/service';
 
@@ -123,31 +123,21 @@ describe('Functionality input', () => {
     });
   });
 
-  test.skip('Trigger onBlur on input field', (done) => {
-    const wrapper = shallow(<ShoppingList />);
-    setTimeout(() => {
-      wrapper
-        .find(Form.Input)
-        .at(3)
-        .simulate('change', { currentTarget: { value: 2 } });
-      wrapper
-        .find(Form.Input)
-        .at(4)
-        .simulate('change', { currentTarget: { value: 2 } });
-
-      expect(wrapper.find(Form.Input).at(3).prop('value')).toEqual(2);
-
-      done();
-    });
-  });
   test('No ingredient in inputfield when creating new ingredient', (done) => {
     const wrapper = shallow(<ShoppingList />);
-    const wrapperAlert = shallow(<ShoppingList />);
+    const wrapperAlert = shallow(<Alert />);
     setTimeout(() => {
       wrapper.find('#createIngredient').simulate('change', { currentTarget: { value: '' } });
       wrapper.find(Button.Success).at(1).simulate('click');
 
       setTimeout(() => {
+        expect(
+          wrapperAlert.containsMatchingElement(
+            <div>
+              Du må fylle inn navn på ingrediensen<button></button>
+            </div>
+          )
+        ).toEqual(true);
         done();
       });
     });

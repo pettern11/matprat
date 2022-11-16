@@ -183,7 +183,7 @@ describe('ShowRecipe tests', () => {
   test('Edit recipe button works', (done) => {
     const wrapper = shallow(<ShowRecipe match={{ params: { id: 1 } }} />);
     setTimeout(() => {
-      wrapper.find(Button.Success).at(1).simulate('click');
+      wrapper.find('#btnEdit').simulate('click');
       expect(window.location.href).toEqual('http://localhost/#/recipe/edit/1');
       done();
     });

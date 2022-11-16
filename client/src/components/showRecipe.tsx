@@ -176,6 +176,7 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
         </Button.Success>
         <div style={{ float: 'right' }}>
           <Button.Success
+            id="btnEdit"
             onClick={() => history.push('/recipe/edit/' + this.props.match.params.id)}
           >
             Endre oppskrift
