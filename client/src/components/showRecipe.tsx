@@ -168,22 +168,26 @@ export class ShowRecipe extends Component<{ match: { params: { id: number } } }>
             </CardFull>
           </div>
         </Row>
-        <Button.Success onClick={() => history.push('/recipe/edit/' + this.props.match.params.id)}>
-          Endre oppskrift
-        </Button.Success>
-        <Button.Danger
-          //@ts-ignore
-          id="deleteRecipe"
-          onClick={() => this.deleteRecipe(this.props.match.params.id)}
-        >
-          Slett oppskrift
-        </Button.Danger>
         <Button.Success id="btnSend" onClick={this.ingredientsToShoppingList}>
           Send ingredienser til handleliste
         </Button.Success>
         <Button.Success id="downloadPageBtn" onClick={this.downloadPage}>
           Last ned oppskriften
         </Button.Success>
+        <div style={{ float: 'right' }}>
+          <Button.Success
+            onClick={() => history.push('/recipe/edit/' + this.props.match.params.id)}
+          >
+            Endre oppskrift
+          </Button.Success>
+          <Button.Danger
+            //@ts-ignore
+            id="deleteRecipe"
+            onClick={() => this.deleteRecipe(this.props.match.params.id)}
+          >
+            Slett oppskrift
+          </Button.Danger>
+        </div>
 
         {/* Recomend 5 recipes based on the category */}
         <Card title="">
