@@ -19,12 +19,13 @@ export class EditRecipe extends Component<{ match: { params: { id: number } } }>
     ant_like: 0,
     liked: false,
   };
-  ingredient: string = '';
-  addIngredientToRecipe: Recipe_Content[] = [];
-  iDsDeletedIngredient: any = [];
-  recipeContent: Recipe_Content[] = [];
+  ingredient: string = ''; //holder navnet til nye ingredienser
+  addIngredientToRecipe: Recipe_Content[] = []; //holder ingrediensene som skal legges til i oppskriften, har gjort det på denne måten for å ha en avbryt knapp
+  iDsDeletedIngredient: any = []; //holder id til ingredienser som skal slettes, muligjør å ha en avbryt knapp
+  recipeContent: Recipe_Content[] = []; //holder ingrediensene som allerede er i oppskriften
   ingredients: [{ value: number; label: string }] = [{ value: 0, label: 'Søk på ingredienser' }];
-
+  //siden vi bruker npm pakken react-select som gir oss en dropdown liste med søkbar funksjon, må vi ha en liste med objekter som inneholder value og label.
+  //value er id til ingrediensen og label er navnet på ingrediensen.
   render() {
     return (
       <>

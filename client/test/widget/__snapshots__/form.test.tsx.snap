@@ -10,7 +10,7 @@ exports[`Form tests Form Checkbox 1`] = `
 
 exports[`Form tests Form Select 1`] = `
 <select
-  style="width:200px"
+  style="width:220px"
   valule="select"
 >
   <option>

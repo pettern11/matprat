@@ -14,7 +14,9 @@ exports[`editRecipe test page renders correct with snapshot 1`] = `
           }
         }
       >
-        <CardFull>
+        <CardFull
+          title=""
+        >
           <h3>
             Pizza
           </h3>
@@ -238,30 +240,24 @@ exports[`editRecipe test page renders correct with snapshot 1`] = `
           }
         }
       >
-        <CardFull>
-          <Row>
-            <Column>
-              <h3>
-                Oppskrift:
-              </h3>
-              <br />
-              <Column>
-                <FormTextarea
-                  id="recipe_step"
-                  onChange={[Function]}
-                  rows={5}
-                  style={
-                    {
-                      "height": "600px",
-                      "width": "600px",
-                    }
-                  }
-                  type="text"
-                  value="Bland deigen og la den heve"
-                />
-              </Column>
-            </Column>
-          </Row>
+        <CardFull
+          title=""
+        >
+          <h4>
+            Oppskrift:
+          </h4>
+          <div
+            className="col"
+          >
+            <Row>
+              <textarea
+                className="form-control rounds"
+                id="recipe_step"
+                onChange={[Function]}
+                value="Bland deigen og la den heve"
+              />
+            </Row>
+          </div>
         </CardFull>
       </div>
     </Row>

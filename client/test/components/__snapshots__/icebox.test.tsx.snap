@@ -7,7 +7,7 @@ exports[`Icebox tests Snapshot Icebox draws correctly 1`] = `
   >
     <Row>
       <div
-        className="col-2"
+        className="col-3"
         style={
           {
             "paddingRight": "0px",
@@ -70,7 +70,7 @@ exports[`Icebox tests Snapshot Icebox draws correctly 1`] = `
         </CardFull>
       </div>
       <div
-        className="col-10"
+        className="col-9"
         style={
           {
             "padding": "0px",
@@ -83,6 +83,7 @@ exports[`Icebox tests Snapshot Icebox draws correctly 1`] = `
           <Rows>
             <Cards
               key="0"
+              numbOfPors={4}
               title=""
             >
               <a
