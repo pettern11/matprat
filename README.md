@@ -66,7 +66,8 @@ npm start
 ### Download premade recipes
 
 Download premade recipes to database. 
-<span style="background-color: #FFFF00">The database must be empty for the script to work!</span>
+
+<mark>The database must be empty for the script to work!</mark>
 
 
 ```sh
