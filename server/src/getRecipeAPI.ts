@@ -2,6 +2,9 @@
 import mysql from 'mysql2';
 
 /*
+For å kjøres scriptet bruker man kommandoen "npm run addRecipes" i terminalen i server mappen. 
+npm run addRecipes
+
 getRecipeAPI.ts bruker ES-Modules, og krever ES5/6, og ikke commonJS.
 Node forventer commonjs, men babel-node kan oversette es-moduler, vi bruker derfor babel-node for å kjøre scriptet.
 
@@ -345,7 +348,7 @@ function matchRecipeIngredient() {
 }
 function done() {
   if (!doneVariable) {
-    console.log('Scriptet er ferdig og du kan trykke ctrl + c to gangerfor å avslutte scriptet');
+    console.log('Scriptet er ferdig og du kan trykke ctrl + c to ganger for å avslutte scriptet');
     clearInterval(interval);
     doneVariable = true;
   }

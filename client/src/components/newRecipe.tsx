@@ -314,6 +314,9 @@ export class NewRecipe extends Component {
 
   /* Legge til oppskrift i databasen */
   addRecipe() {
+    if(this.picture_adr == ''){
+      this.picture_adr = 'https://miro.medium.com/max/1000/1*5DnGR_PQnMR7CkZhvNuMYQ.png';
+    }
     let recipe: Recipe = {
       oppskrift_id: 0,
       oppskrift_navn: this.name,
