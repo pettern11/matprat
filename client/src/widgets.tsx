@@ -73,13 +73,13 @@ export class Card extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
     return (
       <div className="card">
-        {/* <img className="image" src="images/background.jpg" alt="bilde av oppskrift" /> */}
-        {/* <div className="card-img-overlay"> */}
-        <div className="card-body">
+        {/* <img className="image" src="images/background.jpg" alt="bakgrunn" />
+        <div className="card-img-overlay"> */}
+        <div className="card-body bak">
           <h5 className="card-title">{this.props.title}</h5>
           <div className="card-text">{this.props.children}</div>
-          {/* </div> */}
         </div>
+        {/* </div> */}
       </div>
     );
   }
@@ -88,14 +88,14 @@ export class Card extends Component<{ title: ReactNode; children: ReactNode }> {
 export class CardFull extends Component<{ title: ReactNode; children: ReactNode }> {
   render() {
     return (
-      <div className="card hundred">
-        {/* <img className="image" src="images/background.jpg" alt="bilde av oppskrift" /> */}
-        {/* <div className="card-img-overlay"> */}
+      <div className="card hundred bak">
+        {/* <img className="image" src="images/background.jpg" alt="bakgrunn" />
+        <div className="card-img-overlay"> */}
         <div className="card-body">
           <h5 className="card-title">{this.props.title}</h5>
           <div className="card-text">{this.props.children}</div>
-          {/* </div> */}
         </div>
+        {/* </div> */}
       </div>
     );
   }

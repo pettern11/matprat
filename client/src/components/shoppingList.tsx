@@ -116,7 +116,7 @@ export class ShoppingList extends Component {
                         <p style={{ width: '45px', marginTop: '0px', marginBottom: '0px' }}>
                           <Button.Danger onClick={() => this.decrement(sl)}>-</Button.Danger>
                         </p>
-                        <p style={{ width: '49px', marginTop: '0px', marginBottom: '0px' }}>
+                        <p style={{ width: '50px', marginTop: '0px', marginBottom: '0px' }}>
                           <Button.Success onClick={() => this.increment(sl)}>+</Button.Success>
                         </p>
                         <p style={{ width: '45px', marginTop: '0px', marginBottom: '0px' }}>

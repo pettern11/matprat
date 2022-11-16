@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { NavBar, Car, Card, Cardse, Alert, Rows, RecipeView } from './widgets';
+import { NavBar, Car, Card, Cardse, Alert, Row, Rows, RecipeView } from './widgets';
 import { NewRecipe } from './components/newRecipe';
 import { EditRecipe } from './components/editRecipe';
 import { ShowRecipe } from './components/showRecipe';
@@ -47,44 +47,47 @@ export class Home extends Component {
     return (
       <>
         <div className="margintop">
-          <Card title="">
+          <Card>
             <div className="frontpage">
               <h1>Prøv oppskriften:</h1>
               <br></br>
               {/* @ts-ignore */}
-
+              {/* <div className="text-center"> */}
               <center>
-                <Car title="">
-                  <div className={'recipeToDay'}>
-                    {this.recipes.length != 0
-                      ? this.recipes
-                          .filter((recipes, i) => i == random)
-                          .map((recipe, rei) => (
-                            <div key={rei}>
-                              <NavLink
-                                key={rei + 'navlink'}
-                                className="black"
-                                to={'/recipe/' + recipe.oppskrift_id}
-                              >
-                                <img
-                                  key={rei + 'picture'}
-                                  src={recipe.bilde_adr}
-                                  className="frontPicture"
-                                  alt="recipe"
-                                />
-                                <br />
-                                <br />
-                                <h3 key={rei + 'name'} id="frontname" style={{ color: 'black' }}>
-                                  {recipe.oppskrift_navn}
-                                </h3>
-                              </NavLink>
-                            </div>
-                          ))
-                      : ''}
-                  </div>
-                </Car>
+                <Rows>
+                  <Car title="">
+                    <div className={'recipeToDay'}>
+                      {this.recipes.length != 0
+                        ? this.recipes
+                            .filter((recipes, i) => i == random)
+                            .map((recipe, rei) => (
+                              <div key={rei}>
+                                <NavLink
+                                  key={rei + 'navlink'}
+                                  className="black"
+                                  to={'/recipe/' + recipe.oppskrift_id}
+                                >
+                                  <img
+                                    key={rei + 'picture'}
+                                    src={recipe.bilde_adr}
+                                    className="frontPicture"
+                                    alt="recipe"
+                                  />
+                                  <br />
+                                  <br />
+                                  <h3 key={rei + 'name'} id="frontname" style={{ color: 'black' }}>
+                                    {recipe.oppskrift_navn}
+                                  </h3>
+                                </NavLink>
+                              </div>
+                            ))
+                        : ''}
+                    </div>
+                  </Car>
+                </Rows>
                 {/* @ts-ignore */}
               </center>
+              {/* </div> */}
               <br />
               <br />
               <div>
@@ -94,7 +97,7 @@ export class Home extends Component {
                   <Rows>
                     {this.recipes.length != 0
                       ? this.suggestedRecipeList.map((likedRecipe, i) => (
-                          <Cardse title="" key={likedRecipe.oppskrift_id + i + 'card'}>
+                          <Cardse key={likedRecipe.oppskrift_id + i + 'card'}>
                             <NavLink
                               key={likedRecipe.oppskrift_id + 'navlink2'}
                               className="black"
