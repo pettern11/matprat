@@ -112,8 +112,6 @@ export class NewRecipe extends Component {
                       <Select
                         id="choseCategory"
                         options={this.categories}
-                        //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
-                        //men det fungerer ikke https://react-select.com/styles
                         onChange={(event) => {
                           this.checkCategory(event?.value || 0);
                         }}
@@ -146,8 +144,6 @@ export class NewRecipe extends Component {
                       <Select
                         id="choseCountry"
                         options={this.countries}
-                        //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
-                        //men det fungerer ikke https://react-select.com/styles
                         onChange={(event) => {
                           this.checkCountry(event?.value || 0);
                         }}
@@ -170,7 +166,6 @@ export class NewRecipe extends Component {
                       >
                         Legg til
                       </Button.Success>
-                      {/* må lage select og options som cars */}
                     </div>
                   </Row>
                   <br />
@@ -186,8 +181,6 @@ export class NewRecipe extends Component {
                       <Select
                         id="choseIngredient"
                         options={this.ingredients}
-                        //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
-                        //men det fungerer ikke https://react-select.com/styles
                         onChange={(event) => {
                           this.chooseIngredientFunc(event?.value || 0);
                         }}
@@ -227,14 +220,6 @@ export class NewRecipe extends Component {
                       value={this.steps}
                       onChange={(event) => (this.steps = event.currentTarget.value)}
                     ></textarea>
-                    {/* <Form.Textarea
-                        id="recipe_steps_input"
-                        type="text"
-                        value={this.steps}
-                        onChange={(event) => (this.steps = event.currentTarget.value)}
-                        rows={10}
-                        style={{ width: '910px' }}
-                      /> */}
                   </Row>
                   <br />
                   {/* velg hvor mye av hver inngrediense */}

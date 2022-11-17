@@ -23,6 +23,7 @@ export class ShowAllRecipe extends Component {
             <br />
             <div className="text-center">
               <Rows>
+                {/* søk og sortering av oppskrifter  */}
                 <Form.Input
                   id="indexsearch"
                   style={{ width: '220px', display: this.hideInput }}
@@ -47,7 +48,6 @@ export class ShowAllRecipe extends Component {
                     }}
                   />
                 </div>
-                {/* </Car> */}
                 <select
                   id="sortBy"
                   style={{ width: '220px' }}
@@ -64,6 +64,7 @@ export class ShowAllRecipe extends Component {
             </div>
             <br></br>
 
+            {/* Viser alle tilgjengelige oppskrifter*/}
             <div className="container-fluid ">
               <Rows>
                 {this.recipes.map((recipe) => (
