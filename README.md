@@ -99,3 +99,13 @@ npm start
 cd client
 npm test
 ```
+
+## Creators
+
+Martin Hvistendahl
+
+Nicolai Sommerfelt
+
+William Son
+
+Petter Vestby
