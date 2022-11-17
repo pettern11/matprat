@@ -326,7 +326,7 @@ export class NewRecipe extends Component {
 
   /* Legge til ingredienser i arrayen med ingredienser slik at de ligger klare til å pushes til db */
   chooseIngredientFunc(id: number) {
-    if (id === 0 || id === undefined || id === null || id === NaN) {
+    if (id == 0) {
       Alert.info('Du må velge en ingrediens');
     } else if (this.recipe_content.some((e) => e.ingred_id == id)) {
       Alert.info('Denne ingrediensen er allerede lagt til');
@@ -337,9 +337,6 @@ export class NewRecipe extends Component {
       const add = { oppskrift_id: 0, ingred_id: id, mengde: '0', maleenhet: '' };
 
       this.recipe_content.push(add);
-
-      // finner index til dette elemetet i objektet, skal brukes senere til å mappe
-      // hver enkelt inputfelt til et obejct sin menge eller måleenhet
     }
   }
 
