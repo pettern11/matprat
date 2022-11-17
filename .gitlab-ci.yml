@@ -21,7 +21,7 @@ install:
     - npm install --legacy-peer-deps --force
     - cd ../client
     - npm install --legacy-peer-deps --force
-    - npm install react-select
+    - yarn add react-select
   artifacts: # Keep node_modules folder for the following stages
     paths:
       - server/node_modules
