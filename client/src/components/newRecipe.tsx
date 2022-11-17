@@ -97,8 +97,7 @@ export class NewRecipe extends Component {
                         id="recipe_portions_input"
                         type="number"
                         value={this.portions}
-                        //@ts-ignore
-                        onChange={(event) => (this.portions = event.currentTarget.value)}
+                        onChange={(event) => (this.portions = event.currentTarget.value.toString())}
                         style={{ width: '220px' }}
                       />
                     </div>
@@ -116,8 +115,7 @@ export class NewRecipe extends Component {
                         //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
                         //men det fungerer ikke https://react-select.com/styles
                         onChange={(event) => {
-                          //@ts-ignore
-                          this.checkCategory(event?.value);
+                          this.checkCategory(event?.value || 0);
                         }}
                       />
                       <Form.Input
@@ -151,8 +149,7 @@ export class NewRecipe extends Component {
                         //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
                         //men det fungerer ikke https://react-select.com/styles
                         onChange={(event) => {
-                          //@ts-ignore
-                          this.checkCountry(event?.value);
+                          this.checkCountry(event?.value || 0);
                         }}
                       />
 
@@ -192,8 +189,7 @@ export class NewRecipe extends Component {
                         //width="200px" fungerer ikke står i dokumentasjonen at dette er måten å gjøre det på
                         //men det fungerer ikke https://react-select.com/styles
                         onChange={(event) => {
-                          //@ts-ignore
-                          this.chooseIngredientFunc(event?.value);
+                          this.chooseIngredientFunc(event?.value || 0);
                         }}
                       />
                       {/* legg til ingredienser */}
@@ -261,10 +257,7 @@ export class NewRecipe extends Component {
                               style={{ width: '75px', marginRight: '0px' }}
                               type="number"
                               value={rc.mengde}
-                              onChange={(event) =>
-                                //@ts-ignore
-                                (rc.mengde = event.currentTarget.value)
-                              }
+                              onChange={(event) => (rc.mengde = event.currentTarget.value)}
                             />
                             <input
                               className="form-control"
@@ -272,10 +265,7 @@ export class NewRecipe extends Component {
                               id={'ingredType' + i.toString()}
                               type="text"
                               value={rc.maleenhet}
-                              onChange={(event) =>
-                                //@ts-ignore
-                                (rc.maleenhet = event.currentTarget.value)
-                              }
+                              onChange={(event) => (rc.maleenhet = event.currentTarget.value)}
                             />
                             <Column width={2}>
                               <Button.Danger onClick={() => this.deleteIngredient(rc.ingred_id)}>
@@ -334,7 +324,7 @@ export class NewRecipe extends Component {
       service
         .createRecipe(recipe)
         .then((id) => this.addRecipeIngredient(id))
-        .catch((error) => Alert.danger('Du mangler å fylle ut noe i oppskriften'));
+        .catch(() => Alert.danger('Du mangler å fylle ut noe i oppskriften'));
   }
 
   /* Legge til ingredienser i databasen */

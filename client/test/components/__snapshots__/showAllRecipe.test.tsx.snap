@@ -5,7 +5,9 @@ exports[`ShowAllRecipe tests Snapshot showAllRecipe draws correctly 1`] = `
   <div
     className="margintop"
   >
-    <Card>
+    <Card
+      title=""
+    >
       <br />
       <div
         className="text-center"

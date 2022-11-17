@@ -126,6 +126,7 @@ exports[`Rending Should render after snapshot 1`] = `
                 </p>
                 <FormInput
                   className="form-control"
+                  id="mengde"
                   onBlur={[Function]}
                   onChange={[Function]}
                   size={2}
@@ -227,6 +228,7 @@ exports[`Rending Should render after snapshot 1`] = `
                 </p>
                 <FormInput
                   className="form-control"
+                  id="mengde"
                   onBlur={[Function]}
                   onChange={[Function]}
                   size={2}

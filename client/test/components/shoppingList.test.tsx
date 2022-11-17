@@ -218,13 +218,13 @@ describe('Functionality buttons', () => {
 
       wrapper.find(Button.Success).at(2).simulate('click');
 
-      expect(wrapper.find(Form.Input).at(3).prop('value')).toBe(3);
+      expect(wrapper.find(Form.Input).at(3).prop('value')).toBe('3');
 
       expect(wrapper.find(Form.Input).at(4).prop('value')).toBe(1);
 
       wrapper.find(Button.Success).at(3).simulate('click');
 
-      expect(wrapper.find(Form.Input).at(4).prop('value')).toBe(2);
+      expect(wrapper.find(Form.Input).at(4).prop('value')).toBe('2');
 
       done();
     });
