@@ -60,13 +60,12 @@ Install dependencies and start server:
 ```sh
 cd server
 npm install
-npm install react-select
 npm start
 ```
 
 ### Download premade recipes
 
-Download premade recipes to database. 
+Download premade recipes to database. The scripts uses the information in the config.ts, this must be configured before you start.
 
 <mark>The database must be empty for the script to work properly!</mark>
 
@@ -90,6 +89,7 @@ Install dependencies and bundle client files:
 ```sh
 cd client
 npm install
+npm install react-select
 npm start
 ```
 
