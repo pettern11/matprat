@@ -97,7 +97,8 @@ export class NewRecipe extends Component {
                         id="recipe_portions_input"
                         type="number"
                         value={this.portions}
-                        onChange={(event) => (this.portions = event.currentTarget.value.toString())}
+                        //@ts-ignore
+                        onChange={(event) => (this.portions = event.currentTarget.value)}
                         style={{ width: '220px' }}
                       />
                     </div>
