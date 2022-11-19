@@ -88,8 +88,8 @@ Install dependencies and bundle client files:
 
 ```sh
 cd client
-npm install
-npm install react-select
+npm install --force
+npm install react-select --force
 npm start
 ```
 
