@@ -106,6 +106,6 @@ Martin Hvistendahl
 
 Nicolai Sommerfelt
 
-William Son
+William Fagerstrøm
 
 Petter Vestby
