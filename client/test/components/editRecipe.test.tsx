@@ -182,22 +182,22 @@ describe('editRecipe test', () => {
       wrapper.find('#choseIngredient').at(0).simulate('keyDown', { key: 'Enter', keyCode: 13 });
       setTimeout(() => {
         expect(wrapper.find('#choseIngredient').at(0).first().text()).toEqual('kjottboller');
-
+        expect(wrapper.containsMatchingElement(<p>kjottboller</p>)).toEqual(true);
         done();
       });
     });
   });
   test('create ingredent sucessfully', (done) => {
     const wrapper = shallow(<EditRecipe match={{ params: { id: 1 } }} />);
-    const wrapperAlert = shallow(<Alert />);
     setTimeout(() => {
       wrapper.find('#createIngredient').simulate('change', { currentTarget: { value: 'melk' } });
       wrapper.find('#createIngredientFunc').simulate('click');
       setTimeout(() => {
         expect(wrapper.find('#createIngredient').prop('value')).toBe('');
+        //eneste vi får testet her er at vi endrer input feltet, klikker på knappen legg til og så sjekker vi at input feltet er tomt
+        //hvis inputfeltet er tomt så er det vel en indikasjon på at ingrediensen ble lagt til fordi funksjonen blir kjørt riktig
         done();
       });
-      // wrapper.find(Button.Success).at(0).simulate('click');
     });
   });
 });

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { shallow, mount} from 'enzyme';
-import { Button} from '../../src/widgets';
+import { shallow, mount } from 'enzyme';
+import { Button } from '../../src/widgets';
 import { Icebox } from '../../src/components/icebox';
 
 jest.mock('../../src/service', () => {
@@ -112,7 +112,7 @@ describe('Icebox tests', () => {
     });
   });
 
-  test('Test delete ingredient button', (done) => {
+  test('delete ingredient button', (done) => {
     const wrapper = shallow(<Icebox />);
 
     setTimeout(() => {

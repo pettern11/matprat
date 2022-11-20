@@ -79,7 +79,6 @@ describe('ShowAllRecipe tests', () => {
     wrapper.find('#indexsearch').simulate('change', { currentTarget: { value: 'Pizza' } });
     setTimeout(() => {
       expect(wrapper.find('#indexsearch').prop('value')).toBe('Pizza');
-      // expect(wrapper.state('searchterm')).toBe('Pizza'));
       done();
     });
   });
@@ -214,7 +213,7 @@ describe('ShowAllRecipe tests', () => {
     setTimeout(() => {
       wrapper.find('#sortBy').simulate('change', { target: { value: 5, name: 'Kategori' } });
       setTimeout(() => {
-        //expects the select form for land to be shown
+        //expects the select form for kategori to be shown
 
         expect(wrapper.find('#showSelect').prop('style')).toHaveProperty('display', 'inline');
 

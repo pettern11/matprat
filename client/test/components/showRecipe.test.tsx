@@ -215,7 +215,6 @@ describe('ShowRecipe tests', () => {
     setTimeout(() => {
       wrapper.find('#btnInc').simulate('click');
 
-      expect(wrapper).toMatchSnapshot();
       expect(
         wrapper.containsMatchingElement([
           <b>5</b>,
@@ -234,7 +233,6 @@ describe('ShowRecipe tests', () => {
     setTimeout(() => {
       wrapper.find('#btnDec').simulate('click');
 
-      expect(wrapper).toMatchSnapshot();
       expect(
         wrapper.containsMatchingElement([
           <b>3</b>,
@@ -247,14 +245,13 @@ describe('ShowRecipe tests', () => {
     });
   });
 
-  test('Number of likes', (done) => {
+  test('Press liked', (done) => {
     const wrapper = shallow(<ShowRecipe match={{ params: { id: 1 } }} />);
 
     setTimeout(() => {
       wrapper.find('#checkbox').simulate('change', { target: { checked: true } });
-
-      expect(wrapper).toMatchSnapshot();
-      expect(wrapper.containsMatchingElement([<p>Antall likes: 2</p>])).toBe(true);
+      // expect checkbox to be true
+      expect(wrapper.find('#checkbox').props().checked).toEqual(true);
       done();
     });
   });

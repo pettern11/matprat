@@ -85,8 +85,6 @@ describe('Functionality input', () => {
 
       wrapper.find(Form.Input).at(3).simulate('onBlur');
 
-      //wrapper.find(Button.Success).at(3).simulate('click');
-
       expect(wrapper.find(Form.Input).at(3).prop('value')).toEqual('6.5');
 
       done();
