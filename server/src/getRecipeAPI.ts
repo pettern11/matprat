@@ -87,44 +87,40 @@ apiCalls.getRecipeD_M();
 apiCalls.getRecipeN_Y();
 
 //funskjon som først får land fra api, og legger det til i arrayet country
-//deretter pushet det opp til databasen slik at det får en id fordi landene har ikke en id fra TheMealDB
-//så henter den iden og legger det til i arrayet country
+//pusher det opp til databasen
 function Country(array) {
-  array.forEach((element) => {
-    country.push(element.strArea);
+  array.forEach((element, i) => {
+    country.push({ land_id: i + 1, land_navn: element.strArea });
   });
   country.forEach((element) => {
-    pool.query('INSERT INTO land SET land_navn=?', [element], (error, results) => {
-      if (error) return error;
+    pool.query(
+      'INSERT INTO land SET land_id=?, land_navn=?',
+      [element.land_id, element.land_navn],
+      (error, results) => {
+        if (error) return error;
 
-      results;
-    });
-  });
-  country = [];
-  pool.query('SELECT * FROM land', (error, results: []) => {
-    if (error) return error;
-    country = results;
+        results;
+      }
+    );
   });
 }
 
 //funskjon som først får kategori fra api, og legger det til i arrayet category
-//deretter pushet det opp til databasen slik at det får en id fordi kategoriene har ikke en id fra TheMealDB
-//så henter den iden og legger det til i arrayet category
+//pusher det opp til databasen
 function Category(array) {
-  array.forEach((element) => {
-    category.push(element.strCategory);
+  array.forEach((element, i) => {
+    category.push({ kategori_id: i + 1, kategori_navn: element.strCategory });
   });
   category.forEach((element) => {
-    pool.query('INSERT INTO kategori SET kategori_navn=?', [element], (error, results) => {
-      if (error) return error;
+    pool.query(
+      'INSERT INTO kategori SET kategori_id=?,kategori_navn=?',
+      [element.kategori_id, element.kategori_navn],
+      (error, results) => {
+        if (error) return error;
 
-      results;
-    });
-  });
-  category = [];
-  pool.query('SELECT * FROM kategori', (error, results: []) => {
-    if (error) return error;
-    category = results;
+        results;
+      }
+    );
   });
 }
 
@@ -153,25 +149,11 @@ function stringToNumber(string) {
   let number;
   let numsStr = string.replace(/[^0-9/]/g, '');
   let firstNumber = parseInt(numsStr);
-  let restOfString = numsStr.replace(firstNumber, '');
-  // if (restOfString.includes('/')) {
-  //   let newString = restOfString.replace('/', '');
-  //   let secondNumber = parseInt(newString);
-  //   number = firstNumber / secondNumber;
-  // } else {
   number = firstNumber;
-  // }
   return number;
 }
 //fjerner alle tallene fra ingrediens måleenheten og returnerer bare bokstavene
 function removeNumber(string) {
-  //okey tore, nå skal du bli satt på sporet
-  //du skal lage en regex som beholder alle boksavene i string du får inn som parameter
-  //men du skal også fjerne oz hvis det er mellomrom før oz og etter oz
-  //så skal du returnere stringen uten tallene og oz
-  //men du skal beholde mellomromene
-  //
-
   let newString = string.replace(/[^a-zA-Z ]/g, '');
   if (newString.includes('oz')) {
     newString = newString.replace('oz', '');
@@ -183,7 +165,7 @@ function Recipe(array) {
   setTimeout(() => {
     array.forEach((element) => {
       if (!recipe.includes(element.idMeal)) {
-        //finner index til land og category og lagrer det i variabler
+        //finner index til land og category og lagrer det i variabler til senere, plusser på 1 fordi id starter på 1 og ikke null
         const indexCountry = country.map((e) => e.land_navn).indexOf(element.strArea);
         const indexCategory = category.map((e) => e.kategori_navn).indexOf(element.strCategory);
         //siden databasen vi henter fra er lagt opp dårlig må vi liste alle variablene og så loope gjennom dem
