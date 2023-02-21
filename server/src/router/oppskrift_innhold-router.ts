@@ -33,7 +33,7 @@ router.post('/create_recipe_ingredient', (request, response) => {
     .createRecipeIngredient(data.recipe_content)
     .then((_result) => response.status(201).send('Oppskrift innhold opprettet.'))
     .catch((error) => response.status(500).send(error));
-});
+}); 
 
 router.put('/update_recipe_ingredient', (request, response) => {
   const data = request.body;

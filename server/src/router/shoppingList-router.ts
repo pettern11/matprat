@@ -25,7 +25,7 @@ router.post('/addingredient', (request, response) => {
     .addIngredientShoppinglist(data)
     .then(() => response.send())
     .catch((error) => response.status(500).send(error));
-}});
+}});  
 
 router.put('/updateingredient', (request, response) => {
   const data = request.body.ingredient;
